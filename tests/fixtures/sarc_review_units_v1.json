@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "scope": "SARC一级资料单元v1：源目录7个小节+4类前置资料；不是逐字逐格清单，不能代替全视频覆盖审计",
+  "source_sha256": "e4f131ad8a2393ca5b6eade841bbce55a2e3ea105c1023954a746a8524d7e09a",
+  "catalog_evidence_frames": [271, 301],
+  "units": [
+    {"id": "front.cover", "title": "封面", "source_frames": [0, 30], "gates": {"coverage": "NOT_REVIEWED", "text": "FAIL", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "原生标题混入录屏文字，未按源封面完整恢复。"},
+    {"id": "front.revisions", "title": "修订记录", "source_frames": [121, 151, 211], "gates": {"coverage": "NOT_REVIEWED", "text": "NOT_REVIEWED", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "需逐版本、日期、修改说明和表格合并关系核对；尚未完整验收。"},
+    {"id": "front.contents", "title": "目录", "source_frames": [271, 301], "gates": {"coverage": "NOT_REVIEWED", "text": "NOT_REVIEWED", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "目录用于建立独立资料清单；目录本身的全部文字/页码及成品待核对。"},
+    {"id": "front.figure_table_index", "title": "图目录与表目录", "source_frames": [361, 391], "gates": {"coverage": "NOT_REVIEWED", "text": "NOT_REVIEWED", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "源图目录实际写有未找到图形项目表，不能生成不存在的目录项；成品待核对。"},
+    {"id": "1.1", "title": "模块简介（含架构图）", "source_frames": [452, 482, 512], "gates": {"coverage": "NOT_REVIEWED", "text": "NOT_REVIEWED", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "只有特定架构图矩形完成像素/Word嵌图检查；正文、页头和完整成品尚未验收。"},
+    {"id": "1.2", "title": "应用说明", "source_frames": [512, 542, 572], "gates": {"coverage": "NOT_REVIEWED", "text": "FAIL", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "源标题清楚，group_000012_b原生结果只剩1.2；源该节为空白，禁止补写说明。"},
+    {"id": "2.1", "title": "功能需求", "source_frames": [572, 675, 2493], "gates": {"coverage": "NOT_REVIEWED", "text": "NOT_REVIEWED", "tables": "FAIL", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "g18页头仍过分格；需继续逐条01—47、子项、位域表、数字与源位置核对。"},
+    {"id": "2.2", "title": "中断管理", "source_frames": [2523, 2583, 2768], "gates": {"coverage": "NOT_REVIEWED", "text": "NOT_REVIEWED", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "需核对全部中断条款和列表；锚点与输出定位不是内容通过。"},
+    {"id": "2.3", "title": "事件管理", "source_frames": [2798, 2828], "gates": {"coverage": "NOT_REVIEWED", "text": "NOT_REVIEWED", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "需核对事件条款、XBAR/ETIM目标及事件个数、映射。"},
+    {"id": "2.4", "title": "约束说明", "source_frames": [2890, 2920, 2950], "gates": {"coverage": "NOT_REVIEWED", "text": "FAIL", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "2890有O1及漏02，邻帧2920含02；需核对01—08跨页完整性，不按单帧重复数计进度。"},
+    {"id": "2.5", "title": "触发源说明", "source_frames": [2950, 3010, 3230], "gates": {"coverage": "NOT_REVIEWED", "text": "NOT_REVIEWED", "tables": "NOT_REVIEWED", "images": "NOT_REVIEWED", "office": "NOT_REVIEWED"}, "acceptance_evidence": [], "reason": "需核对sample/blanking两类表、位域、地址原样文本和表格结构。"}
+  ]
+}

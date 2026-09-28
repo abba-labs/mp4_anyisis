@@ -1,6 +1,7 @@
 """
-pipeline.py - 端到端全流程调度管道 (V2 Complete)
-连接：视频抽帧 -> 文本流与版面分流 -> Document IR -> Markdown / DOCX / XLSX / report.json
+pipeline.py - OCR-only 调度管道
+连接：视频关键帧 -> 保留原始文本 -> Document IR -> Markdown / DOCX / report.json
+尚未接通页面拼接、图表结构化和 XLSX 导出，不代表完整文档恢复。
 """
 
 import os
@@ -36,14 +37,16 @@ class DocumentExtractionPipeline:
 
         print(f"[1/5] Extracting quality-aware keyframes from: {video_path}")
         keyframes = self.selector.extract_keyframes(video_path, self.pages_dir)
-        print(f"      Extracted {len(keyframes)} clean non-redundant page frames.")
+        print(f"      Extracted {len(keyframes)} selected keyframes (not reconstructed document pages).")
 
         print("[2/5] Parsing document elements into Document IR...")
         doc_ir = DocumentIR(
             doc_id=doc_id,
             metadata={
                 "source_video": os.path.abspath(video_path),
-                "total_keyframes": len(keyframes)
+                "total_keyframes": len(keyframes),
+                "extraction_mode": "ocr_only",
+                "deduplication_mode": "preserve_unlocated_text"
             }
         )
 
@@ -80,7 +83,12 @@ class DocumentExtractionPipeline:
         print("[3/5] Generating Audit Report (report.json)...")
         report_path = os.path.join(self.output_dir, "report.json")
         audit_res = self.reporter.save_report(doc_ir, report_path)
-        print(f"      Pass rate: {audit_res['metrics']['pass_rate']*100:.2f}%, Low confidence items: {audit_res['metrics']['low_confidence_count']}")
+        coverage = audit_res["metrics"]["confidence_threshold_coverage"]
+        coverage_label = f"{coverage * 100:.2f}%" if coverage is not None else "N/A"
+        print(f"      OCR confidence coverage: {coverage_label} (not accuracy); "
+              f"status: {audit_res['status']}")
+        if audit_res["metrics"]["total_elements"] == 0:
+            raise RuntimeError(f"No OCR content extracted; inspect {report_path}")
 
         print("[4/5] Exporting Document IR (JSON) & Markdown...")
         json_path = os.path.join(self.output_dir, "document.json")
@@ -101,5 +109,5 @@ class DocumentExtractionPipeline:
         docx_path = os.path.join(self.output_dir, f"{doc_id}.docx")
         self.docx_exporter.export(doc_ir, docx_path, figures_dir=self.figures_dir)
 
-        print(f"[Done] Complete pipeline finished! Artifacts saved to: {self.output_dir}")
+        print(f"[Done] OCR-only export finished; document reconstruction is unverified. Artifacts saved to: {self.output_dir}")
         return doc_ir

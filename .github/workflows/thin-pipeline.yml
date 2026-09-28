@@ -33,6 +33,7 @@ jobs:
           python -m pytest -q --junitxml=validation/thin/tests.xml
       - name: Real native parsing and exports, bounded samples
         run: |
+          set -o pipefail
           timeout --signal=TERM --kill-after=10 540 python -u - <<'PY' 2>&1 | tee validation/thin/run.log
           import json,time,traceback
           from pathlib import Path
@@ -61,6 +62,8 @@ jobs:
               print('CASE',json.dumps(item,ensure_ascii=False),flush=True)
           if any(s['status']!='ran' for s in summary):raise RuntimeError('See per-sample reports')
           PY
+      - name: Source-anchored content acceptance (separate from execution)
+        run: python scripts/check_native_samples.py validation/thin
       - uses: actions/upload-artifact@v4
         if: always()
         with:

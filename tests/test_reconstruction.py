@@ -24,8 +24,9 @@ def test_native_subset_is_rejected(monkeypatch,tmp_path):
     manifest=fixture_manifest(tmp_path,3)
     class Subset:
         def setCompositingResol(self,v): pass
-        def stitch(self,images): return cv2.Stitcher_OK,np.zeros((40,40,3),np.uint8)
+        def estimateTransform(self,images): return cv2.Stitcher_OK
         def component(self): return [0,2]
+        def cameras(self): return []
     monkeypatch.setattr(cv2,'Stitcher_create',lambda _:Subset())
     result=video.stitch_preview([tmp_path/'frames'/f['image'] for f in manifest['frames']],tmp_path/'x.png')
     assert result['status']=='rejected'
@@ -44,18 +45,18 @@ def test_entire_timeline_including_tail_is_routed(monkeypatch,tmp_path):
         return {'status':'candidate','image':str(target),'verified':False}
     monkeypatch.setattr(video,'stitch_preview',stitch)
     result=video.prepare_reconstructions(manifest,tmp_path)
-    assert len(calls)==3
-    assert result['candidate_count']==2
+    assert len(calls)==5
+    assert result['candidate_count']==4
     assert result['all_selected_frames_routed']
     assert not result['content_completeness_verified']
     assert {f['frame_index'] for j in result['jobs'] for f in j['source_frames']}==set(range(19))
     assert all((tmp_path/'frames'/f['image']).exists() for f in manifest['frames'])
-    assert any(j['kind']=='source_frame' for j in result['jobs'])
+    assert len(result['jobs'])==4
     assert video.prepare_reconstructions(manifest,tmp_path)['cache_hit']
-    assert len(calls)==3
+    assert len(calls)==5
     (tmp_path/result['jobs'][0]['input_image']).write_bytes(b'broken')
     assert not video.prepare_reconstructions(manifest,tmp_path)['cache_hit']
-    assert len(calls)==6
+    assert len(calls)==8
 
 
 def test_all_failures_keep_every_original(monkeypatch,tmp_path):
@@ -99,7 +100,29 @@ def test_actual_scans_on_overlapping_canvas(tmp_path):
     for i,offset in enumerate([0,250,400]):
         path=tmp_path/f'{i}.png';Image.fromarray(canvas[offset:offset+600]).save(path);paths.append(path)
     result=video.stitch_preview(paths,tmp_path/'result.png')
+    if not hasattr(cv2.Stitcher_create(cv2.Stitcher_SCANS), 'component'):
+        assert result['status']=='rejected'
+        assert all(path.is_file() for path in paths)
+        return
     assert result['status']=='candidate'
     assert sorted(result['included_input_indices'])==[0,1,2]
     assert not result['verified']
     assert Image.open(tmp_path/'result.png').height>900
+
+
+def test_scroll_gate_rejects_native_distortions():
+    import numpy as np
+    safe=np.eye(3);safe[0,2]=400;safe[1,2]=-200
+    assert video.screen_transform_is_safe(safe)
+    for bad in [np.diag([2,2,1]),np.array([[1,.2,0],[0,1,0],[0,0,1]]),
+                np.zeros((2,2)),np.full((3,3),np.nan)]:
+        assert not video.screen_transform_is_safe(bad)
+
+
+def test_incomplete_parse_has_visible_pending_count(tmp_path):
+    from mp4_analysis.thin.output import write_index
+    manifest=fixture_manifest(tmp_path,3)
+    item={'frame':manifest['frames'][0],'directory':'none'}
+    result=write_index(tmp_path,manifest,[item])
+    assert result['status']=='PARTIAL_FAILURE'
+    assert result['pending_parser_inputs']==2

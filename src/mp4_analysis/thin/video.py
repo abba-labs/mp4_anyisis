@@ -130,8 +130,12 @@ def stitch_preview(paths, target):
         raise ValueError('cannot decode a stitch input')
     try:
         stitcher = cv2.Stitcher_create(cv2.Stitcher_SCANS)
+        if not hasattr(stitcher, 'component') or not hasattr(stitcher, 'cameras'):
+            return {'engine': 'OpenCV SCANS', 'status': 'rejected',
+                    'error': 'installed OpenCV cannot expose source membership/transforms',
+                    'originals_retained': True, 'verified': False}
         stitcher.setCompositingResol(-1)  # Keep original pixel scale.
-        status, panorama = stitcher.stitch(images)
+        status = stitcher.estimateTransform(images)
     except cv2.error as exc:
         return {'engine': 'OpenCV SCANS', 'status': 'rejected', 'error': str(exc),
                 'originals_retained': True, 'verified': False}
@@ -144,6 +148,19 @@ def stitch_preview(paths, target):
         record['included_input_indices'] = component
         if sorted(component) != list(range(len(images))):
             record.update(status='rejected', error='upstream excluded one or more input images')
+            return record
+        transforms = [camera.R for camera in stitcher.cameras()]
+        record['native_affine_transforms'] = [matrix.tolist() for matrix in transforms]
+        if not all(screen_transform_is_safe(matrix) for matrix in transforms):
+            record.update(status='rejected', error='scale/rotation/shear incompatible with scrolling')
+            return record
+        try:
+            status, panorama = stitcher.composePanorama(images)
+        except cv2.error as exc:
+            record.update(status='rejected', error=f'native composition exception: {exc}')
+            return record
+        if status != cv2.Stitcher_OK:
+            record.update(status='rejected', error=f'native composition failed: {status}')
             return record
         target = Path(target)
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -173,7 +190,7 @@ def prepare_reconstructions(manifest, output, *, group_size=8, overlap=2):
     indices = [f['frame_index'] for f in frames]
     if len(indices) != len(set(indices)) or indices != sorted(indices):
         raise ValueError('source frame indices must be unique and ordered')
-    signature = {'schema': 1, 'opencv': cv2.__version__, 'group_size': group_size,
+    signature = {'schema': 2, 'opencv': cv2.__version__, 'group_size': group_size,
                  'overlap': overlap, 'frames': [(f['frame_index'],
                      file_hash(output/'frames'/f['image'])) for f in frames]}
     # JSON round-trip normalizes tuples before comparing persistent signatures.
@@ -186,24 +203,31 @@ def prepare_reconstructions(manifest, output, *, group_size=8, overlap=2):
                 for name, digest in old.get('derived_files', {}).items()):
             return dict(old, cache_hit=True)
     batches, jobs, represented = [], [], set()
-    for start in range(0, len(frames), group_size-overlap):
-        batch = frames[start:start+group_size]
+    def attempt(batch, key, split=False):
         if len(batch) < 2:
-            continue
-        relative = f'reconstructed/group_{start:06d}.png'
+            return
+        relative = f'reconstructed/group_{key}.png'
         result = stitch_preview([output/'frames'/f['image'] for f in batch], output/relative)
         source_indices = [f['frame_index'] for f in batch]
         result.update(source_frame_indices=source_indices, start_time=batch[0]['start_time'],
                       end_time=batch[-1]['end_time'])
+        batches.append(result)
         if result['status'] == 'candidate':
             result['image'] = relative
-            jobs.append({'id': f'group_{start:06d}', 'input_image': relative,
+            jobs.append({'id': f'group_{key}', 'input_image': relative,
                          'frame': batch[0], 'source_frames': batch,
                          'coordinate_system': 'reconstructed_pixels',
                          'source_to_canvas_transform': None, 'geometry_verified': False,
                          'kind': 'unverified_composite'})
             represented.update(source_indices)
-        batches.append(result)
+        elif split and len(batch) >= 4:
+            # One bounded retry with smaller groups; never implement another matcher.
+            middle = len(batch)//2
+            attempt(batch[:middle], key+'_a')
+            attempt(batch[middle:], key+'_b')
+    for start in range(0, len(frames), group_size-overlap):
+        batch = frames[start:start+group_size]
+        attempt(batch, f'{start:06d}', split=True)
         if start + group_size >= len(frames):
             break
     for frame in frames:
@@ -227,3 +251,16 @@ def prepare_reconstructions(manifest, output, *, group_size=8, overlap=2):
                                 for j in jobs if j['kind']=='unverified_composite'}}
     cache_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
     return result
+
+
+def screen_transform_is_safe(matrix, tolerance=0.02):
+    """Reject native affine distortions; this does not estimate or verify alignment.
+
+    This scrolling mode supports translations, not zoom or rotation transitions.
+    Those transitions remain source frames instead of being geometrically guessed.
+    """
+    import numpy as np
+    matrix = np.asarray(matrix)
+    return (matrix.shape == (3,3) and bool(np.isfinite(matrix).all())
+            and bool(np.allclose(matrix[2], [0,0,1], atol=1e-6, rtol=0))
+            and bool(np.allclose(matrix[:2,:2], np.eye(2), atol=tolerance, rtol=0)))

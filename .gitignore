@@ -1,0 +1,29 @@
+# Videos & Raw Capture
+*.mp4
+*.avi
+*.mkv
+*.mov
+
+# Extracted frame dumps
+frames/
+*/frames/
+figures/
+*/figures/
+
+# Generated binaries / proprietary outputs
+*.docx
+*.xlsx
+*.pdf
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.cache/
+
+# System
+.DS_Store
+Thumbs.db

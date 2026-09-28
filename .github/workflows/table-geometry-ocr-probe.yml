@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [feat/open-source-thin-pipeline-20260928]
-    paths: [.github/workflows/table-geometry-ocr-probe.yml]
+    paths: [.github/workflows/table-geometry-ocr-probe.yml, scripts/probe_grid_ocr.py, tests/test_grid_geometry.py]
 permissions:
   contents: read
 jobs:
@@ -13,102 +13,31 @@ jobs:
     env:
       OMP_NUM_THREADS: '1'
       OPENBLAS_NUM_THREADS: '1'
-      POLARS_MAX_THREADS: '2'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install isolated upstream candidates
+      - name: Install isolated native candidate
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-chi-sim
-          python -m pip install 'img2table[rapidocr]==2.0.0' 'onnxruntime==1.23.2' 'av==16.0.1' 'Pillow>=10,<13'
+          python -m pip install 'img2table[rapidocr]==2.0.0' 'rapidocr==3.9.2' 'onnxruntime==1.23.2' 'av==16.0.1' 'Pillow>=10,<13' 'pytest>=8,<10'
           mkdir -p validation/geometry_ocr
           python -m pip freeze > validation/geometry_ocr/environment.txt
-      - name: Geometry before OCR; same image and same acceptance anchors
+      - name: Regression tests including real video codec
+        run: python -m pytest -q --junitxml=validation/geometry_ocr/tests.xml
+      - name: Native OCR and geometry comparisons
         run: |
           set -o pipefail
-          timeout --signal=TERM --kill-after=5 330 python -u - <<'PY' 2>&1 | tee validation/geometry_ocr/run.log
-          import av,hashlib,json,time,traceback,re
+          timeout --signal=TERM --kill-after=5 330 python -u -m scripts.probe_grid_ocr validation/geometry_ocr 2>&1 | tee validation/geometry_ocr/run.log
+      - name: Candidate content acceptance, not execution success
+        run: |
+          python - <<'PY'
+          import json
           from pathlib import Path
-          from img2table.document import Image
-          from img2table.ocr import TesseractOCR, RapidOCR
-          from rapidocr import LangRec
-          from scripts.check_native_samples import sheet_cells
-          out=Path('validation/geometry_ocr')
-          video=Path('MP4/GameViewer_96iLJ4Cokv.mp4')
-          with av.open(str(video)) as cap:
-              for idx,frame in enumerate(cap.decode(cap.streams.video[0])):
-                  if idx==60:
-                      full=frame.to_image().convert('RGB');break
-              else: raise RuntimeError('Frame 60 not decoded')
-          full.save(out/'source.png')
-          fixture=json.loads(Path('tests/fixtures/native_acceptance.json').read_text(encoding='utf-8'))['memorymap']
-          # Manually read source boxes; used ONLY for evaluation, never extraction.
-          expected_boxes={'A3':[18,57,133,75],'D3':[315,57,381,75],
-                          'E3':[381,57,485,75],'F3':[485,57,588,75],
-                          'P21':[1408,384,1555,402],'P23':[1408,420,1555,438]}
-          def iou(a,b):
-              overlap=max(0,min(a[2],b[2])-max(a[0],b[0]))*max(0,min(a[3],b[3])-max(a[1],b[1]))
-              union=(a[2]-a[0])*(a[3]-a[1])+(b[2]-b[0])*(b[3]-b[1])-overlap
-              return overlap/union if union else 0.0
-          def label(c,r):
-              return chr(65+c)+str(r+1) if c<26 else str((r+1,c+1))
-          summary=[]
-          modes=[('geometry_full',None,None),('geometry_viewport',None,(18,0,1660,675)),
-                 ('tesseract_viewport','tesseract',(18,0,1660,675)),
-                 ('rapid_viewport','rapid',(18,0,1660,675))]
-          for name,backend,crop in modes:
-              folder=out/name;folder.mkdir(exist_ok=True)
-              image=full if crop is None else full.crop(crop)
-              path=folder/'source.png';image.save(path)
-              start=time.monotonic();item={'name':name,'crop':crop,'video_sha256':hashlib.sha256(video.read_bytes()).hexdigest(),
-                    'frame':60,'full_video_verified':False,'source_png_sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
-              try:
-                  ocr=None
-                  if backend=='tesseract':ocr=TesseractOCR(n_threads=1,lang='eng+chi_sim',psm=11)
-                  if backend=='rapid':ocr=RapidOCR(params={'Rec.lang_type':LangRec.CH,'EngineConfig.onnxruntime.intra_op_num_threads':2,'EngineConfig.onnxruntime.inter_op_num_threads':2})
-                  item['engine_init_seconds']=round(time.monotonic()-start,4)
-                  doc=Image(src=str(path),detect_rotation=False)
-                  begun=time.monotonic()
-                  tables=doc.extract_tables(ocr=ocr,implicit_rows=False,implicit_columns=False,borderless_tables=False,min_confidence=50)
-                  item['extract_seconds']=round(time.monotonic()-begun,4)
-                  ox,oy=(crop[0],crop[1]) if crop else (0,0)
-                  all_cells=[];structures=[]
-                  for ti,t in enumerate(tables):
-                      rows=[]
-                      for ri,row in enumerate(t.content.values()):
-                          cells=[]
-                          for ci,c in enumerate(row):
-                              b=[c.bbox.x1+ox,c.bbox.y1+oy,c.bbox.x2+ox,c.bbox.y2+oy]
-                              v={'table':ti,'cell':label(ci,ri),'bbox':b,'value':c.value}
-                              cells.append(v);all_cells.append(v)
-                          rows.append(cells)
-                      structures.append({'rows':len(rows),'cols':max(map(len,rows),default=0),'cells':rows})
-                  item['geometry_anchors']=[]
-                  for cell,box in expected_boxes.items():
-                      exact=[x for x in all_cells if x['cell']==cell]
-                      best=max(all_cells,key=lambda x:iou(box,x['bbox']),default=None)
-                      direct=max((iou(box,x['bbox']) for x in exact),default=0)
-                      item['geometry_anchors'].append({'cell':cell,'expected_bbox':box,'source_position_iou':round(direct,4),
-                        'pass':direct>=0.75,'best_matching_cell':best,'best_iou':round(iou(box,best['bbox']),4) if best else 0})
-                  item['tables']=structures
-                  (folder/'geometry.json').write_text(json.dumps(item,ensure_ascii=False,indent=2),encoding='utf-8')
-                  if backend:
-                      # Upstream owns OCR association, merged-cell handling and XLSX export.
-                      doc.to_xlsx(dest=str(folder/'native.xlsx'),ocr=ocr,implicit_rows=False,implicit_columns=False,borderless_tables=False,min_confidence=50)
-                      cells,dim=sheet_cells(folder/'native.xlsx');item['dimension']=dim
-                      item['mismatches']=[{'cell':cell,'expected':expected,'actual':cells.get(cell,'')} for cell,expected in fixture['cells'].items() if re.sub(r'\s+','',cells.get(cell,''))!=re.sub(r'\s+','',expected)]
-                      item['matched_anchors']=len(fixture['cells'])-len(item['mismatches'])
-                  item['status']='ran'
-              except Exception:item.update(status='failed',error=traceback.format_exc())
-              item['total_seconds']=round(time.monotonic()-start,4)
-              summary.append(item)
-              (out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
-              print('CASE',json.dumps({k:v for k,v in item.items() if k!='tables'},ensure_ascii=False),flush=True)
-          # Execution status is separate from content acceptance. No target values are substituted.
-          if any(x['status']!='ran' for x in summary): raise RuntimeError('Upstream candidate failed; see summary')
+          data=json.loads(Path('validation/geometry_ocr/summary.json').read_text(encoding='utf-8'))
+          accepted=[x['name'] for x in data if x.get('acceptance_passed')]
+          print('Accepted candidates:',accepted)
+          if not accepted: raise SystemExit('No candidate passed unchanged content and geometry checks')
           PY
       - uses: actions/upload-artifact@v4
         if: always()

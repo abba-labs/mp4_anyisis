@@ -71,6 +71,7 @@ def run_probe(output):
     class ObservedOCR(RapidOCR):
         """Record native OCR observations without changing the return value."""
         def of(self, document):
+            self.calls += 1
             result = super().of(document)
             self.records = result.records if result else {}
             return result
@@ -108,10 +109,13 @@ def run_probe(output):
                 image = image.resize((image.width*scale, image.height*scale), PILImage.Resampling.LANCZOS)
             path = folder/'source.png'
             image.save(path)
+            # No-table branches may skip OCR; never reuse the previous image's observations.
+            ocr.records, ocr.calls = {}, 0
             doc = Image(src=str(path), detect_rotation=False)
             options = dict(ocr=ocr, implicit_rows=False, implicit_columns=implicit,
                            borderless_tables=False, min_confidence=50)
             tables = doc.extract_tables(**options)
+            item['extraction_ocr_calls'] = ocr.calls
             structures = []
             for table in tables:
                 rows = [[{'bbox': [c.bbox.x1/scale+18, c.bbox.y1/scale,
@@ -123,6 +127,7 @@ def run_probe(output):
             item['geometry'] = assess_geometry(structures, SOURCE_BOXES, fixture['required_columns'])
             item['shapes'] = [[len(t['cells']), max(map(len, t['cells']), default=0)] for t in structures]
             doc.to_xlsx(dest=str(folder/'native.xlsx'), **options)
+            item['total_ocr_calls'] = ocr.calls
             cells, item['dimension'] = sheet_cells(folder/'native.xlsx')
             item['mismatches'] = [{'cell': cell, 'expected': expected, 'actual': cells.get(cell, '')}
                                  for cell, expected in fixture['cells'].items()

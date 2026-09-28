@@ -1,0 +1,61 @@
+name: Thin pipeline validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/open-source-thin-pipeline-20260928]
+    paths: [src/mp4_analysis/thin/**, tests/test_thin_pipeline.py, pyproject.toml, .github/workflows/thin-pipeline.yml]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      PADDLE_PDX_MODEL_SOURCE: BOS
+      PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK: 'True'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install engines and run regression tests
+        run: |
+          python -m pip install -e '.[parser,dev]'
+          mkdir -p validation/thin
+          python -m pip freeze > validation/thin/environment.txt
+          python -m pytest -q --junitxml=validation/thin/tests.xml
+      - name: Real recordings, bounded samples not full acceptance
+        run: |
+          python -u - <<'PY'
+          import json,time,traceback
+          from pathlib import Path
+          from mp4_analysis.thin.pipeline import run
+          cases=[('sarc_diagram','ET6601_SRC_LRS设计文档.mp4',479/30),
+                 ('sarc_requirement','ET6601_SRC_LRS设计文档.mp4',2891/30),
+                 ('memorymap','GameViewer_96iLJ4Cokv.mp4',2.0),
+                 ('efc_design','EFC设计文档.mp4',10.0),
+                 ('efc_lrs','ET6601_EFC模块LRS设计文档.mp4',20.0),
+                 ('src_design','SRC模块设计方案.mp4',30.0)]
+          out=Path('validation/thin'); summary=[]
+          for name,video,start in cases:
+              begun=time.monotonic(); item={'sample':name,'video':video,'start':start,'full_video_test':False}
+              try:
+                  report=run(Path('MP4')/video,out/name,start=start,max_frames=1,word=True)
+                  item.update(status='ran',labels=[x.get('native',{}).get('labels') for x in report['items']])
+                  again=run(Path('MP4')/video,out/name,start=start,max_frames=1,word=True)
+                  item['repeat_cache_hits']=again['cache_hits']
+              except Exception:
+                  item.update(status='failed',error=traceback.format_exc())
+              item['seconds']=round(time.monotonic()-begun,2);summary.append(item)
+              (out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2))
+              print('CASE',json.dumps(item,ensure_ascii=False),flush=True)
+          if any(s['status']!='ran' for s in summary):raise RuntimeError('See per-sample reports')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: thin-pipeline-validation
+          path: validation/thin/
+          retention-days: 7

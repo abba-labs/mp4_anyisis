@@ -1,0 +1,72 @@
+name: Open source engine probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/open-source-thin-pipeline-20260928]
+    paths: [.github/workflows/open-source-engine-probe.yml]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      PADDLE_PDX_MODEL_SOURCE: BOS
+      PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK: 'True'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned native engine
+        run: |
+          python -m pip install 'paddlepaddle==3.2.2' 'paddleocr[doc-parser]==3.7.0' 'av==16.0.1' pytest
+          mkdir -p validation/native_probe
+          python -m pip freeze > validation/native_probe/environment.txt
+      - name: Parse real frames with the unmodified upstream engine
+        run: |
+          python -u - <<'PY'
+          import json,time,traceback,cv2
+          from pathlib import Path
+          from paddleocr import PPStructureV3
+          out=Path('validation/native_probe'); out.mkdir(parents=True,exist_ok=True)
+          engine=PPStructureV3(device='cpu',cpu_threads=2,enable_mkldnn=False,
+              use_doc_orientation_classify=False,use_doc_unwarping=False,
+              use_textline_orientation=False,use_formula_recognition=False,
+              use_seal_recognition=False,use_chart_recognition=False,
+              markdown_ignore_labels=[])
+          samples=[('sarc_diagram','ET6601_SRC_LRS设计文档.mp4',479),
+                   ('sarc_requirement','ET6601_SRC_LRS设计文档.mp4',2891),
+                   ('memorymap','GameViewer_96iLJ4Cokv.mp4',60)]
+          report=[]
+          for name,video,idx in samples:
+              folder=out/name;folder.mkdir(exist_ok=True)
+              cap=cv2.VideoCapture(str(Path('MP4')/video));cap.set(cv2.CAP_PROP_POS_FRAMES,idx)
+              ok,img=cap.read();cap.release();assert ok
+              image=folder/'source.png';assert cv2.imwrite(str(image),img)
+              started=time.monotonic(); item={'sample':name,'video':video,'frame':idx,'exports':{}}
+              try:
+                  result=next(iter(engine.predict(str(image))))
+                  item['keys']=list(result.keys())
+                  for method in ['save_to_json','save_to_markdown','save_to_html','save_to_xlsx','save_to_word','save_to_img']:
+                      try:
+                          getattr(result,method)(save_path=str(folder))
+                          item['exports'][method]='ok'
+                      except Exception as exc:
+                          item['exports'][method]=str(exc)
+                  item['status']='parsed'
+              except Exception:
+                  item['status']='failed';item['error']=traceback.format_exc()
+              item['seconds']=round(time.monotonic()-started,2); report.append(item)
+              (out/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+              print('SAMPLE',json.dumps(item,ensure_ascii=False),flush=True)
+          if any(x['status']!='parsed' for x in report): raise RuntimeError('Native inference failed; see report')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-ppstructure-probe
+          path: validation/native_probe/
+          retention-days: 7

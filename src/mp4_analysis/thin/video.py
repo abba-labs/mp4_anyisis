@@ -119,65 +119,109 @@ def _save(candidate, output, roi):
 
 
 def stitch_preview(paths, target):
-    """Delegate a bounded group to upstream SCANS; preview only, never evidence replacement."""
+    """Orchestrate OpenCV's SCANS engines through public detail bindings.
+
+    Same affine matcher/estimator/adjuster/warper as upstream Stitcher::SCANS.
+    This avoids version-dependent Stitcher.component()/cameras() getters. There
+    is no local registration solver. Full-resolution inputs and masks are kept;
+    graph-cut selects seams, and NO blending avoids averaging technical text.
+    The result is a review candidate, never proof of content completeness.
+    """
     import cv2
     import numpy as np
-    paths = [Path(p) for p in paths]
+    paths, target = [Path(p) for p in paths], Path(target)
     if not 2 <= len(paths) <= 8:
         raise ValueError('SCANS preview requires 2..8 images')
+    if target.resolve() in {p.resolve() for p in paths}:
+        raise ValueError('stitch output must not overwrite a source image')
     images = [cv2.imdecode(np.fromfile(p, dtype=np.uint8), cv2.IMREAD_COLOR) for p in paths]
     if any(image is None for image in images):
         raise ValueError('cannot decode a stitch input')
+    record = {'engine': 'OpenCV SCANS detail', 'opencv_version': cv2.__version__,
+              'status': 'rejected', 'originals_retained': True, 'verified': False,
+              'geometry_verified': False,
+              'note': 'Native warp mappings locate observations; seams/content still require review.'}
     try:
-        stitcher = cv2.Stitcher_create(cv2.Stitcher_SCANS)
-        if not hasattr(stitcher, 'component') or not hasattr(stitcher, 'cameras'):
-            return {'engine': 'OpenCV SCANS', 'status': 'rejected',
-                    'error': 'installed OpenCV cannot expose source membership/transforms',
-                    'originals_retained': True, 'verified': False}
-        stitcher.setCompositingResol(-1)  # Keep original pixel scale.
-        status = stitcher.estimateTransform(images)
-    except cv2.error as exc:
-        return {'engine': 'OpenCV SCANS', 'status': 'rejected', 'error': str(exc),
-                'originals_retained': True, 'verified': False}
-    record = {'engine': 'OpenCV SCANS', 'status_code': int(status),
-              'status': 'candidate' if status == cv2.Stitcher_OK else 'rejected',
-              'originals_retained': True, 'verified': False,
-              'note': 'Native composite is unverified; source-coordinate transform is unavailable.'}
-    if status == cv2.Stitcher_OK:
-        component = [int(i) for i in stitcher.component()]
-        record['included_input_indices'] = component
-        if sorted(component) != list(range(len(images))):
-            record.update(status='rejected', error='upstream excluded one or more input images')
-            return record
-        transforms = [camera.R for camera in stitcher.cameras()]
-        record['native_affine_transforms'] = [matrix.tolist() for matrix in transforms]
-        if not all(screen_transform_is_safe(matrix) for matrix in transforms):
-            record.update(status='rejected', error='scale/rotation/shear incompatible with scrolling')
-            return record
+        finder = cv2.ORB_create(nfeatures=2000)
+        features = [cv2.detail.computeImageFeatures2(finder, im) for im in images]
+        matcher = cv2.detail_AffineBestOf2NearestMatcher(False, False, 0.3)
         try:
-            status, panorama = stitcher.composePanorama(images)
-        except cv2.error as exc:
-            record.update(status='rejected', error=f'native composition exception: {exc}')
+            matches = matcher.apply2(features)
+        finally:
+            matcher.collectGarbage()
+        included = [int(i) for i in cv2.detail.leaveBiggestComponent(features, matches, 1.0)]
+        record['included_input_indices'] = included
+        if sorted(included) != list(range(len(images))):
+            record['error'] = 'upstream excluded one or more input images'
             return record
-        if status != cv2.Stitcher_OK:
-            record.update(status='rejected', error=f'native composition failed: {status}')
-            return record
-        target = Path(target)
-        target.parent.mkdir(parents=True, exist_ok=True)
-        ok, data = cv2.imencode('.png', panorama)
+        ok, cameras = cv2.detail_AffineBasedEstimator().apply(features, matches, None)
         if not ok:
-            raise RuntimeError('cannot encode SCANS preview')
-        data.tofile(target)
-        record['image'] = str(target)
+            raise ValueError('native affine estimation failed')
+        for camera in cameras:
+            camera.R = camera.R.astype(np.float32)
+        adjuster = cv2.detail_BundleAdjusterAffinePartial()
+        adjuster.setConfThresh(1.0)
+        ok, cameras = adjuster.apply(features, matches, cameras)
+        if not ok or len(cameras) != len(images):
+            raise ValueError('native affine adjustment failed')
+        record['native_affine_transforms'] = [c.R.tolist() for c in cameras]
+        if not all(screen_transform_is_safe(c.R) for c in cameras):
+            raise ValueError('scale/rotation/shear incompatible with scrolling')
+        warper = cv2.PyRotationWarper('affine', 1.0)
+        rois = [warper.warpRoi((im.shape[1], im.shape[0]), c.K().astype(np.float32), c.R)
+                for im, c in zip(images, cameras)]
+        corners = [(r[0], r[1]) for r in rois]
+        sizes = [(r[2], r[3]) for r in rois]
+        x, y, width, height = cv2.detail.resultRoi(corners=corners, sizes=sizes)
+        if min(width, height) <= 0 or width * height > 32_000_000:
+            raise ValueError('native canvas exceeds 32 megapixel safety limit')
+        warped, masks, mappings = [], [], []
+        basis = np.float32([[0, 0], [1, 0], [0, 1]])
+        for im, camera in zip(images, cameras):
+            intrinsic = camera.K().astype(np.float32)
+            _, image = warper.warp(im, intrinsic, camera.R, cv2.INTER_NEAREST, cv2.BORDER_CONSTANT)
+            _, mask = warper.warp(np.full(im.shape[:2], 255, np.uint8), intrinsic,
+                                  camera.R, cv2.INTER_NEAREST, cv2.BORDER_CONSTANT)
+            warped.append(image); masks.append(cv2.UMat(mask))
+            # Query the SAME native warper used above; do not guess that camera.R
+            # already maps source pixels into the origin-shifted output canvas.
+            dst = np.float32([warper.warpPoint(tuple(map(float, p)), intrinsic, camera.R)
+                              for p in basis]) - np.float32([x, y])
+            matrix = np.vstack([cv2.getAffineTransform(basis, dst), [0, 0, 1]])
+            if not screen_transform_is_safe(matrix):
+                raise ValueError('native pixel mapping is incompatible with scrolling')
+            mappings.append(matrix.tolist())
+        cv2.detail_GraphCutSeamFinder('COST_COLOR').find(
+            [im.astype(np.float32) for im in warped], corners, masks)
+        blender = cv2.detail.Blender_createDefault(cv2.detail.Blender_NO, False)
+        blender.prepare((x, y, width, height))
+        for im, mask, corner in zip(warped, masks, corners):
+            blender.feed(im.astype(np.int16), mask, corner)
+        panorama, valid = blender.blend(None, None)
+        if panorama is None or valid is None or not np.any(valid):
+            raise ValueError('native composition returned an empty canvas')
+        panorama = np.clip(panorama, 0, 255).astype(np.uint8)
+        panorama[valid == 0] = 255  # blank outside observed source regions, not content repair
+        target.parent.mkdir(parents=True, exist_ok=True)
+        ok, encoded = cv2.imencode('.png', panorama)
+        if not ok:
+            raise ValueError('cannot encode native composite')
+        encoded.tofile(target)
+        record.update(status='candidate', status_code=0, image=str(target),
+                      canvas_origin=[x, y], canvas_size=[width, height],
+                      source_to_canvas_transforms=mappings,
+                      compositing='native_graphcut_no_blending',
+                      interpolation='nearest', source_pixels_rescaled=False)
+    except (cv2.error, ValueError, AttributeError) as exc:
+        record['error'] = str(exc)
     return record
 
 
 def prepare_reconstructions(manifest, output, *, group_size=8, overlap=2):
     """Bounded native SCANS calls; every selected source retains an explicit route.
 
-    Composites are *derived, unverified* parser inputs, not evidence replacements.
-    Rejected batches fall back to original frames. Overlapping batches can repeat
-    content; no text is deleted to hide that. No geometric solver is implemented.
+    Composites are derived, unverified parser inputs, not evidence replacements.
+    Rejected batches fall back to original frames. No text is deleted.
     """
     import cv2
     import json
@@ -190,10 +234,9 @@ def prepare_reconstructions(manifest, output, *, group_size=8, overlap=2):
     indices = [f['frame_index'] for f in frames]
     if len(indices) != len(set(indices)) or indices != sorted(indices):
         raise ValueError('source frame indices must be unique and ordered')
-    signature = {'schema': 2, 'opencv': cv2.__version__, 'group_size': group_size,
+    signature = {'schema': 3, 'opencv': cv2.__version__, 'group_size': group_size,
                  'overlap': overlap, 'frames': [(f['frame_index'],
                      file_hash(output/'frames'/f['image'])) for f in frames]}
-    # JSON round-trip normalizes tuples before comparing persistent signatures.
     signature = json.loads(json.dumps(signature))
     cache_path = output/'reconstruction.json'
     if cache_path.exists():
@@ -217,11 +260,10 @@ def prepare_reconstructions(manifest, output, *, group_size=8, overlap=2):
             jobs.append({'id': f'group_{key}', 'input_image': relative,
                          'frame': batch[0], 'source_frames': batch,
                          'coordinate_system': 'reconstructed_pixels',
-                         'source_to_canvas_transform': None, 'geometry_verified': False,
-                         'kind': 'unverified_composite'})
+                         'source_to_canvas_transform': result.get('source_to_canvas_transforms'),
+                         'geometry_verified': False, 'kind': 'unverified_composite'})
             represented.update(source_indices)
         elif split and len(batch) >= 4:
-            # One bounded retry with smaller groups; never implement another matcher.
             middle = len(batch)//2
             attempt(batch[:middle], key+'_a')
             attempt(batch[middle:], key+'_b')
@@ -254,11 +296,7 @@ def prepare_reconstructions(manifest, output, *, group_size=8, overlap=2):
 
 
 def screen_transform_is_safe(matrix, tolerance=0.02):
-    """Reject native affine distortions; this does not estimate or verify alignment.
-
-    This scrolling mode supports translations, not zoom or rotation transitions.
-    Those transitions remain source frames instead of being geometrically guessed.
-    """
+    """Reject distortions; does not establish that two images show the same text."""
     import numpy as np
     matrix = np.asarray(matrix)
     return (matrix.shape == (3,3) and bool(np.isfinite(matrix).all())

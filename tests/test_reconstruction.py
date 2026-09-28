@@ -20,14 +20,8 @@ def fixture_manifest(tmp_path, count=19):
 
 def test_native_subset_is_rejected(monkeypatch,tmp_path):
     import cv2
-    import numpy as np
     manifest=fixture_manifest(tmp_path,3)
-    class Subset:
-        def setCompositingResol(self,v): pass
-        def estimateTransform(self,images): return cv2.Stitcher_OK
-        def component(self): return [0,2]
-        def cameras(self): return []
-    monkeypatch.setattr(cv2,'Stitcher_create',lambda _:Subset())
+    monkeypatch.setattr(cv2.detail,'leaveBiggestComponent',lambda *args:[0,2])
     result=video.stitch_preview([tmp_path/'frames'/f['image'] for f in manifest['frames']],tmp_path/'x.png')
     assert result['status']=='rejected'
     assert result['included_input_indices']==[0,2]
@@ -90,24 +84,26 @@ def test_mobile_uses_upstream_models_and_distinct_cache_key():
     with pytest.raises(ValueError): NativeParser(ocr_models='unknown')
 
 
-def test_actual_scans_on_overlapping_canvas(tmp_path):
+def test_actual_scans_on_overlapping_canvas(monkeypatch,tmp_path):
     import cv2
     import numpy as np
     rng=np.random.default_rng(71)
     canvas=rng.integers(0,256,(1000,600,3),dtype=np.uint8)
-    # Native image features and SCANS, no mock of registration/composition.
     paths=[]
-    for i,offset in enumerate([0,250,400]):
+    offsets=[0,250,400]
+    for i,offset in enumerate(offsets):
         path=tmp_path/f'{i}.png';Image.fromarray(canvas[offset:offset+600]).save(path);paths.append(path)
+    monkeypatch.setattr(cv2,'Stitcher_create',lambda *_:pytest.fail('high-level API used'))
     result=video.stitch_preview(paths,tmp_path/'result.png')
-    if not hasattr(cv2.Stitcher_create(cv2.Stitcher_SCANS), 'component'):
-        assert result['status']=='rejected'
-        assert all(path.is_file() for path in paths)
-        return
-    assert result['status']=='candidate'
+    assert result['status']=='candidate',result
     assert sorted(result['included_input_indices'])==[0,1,2]
     assert not result['verified']
     assert Image.open(tmp_path/'result.png').height>900
+    matrices=[np.asarray(m) for m in result['source_to_canvas_transforms']]
+    points=[m@np.array([300,500-offset,1]) for m,offset in zip(matrices,offsets)]
+    for p in points[1:]:
+        assert np.linalg.norm(p-points[0])<1.5
+    assert all(video.screen_transform_is_safe(m) for m in matrices)
 
 
 def test_scroll_gate_rejects_native_distortions():
@@ -126,3 +122,33 @@ def test_incomplete_parse_has_visible_pending_count(tmp_path):
     result=write_index(tmp_path,manifest,[item])
     assert result['status']=='PARTIAL_FAILURE'
     assert result['pending_parser_inputs']==2
+
+
+def test_stitch_does_not_overwrite_source(tmp_path):
+    manifest=fixture_manifest(tmp_path,2)
+    paths=[tmp_path/'frames'/f['image'] for f in manifest['frames']]
+    before=paths[0].read_bytes()
+    with pytest.raises(ValueError,match='overwrite'):
+        video.stitch_preview(paths,paths[0])
+    assert paths[0].read_bytes()==before
+
+
+def test_unrelated_frames_are_not_fabricated(tmp_path):
+    manifest=fixture_manifest(tmp_path,2)
+    result=video.stitch_preview([tmp_path/'frames'/f['image'] for f in manifest['frames']],tmp_path/'no.png')
+    assert result['status']=='rejected'
+    assert not (tmp_path/'no.png').exists()
+
+
+def test_native_mapping_survives_routing_and_cache(monkeypatch,tmp_path):
+    import numpy as np
+    manifest=fixture_manifest(tmp_path,2)
+    mapping=[np.eye(3).tolist(),np.eye(3).tolist()]
+    def stitch(paths,target):
+        target.parent.mkdir(exist_ok=True);Image.new('RGB',(40,80),'white').save(target)
+        return {'status':'candidate','source_to_canvas_transforms':mapping}
+    monkeypatch.setattr(video,'stitch_preview',stitch)
+    result=video.prepare_reconstructions(manifest,tmp_path)
+    assert result['jobs'][0]['source_to_canvas_transform']==mapping
+    assert not result['jobs'][0]['geometry_verified']
+    assert video.prepare_reconstructions(manifest,tmp_path)['jobs'][0]['source_to_canvas_transform']==mapping

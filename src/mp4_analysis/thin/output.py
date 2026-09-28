@@ -72,3 +72,117 @@ def write_index(output, manifest, items, *, stitch=None, reconstruction=None):
         '<h1>录屏资料提取 · 待核验</h1><p>保留原画面及引擎原生结果；本索引不代表完整性或准确率验收。</p>'
         +''.join(cards)+'</html>',encoding='utf-8')
     return report
+
+
+def export_saved_word(native_directory, target_directory, *, pandoc='pandoc', timeout=60):
+    """Re-export ONE verified native Markdown cache without inference or mutation.
+
+    Pandoc preserves HTML table spans through Markdown -> HTML -> DOCX. This
+    opt-in output adapter never replaces the engine's DOCX or marks content as
+    accepted. Pandoc 3.1.11.1 is an external executable, not a parser backend.
+    """
+    import math
+    import shutil
+    import subprocess
+    import tempfile
+    import time
+    from copy import deepcopy
+    from html.parser import HTMLParser
+    from urllib.parse import unquote, urlsplit
+    from .video import file_hash
+
+    source, target = Path(native_directory).resolve(), Path(target_directory).resolve()
+    if source == target or source in target.parents or target in source.parents:
+        raise ValueError('native and derived output directories must be disjoint')
+    if target.exists():
+        raise FileExistsError('derived output exists; use a new directory')
+    if isinstance(timeout, bool) or not math.isfinite(timeout) or timeout <= 0:
+        raise ValueError('timeout must be finite and positive')
+    cache_path = source/'adapter.json'
+    cache = json.loads(cache_path.read_text(encoding='utf-8'))
+    files = cache.get('files', {})
+    if cache.get('errors') or not files:
+        raise ValueError('native cache is not a successful export')
+
+    def checked_path(name):
+        path = (source/name).resolve()
+        if not path.is_relative_to(source) or not path.is_file():
+            raise ValueError(f'missing or nonlocal native resource: {name}')
+        return path
+
+    for name, digest in files.items():
+        if file_hash(checked_path(name)) != digest:
+            raise ValueError(f'native file hash mismatch: {name}')
+    markdown = [name for name in files if Path(name).suffix.lower() == '.md']
+    if len(markdown) != 1:
+        raise ValueError('expected exactly one native Markdown file')
+    executable = shutil.which(pandoc)
+    if not executable:
+        raise RuntimeError('install external Pandoc 3.1.11.1 for this opt-in export')
+    began = time.monotonic()
+
+    def invoke(arguments):
+        result = subprocess.run([executable, *arguments], cwd=source, capture_output=True,
+                                check=True, timeout=timeout)
+        # Missing images and parse warnings must not become a silent success.
+        if result.stderr.strip():
+            raise RuntimeError(result.stderr.decode('utf-8', errors='replace'))
+        return result.stdout
+
+    version = invoke(['--version']).decode().splitlines()[0]
+    if version != 'pandoc 3.1.11.1':
+        raise RuntimeError(f'unvalidated converter version: {version}')
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix='word-export-', dir=target.parent) as temporary:
+        work = Path(temporary)
+        intermediate = work/'intermediate.html'
+        # A fragment avoids adding an artificial title. Disable smart punctuation
+        # and YAML metadata so addresses/quotes and metadata are not reinterpreted.
+        invoke([str(checked_path(markdown[0])), '--from=markdown+raw_html-smart-yaml_metadata_block',
+                '--to=html', '-o', str(intermediate)])
+
+        class ResourceCheck(HTMLParser):
+            def handle_starttag(self, tag, attrs):
+                if tag in {'script', 'iframe', 'object', 'embed', 'link', 'base'}:
+                    raise ValueError(f'unsupported active HTML element: {tag}')
+                for key, value in attrs:
+                    if key in {'src', 'srcset', 'data', 'poster'} and value:
+                        parts = urlsplit(value)
+                        if key != 'src' or parts.scheme or parts.netloc or parts.query:
+                            raise ValueError('only local, hashed image resources are supported')
+                        name = unquote(parts.path)
+                        checked_path(name)
+                        if name not in files:
+                            raise ValueError(f'image is outside native cache manifest: {name}')
+
+        ResourceCheck().feed(intermediate.read_text(encoding='utf-8'))
+        # Reference styles only: no custom table layout/merge solver or cell edits.
+        from docx import Document
+        reference = work/'reference.docx'
+        reference.write_bytes(invoke(['--print-default-data-file=reference.docx']))
+        document = Document(reference)
+        document.styles.element.append(deepcopy(Document().styles['Table Grid'].element))
+        document.styles['Table'].base_style = document.styles['Table Grid']
+        document.save(reference)
+        docx = work/'document.docx'
+        invoke([str(intermediate), '--from=html', '--to=docx', '--resource-path', str(source),
+                '--reference-doc', str(reference), '-o', str(docx)])
+        if not docx.is_file() or not zipfile.is_zipfile(docx):
+            raise RuntimeError('converter did not create a valid DOCX archive')
+        # Check again before publication; do not publish results of a changing cache.
+        if any(file_hash(checked_path(n)) != h for n, h in files.items()):
+            raise ValueError('native cache changed during export')
+        info = {'status': 'REVIEW_REQUIRED', 'converter': version,
+                'native_directory': str(source), 'native_adapter_sha256': file_hash(cache_path),
+                'native_signature': cache.get('signature'), 'native_files': files,
+                'source_markdown': markdown[0], 'inference_performed': False,
+                'native_outputs_modified': False, 'accuracy_verified': False,
+                'content_completeness_verified': False,
+                'elapsed_seconds': round(time.monotonic()-began, 4),
+                'files': {p.name: file_hash(p) for p in (intermediate, reference, docx)},
+                'limitations': ['Reflowed copy, not original page geometry.',
+                    'Existing OCR errors, watermark text and incomplete images remain.',
+                    'Table spans preserved by converter do not prove source-table correctness.']}
+        (work/'export.json').write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding='utf-8')
+        shutil.copytree(work, target)  # refuses existing paths; leaves native evidence untouched
+    return info

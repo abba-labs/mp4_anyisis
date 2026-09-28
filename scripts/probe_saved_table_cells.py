@@ -116,11 +116,17 @@ def run_saved_probe(source, output, *, job_ids=None, mode="cells"):
     return summary
 
 
-if __name__ == '__main__':
+def main():
     arguments = argparse.ArgumentParser(description=__doc__)
     arguments.add_argument('source', type=Path)
     arguments.add_argument('-o', '--output', type=Path, required=True)
     arguments.add_argument('--job', action='append', help='existing plan job ID; repeat to select several')
     arguments.add_argument('--mode', choices=['cells', 'default'], default='cells')
     args = arguments.parse_args()
-    run_saved_probe(args.source, args.output, job_ids=args.job, mode=args.mode)
+    result = run_saved_probe(args.source, args.output, job_ids=args.job, mode=args.mode)
+    if args.job and (result["word_failures"] or result["pending"]):
+        arguments.exit(1, "Selected job export failed; see preserved summary.json\n")
+
+
+if __name__ == "__main__":
+    main()

@@ -11,7 +11,7 @@ from .output import inspect_workbook, write_index
 
 def run(source, output, *, sample_seconds=0.0, start=0.0, end=None,
         max_frames=None, roi=None, word=False, scans=False, device='cpu', threads=2,
-        parser=None, mkldnn=True):
+        parser=None, mkldnn=True, table_mode='default'):
     roi = list(roi) if roi is not None else None
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -30,7 +30,7 @@ def run(source, output, *, sample_seconds=0.0, start=0.0, end=None,
         for frame in manifest['frames']:
             frame['file_sha256']=file_hash(frames_dir/frame['image'])
         manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
-    parser = parser if parser is not None else NativeParser(device=device, threads=threads, mkldnn=mkldnn)
+    parser = parser if parser is not None else NativeParser(device=device, threads=threads, mkldnn=mkldnn, table_mode=table_mode)
     items=[]
     for frame in manifest['frames']:
         relative = f"native/frame_{frame['frame_index']:08d}"

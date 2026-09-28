@@ -10,9 +10,16 @@ from pathlib import Path
 
 
 class NativeParser:
-    def __init__(self, *, device='cpu', threads=2, config=None, mkldnn=True):
+    def __init__(self, *, device='cpu', threads=2, config=None, mkldnn=True, table_mode='default'):
         if isinstance(threads, bool) or not isinstance(threads, int) or threads < 1:
             raise ValueError('threads must be a positive integer')
+        if table_mode not in {'default', 'cells'}:
+            raise ValueError('table_mode must be default or cells')
+        # Upstream's cell-geometry mode, not a locally implemented table solver.
+        # Keep upstream defaults until a representative acceptance set passes.
+        self.predict_options = ({'use_wired_table_cells_trans_to_html': True,
+                                 'use_wireless_table_cells_trans_to_html': True}
+                                if table_mode == 'cells' else {})
         self.options = dict(device=device, cpu_threads=threads, enable_mkldnn=mkldnn,
                             use_doc_orientation_classify=False, use_doc_unwarping=False,
                             use_textline_orientation=False, use_formula_recognition=False,
@@ -26,9 +33,10 @@ class NativeParser:
                 self.versions[package] = importlib.metadata.version(package)
             except importlib.metadata.PackageNotFoundError:
                 self.versions[package] = 'not-installed'
-        identity = {'options': self.options, 'versions': self.versions,
+        identity = {'options': self.options, 'predict_options': self.predict_options,
+                    'versions': self.versions,
                     'config_sha256': hashlib.sha256(Path(config).read_bytes()).hexdigest() if config else None,
-                    'adapter_schema': 2}
+                    'adapter_schema': 3}
         self.fingerprint = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
         self.engine = None
         # One native result only; allows retrying an exporter without another OCR.
@@ -66,7 +74,7 @@ class NativeParser:
             result = self._last_prediction[1]
         else:
             print(f'Parsing {image.name}...', flush=True)
-            result = next(iter(self.engine.predict(str(image))))
+            result = next(iter(self.engine.predict(str(image), **self.predict_options)))
             self._last_prediction = (prediction_key, result)
         timings['inference_seconds'] = round(time.monotonic() - begun, 4)
         begun = time.monotonic()
@@ -99,6 +107,7 @@ class NativeParser:
         exported = {str(path.relative_to(target)): file_hash(path) for path in target.rglob('*') if path.is_file()}
         timings['export_seconds'] = round(time.monotonic() - begun, 4)
         info = {'signature': signature, 'versions': self.versions, 'options': self.options,
+                'predict_options': self.predict_options,
                 'block_count': len(blocks), 'labels': dict(labels),
                 'low_confidence_observations': sum(float(s) < 0.85 for s in scores),
                 'table_count': table_count, 'files': exported, 'errors': errors,

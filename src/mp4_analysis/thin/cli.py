@@ -17,11 +17,13 @@ def main():
     parser.add_argument('--device',default='cpu')
     parser.add_argument('--threads',type=int,default=2)
     parser.add_argument('--no-mkldnn', action='store_true', help='显式关闭CPU加速，仅用于兼容性排障')
+    parser.add_argument('--table-mode', choices=['default', 'cells'], default='default',
+                        help='使用上游默认表格结构或单元格几何模式；不代表内容验收通过')
     args=parser.parse_args()
     try:
         run(args.video,args.output,sample_seconds=args.sample_seconds,start=args.start,
             end=args.end,max_frames=args.max_frames,roi=args.roi,word=args.word,
-            scans=args.scans,device=args.device,threads=args.threads,mkldnn=not args.no_mkldnn)
+            scans=args.scans,device=args.device,threads=args.threads,mkldnn=not args.no_mkldnn,table_mode=args.table_mode)
     except Exception as exc:
         parser.exit(1,f'失败：{exc}\n')
 

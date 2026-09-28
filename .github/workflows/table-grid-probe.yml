@@ -1,0 +1,70 @@
+name: Table grid candidate probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/open-source-thin-pipeline-20260928]
+    paths: [.github/workflows/table-grid-probe.yml]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install isolated candidate, not production dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-chi-sim
+          python -m pip install 'img2table==1.4.2' 'av==16.0.1'
+          mkdir -p validation/grid_probe
+          python -m pip freeze > validation/grid_probe/environment.txt
+          tesseract --version > validation/grid_probe/tesseract_version.txt
+      - name: Native grid extraction and source anchors
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=5 120 python -u - <<'PY' 2>&1 | tee validation/grid_probe/run.log
+          import av,json,re,time,traceback
+          from pathlib import Path
+          from PIL import Image as PILImage
+          from img2table.document import Image
+          from img2table.ocr import TesseractOCR
+          from scripts.check_native_samples import sheet_cells
+          out=Path('validation/grid_probe');source=Path('MP4/GameViewer_96iLJ4Cokv.mp4')
+          with av.open(str(source)) as video:
+              for i,f in enumerate(video.decode(video.streams.video[0])):
+                  if i==60:full=f.to_image().convert('RGB');break
+              else:raise RuntimeError('source frame missing')
+          full.save(out/'source_frame_60.png')
+          fixture=json.loads(Path('tests/fixtures/native_acceptance.json').read_text(encoding='utf-8'))['memorymap'];summary=[]
+          ocr=TesseractOCR(n_threads=1,lang='eng+chi_sim',psm=11)
+          for name,crop in [('full',None),('viewport',(18,0,1660,675))]:
+              folder=out/name;folder.mkdir();image=full if crop is None else full.crop(crop)
+              path=folder/'source.png';image.save(path);begun=time.monotonic();item={'name':name,'crop_xyxy':crop,'source_frame':60,'full_video_verified':False}
+              try:
+                  doc=Image(src=str(path),detect_rotation=False)
+                  tables=doc.extract_tables(ocr=ocr,implicit_rows=False,implicit_columns=False,borderless_tables=False,min_confidence=50)
+                  item['extraction_seconds']=round(time.monotonic()-begun,4)
+                  item['tables']=[{'rows':len(t.content),'columns':max((len(row) for row in t.content.values()),default=0),'bbox':{'x1':t.bbox.x1,'y1':t.bbox.y1,'x2':t.bbox.x2,'y2':t.bbox.y2},'cells':[[{'bbox':{'x1':c.bbox.x1,'y1':c.bbox.y1,'x2':c.bbox.x2,'y2':c.bbox.y2},'value':c.value} for c in row] for row in t.content.values()]} for t in tables]
+                  doc.to_xlsx(dest=str(folder/'native.xlsx'),ocr=ocr,implicit_rows=False,implicit_columns=False,borderless_tables=False,min_confidence=50)
+                  cells,dimension=sheet_cells(folder/'native.xlsx');item['dimension']=dimension
+                  item['mismatches']=[{'cell':cell,'expected':expected,'actual':cells.get(cell,'')} for cell,expected in fixture['cells'].items() if re.sub(r'\s+','',cells.get(cell,''))!=re.sub(r'\s+','',expected)]
+                  item['matched_anchors']=len(fixture['cells'])-len(item['mismatches']);item['status']='ran'
+              except Exception:item.update(status='failed',error=traceback.format_exc())
+              item['total_seconds']=round(time.monotonic()-begun,4);summary.append(item)
+              (out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
+              print('CASE',json.dumps({k:v for k,v in item.items() if k!='tables'},ensure_ascii=False),flush=True)
+          if any(x['status']!='ran' for x in summary):raise RuntimeError('Candidate execution failed; inspect evidence')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: table-grid-candidate
+          path: validation/grid_probe/
+          retention-days: 7

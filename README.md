@@ -1,5 +1,7 @@
 # MP4 Analysis — 开源引擎薄适配版（开发中）
 
+> **新对话/新执行者请先读 [NEXT_CHAT_HANDOFF.md](NEXT_CHAT_HANDOFF.md)**：包含当前状态、全部阶段的失败教训、研究方法、源码阅读顺序、原视频与工件位置、精确缓存恢复步骤和下一步验收任务。关键运行快照见 [docs/handoff_evidence_2026-09-28.json](docs/handoff_evidence_2026-09-28.json)。当前代码在 `feat/open-source-thin-pipeline-20260928` / 草稿 PR #3，不在 main。旧 `TASKS.md`、`REFACTOR_PLAN.md` 已标明历史状态，请勿按旧的大框架计划重新开发。
+
 三个模块、一条本地流水线，不做插件平台、数据库或模型自研。
 
 | 模块 | 复用 | 本仓库负责 |

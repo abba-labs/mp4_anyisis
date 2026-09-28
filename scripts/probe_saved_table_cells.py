@@ -2,7 +2,8 @@
 
 Compare upstream cell-geometry HTML mode on three existing inputs, plus the
 original source frame as a default-mode control. This is not a production
-fallback and does not certify table correctness.
+fallback and does not certify table correctness. Use --job for a bounded,
+explicit retry of selected existing plan inputs; all source caches stay intact.
 """
 import argparse
 import json
@@ -20,15 +21,27 @@ CASES = [('group_000078_a', 'cells'), ('group_000018_b', 'cells'),
          ('frame_00000452', 'cells'), ('frame_00002373', 'default')]
 
 
-def run_saved_probe(source, output):
+def run_saved_probe(source, output, *, job_ids=None, mode="cells"):
     source, output = Path(source).resolve(), Path(output).resolve()
     if source == output or source in output.parents or output in source.parents:
         raise ValueError('source and experiment output must be disjoint')
     if output.exists():
         raise FileExistsError('experiment output already exists')
+    if mode not in {'cells', 'default'}:
+        raise ValueError('unsupported table mode')
     report = json.loads((source/'report.json').read_text(encoding='utf-8'))
-    if report.get('pending_parser_inputs') or report.get('parser_attempts') != 57:
+    if (report.get('pending_parser_inputs') or report.get('parser_attempts') != 57
+            or len(report.get('items', [])) != 57):
         raise ValueError('expected completed 57-input baseline')
+    jobs = {j['id']: j for j in report['items']}
+    if len(jobs) != 57:
+        raise ValueError('duplicate baseline job IDs')
+    if job_ids is not None:
+        if not job_ids or len(job_ids) != len(set(job_ids)) or any(j not in jobs for j in job_ids):
+            raise ValueError('select unique job IDs from the existing plan')
+        cases = [(job_id, mode) for job_id in job_ids]
+    else:
+        cases = CASES
     baseline = NativeParser(ocr_models='mobile', threads=2)
     if baseline.fingerprint != BASE_FINGERPRINT:
         raise ValueError('baseline parser fingerprint mismatch; no inference performed')
@@ -48,16 +61,15 @@ def run_saved_probe(source, output):
             if not path.is_relative_to(directory) or file_hash(path) != digest:
                 raise ValueError('baseline native resource changed')
     output.mkdir(parents=True)
-    jobs = {j['id']: j for j in report['items']}
     cells = NativeParser(ocr_models='mobile', threads=2, table_mode='cells')
     records = []
-    summary = {'cases': records, 'planned': len(CASES), 'content_acceptance': 'REVIEW_REQUIRED',
+    summary = {'cases': records, 'planned': len(cases), 'content_acceptance': 'REVIEW_REQUIRED',
                'baseline_fingerprint': baseline.fingerprint, 'cells_fingerprint': cells.fingerprint,
                'baseline_native_files': len(before), 'native_outputs_modified': False}
     try:
-        for job_id, mode in CASES:
+        for job_id, mode in cases:
             started = time.monotonic()
-            entry = {'job_id': job_id, 'mode': mode}
+            entry = {'job_id': job_id, 'mode': mode, 'completed': False}
             records.append(entry)
             job = jobs.get(job_id)
             image = source/(job['input_image'] if job else f'frames/{job_id}.png')
@@ -80,15 +92,22 @@ def run_saved_probe(source, output):
                     entry['word_error'] = traceback.format_exc()
             except Exception:
                 entry['error'] = traceback.format_exc()
+            entry['completed'] = True
             entry['elapsed_seconds'] = round(time.monotonic()-started, 3)
-            summary['pending'] = len(CASES)-len(records)
+            summary['pending'] = len(cases)-sum(e['completed'] for e in records)
             (output/'summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
             print(json.dumps(entry, ensure_ascii=False), flush=True)
+    except BaseException:
+        if records and not records[-1]['completed']:
+            records[-1]['interruption'] = traceback.format_exc()
+        raise
     finally:
         after = {str(p.relative_to(source)): file_hash(p)
                  for p in (source/'native').rglob('*') if p.is_file()}
         summary['native_outputs_modified'] = before != after
-        summary['pending'] = len(CASES)-len(records)
+        summary['native_failures'] = sum('error' in e for e in records)
+        summary['word_failures'] = sum('word_error' in e for e in records)
+        summary['pending'] = len(cases)-sum(e['completed'] for e in records)
         (output/'summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
     if before != after:
         raise RuntimeError('baseline changed during isolated experiment')
@@ -101,5 +120,7 @@ if __name__ == '__main__':
     arguments = argparse.ArgumentParser(description=__doc__)
     arguments.add_argument('source', type=Path)
     arguments.add_argument('-o', '--output', type=Path, required=True)
+    arguments.add_argument('--job', action='append', help='existing plan job ID; repeat to select several')
+    arguments.add_argument('--mode', choices=['cells', 'default'], default='cells')
     args = arguments.parse_args()
-    run_saved_probe(args.source, args.output)
+    run_saved_probe(args.source, args.output, job_ids=args.job, mode=args.mode)

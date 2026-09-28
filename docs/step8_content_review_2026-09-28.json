@@ -1,0 +1,40 @@
+{
+  "record_type": "source_position_review_not_full_acceptance",
+  "source_artifact_id": 10972954977,
+  "source_zip_sha256": "c83a0889a2a56dbff4c1736010eb238031845837f62d5866a9c3462d14716fd2",
+  "local_read_only_integrity": {"frames": 110, "composites": 17, "successful_adapters": 31, "native_files_including_adapters": 170, "mismatches": 0, "actual_new_environment_cache_hits_proven_by_this_check": false},
+  "diagram": {
+    "job_id": "group_000012_b",
+    "member_frame_indices": [482, 512, 542, 572],
+    "reference_frame_index": 512,
+    "reference_bbox_xyxy_half_open": [166, 301, 1084, 637],
+    "composite_bbox_xyxy_half_open": [166, 374, 1084, 710],
+    "equal_rgb_pixel_fraction": 1.0,
+    "mean_absolute_channel_error": 0.0,
+    "maximum_absolute_channel_error": 0,
+    "native_jpeg_sha256": "b6a6a173dba78effc5b519cdf35c60eebf78d94a6865ef66f053cbf53d47fc34",
+    "word_media_sha256_matches_native_jpeg": true,
+    "word_render_pages_reviewed": 1,
+    "upper_and_lower_figure_boundaries_retained": true,
+    "reference_single_frame_already_shows_full_figure": true,
+    "all_composite_seams_verified": false,
+    "occluded_labels_recovered": false
+  },
+  "heading": {"job_id": "group_000012_b", "approximate_composite_bbox": [146, 770, 335, 799], "visible_source": "1.2 应用说明", "native_result": "1.2", "status": "FAIL", "earliest_observed_failure_layer": "native_parser_result"},
+  "ordinary_table": {
+    "job_id": "frame_00000452", "source_pts_seconds": 15.066667,
+    "native_table_bbox": [118, 118, 1166, 227],
+    "xlsx": {
+      "merges": ["C1:C2", "A3:D3", "D1:D2", "A1:A2"],
+      "values": {"A1": "ETMCU t", "B1": "ETMCU-ET6601", "C1": "第5/16 页", "D1": "V1.0+", "B2": "SARC 20:1", "A3": "保密等级：□绝密 □私密 ■内部公开 □外部公开"},
+      "nonempty_cell_type": "inlineStr", "formula_count": 0,
+      "merge_topology_matches_this_source_table": true,
+      "content_acceptance": "FAIL", "visual_acceptance_completed": false,
+      "visual_render_attempt_error": "artifact_tool daemon socket startup timeout"
+    },
+    "docx": {"rendered_pages_reviewed": 1, "gridSpan_count": 0, "vMerge_count": 0, "SARC_output_position": "A2", "SARC_source_position": "B2", "confidentiality_line_spans_four_columns": false, "content_and_layout_acceptance": "FAIL", "earliest_additional_failure_layer": "native_word_export"}
+  },
+  "fixed_environment_regression": {"run_id": 36439831638, "artifact_id": 10976953470, "zip_sha256": "43565ce43391529e9972c5a87b7cebbd8bbfa7f828acdb9d2ad79d31c9fc68c9", "tests": 92, "failures": 0, "errors": 0, "skipped": 0, "new_synthetic_resume_guards": 12},
+  "unverified": ["full-video visible content coverage", "all reconstruction seams", "all text and table cells", "Excel visual rendering", "dense MemoryMap correctness", "cross-input deduplication and reading order"],
+  "all_content_accepted": false
+}

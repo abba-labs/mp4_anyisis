@@ -1,9 +1,3 @@
-# Videos only (keep out of git to avoid 100MB GitHub limit)
-*.mp4
-*.avi
-*.mkv
-*.mov
-
 # Python bytecode & cache
 __pycache__/
 *.pyc

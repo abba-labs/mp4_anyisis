@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-chi-sim
-          python -m pip install 'img2table==1.4.2' 'av==16.0.1'
+          python -m pip install 'img2table==1.4.2' 'av==16.0.1' 'Pillow>=10,<13'
           mkdir -p validation/grid_probe
           python -m pip freeze > validation/grid_probe/environment.txt
           tesseract --version > validation/grid_probe/tesseract_version.txt

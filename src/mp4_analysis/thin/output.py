@@ -138,11 +138,23 @@ def export_saved_word(native_directory, target_directory, *, pandoc='pandoc', ti
         intermediate = work/'intermediate.html'
         # A fragment avoids adding an artificial title. Disable smart punctuation
         # and YAML metadata so addresses/quotes and metadata are not reinterpreted.
-        invoke([str(checked_path(markdown[0])), '--from=markdown+raw_html-smart-yaml_metadata_block',
+        invoke([str(checked_path(markdown[0])), '--from=markdown+raw_html-smart-yaml_metadata_block-markdown_in_html_blocks',
                 '--to=html', '-o', str(intermediate)])
 
         class ResourceCheck(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.tables, self.table, self.cell = [], None, None
+
             def handle_starttag(self, tag, attrs):
+                if tag == 'table':
+                    if self.table is not None:
+                        raise ValueError('nested HTML tables require separate review')
+                    self.table = []
+                elif tag in {'td', 'th'}:
+                    if self.cell is not None:
+                        raise ValueError('malformed HTML cell nesting')
+                    self.cell = []
                 if tag in {'script', 'iframe', 'object', 'embed', 'link', 'base'}:
                     raise ValueError(f'unsupported active HTML element: {tag}')
                 for key, value in attrs:
@@ -155,7 +167,23 @@ def export_saved_word(native_directory, target_directory, *, pandoc='pandoc', ti
                         if name not in files:
                             raise ValueError(f'image is outside native cache manifest: {name}')
 
-        ResourceCheck().feed(intermediate.read_text(encoding='utf-8'))
+            def handle_data(self, data):
+                if self.cell is not None:
+                    self.cell.append(data)
+
+            def handle_endtag(self, tag):
+                if tag in {'td', 'th'} and self.cell is not None:
+                    text = ''.join(''.join(self.cell).split())
+                    if self.table is not None and text:
+                        self.table.append(text)
+                    self.cell = None
+                elif tag == 'table' and self.table is not None:
+                    self.tables.append(self.table)
+                    self.table = None
+
+        markup = ResourceCheck()
+        markup.feed(intermediate.read_text(encoding='utf-8'))
+        markup.close()
         # Reference styles only: no custom table layout/merge solver or cell edits.
         from docx import Document
         reference = work/'reference.docx'
@@ -169,6 +197,21 @@ def export_saved_word(native_directory, target_directory, *, pandoc='pandoc', ti
                 '--reference-doc', str(reference), '-o', str(docx)])
         if not docx.is_file() or not zipfile.is_zipfile(docx):
             raise RuntimeError('converter did not create a valid DOCX archive')
+        # Compare physical cell text, retaining order and duplicate values. This
+        # is a loss alarm, NOT a row/column solver or source correctness verdict.
+        ns = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
+        with zipfile.ZipFile(docx) as archive:
+            root = ET.fromstring(archive.read('word/document.xml'))
+        tables = []
+        for table in root.findall('.//w:tbl', ns):
+            cells = []
+            for cell in table.findall('./w:tr/w:tc', ns):
+                text = ''.join(''.join(t.text or '' for t in cell.findall('.//w:t', ns)).split())
+                if text:
+                    cells.append(text)
+            tables.append(cells)
+        if tables != markup.tables:
+            raise ValueError('table count/cell text changed during export; native evidence retained')
         # Check again before publication; do not publish results of a changing cache.
         if any(file_hash(checked_path(n)) != h for n, h in files.items()):
             raise ValueError('native cache changed during export')

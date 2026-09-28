@@ -19,11 +19,13 @@ def main():
     parser.add_argument('--no-mkldnn', action='store_true', help='显式关闭CPU加速，仅用于兼容性排障')
     parser.add_argument('--table-mode', choices=['default', 'cells'], default='default',
                         help='使用上游默认表格结构或单元格几何模式；不代表内容验收通过')
+    parser.add_argument('--reconstruct',action='store_true',help='实验：全时段分组调用SCANS，保留源帧；拼接不代表内容已验收')
+    parser.add_argument('--ocr-models',choices=['server','mobile'],default='server',help='选择上游OCR模型；mobile仅用于显式性能对比')
     args=parser.parse_args()
     try:
         run(args.video,args.output,sample_seconds=args.sample_seconds,start=args.start,
             end=args.end,max_frames=args.max_frames,roi=args.roi,word=args.word,
-            scans=args.scans,device=args.device,threads=args.threads,mkldnn=not args.no_mkldnn,table_mode=args.table_mode)
+            scans=args.scans,device=args.device,threads=args.threads,mkldnn=not args.no_mkldnn,table_mode=args.table_mode,reconstruct=args.reconstruct,ocr_models=args.ocr_models)
     except Exception as exc:
         parser.exit(1,f'失败：{exc}\n')
 

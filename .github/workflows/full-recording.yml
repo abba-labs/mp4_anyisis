@@ -1,0 +1,67 @@
+name: Full recording reconstruction validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/open-source-thin-pipeline-20260928]
+    paths: [.github/workflows/full-recording.yml]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      PADDLE_PDX_MODEL_SOURCE: HF
+      PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK: 'True'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - uses: actions/cache@v4
+        with:
+          path: ~/.paddlex/official_models
+          key: ppstructure-3.7.0-paddlex-3.7.2-mobile-v1
+          restore-keys: ppstructure-3.7.0-paddlex-3.7.2-models-
+      - name: Install and test actual adapters
+        run: |
+          python -m pip install -e '.[parser,dev]'
+          mkdir -p validation/full_recording
+          python -m pip freeze > validation/full_recording/environment.txt
+          python -m pytest -q --junitxml=validation/full_recording/tests.xml
+      - name: Full SARC timeline, explicit one-second sampling (not completeness)
+        run: |
+          set -o pipefail
+          timeout --signal=INT --kill-after=10 560 python -u - <<'PY' 2>&1 | tee validation/full_recording/run.log
+          import json,time,traceback
+          from pathlib import Path
+          from mp4_analysis.thin.pipeline import run
+          out=Path('validation/full_recording/sarc');begun=time.monotonic();error=None
+          try:
+              report=run('MP4/ET6601_SRC_LRS设计文档.mp4',out,sample_seconds=1.0,reconstruct=True,ocr_models='mobile',word=True)
+          except BaseException:
+              error=traceback.format_exc();print(error,flush=True)
+              report=json.loads((out/'report.json').read_text()) if (out/'report.json').exists() else {}
+          native=list((out/'native').rglob('*_res.json'));text=''
+          for p in native:
+              data=json.loads(p.read_text(encoding='utf-8'));data=data.get('res',data)
+              text+='\n'.join(b.get('block_content','') for b in data.get('parsing_res_list',[]))+'\n'
+          summary={'elapsed_seconds':round(time.monotonic()-begun,3),'error':error,
+                   'source':report.get('source',{}),'parser_attempts':report.get('parser_attempts'),
+                   'status':report.get('status'),'outputs':{ext:len(list(out.rglob('*.'+ext))) for ext in ['docx','xlsx','md']},
+                   'reset_anchor_present':'ADC数字控制器不能早于模拟ADC解复位' in ''.join(text.split()),
+                   'content_completeness_verified':False,'all_table_cells_verified':False}
+          summary['source'].pop('frames',None)
+          Path('validation/full_recording/summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('SUMMARY',json.dumps(summary,ensure_ascii=False),flush=True)
+          if error:raise RuntimeError('Full-timeline execution incomplete; see preserved artifacts')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-recording-validation
+          path: validation/full_recording/
+          retention-days: 7

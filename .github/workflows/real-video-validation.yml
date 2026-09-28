@@ -1,0 +1,89 @@
+name: Real video validation
+on:
+  push:
+    branches: [test/real-video-validation-20260928]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install actual OCR and document engines
+        run: python -m pip install 'numpy<2' 'opencv-python-headless>=4.8,<5' 'rapidocr-onnxruntime>=1.3,<2' 'python-docx>=1,<2' 'openpyxl>=3.1,<4' pillow pytest
+      - name: Run real recording and inspect artifacts
+        timeout-minutes: 8
+        run: |
+          mkdir -p validation
+          python -m pip freeze > validation/environment.txt
+          PYTHONPATH=src python -u - <<'PY'
+          import os, json, time, hashlib, zipfile, traceback
+          from pathlib import Path
+          from collections import Counter
+          import cv2
+          from docx import Document
+          import openpyxl
+          import mp4_analysis.pipeline as pipeline
+          from rapidocr_onnxruntime import RapidOCR
+          root=Path.cwd(); out=root/'validation'; videos=[]
+          for p in sorted((root/'MP4').glob('*.mp4')):
+              cap=cv2.VideoCapture(str(p))
+              item={'file':p.name,'opened':cap.isOpened(),'frames':int(cap.get(cv2.CAP_PROP_FRAME_COUNT)),'fps':cap.get(cv2.CAP_PROP_FPS),'width':int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),'height':int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
+              videos.append(item);cap.release()
+          (out/'video_inventory.json').write_text(json.dumps(videos,ensure_ascii=False,indent=2))
+          print('VIDEO_INVENTORY',json.dumps(videos,ensure_ascii=False),flush=True)
+          engine=RapidOCR(intra_op_num_threads=2, inter_op_num_threads=2)
+          cache=out/'ocr_cache'; cache.mkdir(exist_ok=True)
+          class RecordedOCR:
+              def __call__(self,path):
+                  result,elapsed=engine(path)
+                  rows=[] if result is None else [[box,str(text),float(score)] for box,text,score in result]
+                  (cache/(Path(path).stem+'.json')).write_text(json.dumps(rows,ensure_ascii=False),encoding='utf-8')
+                  print('OCR_FRAME',Path(path).name,len(rows),flush=True)
+                  return result,elapsed
+          pipeline.RapidOCR=lambda:RecordedOCR()
+          target=root/'MP4'/'ET6601_SRC_LRS设计文档.mp4'
+          started=time.monotonic(); status={}
+          try:
+              ir=pipeline.DocumentExtractionPipeline(str(out/'baseline_sarc')).process(str(target),'SARC_real_baseline')
+              status={'status':'ran','seconds':round(time.monotonic()-started,2),'pages':len(ir.pages),'elements':sum(len(p.elements) for p in ir.pages),'types':dict(Counter(e.type for p in ir.pages for e in p.elements))}
+          except Exception:
+              status={'status':'failed','traceback':traceback.format_exc()}; print(status['traceback'])
+          (out/'baseline_status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2))
+          print('BASELINE_STATUS',json.dumps(status,ensure_ascii=False),flush=True)
+          docs=[]
+          for p in list((root/'artifacts'/'documents').glob('*.docx'))+list((out/'baseline_sarc').glob('*.docx')):
+              d=Document(p)
+              docs.append({'file':str(p.relative_to(root)),'paragraphs':len(d.paragraphs),'tables':len(d.tables),'images':len(d.inline_shapes),'text_chars':sum(len(x.text) for x in d.paragraphs)})
+          books=[]
+          for p in (root/'artifacts'/'documents').glob('*.xlsx'):
+              w=openpyxl.load_workbook(p,data_only=False)
+              books.append({'file':str(p.relative_to(root)),'sheets':[{'name':s.title,'rows':s.max_row,'cols':s.max_column,'formula_count':sum(c.data_type=='f' for row in s for c in row),'merged_ranges':[str(x) for x in s.merged_cells.ranges]} for s in w]})
+          (out/'existing_artifact_structure.json').write_text(json.dumps({'documents':docs,'workbooks':books},ensure_ascii=False,indent=2))
+          print('ARTIFACT_STRUCTURE',json.dumps({'documents':docs,'workbooks':books},ensure_ascii=False),flush=True)
+          PY
+      - name: Upload evidence and source material for visual verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-video-validation
+          retention-days: 7
+          compression-level: 1
+          path: |
+            validation/
+            src/
+            pyproject.toml
+            artifacts/documents/
+            MP4/ET6601_SRC_LRS设计文档.mp4
+            MP4/GameViewer_96iLJ4Cokv.mp4

@@ -16,10 +16,18 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
-      - name: Test adapters and actual video codecs, not OCR accuracy
+      - name: Install fixed external document converter, not an OCR backend
         run: |
-          python -m pip install -e '.[dev]'
-          mkdir -p validation/adapter_tests
+          mkdir -p "$RUNNER_TEMP/pandoc" validation/adapter_tests
+          curl --fail --location --retry 2 --max-time 60 https://github.com/jgm/pandoc/releases/download/3.1.11.1/pandoc-3.1.11.1-linux-amd64.tar.gz -o "$RUNNER_TEMP/pandoc.tar.gz"
+          sha256sum "$RUNNER_TEMP/pandoc.tar.gz" > validation/adapter_tests/pandoc_archive_hash.txt
+          tar -xzf "$RUNNER_TEMP/pandoc.tar.gz" --strip-components=1 -C "$RUNNER_TEMP/pandoc"
+          echo "$RUNNER_TEMP/pandoc/bin" >> "$GITHUB_PATH"
+      - name: Test adapters, real codecs and saved-output conversion, not OCR accuracy
+        run: |
+          python -m pip install -e '.[dev]' 'python-docx==1.2.0' 'openpyxl==3.1.5'
+          python -m pip check
+          pandoc --version > validation/adapter_tests/pandoc_version.txt
           python -m pip freeze > validation/adapter_tests/environment.txt
           sha256sum src/mp4_analysis/thin/*.py tests/*.py > validation/adapter_tests/source_hashes.txt
           python -m pytest -q --junitxml=validation/adapter_tests/tests.xml
@@ -28,4 +36,4 @@ jobs:
         with:
           name: table-adapter-tests
           path: validation/adapter_tests/
-          retention-days: 7
+          retention-days: 30

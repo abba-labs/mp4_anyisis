@@ -25,9 +25,8 @@ def inspect_workbook(path):
 
 def write_index(output, manifest, items, *, stitch=None):
     output = Path(output)
-    successful = [item for item in items if not item.get('error')]
     errors = [item for item in items if item.get('error') or item.get('native', {}).get('errors')]
-    report = {'status':'PARTIAL_FAILURE' if errors else 'REVIEW_REQUIRED',
+    report = {'status':'NO_CONTENT' if not items else 'PARTIAL_FAILURE' if errors else 'REVIEW_REQUIRED',
               'source':manifest, 'parser_attempts':len(items),
               'cache_hits':sum(item.get('native', {}).get('cache_hit', False) for item in items),
               'items':items, 'stitch_preview':stitch,

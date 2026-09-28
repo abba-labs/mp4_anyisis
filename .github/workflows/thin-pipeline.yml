@@ -11,29 +11,36 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:
-      OMP_NUM_THREADS: '2'
-      OPENBLAS_NUM_THREADS: '2'
-      PADDLE_PDX_MODEL_SOURCE: BOS
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      PADDLE_PDX_MODEL_SOURCE: HF
       PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK: 'True'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: pip
+      - uses: actions/cache@v4
+        with:
+          path: ~/.paddlex/official_models
+          key: ppstructure-3.7.0-paddlex-3.7.2-models-v1
       - name: Install engines and run regression tests
         run: |
           python -m pip install -e '.[parser,dev]'
           mkdir -p validation/thin
           python -m pip freeze > validation/thin/environment.txt
           python -m pytest -q --junitxml=validation/thin/tests.xml
-      - name: Real recordings, bounded samples not full acceptance
+      - name: Real native parsing and exports, bounded samples
         run: |
-          python -u - <<'PY'
+          timeout --signal=TERM --kill-after=10 540 python -u - <<'PY' 2>&1 | tee validation/thin/run.log
           import json,time,traceback
           from pathlib import Path
           from mp4_analysis.thin.pipeline import run
-          cases=[('sarc_diagram','ET6601_SRC_LRS设计文档.mp4',479/30),
-                 ('sarc_requirement','ET6601_SRC_LRS设计文档.mp4',2891/30),
+          from mp4_analysis.thin.parser import NativeParser
+          parser=NativeParser()
+          cases=[('sarc_requirement','ET6601_SRC_LRS设计文档.mp4',2891/30),
+                 ('sarc_diagram','ET6601_SRC_LRS设计文档.mp4',479/30),
                  ('memorymap','GameViewer_96iLJ4Cokv.mp4',2.0),
                  ('efc_design','EFC设计文档.mp4',10.0),
                  ('efc_lrs','ET6601_EFC模块LRS设计文档.mp4',20.0),
@@ -42,14 +49,15 @@ jobs:
           for name,video,start in cases:
               begun=time.monotonic(); item={'sample':name,'video':video,'start':start,'full_video_test':False}
               try:
-                  report=run(Path('MP4')/video,out/name,start=start,max_frames=1,word=True)
-                  item.update(status='ran',labels=[x.get('native',{}).get('labels') for x in report['items']])
-                  again=run(Path('MP4')/video,out/name,start=start,max_frames=1,word=True)
+                  report=run(Path('MP4')/video,out/name,start=start,max_frames=1,word=True,parser=parser)
+                  item.update(status='ran',labels=[x.get('native',{}).get('labels') for x in report['items']],
+                              timings=[x.get('native',{}).get('timings') for x in report['items']])
+                  again=run(Path('MP4')/video,out/name,start=start,max_frames=1,word=True,parser=parser)
                   item['repeat_cache_hits']=again['cache_hits']
               except Exception:
                   item.update(status='failed',error=traceback.format_exc())
               item['seconds']=round(time.monotonic()-begun,2);summary.append(item)
-              (out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2))
+              (out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
               print('CASE',json.dumps(item,ensure_ascii=False),flush=True)
           if any(s['status']!='ran' for s in summary):raise RuntimeError('See per-sample reports')
           PY

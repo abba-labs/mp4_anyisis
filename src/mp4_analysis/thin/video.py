@@ -86,7 +86,7 @@ def extract_video(source, output, *, sample_seconds=0.0, start=0.0, end=None,
             next_time = timestamp + sample_seconds
             final_candidate = None
         # The last changed observation is retained even if it misses a sampling tick.
-        if final_candidate is not None and not stopped_early:
+        if final_candidate is not None:
             if max_frames is None or len(records) < max_frames:
                 records.append(_save(final_candidate, output, roi))
                 selected += 1

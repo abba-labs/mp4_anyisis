@@ -16,11 +16,12 @@ def main():
     parser.add_argument('--scans',action='store_true',help='额外生成OpenCV SCANS实验预览，不替代原画面')
     parser.add_argument('--device',default='cpu')
     parser.add_argument('--threads',type=int,default=2)
+    parser.add_argument('--no-mkldnn', action='store_true', help='显式关闭CPU加速，仅用于兼容性排障')
     args=parser.parse_args()
     try:
         run(args.video,args.output,sample_seconds=args.sample_seconds,start=args.start,
             end=args.end,max_frames=args.max_frames,roi=args.roi,word=args.word,
-            scans=args.scans,device=args.device,threads=args.threads)
+            scans=args.scans,device=args.device,threads=args.threads,mkldnn=not args.no_mkldnn)
     except Exception as exc:
         parser.exit(1,f'失败：{exc}\n')
 

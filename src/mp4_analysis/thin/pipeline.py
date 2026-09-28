@@ -10,7 +10,9 @@ from .output import inspect_workbook, write_index
 
 
 def run(source, output, *, sample_seconds=0.0, start=0.0, end=None,
-        max_frames=None, roi=None, word=False, scans=False, device='cpu', threads=2):
+        max_frames=None, roi=None, word=False, scans=False, device='cpu', threads=2,
+        parser=None, mkldnn=True):
+    roi = list(roi) if roi is not None else None
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=True)
     frames_dir = output/'frames'
@@ -28,7 +30,7 @@ def run(source, output, *, sample_seconds=0.0, start=0.0, end=None,
         for frame in manifest['frames']:
             frame['file_sha256']=file_hash(frames_dir/frame['image'])
         manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
-    parser = NativeParser(device=device,threads=threads)
+    parser = parser if parser is not None else NativeParser(device=device, threads=threads, mkldnn=mkldnn)
     items=[]
     for frame in manifest['frames']:
         relative = f"native/frame_{frame['frame_index']:08d}"
@@ -39,18 +41,19 @@ def run(source, output, *, sample_seconds=0.0, start=0.0, end=None,
         except Exception as exc:
             item['error']=f'{type(exc).__name__}: {exc}'
         items.append(item)
-        write_index(output,manifest,items)
         print(f"{len(items)}/{len(manifest['frames'])} frame={frame['frame_index']} "
               f"{'ERROR' if item.get('error') else item['native']['labels']}",flush=True)
         # Missing engine/dependencies will not improve by retrying every frame.
         if item.get('error') and parser.engine is None:
             break
+    # Write the complete source index once; avoid quadratic index rewrites.
+    write_index(output,manifest,items)
     stitch=None
     if scans and len(manifest['frames'])>=2:
         selected=manifest['frames'][:8]
         stitch=stitch_preview([frames_dir/f['image'] for f in selected],output/'stitch_preview.png')
         stitch['input_frame_indices']=[f['frame_index'] for f in selected]
     report=write_index(output,manifest,items,stitch=stitch)
-    if len(items)!=len(manifest['frames']) or report['status']=='PARTIAL_FAILURE':
+    if len(items)!=len(manifest['frames']) or report['status'] in {'PARTIAL_FAILURE','NO_CONTENT'}:
         raise RuntimeError('pipeline incomplete; see report.json')
     return report

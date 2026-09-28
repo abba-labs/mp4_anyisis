@@ -8,10 +8,10 @@ version = "0.3.0.dev1"
 description = "Thin local video-to-document adapters, using native open-source engines"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
-dependencies = ["av==16.0.1", "Pillow>=10,<13", "opencv-python>=4.8,<5"]
+dependencies = ["av==16.0.1", "Pillow>=10,<13", "opencv-contrib-python==4.10.0.84"]
 
 [project.optional-dependencies]
-parser = ["paddlepaddle==3.2.2", "paddleocr[doc-parser]==3.7.0", "python-docx>=1.2,<2"]
+parser = ["paddlepaddle==3.2.2", "paddlex==3.7.2", "paddleocr[doc-parser]==3.7.0", "python-docx>=1.2,<2"]
 dev = ["pytest>=8,<10"]
 
 [project.scripts]

@@ -93,7 +93,9 @@ def upstream(monkeypatch,tmp_path):
             Path(save_path,'source_res.json').write_text(json.dumps(raw))
         def save_to_markdown(self,save_path):Path(save_path,'source.md').write_text('0x2800 | 0x2808 | 0 | 0')
         def save_to_html(self,save_path):Path(save_path,'source.html').write_text('<table></table>')
-        def save_to_xlsx(self,save_path):pass
+        def save_to_xlsx(self,save_path):
+            with zipfile.ZipFile(Path(save_path,'source.xlsx'),'w') as z:
+                z.writestr('xl/worksheets/sheet1.xml','<worksheet/>')
         def save_to_word(self,save_path):raise RuntimeError('native exporter unavailable')
     class Engine:
         def __init__(self,**options):calls.append(options)
@@ -121,7 +123,7 @@ def test_cache_avoids_model_and_checks_output_hashes(upstream,tmp_path):
     assert len(calls)==count
     (tmp_path/'native/source.md').write_text('corrupt')
     assert not parser.parse(image,tmp_path/'native')['cache_hit']
-    assert len(calls)>count
+    assert len(calls)==count  # repair exports from the retained native result, not another OCR
 
 
 def test_export_failure_is_visible_and_not_cached_as_success(upstream,tmp_path):
@@ -177,3 +179,64 @@ def test_real_codec_roundtrip_preserves_three_quick_screens(tmp_path):
     writer.release()
     result=extract_video(source,tmp_path/'frames')
     assert result['selected_frames']==3 and result['selection_complete']
+
+
+def test_requested_interval_flushes_last_unsampled_observation(movie,tmp_path):
+    result=extract_video(movie([1,2,3,4]),tmp_path/'frames',sample_seconds=1,end=0.1)
+    assert [f['frame_index'] for f in result['frames']]==[0,2]
+
+
+def test_empty_index_does_not_claim_success(tmp_path):
+    report=write_index(tmp_path,{'frames':[]},[])
+    assert report['status']=='NO_CONTENT'
+
+
+def test_pipeline_repeat_uses_native_cache_with_tuple_roi(movie,upstream,tmp_path):
+    from mp4_analysis.thin.pipeline import run
+    source=movie([1,2])
+    first=run(source,tmp_path/'result',roi=(10,20,40,30))
+    second=run(source,tmp_path/'result',roi=(10,20,40,30))
+    assert len(first['items'])==2
+    assert second['cache_hits']==2
+    assert not second['content_completeness_verified']
+
+
+def test_output_directory_rejects_different_input_options(movie,upstream,tmp_path):
+    from mp4_analysis.thin.pipeline import run
+    source=movie([1,2])
+    run(source,tmp_path/'result')
+    with pytest.raises(ValueError,match='different input/config'):
+        run(source,tmp_path/'result',sample_seconds=1)
+
+
+def test_native_cpu_acceleration_enabled_and_can_be_disabled():
+    assert NativeParser().options['enable_mkldnn'] is True
+    assert NativeParser(mkldnn=False).options['enable_mkldnn'] is False
+    assert NativeParser().fingerprint != NativeParser(mkldnn=False).fingerprint
+
+
+def test_export_retry_reuses_last_prediction(upstream,tmp_path):
+    image,calls=upstream
+    parser=NativeParser()
+    first=parser.parse(image,tmp_path/'native',word=True)
+    count=len(calls)
+    second=parser.parse(image,tmp_path/'native',word=True)
+    assert second['prediction_reused'] and len(calls)==count
+    assert second['errors']  # retry is not falsely a success
+    assert 'initialization_seconds' in second['timings']
+
+
+def test_source_cannot_be_deleted_as_an_output(upstream,tmp_path):
+    image,_=upstream
+    with pytest.raises(ValueError,match='source image'):
+        NativeParser().parse(image,tmp_path)
+    assert image.is_file()
+
+
+def test_batch_reuses_one_engine(movie,upstream,tmp_path):
+    from mp4_analysis.thin.pipeline import run
+    source=movie([1]);_,calls=upstream
+    parser=NativeParser()
+    run(source,tmp_path/'a',parser=parser)
+    run(source,tmp_path/'b',parser=parser)
+    assert sum(isinstance(x,dict) for x in calls)==1

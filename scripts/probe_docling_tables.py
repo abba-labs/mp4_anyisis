@@ -62,12 +62,14 @@ def source_frame(path, index):
     raise RuntimeError(f'missing source frame {index}')
 
 
-def run(output):
+def run(output, *, table_model='v2'):
     import torch
     from docling.datamodel.base_models import InputFormat
     from docling.datamodel.pipeline_options import (PdfPipelineOptions, RapidOcrOptions,
-        TableStructureOptions, TableFormerMode, AcceleratorOptions, AcceleratorDevice)
+        TableStructureOptions, TableStructureV2Options, TableFormerMode, AcceleratorOptions, AcceleratorDevice)
     from docling.document_converter import DocumentConverter, ImageFormatOption
+    if table_model not in {'v1', 'v2'}:
+        raise ValueError('table_model must be v1 or v2')
     torch.set_num_threads(2)
     output.mkdir(parents=True, exist_ok=True)
     fixture = json.loads(Path('tests/fixtures/native_acceptance.json').read_text(encoding='utf-8'))
@@ -77,7 +79,8 @@ def run(output):
     options.ocr_options = RapidOcrOptions(force_full_page_ocr=True, lang=['chinese'],
         backend='onnxruntime', rapidocr_params={'EngineConfig.onnxruntime.intra_op_num_threads': 2,
                                                'EngineConfig.onnxruntime.inter_op_num_threads': 2})
-    options.table_structure_options = TableStructureOptions(mode=TableFormerMode.ACCURATE)
+    options.table_structure_options = (TableStructureOptions(mode=TableFormerMode.ACCURATE)
+                                       if table_model == 'v1' else TableStructureV2Options())
     options.accelerator_options = AcceleratorOptions(num_threads=2, device=AcceleratorDevice.CPU)
     options.generate_page_images = True
     options.generate_picture_images = True
@@ -151,7 +154,8 @@ def run(output):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
+    parser.add_argument('--table-model', choices=['v1', 'v2'], default='v2')
     args = parser.parse_args()
-    results = run(args.output)
+    results = run(args.output, table_model=args.table_model)
     if any(x['status'] != 'ran' for x in results):
         raise SystemExit('Native candidate execution failed; see summary.json')

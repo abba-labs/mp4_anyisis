@@ -1,0 +1,56 @@
+"""One local synchronous pipeline connecting three concrete modules."""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from .video import extract_video, file_hash, stitch_preview
+from .parser import NativeParser
+from .output import inspect_workbook, write_index
+
+
+def run(source, output, *, sample_seconds=0.0, start=0.0, end=None,
+        max_frames=None, roi=None, word=False, scans=False, device='cpu', threads=2):
+    output = Path(output).resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    frames_dir = output/'frames'
+    manifest_path = output/'video.json'
+    config = dict(sample_seconds=sample_seconds,start=start,end=end,max_frames=max_frames,roi=roi)
+    signature = {'source_sha256':file_hash(Path(source)), 'options':config, 'schema':1}
+    previous = json.loads(manifest_path.read_text(encoding='utf-8')) if manifest_path.exists() else None
+    if previous is not None and previous.get('signature') != signature:
+        raise ValueError('output belongs to a different input/config; use another output directory')
+    if previous and all((frames_dir/f['image']).is_file() and file_hash(frames_dir/f['image']) == f['file_sha256'] for f in previous['frames']):
+        manifest = previous
+    else:
+        manifest = extract_video(source,frames_dir,**config)
+        manifest['signature']=signature
+        for frame in manifest['frames']:
+            frame['file_sha256']=file_hash(frames_dir/frame['image'])
+        manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
+    parser = NativeParser(device=device,threads=threads)
+    items=[]
+    for frame in manifest['frames']:
+        relative = f"native/frame_{frame['frame_index']:08d}"
+        item={'frame':frame,'directory':relative}
+        try:
+            item['native']=parser.parse(frames_dir/frame['image'],output/relative,word=word)
+            item['workbooks']=[inspect_workbook(output/relative/name) for name in item['native']['files'] if name.endswith('.xlsx')]
+        except Exception as exc:
+            item['error']=f'{type(exc).__name__}: {exc}'
+        items.append(item)
+        write_index(output,manifest,items)
+        print(f"{len(items)}/{len(manifest['frames'])} frame={frame['frame_index']} "
+              f"{'ERROR' if item.get('error') else item['native']['labels']}",flush=True)
+        # Missing engine/dependencies will not improve by retrying every frame.
+        if item.get('error') and parser.engine is None:
+            break
+    stitch=None
+    if scans and len(manifest['frames'])>=2:
+        selected=manifest['frames'][:8]
+        stitch=stitch_preview([frames_dir/f['image'] for f in selected],output/'stitch_preview.png')
+        stitch['input_frame_indices']=[f['frame_index'] for f in selected]
+    report=write_index(output,manifest,items,stitch=stitch)
+    if len(items)!=len(manifest['frames']) or report['status']=='PARTIAL_FAILURE':
+        raise RuntimeError('pipeline incomplete; see report.json')
+    return report

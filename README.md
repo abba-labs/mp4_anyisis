@@ -1,101 +1,74 @@
-# MP4 Analysis: Technical Screen Recording to Structured Document Engine
+# MP4 Analysis — 开源引擎薄适配版（开发中）
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-V2%20Refactoring-orange.svg)](REFACTOR_PLAN.md)
+三个模块、一条本地流水线，不做插件平台、数据库或模型自研。
 
-> 面向授权技术录屏、工程规格白皮书与寄存器映射表的**高质量视频转结构化文档重构系统**。
+| 模块 | 复用 | 本仓库负责 |
+|---|---|---|
+| video.py | PyAV/FFmpeg；可选 OpenCV SCANS | 画面读取、PTS时间点、来源索引、原画面保存 |
+| parser.py | PP-StructureV3 | 一个引擎入口、原生输出、缓存、错误记录 |
+| output.py | 引擎原生 Markdown/HTML/XLSX/DOCX | 结果清单、来源链接、简易检查 |
 
----
+`pipeline.py` 顺序连接以上三者。`src/mp4_analysis/thin/` 是新入口。
+旧 `pipeline.py`、`document/` 等保留便于对照，不再由 CLI 调用。旧二进制成品不代表新流程输出。
 
-## 📌 项目定位与架构原则
+## 安装
 
-在工程研发与技术归档场景中，很多核心技术文档以屏幕演示、视频录屏形式留存。从高密度长视频（包含滚动文本、复杂表格、跨屏长流程图、电路架构与波形图）中无损恢复出结构化工程资料，具有极高的工程价值。
+建议 Python 3.11（开发环境固定 CPU PaddlePaddle 3.2.2、PaddleOCR 3.7.0）。
 
-经过 V1 原型的实践与深度复盘，系统确立了**“做精视频时序重建，善用成熟文档解析”**的 V2 架构体系：
-
-```
-MP4 Video
-   │
-   ▼
-[视频时序与场景切分] (Timeline & Scene Segmentation)
-   │
-   ▼
-[动态锐度筛选] (Laplacian Sharpness Quality Filter)
-   │
-   ▼
-[高精度位移注册与页面重构] (Registration & Page Reconstruction)
-   │
-   ▼
-Reconstructed Clean Page Images (去重高清页面流)
-   │
-   ▼
-[工业级文档解析引擎] (PP-StructureV3 / Docling / MinerU)
-   │
-   ▼
-[统一中间表示层 Document IR] (包含数据溯源 Provenance & Bounding Box)
-   │
-   ▼
-[多格式导出层与审计] (Markdown / JSON / DOCX / XLSX / report.json)
+```bash
+python -m pip install -e ".[parser,dev]"
+python -m pytest -q
 ```
 
----
+首次运行需下载上游模型；后续可复用本地模型缓存。敏感录屏只在运行机器上推理，不调用云端识别API。
+离线部署需先按 PaddleOCR 官方说明准备模型及依赖。本版本尚未验证 Windows 原生安装。
 
-## 🛠️ 模块架构设计
+## 先小范围试跑
 
-本项目采用高度模块化的分层设计：
-
-```
-src/mp4_analysis/
-│
-├── cli.py                     # 统一命令行入口
-├── pipeline.py                # 端到端全流程调度管道
-│
-├── video/                     # 视频时序与帧处理
-│   ├── decoder.py             # 视频解码与元数据解析
-│   ├── timeline.py            # 时间戳与帧映射
-│   ├── scene_detector.py      # 静止/滚动/翻页/跳转场景识别
-│   └── frame_selector.py      # 拉普拉斯方差流式锐度优选
-│
-├── reconstruction/            # 画面配准与页面重构 (核心壁垒)
-│   ├── registration.py        # 1D 归一化互相关位移计算
-│   ├── scroll_detector.py     # 滚动物理连续性检测
-│   ├── stitcher.py            # 跨帧长图无缝自适应缝合
-│   └── page_builder.py        # 去重页面集合组装
-│
-├── document/                  # 文档模型与处理
-│   ├── models.py              # Document IR 统一中间表示 (Pydantic)
-│   ├── layout.py              # 版面元素识别与分流
-│   ├── ocr.py                 # 字符级高精识别与置信度计算
-│   └── table.py               # 跨屏长表格结构与表头对齐
-│
-├── backends/                  # 成熟开源解析后端适配器
-│   ├── rapidocr_backend.py    # 本地轻量化 RapidOCR / RapidLayout 后端
-│   ├── docling_backend.py     # Docling 统一文档模型适配器
-│   └── ppstructure_backend.py # PP-StructureV3 工业级结构化解析后端
-│
-├── exporters/                 # 结构化导出器
-│   ├── markdown.py            # 纯净结构化 Markdown 导出
-│   ├── json.py                # 包含完整溯源信息的 Document IR JSON
-│   ├── xlsx.py                # 寄存器与数据表格 Excel 导出
-│   └── docx.py                # Word 工业级排版与高清图回嵌
-│
-└── quality/                   # 准确率审计与可追溯性
-    ├── verifier.py            # 数据一致性校验器
-    └── report.py              # report.json 审计报告生成器
+```bash
+mp4-analysis "MP4/ET6601_SRC_LRS设计文档.mp4" -o output/sarc_preview --start 15 --end 19 --sample-seconds 1 --max-frames 4 --word
 ```
 
----
+这只是选定片段的抽样，不代表整段视频已提取完整。
 
-## 📋 研发任务与重构路线
+默认完整模式不做时间抽样，只合并连续像素完全一致的画面：
 
-本项目目前正按 **`REFACTOR_PLAN.md`** 进行标准化重构，任务优先级详见 **`TASKS.md`**：
+```bash
+mp4-analysis "MP4/ET6601_SRC_LRS设计文档.mp4" -o output/sarc_full
+```
 
-* **Phase 1 (P0)**: 修复抽帧流尾部丢失缺陷，移除不合理的字符黑名单，实现最小闭环：`MP4 → Page Images → Document IR → Markdown / JSON`。
-* **Phase 2 (P1)**: 攻坚跨屏长表格矩阵重建，接入 `xlsx` 导出与 `report.json` 数据溯源审计报告。
-* **Phase 3 (P2)**: 完善 `docx` 高保真排版与针对低置信度数据的靶向多模态复核。
+**完整模式可能很慢。** 视频压缩噪声和滚动会使大量画面不完全一致，CPU逐帧解析成本很高；当前先保真，不通过模糊删除换速度。
+同配置重跑复用帧文件和原生解析缓存；缓存校验输入、引擎版本、配置和输出文件哈希。
+换视频/抽帧参数必须换输出目录，避免混入旧产物。
 
----
+## 输出
 
-## 📄 规范与免责声明
+```text
+output/
+  video.json          # 原视频哈希、每个画面的帧号/时间/坐标偏移
+  frames/             # 原画面（使用 --roi 时为指定区域）
+  native/frame_*/      # 引擎原生 JSON、Markdown、图片、表格及可选Word
+  index.html          # 时间点、原画面及各类结果链接
+  index.md
+  report.json         # 失败项、缓存使用、未核验状态
+```
 
-本项目仅用于技术研究与有合法授权的录屏资料分析、文档恢复与无损归档。严禁用于规避任何计算机安全控制或未经授权的数据复制。
+不重新编写Word排版器；Word按画面导出，不拼凑一份“完整版”。公式识别、图表转数据和印章识别默认关闭，图像证据保留。无语义改写、无编辑距离删字、无重复单元格过滤。
+表格来自模型，行列或合并单元格仍可能有误，原生HTML/JSON必须一同核对。
+
+## 当前边界（重要）
+
+- 已接入的是画面解析；**尚未完成跨屏长表格、长图的自动合并**。
+- `--scans` 直接调用 OpenCV SCANS，最多取首8张选定画面尝试拼接，只生成未核验预览；失败保留原图。
+- SCANS高层接口没有输出逐帧坐标变换，本版本不假装已有精确拼接溯源，也不把预览偷偷交给OCR替代原图。
+- 帧数不是原文页数；模型置信度不是准确率；没有人工对照，不标记完整恢复。
+- 没有“任意视频100%恢复”承诺。只能处理合法授权的录屏中实际可见内容。
+
+## 上游依据
+
+- https://pyav.org/docs/stable/
+- https://docs.opencv.org/4.x/d8/d19/tutorial_stitcher.html
+- https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/PP-StructureV3.html
+- https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v3.7.0
+
+详见 `docs/thin_pipeline_validation_2026-09-28.md` 的实际测试范围，不将测试执行成功混同于内容验收。

@@ -1,0 +1,56 @@
+name: Docling native table probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/open-source-thin-pipeline-20260928]
+    paths: [scripts/probe_docling_tables.py, tests/test_docling_candidate.py, .github/workflows/docling-table-probe.yml]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install isolated native candidate, no production dependency changes
+        run: |
+          python -m pip install 'torch==2.8.0' 'torchvision==0.23.0' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install 'docling==2.118.1' 'onnxruntime==1.23.2' 'av==16.0.1' pytest
+          mkdir -p validation/docling
+          python -m pip freeze > validation/docling/environment.txt
+      - name: Adapter regressions
+        run: |
+          python -m pytest -q --junitxml=validation/docling/tests.xml
+      - name: Native source-frame comparison
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10 420 python -u -m scripts.probe_docling_tables validation/docling 2>&1 | tee validation/docling/run.log
+      - name: Content gate, distinct from successful execution
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('validation/docling/summary.json').read_text())
+          targets=[x for x in data if x['sample'].startswith('memorymap')]
+          assert len(targets)==2 and all(x['status']=='ran' for x in data), 'Missing completed samples'
+          assert all(x['acceptance_passed'] for x in targets), 'Table structure/content NOT accepted'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docling-native-table-probe
+          path: |
+            validation/docling/
+            scripts/probe_docling_tables.py
+            tests/fixtures/native_acceptance.json
+          retention-days: 7

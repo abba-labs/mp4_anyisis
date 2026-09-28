@@ -1,0 +1,48 @@
+name: Video input validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/open-source-thin-pipeline-20260928]
+    paths: [.github/workflows/video-input-validation.yml]
+permissions:
+  contents: read
+jobs:
+  input:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Test and decode the entire recording, no OCR claims
+        run: |
+          python -m pip install -e '.[dev]'
+          mkdir -p validation/video_input
+          python -m pytest -q --junitxml=validation/video_input/tests.xml
+          python -u - <<'PY'
+          import json,time
+          from pathlib import Path
+          from mp4_analysis.thin.video import extract_video,prepare_reconstructions
+          out=Path('validation/video_input');start=time.monotonic()
+          manifest=extract_video('MP4/ET6601_SRC_LRS设计文档.mp4',out/'frames',sample_seconds=1.0)
+          (out/'video.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
+          plan=prepare_reconstructions(manifest,out)
+          assert manifest['decoded_frames']==3325
+          assert plan['all_selected_frames_routed']
+          assert not manifest['selection_complete']
+          summary={'decoded_frames':manifest['decoded_frames'],'selected_frames':len(manifest['frames']),
+                   'parser_inputs':plan['parser_inputs'],'candidate_count':plan['candidate_count'],
+                   'all_selected_frames_routed':plan['all_selected_frames_routed'],
+                   'seconds':round(time.monotonic()-start,3),'ocr_run':False,
+                   'content_completeness_verified':False,'originals_retained':True}
+          (out/'summary.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
+          print('SUMMARY',json.dumps(summary),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: video-input-validation
+          path: validation/video_input/
+          retention-days: 7

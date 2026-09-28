@@ -1,73 +1,89 @@
 # 新对话交接：mp4_anyisis
 
-> 更新：2026-09-28，第九轮。57个既定解析输入已完成；本轮只针对现成结果改进Word导出，内容验收仍FAIL。不要按旧31完成/26待处理重新运行。
-> 本轮进入head：7581f4e3ff1b513f4843c19d6bd882589023a7df；实际完成固定环境回归的实现提交：136bbafbdb95b12eca2b83afc921015f714347da。开始前必须查询PR #3实时head。
+> 更新：2026-09-29，第十轮。原57个输入已完成；group_000078_a页头结构的隔离修复已实测，内容验收仍FAIL。不要重跑旧31/26恢复任务，也不要重复已经完成的g78实验。
+> 本轮进入head：a239d8fdeb83da471d09add57a6a993c43542745。四项真实推理提交dd77665345b30c11899d42567de560291fc77cf7；最终脚本及回归提交41e21dcd80a12224b6f2b9e0332061694d93bd21。接续先查询PR #3实时head，不修改main或自动合并。
 
-## 0. 当前接续摘要
+## 0. 当前摘要
 
-| 项目 | 当前事实 |
+| 项目 | 事实 |
 |---|---|
-| 仓库/分支 | abba-labs/mp4_anyisis / feat/open-source-thin-pipeline-20260928 |
-| PR | #3，草稿、未合并；main未改，不强推、不自动合并 |
-| 架构 | 三个模块、一条本地流水线、单一PP-StructureV3解析后端，薄适配 |
-| 原处理计划 | 110张一秒抽样画面，17候选+40原帧=57个输入，57完成、0待处理；抽样不证明覆盖 |
-| 本轮实现 | output.py新增显式Pandoc重导出及脚本，不替换默认原生Word，不重跑57项OCR |
-| 重导出 | 57尝试，56派生Word，1拒绝：group_000078_a原生异常HTML经转换丢失文字，已拦截 |
-| 原生证据 | 344个native文件与原工件逐字节一致，未改输入、缓存、原生Word/Excel |
-| 表格改善 | 成功输出27张表的网格、合并、位置及文字与对应原生XLSX一致；同组旧Word仅13张一致。这不是27张表对源视频全正确 |
-| 视觉检查 | 查看4份最终派生Word；架构图未新增裁切。第二张表的源识别错误造成窄列挤压仍存在，其余52份未逐页视觉检查 |
-| 回归 | 固定Python3.11/OpenCV4.10/Pandoc3.1.11.1：111通过、0失败、0跳过 |
-| 内容结论 | FAIL。OCR污染、部分条款/编号、异常表格、全片覆盖、全部接缝、密集MemoryMap仍未解决 |
-| 下一步第一件事 | 用既有源帧和映射定位group_000078_a异常表格起源，不硬改单元格、不重跑全片 |
+| 分支 | feat/open-source-thin-pipeline-20260928；PR #3仍为草稿 |
+| 原计划 | 110个一秒抽样画面、17候选+40原帧=57输入；57完成、pending0，不证明全部内容覆盖 |
+| 原生缓存 | 344个native文件前后哈希一致；原Word/Excel/JSON和原输入未改 |
+| 本轮实测 | 4个新原生解析成功；3份派生Word、1个默认源图对照因丢字被明确拒绝 |
+| g78改善 | group_000078_a采用既有cells参数，页头恢复3×4网格、6物理格、4组合并，Word不再因异常第7格丢字而拒绝 |
+| 边界 | OCR文字未纠正；位域表窄列、错误字符和条款覆盖仍FAIL；不是整页内容通过 |
+| 第二样本 | group_000018_b仍错误：源3×4，cells输出5×4，检测层已过分割；因此没有全局改默认参数 |
+| 回归样本 | frame452原正确表格拓扑保持，原识别污染也仍在 |
+| 独立源图对照 | frame2373默认模式复现6检测框/7HTML格和Word拒绝；支持g78故障在结构生成而非接缝 |
+| 成品检查 | 本轮实际渲染查看g78两页、g18一页；未新增Excel视觉验收，未验收全片Office |
+| 最终回归 | 固定Python3.11/OpenCV4.10/Pandoc3.1.11.1：119通过、0失败/错误/跳过；不是119项内容准确率 |
+| 下一唯一动作 | 复用现成g18对照及源675/705/735/765，定位单元格检测为何把6个源格分成10个框 |
 
-详细本轮记录：[docs/step9_word_export_2026-09-28.md](docs/step9_word_export_2026-09-28.md)。机器证据：[docs/step9_word_export_evidence.json](docs/step9_word_export_evidence.json)。第八轮内容记录及恢复证据仍保留在docs/step8_content_review_2026-09-28.md和docs/resume_evidence_2026-09-28.json。
+详细记录：[step10_saved_table_repair](docs/step10_saved_table_repair_2026-09-29.md)，[机器证据](docs/step10_saved_table_evidence.json)。当前生产三个模块、单一PP-StructureV3后端和默认表格模式均未改变；新增是隔离实验与显式选择已有job的脚本能力。
 
-## 1. 先读哪些文件
+## 1. 阅读顺序和历史入口
 
-先查实时PR head，再依次读本文件、step9记录与JSON、src/mp4_analysis/thin/output.py、scripts/export_saved_word.py、scripts/check_saved_word_export.py、tests/test_saved_word_export.py、tests/test_word_export_loss_guard.py。检查输入问题时再读video.py和reconstruction.json。
+先查实时PR head，然后读本页、上述step10文档与JSON、scripts/probe_saved_table_cells.py、tests/test_saved_table_probe.py、tests/test_saved_table_probe_cli.py。研究检测问题再读现成reconstruction.json、原生table_res_list、固定PaddleX v3.7.2源码。
 
-前七轮全部约束、否定方案和研究方法保留在[原交接固定提交](https://github.com/abba-labs/mp4_anyisis/blob/76e5fd9de4d7065e35cc31359959859046bf5404/NEXT_CHAT_HANDOFF.md)。第八轮接续入口保留在[上一交接固定提交](https://github.com/abba-labs/mp4_anyisis/blob/7581f4e3ff1b513f4843c19d6bd882589023a7df/NEXT_CHAT_HANDOFF.md)。旧TASKS.md/REFACTOR_PLAN.md不是当前开发计划。
+原有输出适配位于src/mp4_analysis/thin/output.py，执行入口scripts/export_saved_word.py；表格对照脚本scripts/check_saved_word_export.py。不更改历史验收锚点。
 
-## 2. 当前完整缓存与运行证据
+历史完整约束和失败记录继续有效：
+- [第九轮交接固定版本](https://github.com/abba-labs/mp4_anyisis/blob/a239d8fdeb83da471d09add57a6a993c43542745/NEXT_CHAT_HANDOFF.md)
+- [第八轮交接固定版本](https://github.com/abba-labs/mp4_anyisis/blob/7581f4e3ff1b513f4843c19d6bd882589023a7df/NEXT_CHAT_HANDOFF.md)
+- [前七轮详细交接](https://github.com/abba-labs/mp4_anyisis/blob/76e5fd9de4d7065e35cc31359959859046bf5404/NEXT_CHAT_HANDOFF.md)
 
-首选已完成工件：run36439891744 / artifact10978920126，103046931字节，SHA256：
+旧TASKS.md、REFACTOR_PLAN.md不是当前执行计划。不要重新设计框架或重复已否定的MemoryMap候选排查。
+
+## 2. 当前证据如何取得
+
+### 完整57项缓存：继续保留
+
+run36439891744 / artifact10978920126；103046931字节；SHA256：
 `6a215eeb43435bd13619005fb8db87bcdc2cf4cd162315b6bd37cb88282f6f86`。
-到期2026-10-28T15:06:46Z。ZIP内已完成输出为restored/sarc，保留原31项完整ZIP。不要返回只完成31项的旧工件做无效恢复。原始五份MP4仍在仓库MP4目录，不需要再次索取。
+到期2026-10-28T15:06:46Z；完整输出根为restored/sarc。原五份MP4在仓库MP4目录，不再向用户索取。SARC源视频SHA256为e4f131ad8a2393ca5b6eade841bbce55a2e3ea105c1023954a746a8524d7e09a。
 
-解析指纹仍为`878d1346af4cf2e518548be01c300f05ee15c8d4e5e5bee0223697d61cebd4bb`，配置未变：sample_seconds=1、start=0、无end/max_frames/ROI、reconstruct=True、mobile、table_mode=default、CPU2线程、MKLDNN、word=True。原解析环境Python3.11.16、PaddleOCR3.7.0/PaddleX3.7.2/PaddlePaddle3.2.2/python-docx1.2.0/OpenCV4.10。
+### 本轮4项隔离对照：优先直接读，不重复推理
 
-本轮回归：run36444198176 / artifact10978754667，SHA256：
-`22c09b88ccd8af62d5b018e8f77a04a9a6e9cc05a4b9c5f8fdddcfa606e739a2`，到期2026-10-28T15:31:47Z。111通过，包含19项新输出回归，不是111项内容准确率验收。
+run36496321097 / artifact11003745957；3396758字节；SHA256：
+`4b15309ca4a4ece0f0635e060db59559e544fe14862e17b5220ddae2c5de6780`。
+到期2026-10-28T23:09:47Z。包含results/summary.json、results/native/<job>_<mode>/、results/word/<job>_<mode>/document.docx、输入及基线副本、上游固定源码、日志、环境及tested_source.tar。该小包不能替代完整57项缓存。
 
-本地导出实验Python3.13.5，110通过/1跳过（无PyAV）；不冒充正式环境。临时sandbox文件不保证跨会话存在，不能只凭旧链接宣称已取得工件。
+g78已改善候选为results/word/group_000078_a_cells/document.docx；g18为results/native/group_000018_b_cells/及对应Word。源2373默认Word拒绝记录必须保留，不忽略错误。此前56份派生Word与本轮新候选尚未组成一份整合文档或新的全片验收包。
 
-## 3. 现成结果如何只重导出Word
+### 最终119项回归
 
-安装外部Pandoc3.1.11.1及python-docx1.2.0，运行：
+run36497200941 / artifact11003781872；4232字节；SHA256：
+`8965e404c032ca0b3e0f8e5877fb71675303e820f809531d268e34e85ab48a2c`。
+到期2026-10-28T23:17:54Z。已下载JUnit核实119通过/0跳过。本地Python3.13结果118通过/1跳过，缺PyAV，不冒充正式环境。
+
+## 3. 固定环境和显式单项执行
+
+完整基线：Python3.11.16、PaddleOCR3.7.0、PaddleX3.7.2、PaddlePaddle3.2.2、python-docx1.2.0、OpenCV4.10.0.84、PyAV16.0.1。Pandoc3.1.11.1只用于可选Word重导出，不是第二个文档解析后端。
+
+原解析fingerprint：`878d1346af4cf2e518548be01c300f05ee15c8d4e5e5bee0223697d61cebd4bb`。
+本次cells指纹：`49720955c71328580909712120f6c9a2c5cac8609cc88a2b1e473ff2d9c7af47`。
+原视频参数仍sample_seconds=1、start=0、无end/max_frames/ROI、reconstruct=True、mobile、default、CPU2线程、MKLDNN、word=True。
+
+有明确新假设且确需单项推理时，使用：
 
 ```bash
-python scripts/export_saved_word.py work/step8/restored/sarc -o work/step9_word
-python scripts/check_saved_word_export.py work/step8/restored/sarc/native work/step9_word -o work/step9_word_comparison.json
+python scripts/probe_saved_table_cells.py work/full/restored/sarc \
+  -o work/new_isolated_result --job group_000078_a --mode cells
 ```
 
-支持单个native/job目录；输出必须是新的、不与源包含的目录。原生文件哈希或导出状态不合格、外部资源、缺图、转换警告、超时、表格文字丢失均拒绝。批量结果记录export_summary.json；本工件预计group_000078_a被拒绝，不能把非零退出码隐去。
+这里是执行语法示例，不要求下轮重跑g78。--job只接受现有计划ID；可重复选择多个，不改变原计划、抽样或缓存。输出必须新目录；不匹配指纹/哈希则先失败；显式job的Word失败返回非零码，中断正确记录pending。默认不带--job是本次四输入实验，不要无理由重新跑。
 
-这是可选输出能力，不是另一个解析后端；原Word继续作为未修改证据保留。每个成功目录保存中间HTML、参考DOCX、document.docx和export.json。中间HTML的图片仍依赖源缓存；派生Word重排不代表原始版面复原。
+## 4. 已定位的边界与下一动作
 
-## 4. 已定位的原因和边界
+源g78页头bbox[117,19,1163,130]只有源2373支持，其他源映射从y=220以后开始，无跨源接缝。检测6框而HTML7格；源2373独立默认解析复现错误。cells使用上游已有几何转HTML，修正了此输入的结构；不手改保密等级或字数。
 
-PaddleX3.7.2的word_converter.py在_parse_html_table丢弃rowspan/colspan，在_write_block按每行物理单元格填充，导致合并消失及SARC从B2错到A2。Pandoc同源HTML转换保留合并。
+g18源页头约[117,396,1166,529]应为3×4/6物理格，检测已给10框、原HTML11格；cells仍为5×4并错误分割保密等级。先对源675/705/735/765与候选映射定位输入/检测层原因，不能因g78改善就全局切cells。
 
-必须关闭markdown_in_html_blocks，否则“+ I”会变成列表，导致181/211表格损坏。group_000078_a异常原生HTML多出的单元格会被Pandoc静默丢弃；当前发布前文字顺序检查能拦截，不是修好了异常结构。未手改文字、列数或锚点。检查表格映射用完整HTML精确匹配，不按文件编号猜阅读顺序。
+后续依次推进源章节/条款覆盖、录屏污染、其余接缝、源位置去重与首次运行成本。密集MemoryMap、其余视频、全部Office、Windows/离线部署仍未验收。源2890编号O1/漏02但邻帧2920有02，g12标题漏字及源图鼠标遮挡等历史内容失败没有被本轮解决。
 
-frame452的原生“SARC 20:1”、V1.0+、图形标志文本化仍错；复位2890的O1/缺02仍在邻帧核对范围内；原架构图证据不能推导所有跨屏图恢复成功。
+## 5. 执行纪律
 
-流程注意：首个output.py提交意外触发旧六画面OCR工作流36443563353，原生执行成功、内容门禁失败。它不是输出改善证据，也没有修改57项缓存。后续输出修正避免再次触发，独立adapter-tests运行全111项。不要声称整轮完全没有任何OCR执行。
+三个逻辑模块、一条本地顺序流水线、一个默认后端；只复用成熟开源能力做薄适配，不自造OCR/配准/表格求解器/复杂平台。先定位失败层，再查固定版本官方源码，固定输入单变量对照；保留原生结果，第二样本失败就不升级为默认能力。
 
-## 5. 下一步及纪律
-
-第一动作：从已完成工件reconstruction.json定位group_000078_a成员、源图到候选映射，对照保密等级行和各单元格，判断异常源自拼接还是解析结构；先读固定版本上游代码，再做仅改变一个因素的最小实验，保留原产物。证明改善并经第二个同类样本验证后才接入，不盲换后端。
-
-随后是章节/条款覆盖清单、录屏污染、首次效率及正确源位置去重；密集工作表仍单独研究。不用文件数、测试数或与原生XLSX一致冒充资料恢复正确。不启动旧31/26恢复工作流，不修改start/抽样伪装续跑。
-
-每轮修改、测试和分析同分支提交，更新本页；main和旧二进制不改，PR维持草稿。普通回复简短，详细记录进仓库；每轮20分钟内总结真实已完成、失败、未完成，不承诺后台交付。
+不改源单元格、文字、验收锚点或指纹骗缓存，不降低标准；不把文件存在、列数正确、与原生Excel一致或测试通过当作源资料正确。不启动旧31/26恢复任务，不清空缓存，不强推/改main/自动合并。提交前重新检查head，分析与测试同分支，更新本页。普通回复简短，详细记录进仓库，每轮20分钟内总结实际已完成/失败/未完成，不承诺后台交付。

@@ -1,0 +1,31 @@
+{
+  "record_type": "actual_same_engine_saved_input_control_not_full_acceptance",
+  "entry_head": "a239d8fdeb83da471d09add57a6a993c43542745",
+  "experiment_commit": "dd77665345b30c11899d42567de560291fc77cf7",
+  "final_tested_commit": "41e21dcd80a12224b6f2b9e0332061694d93bd21",
+  "run_id": 36496321097,
+  "artifact": {"id": 11003745957, "bytes": 3396758, "sha256": "4b15309ca4a4ece0f0635e060db59559e544fe14862e17b5220ddae2c5de6780", "expires_at_utc": "2026-10-28T23:09:47Z", "downloaded_and_rehashed": true},
+  "completed_baseline_artifact": 10978920126,
+  "baseline_jobs": 57, "baseline_pending": 0, "baseline_native_files": 344,
+  "baseline_native_changed": false, "production_defaults_changed": false,
+  "baseline_fingerprint": "878d1346af4cf2e518548be01c300f05ee15c8d4e5e5bee0223697d61cebd4bb",
+  "cells_fingerprint": "49720955c71328580909712120f6c9a2c5cac8609cc88a2b1e473ff2d9c7af47",
+  "new_control_inputs": 4, "new_native_successes": 4, "native_errors": 0, "pending": 0,
+  "new_word_exports": 3, "word_rejected_controls": ["frame_00002373_default"],
+  "control_elapsed_sum_seconds": 42.219,
+  "elapsed_scope": "Four cases including initialization/inference/export; excludes installation and is not a cross-machine speedup measure.",
+  "header_provenance": {"job": "group_000078_a", "bbox": [117,19,1163,130], "source_frames": [2373,2403,2433,2463], "pts": [79.1,80.1,81.1,82.1], "only_source_frame_intersecting_header": 2373, "other_mapped_min_y": [220,440.3621,660.9693], "diagnostic_rewarp_equal_pixel_fraction": 0.991705855, "diagnostic_rewarp_channel_mae": 0.2786, "pixel_exactness_verified": false, "all_composite_seams_verified": false},
+  "source_header_expected": {"rows": 3, "columns": 4, "physical_cells": 6, "merges": ["A1:A2","C1:C2","D1:D2","A3:D3"]},
+  "upstream": {"repository": "PaddlePaddle/PaddleX", "tag": "v3.7.2", "path": "paddlex/inference/pipelines/table_recognition/pipeline_v2.py", "blob": "7b1a695ea1aa222efcca0e27e3e9e0a58dfe06e7", "installed_file_sha256": "9285995eb1cb7f79547a7abca8abe74ae8b29471925fab2b0ef383c9082779c3", "function": "trans_cells_det_results_to_html", "source_preserved": "upstream/table_pipeline_v2.py"},
+  "cases": [
+    {"job_id": "group_000078_a", "mode": "cells", "input_sha256": "64d615be289a236ccc8d665ed5cc25111286bbee7682333a8c0f95ab04acb2e7", "elapsed_seconds": 17.202, "native_success": true, "word_exported": true, "old_detected_cells": 6, "old_html_cells": 7, "new_header_grid": [3,4], "new_header_cells": 6, "header_merges": ["A1:A2","C1:C2","D1:D2","A3:D3"], "scoped_header_topology_pass": true, "raw_ocr_texts_unchanged": true, "non_table_blocks_unchanged": true, "word_table_shapes": [[3,4],[2,16],[2,16]], "content_accepted": false, "known_failures": ["OCR pollution in logo, SARC, version and confidentiality cells", "Narrow bit-field columns and incorrect/missing bit labels", "Clause coverage not accepted"]},
+    {"job_id": "group_000018_b", "mode": "cells", "input_sha256": "f25388cd3daedaa23d28b4382ba94f12d8678bfb6b562ea2f117bdf0a9043578", "elapsed_seconds": 5.078, "native_success": true, "word_exported": true, "old_detected_cells": 10, "old_html_cells": 11, "old_header_grid": [4,5], "new_header_grid": [5,4], "source_header_grid": [3,4], "raw_ocr_texts_unchanged": true, "non_table_blocks_unchanged": true, "scoped_header_topology_pass": false, "content_accepted": false},
+    {"job_id": "frame_00000452", "mode": "cells", "input_sha256": "b89635f8522ae41e8c8a79adeb42625c26697a6929c93dffd1456db16cc25b2d", "elapsed_seconds": 3.115, "native_success": true, "word_exported": true, "new_header_grid": [3,4], "header_topology_preserved": true, "raw_ocr_texts_unchanged": true, "non_table_blocks_unchanged": true, "content_accepted": false},
+    {"job_id": "frame_00002373", "mode": "default", "input_sha256": "d9333c65e1c5fd10f6f2bb21629b740d1d9b9c23b72c76779713d86a970d9d95", "elapsed_seconds": 16.824, "native_success": true, "word_exported": false, "detected_cells": 6, "html_cells": 7, "source_control_reproduces_malformed_header": true, "part_of_original_57_plan": false, "content_accepted": false}
+  ],
+  "manual_visual_review": {"documents": 2, "pages": 3, "jobs": ["group_000078_a_cells", "group_000018_b_cells"], "full_office_acceptance": false, "excel_visual_review_this_round": false},
+  "final_regression": {"run_id": 36497200941, "artifact_id": 11003781872, "sha256": "8965e404c032ca0b3e0f8e5877fb71675303e820f809531d268e34e85ab48a2c", "expires_at_utc": "2026-10-28T23:17:54Z", "junit_downloaded": true, "tests": 119, "failures": 0, "errors": 0, "skipped": 0, "new_tests": 8, "not_accuracy_tests": true},
+  "local_regression": {"python": "3.13", "passed": 118, "skipped": 1, "skip_reason": "PyAV unavailable", "formal_environment_equivalence_claimed": false},
+  "content_acceptance": "FAIL", "content_completeness_verified": false,
+  "next_action": "Reuse these results. Locate group_000018_b detector oversegmentation from source frames 675/705/735/765 and existing mappings; do not rerun g78, whole video or switch engines blindly."
+}

@@ -1,21 +1,10 @@
-# Videos & Raw Capture
+# Videos only (keep out of git to avoid 100MB GitHub limit)
 *.mp4
 *.avi
 *.mkv
 *.mov
 
-# Extracted frame dumps
-frames/
-*/frames/
-figures/
-*/figures/
-
-# Generated binaries / proprietary outputs
-*.docx
-*.xlsx
-*.pdf
-
-# Python
+# Python bytecode & cache
 __pycache__/
 *.pyc
 *.pyo

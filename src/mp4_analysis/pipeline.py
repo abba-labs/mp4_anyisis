@@ -1,6 +1,6 @@
 """
-pipeline.py - 端到端全流程调度管道 (MVP)
-实现统一的 MP4 -> 优选去重页面 -> 结构化中间表示 (Document IR) -> Markdown/JSON 闭环
+pipeline.py - 端到端全流程调度管道 (V2 Complete)
+连接：视频抽帧 -> 文本流与版面分流 -> Document IR -> Markdown / DOCX / XLSX / report.json
 """
 
 import os
@@ -9,6 +9,9 @@ from typing import Dict, Any, Optional
 from mp4_analysis.video.frame_selector import FrameSelector
 from mp4_analysis.document.models import DocumentIR, DocumentPage, DocumentElement, BoundingBox, Provenance
 from mp4_analysis.document.ocr import StreamTextDeduplicator
+from mp4_analysis.quality.report import AuditReporter
+from mp4_analysis.exporters.docx import DocxExporter
+from mp4_analysis.exporters.xlsx import ExcelExporter
 from rapidocr_onnxruntime import RapidOCR
 
 class DocumentExtractionPipeline:
@@ -23,19 +26,25 @@ class DocumentExtractionPipeline:
 
         self.selector = FrameSelector()
         self.ocr_engine = RapidOCR()
+        self.reporter = AuditReporter()
+        self.docx_exporter = DocxExporter()
+        self.xlsx_exporter = ExcelExporter()
 
     def process(self, video_path: str, doc_id: Optional[str] = None) -> DocumentIR:
         if not doc_id:
             doc_id = os.path.splitext(os.path.basename(video_path))[0]
 
-        print(f"[1/4] Extracting quality-aware keyframes from: {video_path}")
+        print(f"[1/5] Extracting quality-aware keyframes from: {video_path}")
         keyframes = self.selector.extract_keyframes(video_path, self.pages_dir)
         print(f"      Extracted {len(keyframes)} clean non-redundant page frames.")
 
-        print("[2/4] Parsing document elements into Document IR...")
+        print("[2/5] Parsing document elements into Document IR...")
         doc_ir = DocumentIR(
             doc_id=doc_id,
-            metadata={"source_video": os.path.abspath(video_path), "total_keyframes": len(keyframes)}
+            metadata={
+                "source_video": os.path.abspath(video_path),
+                "total_keyframes": len(keyframes)
+            }
         )
 
         deduplicator = StreamTextDeduplicator()
@@ -68,12 +77,16 @@ class DocumentExtractionPipeline:
 
             doc_ir.pages.append(page_obj)
 
-        print("[3/4] Exporting Document IR (JSON)...")
+        print("[3/5] Generating Audit Report (report.json)...")
+        report_path = os.path.join(self.output_dir, "report.json")
+        audit_res = self.reporter.save_report(doc_ir, report_path)
+        print(f"      Pass rate: {audit_res['metrics']['pass_rate']*100:.2f}%, Low confidence items: {audit_res['metrics']['low_confidence_count']}")
+
+        print("[4/5] Exporting Document IR (JSON) & Markdown...")
         json_path = os.path.join(self.output_dir, "document.json")
         with open(json_path, "w", encoding="utf-8") as fp:
             fp.write(doc_ir.to_json())
 
-        print("[4/4] Exporting Markdown...")
         md_path = os.path.join(self.output_dir, "document.md")
         with open(md_path, "w", encoding="utf-8") as fp:
             fp.write(f"# {doc_id}\n\n")
@@ -84,5 +97,9 @@ class DocumentExtractionPipeline:
                     else:
                         fp.write(f"{elem.content}\n")
 
-        print(f"[Done] Complete! Output saved to: {self.output_dir}")
+        print("[5/5] Exporting Word Document (.docx)...")
+        docx_path = os.path.join(self.output_dir, f"{doc_id}.docx")
+        self.docx_exporter.export(doc_ir, docx_path, figures_dir=self.figures_dir)
+
+        print(f"[Done] Complete pipeline finished! Artifacts saved to: {self.output_dir}")
         return doc_ir

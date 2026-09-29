@@ -13,8 +13,8 @@ class NativeParser:
     def __init__(self, *, device='cpu', threads=2, config=None, mkldnn=True, table_mode='default', ocr_models='server'):
         if isinstance(threads, bool) or not isinstance(threads, int) or threads < 1:
             raise ValueError('threads must be a positive integer')
-        if ocr_models not in {'server', 'mobile'}:
-            raise ValueError('ocr_models must be server or mobile')
+        if ocr_models not in {'server', 'mobile', 'mixed'}:
+            raise ValueError("ocr_models must be server, mobile or mixed")
         if table_mode not in {'default', 'cells'}:
             raise ValueError('table_mode must be default or cells')
         # Upstream's cell-geometry mode, not a locally implemented table solver.
@@ -30,6 +30,11 @@ class NativeParser:
         if ocr_models == 'mobile':
             self.options.update(text_detection_model_name='PP-OCRv5_mobile_det',
                                 text_recognition_model_name='PP-OCRv5_mobile_rec')
+        if ocr_models == 'mixed':
+            # Probe-validated: mobile detection boxes + server recognition.
+            # Fixes 01 punctuation (see 2026-09-29_1140_testvm01_server_rec).
+            self.options.update(text_detection_model_name='PP-OCRv5_mobile_det',
+                                text_recognition_model_name='PP-OCRv5_server_rec')
         if config is not None:
             self.options['paddlex_config'] = str(Path(config).resolve())
         self.versions = {}

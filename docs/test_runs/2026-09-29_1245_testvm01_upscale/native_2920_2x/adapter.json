@@ -1,0 +1,50 @@
+{
+  "signature": {
+    "input_sha256": "c2b45d919f178c1f54add5b71daa070d5d497497787e4cff87b1dcd4f840f45d",
+    "parser": "95722b9b5f3239f4acdb605007ff6ed4c06d4eb47526d7eeddf2b2760c186e91",
+    "word": false
+  },
+  "versions": {
+    "paddleocr": "3.7.0",
+    "paddlepaddle": "3.2.2",
+    "paddlex": "3.7.2",
+    "python-docx": "1.2.0"
+  },
+  "options": {
+    "device": "cpu",
+    "cpu_threads": 2,
+    "enable_mkldnn": true,
+    "use_doc_orientation_classify": false,
+    "use_doc_unwarping": false,
+    "use_textline_orientation": false,
+    "use_formula_recognition": false,
+    "use_seal_recognition": false,
+    "use_chart_recognition": false,
+    "markdown_ignore_labels": [],
+    "text_detection_model_name": "PP-OCRv5_mobile_det",
+    "text_recognition_model_name": "PP-OCRv5_mobile_rec"
+  },
+  "predict_options": {},
+  "block_count": 7,
+  "labels": {
+    "text": 5,
+    "footer": 1,
+    "number": 1
+  },
+  "low_confidence_observations": 20,
+  "table_count": 0,
+  "files": {
+    "frame_2920_2x_res.json": "9d6727408541742383175b4850c6485f4abaf9b5ad5727db3e8a5ca7401b877a",
+    "frame_2920_2x.md": "bd3d2165c3c3f7f5b82e5ecb1976b5e565d3e7c37d43216f437d9105ca804feb"
+  },
+  "errors": [],
+  "cache_hit": false,
+  "prediction_reused": false,
+  "timings": {
+    "initialization_seconds": 19.8678,
+    "inference_seconds": 22.9763,
+    "export_seconds": 0.0421
+  },
+  "verified": false,
+  "native_json": "frame_2920_2x_res.json"
+}

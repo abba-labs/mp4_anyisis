@@ -1,0 +1,143 @@
+{
+  "versions": {
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2",
+    "paddlepaddle": "3.2.2"
+  },
+  "python": "3.11.16",
+  "runtime": {
+    "python": "3.11.16",
+    "versions": {
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2",
+      "paddlepaddle": "3.2.2"
+    },
+    "python_requirement": ">=3.10,<3.13",
+    "python_supported": true,
+    "baseline_python": "3.11.16",
+    "baseline_python_match": true,
+    "ready": true,
+    "warnings": [],
+    "model_cache_checked": false,
+    "dependencies_import_checked": false,
+    "note": "Metadata readiness and a matching Python version do not prove full environment equivalence, model availability or successful inference."
+  },
+  "planned": 2,
+  "cases": [
+    {
+      "id": "frame_00002920_server",
+      "frame": {
+        "frame_index": 2920,
+        "last_frame_index": 2920,
+        "start_time": 97.33333333333333,
+        "end_time": 97.33333333333333,
+        "image": "frame_00002920.png",
+        "image_sha256": "61ad16c97139c6df205c9439efb2da09775864ad34615a03c03c48113d75f7bd",
+        "width": 1232,
+        "height": 752,
+        "coordinate_system": "source_frame_pixels",
+        "source_offset": [
+          0,
+          0
+        ],
+        "file_sha256": "567bd31e2447165c93aaee349869edf4c0eb28b16d0137db70799214fb083cb7"
+      },
+      "source_sha256": "567bd31e2447165c93aaee349869edf4c0eb28b16d0137db70799214fb083cb7",
+      "options": {
+        "text_detection_model_name": "PP-OCRv5_mobile_det",
+        "text_recognition_model_name": "PP-OCRv5_server_rec",
+        "use_doc_orientation_classify": false,
+        "use_doc_unwarping": false,
+        "use_textline_orientation": false,
+        "device": "cpu",
+        "cpu_threads": 2,
+        "enable_mkldnn": true,
+        "text_det_limit_side_len": 736,
+        "text_det_limit_type": "min",
+        "text_det_thresh": 0.3,
+        "text_det_box_thresh": 0.6,
+        "text_det_unclip_ratio": 1.5,
+        "text_rec_score_thresh": 0.0
+      },
+      "text_det_params": {
+        "limit_side_len": 736,
+        "limit_type": "min",
+        "thresh": 0.3,
+        "max_side_limit": 4000,
+        "box_thresh": 0.6,
+        "unclip_ratio": 1.5
+      },
+      "rec_text_count": 32,
+      "exact_anchor_hits": [
+        "LIMIT.01",
+        "LIMIT.03"
+      ],
+      "elapsed_seconds": 22.4323,
+      "model_initialization_seconds": 51.5127,
+      "raw_ocr_sha256": "24ae61c1e8e44aee06b3dc9c7942c241110fc97b13acc3da48d60105ab55057d",
+      "full_clause_acceptance": false
+    },
+    {
+      "id": "frame_00002950_server",
+      "frame": {
+        "frame_index": 2950,
+        "last_frame_index": 2950,
+        "start_time": 98.33333333333333,
+        "end_time": 98.33333333333333,
+        "image": "frame_00002950.png",
+        "image_sha256": "d9560d0abe696db72eaa084ca10e76a132f45c0b2bbcb9791787ce0efb353a31",
+        "width": 1232,
+        "height": 752,
+        "coordinate_system": "source_frame_pixels",
+        "source_offset": [
+          0,
+          0
+        ],
+        "file_sha256": "d2fe16ef0d8c919e3ed9d48cce4d9920f3e95c420a26bc5e1a28802953b86770"
+      },
+      "source_sha256": "d2fe16ef0d8c919e3ed9d48cce4d9920f3e95c420a26bc5e1a28802953b86770",
+      "options": {
+        "text_detection_model_name": "PP-OCRv5_mobile_det",
+        "text_recognition_model_name": "PP-OCRv5_server_rec",
+        "use_doc_orientation_classify": false,
+        "use_doc_unwarping": false,
+        "use_textline_orientation": false,
+        "device": "cpu",
+        "cpu_threads": 2,
+        "enable_mkldnn": true,
+        "text_det_limit_side_len": 736,
+        "text_det_limit_type": "min",
+        "text_det_thresh": 0.3,
+        "text_det_box_thresh": 0.6,
+        "text_det_unclip_ratio": 1.5,
+        "text_rec_score_thresh": 0.0
+      },
+      "text_det_params": {
+        "limit_side_len": 736,
+        "limit_type": "min",
+        "thresh": 0.3,
+        "max_side_limit": 4000,
+        "box_thresh": 0.6,
+        "unclip_ratio": 1.5
+      },
+      "rec_text_count": 48,
+      "exact_anchor_hits": [],
+      "elapsed_seconds": 15.6943,
+      "model_initialization_seconds": 51.5127,
+      "raw_ocr_sha256": "0514b2432025a4d35694508e3ce86c19a3f768eef320b8a33ad9ee8a433654cd",
+      "full_clause_acceptance": false
+    }
+  ],
+  "pending": 0,
+  "recognizers": [
+    "server"
+  ],
+  "source_evidence_sha256": "0dd424ad6318dcfb3fb6c97ae782eff32b69ce7ebd91a6bd1bb167ba9de59d79",
+  "content_acceptance": "NOT_ACCEPTED",
+  "inference_stage": "GeneralOCR before layout",
+  "full_video_rerun": false,
+  "native_files_count": 344,
+  "error": null,
+  "native_files_unchanged": true,
+  "elapsed_seconds": 98.7431
+}

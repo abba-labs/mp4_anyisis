@@ -1,0 +1,25 @@
+{
+  "run_id": "2026-09-29_1200_testvm01_serverfix",
+  "date": "2026-09-29",
+  "task_package": "A",
+  "source_frames": [
+    2920,
+    2950
+  ],
+  "source_sha256": {
+    "2920": "567bd31e2447165c93aaee349869edf4c0eb28b16d0137db70799214fb083cb7",
+    "2950": "d2fe16ef0d8c919e3ed9d48cce4d9920f3e95c420a26bc5e1a28802953b86770"
+  },
+  "environment": {
+    "python": "3.11.16",
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2",
+    "paddlepaddle": "3.2.2"
+  },
+  "configs": [
+    "server-det + server-rec (full)",
+    "mobile-det + server-rec (probe)",
+    "mobile full + guard (Word source)"
+  ],
+  "created_utc": "2026-09-29T03:42:17.049351Z"
+}

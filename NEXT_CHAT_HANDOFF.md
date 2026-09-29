@@ -1,5 +1,7 @@
 # 新对话交接：mp4_anyisis
 
+> Python策略更新（2026-09-29）：用户要求放宽解释器限制。先读 [Python环境策略](docs/PYTHON_ENVIRONMENT_POLICY.md)，其规则覆盖旧交接中“只能Python3.11”的要求。探针已与项目声明对齐，允许3.10—3.12，不锁补丁版本；3.11.16仅作为历史参考，差异写入preflight和summary，不伪称完整环境相同。3.13仍不在本项目声明范围，本轮未验证其全套依赖。
+> 本次环境策略进入head为4f5887330fa46537f0e63e43de402e7bce37e9ce；实现提交f3411f1bdda7350341748f812e471aad257526ca，测试提交f62b4b411381ca71b09cf52856f6e93f8019f8a2。本地29项相关测试通过（含模拟版本/引擎，不是多Python真实OCR）。没有新增内容修复或Office。当前testvm01的3.11.16已可用，不为换版本重装或重跑成功实验，继续下述2950局部修复任务。
 > 更新：2026-09-29，testvm01两帧真实测试已完成，执行环境阻塞已解除；现在推进局部修复，不再准备相同的两帧实验。
 > 本次审阅进入head：`77a8c575c175e9c4ae6f320e85af5451ac89c88d`。该提交是测试电脑新增的真实结果；本次ChatGPT仅复核证据并更新交接，没有新增推理、生产修复或Office。
 > 开始及推送前必须重新查实际分支head，不假定无人更新。继续同一开发分支，main不改、PR不合并、不强推。
@@ -11,6 +13,7 @@
 | 仓库/分支 | abba-labs/mp4_anyisis / feat/open-source-thin-pipeline-20260928 |
 | PR/main | 草稿PR #3，未合并；main历史快照e82f95eb8d71ca1dd212377507e72ef67c89ad1b |
 | 执行方式 | 测试电脑从Git取得文档/代码，从已有Actions工件取得缓存，执行后将报告和原生文字结果提交回同一分支；不依赖聊天附件 |
+| Python准入 | 探针与项目均允许3.10—3.12；3.11.16为历史参考，不是强制补丁版本；新增环境可用3.12，已有可用环境优先复用 |
 | 已完成基线 | 110张一秒抽样画面、17候选+40原帧=57个输入，57完成、0待处理；不代表源内容覆盖完整 |
 | 最新真实测试 | 2026-09-29_1018_testvm01，提交77a8c57；2920/2950两帧mobile GeneralOCR完成，planned2、pending0、error=null |
 | 环境/证据 | 测试机Python3.11.16、固定Paddle版本；两份raw JSON及日志已提交；summary记录344个原生文件前后未变 |
@@ -18,15 +21,17 @@
 | LIMIT.08首行 | 本次raw同框完整保留首行，历史最终overall同框文字为空；强烈支持调查重组，尚未捕获历史同次执行路径 |
 | LIMIT.08续行更正 | 原JSON中仍为vision_footnote，原Markdown也保留“其他使能信号（比如vcen等）打开；”；不是整条文字从Markdown消失，而是首行缺失且未形成完整正确条款 |
 | 待执行对照 | mobile 2项已完成；原计划server 2项未执行，依据首次识别问题需要再执行，不把2/2写成4/4 |
-| 最近代码回归 | 历史d99ff89a2ae2c65a25e55145b6a451d8a6da06bf的153项通过，非本次新增回归、非内容准确率 |
+| 最近代码回归 | 历史d99ff89a2ae2c65a25e55145b6a451d8a6da06bf的153项通过；本轮本地相关29项通过，均非内容准确率。最新CI以f62b4b4的实际运行记录为准 |
 | 内容状态 | 原57项约束完整锚点仍4/8；11个一级资料单元仍0完整通过、4有已知失败、7未完成核对 |
 | 下一实际动作 | 在已有测试机上，对2950做同一次局部PP-Structure前后观测；若复现即做最小修复、2920回归和实际Word检查，不止于再写一份诊断 |
 
 ## 1. 先读当前结论，不重读全部历史
 
-1. [本次实测复核与下一步任务](docs/test_runs/2026-09-29_1018_testvm01/REVIEW_AND_NEXT.md)：当前最高优先执行单，以其中对原报告的更正为准。
+环境准入先按 [Python环境策略](docs/PYTHON_ENVIRONMENT_POLICY.md)，不要继续执行旧文档中的3.11-only限制。此变更不要求切换已经可用的测试机解释器。
+
+1. [本次实测复核与下一步任务](docs/test_runs/2026-09-29_1018_testvm01/REVIEW_AND_NEXT.md)：当前最高优先内容修复执行单，以其中对原报告的更正为准。
 2. [测试电脑原报告](docs/test_runs/2026-09-29_1018_testvm01/TEST_REPORT.md)及同目录run_metadata.json、results/mobile/summary.json、raw_ocr.json、comparisons和日志。原报告和SHA256SUMS保持不可变，审阅补充单独保存。
-3. [独立测试电脑交接](docs/LOCAL_AGENT_TEST_HANDOFF_2026-09-29.md)：环境、下载、日志和归档命令仍有效；其中“先跑两帧mobile”的首次任务已完成，不重复执行。
+3. [独立测试电脑交接](docs/LOCAL_AGENT_TEST_HANDOFF_2026-09-29.md)：下载、日志和归档命令仍有效；环境范围以新Python策略为准。其中“先跑两帧mobile”的首次任务已完成，不重复执行。
 4. 实现需要时再读src/mp4_analysis/thin/parser.py、output.py和固定PaddleX3.7.2源码。8条独立源原文在docs/step11_evidence.json的limit_clauses.records。
 
 测试电脑已有 `.venv-test`、模型缓存和 `work/test_machine_baseline/restored/sarc`；实际路径仍由测试机核查，不假定聊天机器拥有同一环境。缺少PP-Structure其他模型时才补齐，不重建已可用环境或下载相同工件。
@@ -51,7 +56,7 @@
 
 首行改善只报局部改善；完整8条、无污染/缺条/错序、跨屏关联及实际Word都合格才讨论2.4通过。无法复现或修复时保留真实失败和差异，不硬补、不假报通过。
 
-## 4. 原缓存与固定环境
+## 4. 原缓存与历史参考环境
 
 ```text
 Full baseline run: 36439891744
@@ -70,7 +75,7 @@ Current report: restored/sarc/report.json
 原解析指纹：`878d1346af4cf2e518548be01c300f05ee15c8d4e5e5bee0223697d61cebd4bb`。
 基线：sample_seconds=1、start=0、无end/max_frames/ROI、reconstruct=True、mobile、default、CPU2线程、MKLDNN、word=True。不要修改抽样/start冒充续跑或改指纹骗缓存。
 
-固定环境：Python3.11（原环境与本次测试记录均3.11.16）、PaddleOCR3.7.0、PaddleX3.7.2、PaddlePaddle3.2.2、opencv-contrib-python4.10.0.84、PyAV16.0.1、python-docx1.2.0。平台、权重身份和实际返回参数分别记录；Pandoc3.1.11.1仅用于可选Word输出。
+历史参考环境：Python3.11.16、PaddleOCR3.7.0、PaddleX3.7.2、PaddlePaddle3.2.2、opencv-contrib-python4.10.0.84、PyAV16.0.1、python-docx1.2.0。Python准入范围按新策略为3.10—3.12；模型/上游依赖在本次故障对照中继续固定。平台、权重身份和实际返回参数分别记录；Pandoc3.1.11.1仅用于可选Word输出。其他受支持Python上应在同一环境对比原实现与修改实现，不把跨版本差异冒充修复。
 
 历史153项回归：run36504291037 / artifact11006127883，SHA256 `951e2f4e9355d26b2b60a1d462dddc146c4ac8deb2335ad31f9948d449cc59e9`，记录到期2026-10-29T00:41:41Z。
 
@@ -84,4 +89,4 @@ Current report: restored/sarc/report.json
 
 历史根交接完整保留在[77a8c57固定版本](https://github.com/abba-labs/mp4_anyisis/blob/77a8c575c175e9c4ae6f320e85af5451ac89c88d/NEXT_CHAT_HANDOFF.md)及其链接；旧TASKS.md/REFACTOR_PLAN.md不是当前方案。此前聊天端执行受阻只属历史，不能继续阻止已可用的测试电脑推进。
 
-识别污染、编号/条款、g18结构、全部接缝/内容覆盖、密集MemoryMap、整片Office及其余视频仍未验收。当前新增的是已完成真实诊断和审阅后的明确修复入口，不是生产修复或整体交付通过。
+识别污染、编号/条款、g18结构、全部接缝/内容覆盖、密集MemoryMap、整片Office及其余视频仍未验收。当前新增的是已完成真实诊断、审阅后的明确修复入口和更合理的Python准入，不是生产修复或整体交付通过。

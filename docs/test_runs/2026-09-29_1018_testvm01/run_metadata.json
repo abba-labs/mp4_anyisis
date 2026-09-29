@@ -1,0 +1,94 @@
+{
+  "run_id": "2026-09-29_1018_testvm01",
+  "branch": "feat/open-source-thin-pipeline-20260928",
+  "base_commit": "3d1e2dff43031b4cfa9c05b39fd5ba610b05ac82",
+  "date": "2026-09-29",
+  "timezone": "Asia/Shanghai (CST, UTC+8)",
+  "source": {
+    "description": "restored artifact from GitHub Actions, not re-run from video",
+    "path": "work/test_machine_baseline/restored/sarc",
+    "actions_run_id": 36439891744,
+    "artifact_id": 10978920126,
+    "artifact_name": "full-recording-resumed-validation",
+    "artifact_sha256": "6a215eeb43435bd13619005fb8db87bcdc2cf4cd162315b6bd37cb88282f6f86",
+    "baseline_report_items": 57,
+    "baseline_pending": 0
+  },
+  "frames": [
+    {
+      "frame_index": 2920,
+      "file_sha256": "567bd31e2447165c93aaee349869edf4c0eb28b16d0137db70799214fb083cb7",
+      "raw_ocr_sha256": "82d7b4c7a9b520c30263e48b41182b8f2db8817a20b06b2e912e477342491b59",
+      "rec_text_count": 32,
+      "elapsed_seconds": 7.793
+    },
+    {
+      "frame_index": 2950,
+      "file_sha256": "d2fe16ef0d8c919e3ed9d48cce4d9920f3e95c420a26bc5e1a28802953b86770",
+      "raw_ocr_sha256": "145df7fa5214f6de53aeeeb201de839f82baeb3827f22e048562f451eef6b016",
+      "rec_text_count": 48,
+      "elapsed_seconds": 4.1659
+    }
+  ],
+  "environment": {
+    "os": "Ubuntu 24.04.5 LTS (x86_64)",
+    "python": "3.11.16 (uv standalone cpython-3.11.16-linux-x86_64-gnu)",
+    "python_source_note": "Ubuntu 24.04 apt has no python3.11; used uv official standalone build (same patch as original 3.11.16)",
+    "venv": ".venv-test",
+    "constraints": "work/test_machine_baseline/constraints_linux_py311.txt (104 pins, from artifact environment.txt)",
+    "key_packages": {
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2",
+      "paddlepaddle": "3.2.2",
+      "opencv-contrib-python": "4.10.0.84",
+      "av": "16.0.1",
+      "python-docx": "1.2.0",
+      "numpy": "2.3.5",
+      "pillow": "12.3.0"
+    },
+    "pip_check": "ok (no broken requirements)",
+    "env_vars": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "PYTHONUNBUFFERED": "1",
+      "PADDLE_PDX_MODEL_SOURCE": "HF"
+    }
+  },
+  "probe": {
+    "script": "scripts/probe_saved_text_recognition.py",
+    "recognizer": "mobile",
+    "models": [
+      "PP-OCRv5_mobile_det",
+      "PP-OCRv5_mobile_rec"
+    ],
+    "text_det_params": {
+      "limit_side_len": 736,
+      "limit_type": "min",
+      "thresh": 0.3,
+      "max_side_limit": 4000,
+      "box_thresh": 0.6,
+      "unclip_ratio": 1.5
+    },
+    "text_rec_score_thresh": 0.0,
+    "preflight": {
+      "exit_code": 0,
+      "status": "RUNTIME_READY",
+      "planned": 2
+    },
+    "run": {
+      "exit_code": 0,
+      "planned": 2,
+      "pending": 0,
+      "error": null,
+      "native_files_unchanged": true
+    },
+    "attempt1_note": "first attempt failed at model download: huggingface_hub/httpx could not parse bracketed IPv6 entries in no_proxy; retried with sanitized no_proxy=localhost,127.0.0.1 (proxy itself unchanged). Stale results/mobile from attempt 1 (error summary only) was removed before retry."
+  },
+  "conclusions": {
+    "frame_2920_LIMIT07_vc_en": "raw already reads 'vcen' (both occurrences, s=0.989/0.980); reorganization did not change it. Underscore loss is a first-OCR read, not a reorg artifact.",
+    "frame_2950_LIMIT08_first_line": "raw reads the first line correctly (box [197,146,1082,169], s=0.992) with identical models/params/input; stored overall_ocr_res keeps the box and score (0.9919) but has empty text; reorganized markdown drops the whole LIMIT.08 clause. Loss happened in the reorganization/post-processing stage, not in first OCR.",
+    "frame_2950_LIMIT07_missing_char": "raw reads '进配置' (missing '行', s=0.981); carried through unchanged. First-OCR read.",
+    "reorg_noise": "reorganized markdown merges clause lines correctly but also merges watermark fragments (ETNCU/BTMCU/ETMC/CTWCU/date strings) into clause paragraphs."
+  },
+  "follow_up": "capture the PP-Structure reorganization trace for 2950 LIMIT.08 (why #6 text was blanked while box+score were kept) before any minimal fix; do not swap models or redesign."
+}

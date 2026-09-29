@@ -1,6 +1,7 @@
 # 新对话交接：mp4_anyisis
 
 > 更新：2026-09-29，独立测试电脑交接修订。用户的测试环境在另一台电脑；交接入口必须在Git，不能要求测试机取得聊天附件或访问ChatGPT临时目录。
+> 2026-09-29 实测完成：2920/2950 两帧 mobile GeneralOCR 真实运行已执行，报告见 [docs/test_runs/2026-09-29_1018_testvm01/TEST_REPORT.md](docs/test_runs/2026-09-29_1018_testvm01/TEST_REPORT.md)；原 57 项基线未动（57 完成、0 待处理）。
 > **执行者先完整阅读 [独立测试电脑交接](docs/LOCAL_AGENT_TEST_HANDOFF_2026-09-29.md)。** 本文件路径中的LOCAL_AGENT沿用历史命名，不代表用户当前电脑。正文修订提交：`322e71954dd69ab82a2e8b2ce4200b1b740f24a9`。
 > 本次进入head：`fd9df1273bd0c708e2e0acbc016ced56823871e6`。本次仅更新交接文档，没有改生产代码、依赖、模型或工作流，没有新增OCR、Office或内容通过项。旧附件式交接保留在[修订前固定版本](https://github.com/abba-labs/mp4_anyisis/blob/fd9df1273bd0c708e2e0acbc016ced56823871e6/NEXT_CHAT_HANDOFF.md)，不得再把其中聊天包入口当作测试机的前置条件。
 
@@ -14,11 +15,12 @@
 | 既定流水线 | 110张一秒抽样画面，17候选+40原帧=57个输入，57完成、0待处理；不代表内容完整 |
 | 内容验收 | 11个一级资料单元：0完整通过、4有已知失败、7未完成核对 |
 | 完整约束锚点 | 原57项结果仍4/8；不是项目完成50%或OCR准确率 |
-| 待执行诊断 | 两帧×两种既有识别器共4项，尚未产生真实结果；优先执行mobile两项，不因此改完成度分母 |
+| 待执行诊断 | mobile 两项已产生真实结果（运行 2026-09-29_1018_testvm01，见下）；server 两项未跑（按交接文档：只有证据需要时才跑，不盲跑）。诊断结论：2950 LIMIT.08 首行丢失在重组阶段；2920 LIMIT.07 的 vcen 为首次 OCR 结果，非重组改写 |
 | 最近实测代码 | d99ff89a2ae2c65a25e55145b6a451d8a6da06bf |
 | 最近代码回归 | 153通过、0跳过，包含模拟引擎测试；不是153项文字准确性验证 |
 | 历史环境阻塞 | 只描述聊天工具/聊天容器，不证明另一台测试电脑也无法执行 |
-| 下一唯一动作 | 在测试电脑实际运行2920、2950两帧mobile GeneralOCR，保存重组前raw_ocr.json；不要再次只做准备报告 |
+| 最新实测 | [2026-09-29_1018_testvm01](docs/test_runs/2026-09-29_1018_testvm01/TEST_REPORT.md)：mobile 识别器实测 2 帧，planned=2、pending=0、error=null、native_files_unchanged=true；两份 raw_ocr.json、observed_text.txt、脱敏日志、逐条 LIMIT 对照已归档 |
+| 下一唯一动作 | 捕获 2950 LIMIT.08 同一次局部 PP-Structure 重组前后轨迹，定位存量 overall_ocr_res #6（框 [197,146,1082,169]、分数 0.9919）文字被置空的原因；再考虑最小修复。不换模型、不重设计框架、不重跑全片 |
 
 生产仍为三个逻辑模块、一条本地流水线、一个默认PP-StructureV3解析后端。用户要的是可靠提取录屏中实际可见的文档、表格和图片；不自造OCR、表格/配准求解器或复杂平台。旧TASKS.md和REFACTOR_PLAN.md是历史方案，不按其重做框架。
 
@@ -81,13 +83,15 @@ python scripts/probe_saved_text_recognition.py work/test_machine_baseline/restor
 
 ## 4. 结果必须回写本仓库
 
-测试执行者在同一分支新建 `docs/test_runs/<RUN_ID>/`，提交TEST_REPORT.md、run_metadata.json、必要的原生raw_ocr.json/observed_text.txt、summary.json、逐条差异、脱敏日志/退出码和SHA256清单，并更新本文件链接实际报告。当前还没有该次真实运行的报告，不预先造结果目录或通过状态。
+测试执行者在同一分支新建 `docs/test_runs/<RUN_ID>/`，提交TEST_REPORT.md、run_metadata.json、必要的原生raw_ocr.json/observed_text.txt、summary.json、逐条差异、脱敏日志/退出码和SHA256清单，并更新本文件链接实际报告。2026-09-29_1018_testvm01 已按此提交（见顶部链接与 §0 最新实测）。
 
 原图通过已有工件路径/哈希引用，不重复提交全部视频和103MB缓存；机器上保留完整原生结果。大二进制未归档时明确位置与缺口，不能把聊天附件当唯一交付位置，不虚构新的Actions工件ID。
 
 新代码、相关测试与报告提交同一开发分支；推送前重查远端head、审查并发更新，只暂存本轮文件，不强推、不修改main、不自动合并。现有CI触发范围先读，不通过无关源码改动触发全片OCR。每轮20分钟内报告实际已完成、失败与未完成，不以测试数代替内容恢复。
 
 ## 5. 历史证据和未完成项
+
+- [2026-09-29 mobile 实测报告](docs/test_runs/2026-09-29_1018_testvm01/TEST_REPORT.md)（运行 `2026-09-29_1018_testvm01`）：2920/2950 两帧 mobile GeneralOCR 真实结果；逐条对照见 `docs/test_runs/2026-09-29_1018_testvm01/comparisons/`。原 57 项基线未动。
 
 - [第十三轮执行准备](docs/step13_execution_readiness_2026-09-29.md)、[第十三轮机器证据](docs/step13_evidence.json)：原两帧真实对照未运行；旧聊天选择性包仅历史交付，不是当前依赖。
 - [第十二轮归因纠正](docs/step12_ocr_provenance_2026-09-29.md)、[机器证据](docs/step12_evidence.json)：47处空文字/非零分数观察不是47处已确认漏行，不能重复扫描当修复。

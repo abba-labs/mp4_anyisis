@@ -1,0 +1,41 @@
+{
+  "status": "RUNTIME_READY",
+  "inference_performed": false,
+  "executed": 0,
+  "planned": 2,
+  "pending": 2,
+  "recognizers": [
+    "mobile"
+  ],
+  "runtime": {
+    "python": "3.11.16",
+    "versions": {
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2",
+      "paddlepaddle": "3.2.2"
+    },
+    "ready": true,
+    "model_cache_checked": false,
+    "note": "Runtime readiness is not model availability or successful inference."
+  },
+  "source_validation_scope": "selected frames and their native exports only",
+  "inputs": [
+    {
+      "id": "frame_00002920",
+      "sha256": "567bd31e2447165c93aaee349869edf4c0eb28b16d0137db70799214fb083cb7"
+    },
+    {
+      "id": "frame_00002950",
+      "sha256": "d2fe16ef0d8c919e3ed9d48cce4d9920f3e95c420a26bc5e1a28802953b86770"
+    }
+  ],
+  "text_det_params": {
+    "limit_side_len": 736,
+    "limit_type": "min",
+    "thresh": 0.3,
+    "max_side_limit": 4000,
+    "box_thresh": 0.6,
+    "unclip_ratio": 1.5
+  },
+  "text_rec_score_thresh": 0.0
+}

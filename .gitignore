@@ -10,3 +10,8 @@ venv/
 # System
 .DS_Store
 Thumbs.db
+
+# Machine-local test outputs (restored artifacts, venvs, run dirs); reports go to docs/test_runs/
+work/
+.venv-test/
+*.egg-info/

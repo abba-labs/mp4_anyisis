@@ -1,0 +1,26 @@
+{
+  "run_id": "2026-09-29_1205_testvm01_p1",
+  "task": "P0 controlled PP-Structure observation for frame 2950",
+  "input_frame": "work/test_machine_baseline/restored/sarc/frames/frame_00002950.png",
+  "input_sha256": "d2fe16ef0d8c919e3ed9d48cce4d9920f3e95c420a26bc5e1a28802953b86770",
+  "parser": "NativeParser",
+  "parser_options": {
+    "device": "cpu",
+    "threads": 2,
+    "mkldnn": true,
+    "table_mode": "default",
+    "ocr_models": "mobile"
+  },
+  "parser_fingerprint": "95722b9b5f3239f4acdb605007ff6ed4c06d4eb47526d7eeddf2b2760c186e91",
+  "versions": {
+    "paddleocr": "3.7.0",
+    "paddlepaddle": "3.2.2",
+    "paddlex": "3.7.2",
+    "python-docx": "1.2.0"
+  },
+  "elapsed_seconds": 48.88,
+  "errors": [],
+  "hook": "guard-only: repo bystander guard active via NativeParser; diagnostic wrapper snapshots only, no TraceList",
+  "guard_only": true,
+  "bystander_guard": true
+}

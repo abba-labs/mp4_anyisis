@@ -38,8 +38,18 @@ class NativeParser:
                 self.versions[package] = importlib.metadata.version(package)
             except importlib.metadata.PackageNotFoundError:
                 self.versions[package] = 'not-installed'
+        # Version-pinned guard: upstream paddlex PP-StructureV3 blanks
+        # bystander OCR lines in the "hurdles" re-recognition loop and never
+        # restores them (see _layout_parsing_patch).  Lazily imported so the
+        # module stays importable without paddlex (e.g. unit tests).
+        try:
+            from ._layout_parsing_patch import apply_bystander_guard
+        except ImportError:
+            apply_bystander_guard = None
+        self.bystander_guard = bool(apply_bystander_guard and apply_bystander_guard())
         identity = {'options': self.options, 'predict_options': self.predict_options,
                     'versions': self.versions,
+                    'bystander_guard': self.bystander_guard,
                     'config_sha256': hashlib.sha256(Path(config).read_bytes()).hexdigest() if config else None,
                     'adapter_schema': 3}
         self.fingerprint = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()

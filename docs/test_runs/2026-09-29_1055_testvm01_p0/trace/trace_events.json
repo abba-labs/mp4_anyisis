@@ -1,0 +1,240 @@
+[
+  {
+    "kind": "setitem",
+    "index": 8,
+    "old": "huan 1i 55-29-27-",
+    "new": "",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:427::standardized_data",
+    "ocr_idx": 8,
+    "overall_ocr_idx": 8,
+    "box_idx": 3,
+    "iou": 1.0,
+    "crop_box": [
+      212.0,
+      166.0,
+      361.0,
+      169.32872009277344
+    ],
+    "layout_box": [
+      192.37451171875,
+      143.7149200439453,
+      1087.383056640625,
+      169.32872009277344
+    ],
+    "ocr_box": [
+      212,
+      166,
+      361,
+      266
+    ],
+    "matched_no": 0
+  },
+  {
+    "kind": "setitem",
+    "index": 6,
+    "old": "LRS.SARC.LIMIT.SPEC【08】ADC数字控制器的使能信号需要早于控制器内的",
+    "new": "",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:427::standardized_data",
+    "ocr_idx": 6,
+    "overall_ocr_idx": 8,
+    "box_idx": 3,
+    "iou": 0.9012473011812918,
+    "crop_box": [
+      212.0,
+      166.0,
+      361.0,
+      169.32872009277344
+    ],
+    "layout_box": [
+      192.37451171875,
+      143.7149200439453,
+      1087.383056640625,
+      169.32872009277344
+    ],
+    "ocr_box": [
+      197,
+      146,
+      1082,
+      169
+    ],
+    "matched_no": 0
+  },
+  {
+    "kind": "setitem",
+    "index": 8,
+    "old": "",
+    "new": "——",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:455::standardized_data",
+    "ocr_idx": 6,
+    "overall_ocr_idx": 8,
+    "box_idx": 3,
+    "iou": 0.9012473011812918,
+    "crop_box": [
+      212.0,
+      166.0,
+      361.0,
+      169.32872009277344
+    ],
+    "layout_box": [
+      192.37451171875,
+      143.7149200439453,
+      1087.383056640625,
+      169.32872009277344
+    ],
+    "ocr_box": [
+      197,
+      146,
+      1082,
+      169
+    ],
+    "crop_img_rec_score": 0.602051854133606,
+    "crop_img_rec_text": "——",
+    "matched_no": 1
+  },
+  {
+    "kind": "setitem",
+    "index": 10,
+    "old": "2022年12月22日",
+    "new": "",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:427::standardized_data",
+    "ocr_idx": 10,
+    "overall_ocr_idx": 8,
+    "box_idx": 7,
+    "iou": 1.0,
+    "crop_box": [
+      212.0,
+      257.49456787109375,
+      328.1506652832031,
+      266.0
+    ],
+    "layout_box": [
+      168.77392578125,
+      257.49456787109375,
+      328.1506652832031,
+      281.04046630859375
+    ],
+    "ocr_box": [
+      168,
+      251,
+      331,
+      286
+    ],
+    "crop_img_rec_score": 0.602051854133606,
+    "crop_img_rec_text": "——",
+    "matched_no": 1
+  },
+  {
+    "kind": "append",
+    "append_index": 48,
+    "new": "",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:469::standardized_data"
+  },
+  {
+    "kind": "setitem",
+    "index": 9,
+    "old": "uan 1i 035409-27-2",
+    "new": "",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:427::standardized_data",
+    "ocr_idx": 9,
+    "overall_ocr_idx": 9,
+    "box_idx": 3,
+    "iou": 1.0,
+    "crop_box": [
+      567.0,
+      162.0,
+      714.0,
+      169.32872009277344
+    ],
+    "layout_box": [
+      192.37451171875,
+      143.7149200439453,
+      1087.383056640625,
+      169.32872009277344
+    ],
+    "ocr_box": [
+      567.0,
+      162.0,
+      714.0,
+      262.0
+    ],
+    "crop_img_rec_score": 0.0,
+    "crop_img_rec_text": "",
+    "matched_no": 0
+  },
+  {
+    "kind": "setitem",
+    "index": 6,
+    "old": "",
+    "new": "",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:427::standardized_data",
+    "ocr_idx": 6,
+    "overall_ocr_idx": 9,
+    "box_idx": 3,
+    "iou": 0.9551463163264244,
+    "crop_box": [
+      567.0,
+      162.0,
+      714.0,
+      169.32872009277344
+    ],
+    "layout_box": [
+      192.37451171875,
+      143.7149200439453,
+      1087.383056640625,
+      169.32872009277344
+    ],
+    "ocr_box": [
+      197.0,
+      146.0,
+      1082.0,
+      169.0
+    ],
+    "crop_img_rec_score": 0.0,
+    "crop_img_rec_text": "",
+    "matched_no": 0
+  },
+  {
+    "kind": "setitem",
+    "index": 9,
+    "old": "",
+    "new": "上",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:455::standardized_data",
+    "ocr_idx": 6,
+    "overall_ocr_idx": 9,
+    "box_idx": 3,
+    "iou": 0.9551463163264244,
+    "crop_box": [
+      567.0,
+      162.0,
+      714.0,
+      169.32872009277344
+    ],
+    "layout_box": [
+      192.37451171875,
+      143.7149200439453,
+      1087.383056640625,
+      169.32872009277344
+    ],
+    "ocr_box": [
+      197.0,
+      146.0,
+      1082.0,
+      169.0
+    ],
+    "crop_img_rec_score": 0.606322169303894,
+    "crop_img_rec_text": "上",
+    "matched_no": 1
+  },
+  {
+    "kind": "append",
+    "append_index": 49,
+    "new": "",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:469::standardized_data"
+  },
+  {
+    "kind": "append",
+    "append_index": 50,
+    "new": "2022年12月22日",
+    "location": "/home/hatch/workspace/repos/mp4_anyisis/.venv-test/lib/python3.11/site-packages/paddlex/inference/pipelines/layout_parsing/pipeline_v2.py:509::standardized_data"
+  }
+]

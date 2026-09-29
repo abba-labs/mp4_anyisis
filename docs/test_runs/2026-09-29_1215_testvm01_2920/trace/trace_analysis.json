@@ -1,0 +1,63 @@
+{
+  "run_id": "2026-09-29_1215_testvm01_2920",
+  "hook_hit": {
+    "standardized_data": 1
+  },
+  "n_ocr_entry": 32,
+  "n_ocr_exit": 33,
+  "n_trace_events": 0,
+  "target": {
+    "box": [
+      197,
+      146,
+      1082,
+      169
+    ],
+    "entry_index": null,
+    "entry_text": null,
+    "entry_score": null,
+    "exit_text": null,
+    "blanked": null,
+    "events": []
+  },
+  "blanked_indices": [
+    {
+      "index": 14,
+      "entry_text": "26-09-27-20:14",
+      "box": [
+        978.0,
+        320.0,
+        1095.0,
+        399.0
+      ],
+      "score": 0.9246821403503418
+    }
+  ],
+  "intersecting_layout_boxes": [
+    {
+      "box_idx": 4,
+      "label": "text",
+      "coordinate": [
+        186.59005737304688,
+        0.7673721313476562,
+        1082.27734375,
+        225.72213745117188
+      ],
+      "score": 0.6184247136116028
+    }
+  ],
+  "final": {
+    "native_json": "adapter.json",
+    "final_index": null,
+    "final_text": null,
+    "final_score": null,
+    "first_line_in_md": false,
+    "first_line_core_in_md": true,
+    "continuation_in_md": false
+  },
+  "guard": {
+    "n_events": 3,
+    "n_blocked": 0,
+    "blocked": []
+  }
+}

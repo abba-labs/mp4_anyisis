@@ -1,0 +1,22 @@
+{
+  "run_id": "2026-09-29_1430_benchmark_efc",
+  "video": {
+    "duration_s": 153.733333,
+    "width": 1726,
+    "height": 780,
+    "fps": 30.0,
+    "sha256": "5dac1606e2503b937af332fd39dc3e63610390256a7b3934c97f30b662688a1f",
+    "path": "MP4/EFC设计文档.mp4"
+  },
+  "code_commit": "23f6c2ff98075fb42fda9f4fa507dd45ba6274d3",
+  "tool_config": {
+    "sample_seconds": 1,
+    "reconstruct": true,
+    "ocr_models": "mobile",
+    "word": true,
+    "table_mode": "default"
+  },
+  "reviewer_mode": "agent_image_tool",
+  "model_identity": "native vision capability (direct image reading)",
+  "billing_mode": "UNMETERED_SUBSCRIPTION"
+}

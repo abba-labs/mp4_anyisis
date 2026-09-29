@@ -1,0 +1,16 @@
+{
+  "scope": "single video sample estimate",
+  "samples": {
+    "text_segments": 3,
+    "table_cells": 8,
+    "key_fields": 12,
+    "images": 2
+  },
+  "tool_cer": "unknown (not fully transcribed)",
+  "key_field_accuracy_A": "low (multiple underscore/space errors in sample)",
+  "key_field_accuracy_B": "corrected in sample",
+  "table_accuracy_A": "structure ok, content polluted",
+  "table_accuracy_B": "pollution identified",
+  "cost": null,
+  "billing_mode": "UNMETERED_SUBSCRIPTION"
+}

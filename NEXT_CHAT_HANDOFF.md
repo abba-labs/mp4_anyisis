@@ -1,100 +1,100 @@
-# 新对话交接：mp4_anyisis
+# mp4_anyisis 当前交接：技术突破与整包执行
 
-> Python策略更新（2026-09-29）：用户要求放宽解释器限制。先读 [Python环境策略](docs/PYTHON_ENVIRONMENT_POLICY.md)，其规则覆盖旧交接中“只能Python3.11”的要求。探针已与项目声明对齐，允许3.10—3.12，不锁补丁版本；3.11.16仅作为历史参考，差异写入preflight和summary，不伪称完整环境相同。3.13仍不在本项目声明范围，本轮未验证其全套依赖。
-> 本次环境策略进入head为4f5887330fa46537f0e63e43de402e7bce37e9ce；实现提交f3411f1bdda7350341748f812e471aad257526ca，测试提交f62b4b411381ca71b09cf52856f6e93f8019f8a2。本地29项相关测试通过（含模拟版本/引擎，不是多Python真实OCR）。没有新增内容修复或Office。当前testvm01的3.11.16已可用，不为换版本重装或重跑成功实验，继续下述2950局部修复任务。
-> 更新：2026-09-29，P0-followup 完成：2950 同次轨迹确认根因为 paddlex==3.7.2
-> pipeline_v2.py:427 hurdles 循环误伤旁观者行（idx6 被 idx8/idx9 的裁剪区以
-> IoU 0.90/0.96 置空两次、idx10 被置空一次，从不恢复）；仓库新增版本限定的
-> 旁观者保护 patch（src/mp4_analysis/thin/_layout_parsing_patch.py，仅拦截
-> ocr_idx!=overall_ocr_idx 的置空）。同图对照：修复前 idx6 score=0.9919
-> text=''，修复后同框同分同索引文字完整恢复；guard 精确拦截 3 次旁观者置空；
-> 2920 邻帧回归零拦截；Word 实读+渲染确认首行回到正文。测试 168 passed。
-> 完整报告见 docs/test_runs/2026-09-29_1215_testvm01_p3/TEST_REPORT.md。
-> 待办：检查远端 head、提交推送（不强推）。
-> 本次审阅进入head：`77a8c575c175e9c4ae6f320e85af5451ac89c88d`。该提交是测试电脑新增的真实结果；本次ChatGPT仅复核证据并更新交接，没有新增推理、生产修复或Office。
-> 开始及推送前必须重新查实际分支head，不假定无人更新。继续同一开发分支，main不改、PR不合并、不强推。
+> 更新：2026-09-29。用户已明确改变分工：**ChatGPT负责大的技术突破；测试电脑模型负责实现、常规调试、测试和成品验收。** 不再每做一个小实验就交回聊天等待批准。
+> 本次修订进入head：7d28c3b670ceda673af4102b4660c6159d4a57ee。整包执行文档提交：143161d6b15b61ba74108fb192823e70ec85cdc8。开始和推送前重新查询实际head。本次只更新技术决策和任务授权，没有新增OCR、生产修复、Office或内容通过项。
+> **当前执行入口只有本页和[技术路线与测试电脑整包执行任务](docs/LOCAL_AGENT_TEST_HANDOFF_2026-09-29.md)。** 旧文档中的“下一唯一动作”是任务包内步骤，不再是停工/重新请示点；原始证据与验收标准仍有效。
+> 更新（测试端，2026-09-29）：2950 P0-followup 已完成并合入——同次轨迹确认
+> paddlex==3.7.2 hurdles 循环误伤旁观者行为根因，仓库新增版本限定保护
+>（src/mp4_analysis/thin/_layout_parsing_patch.py）；同图对照文字由 '' 恢复完整，
+> guard 精确拦截 3 次误伤，2920 回归零拦截，Word 实读+渲染通过，168 项测试全过。
+> 证据：docs/test_runs/2026-09-29_1215_testvm01_p3/TEST_REPORT.md。
+> Python 策略：支持 3.10—3.12（不锁补丁）；testvm01 复用已跑通的 3.11.16。
 
-## 0. 当前接续摘要
+## 1. 测试端现在直接做什么
 
-| 项目 | 已核验状态 |
+从Git拉取最新工作分支，复用已可用环境和缓存，连续执行任务包A。过程中正常实现、调试、对照、相关回归和Word检查无需逐步请示。A中的局部难点不要冻结B/C可独立推进的部分。
+
+| 包 | 必须交付的成果 | 执行边界 |
+|---|---|---|
+| A：约束章节闭环 | 2.4约束说明Word、8条源位置对照及真实通过/失败结论 | 2950同次重组观测→有依据的最小修复→2920等回归；第07条已有识别错误证据，可自行完成尚未执行的server识别器对照；最终核对污染、续行和Word |
+| B：图表与导出闭环 | 代表性图表结果、稳定导出及源位置验收 | 复用g78/Pandoc改善，不重跑旧实验；g18依据检测层问题验证未做过的上游结构路径；密集表单列风险；不自研分格/配准 |
+| C：SARC整合与扩展 | SARC整合候选、完整性清单和成品包，随后其他4份视频独立验收 | 先做不依赖A的来源清单/总装；按源位置关联/去重，不直接串57份观察；有缺口才定点新增证据，旧缓存不变 |
+
+ChatGPT负责机制分析、上游能力选择、跨画面整合技术约束和路线级失败。测试端负责把这些方向真正落地到结果，不只提交诊断报告。仅当批准路线被实测否定、需要新核心算法/后端或跨授权边界时升级；其他工作继续。
+
+任务包数量不是等权完成率。阶段候选可标REVIEW_REQUIRED，全部适用门禁通过才PASS。汇报以“交付、内容通过、残留风险、下一任务包”为准，不以新增脚本/测试数代替进展。
+
+## 2. 当前已经完成与仍未完成
+
+| 项目 | 已有证据支持的状态 |
 |---|---|
 | 仓库/分支 | abba-labs/mp4_anyisis / feat/open-source-thin-pipeline-20260928 |
-| PR/main | 草稿PR #3，未合并；main历史快照e82f95eb8d71ca1dd212377507e72ef67c89ad1b |
-| 执行方式 | 测试电脑从Git取得文档/代码，从已有Actions工件取得缓存，执行后将报告和原生文字结果提交回同一分支；不依赖聊天附件 |
-| Python准入 | 探针与项目均允许3.10—3.12；3.11.16为历史参考，不是强制补丁版本；新增环境可用3.12，已有可用环境优先复用 |
-| 已完成基线 | 110张一秒抽样画面、17候选+40原帧=57个输入，57完成、0待处理；不代表源内容覆盖完整 |
-| 最新真实测试 | 2026-09-29_1018_testvm01，提交77a8c57；2920/2950两帧mobile GeneralOCR完成，planned2、pending0、error=null |
-| 环境/证据 | 测试机Python3.11.16、固定Paddle版本；两份raw JSON及日志已提交；summary记录344个原生文件前后未变 |
-| LIMIT.07 | 本次raw两处已经是vcen；首次识别层已复现下划线错误。2950另有“进配置”缺“行” |
-| LIMIT.08首行 | 根因已用同次轨迹确认并修复：hurdles 循环旁观者误伤；修复前后同框同分同索引 text 由 '' 恢复完整；guard 拦截 3 次；2920 回归零拦截；Word 实读+渲染通过 |
-| LIMIT.08续行更正 | 原JSON中仍为vision_footnote，原Markdown也保留“其他使能信号（比如vcen等）打开；”；不是整条文字从Markdown消失，而是首行缺失且未形成完整正确条款 |
-| 待执行对照 | mobile 2项已完成；原计划server 2项未执行，依据首次识别问题需要再执行，不把2/2写成4/4 |
-| 最近代码回归 | 本轮 168 项全过（新增 9 项 guard 专项，无模型） |
-| 内容状态 | 原57项约束完整锚点仍4/8；11个一级资料单元仍0完整通过、4有已知失败、7未完成核对 |
-| 下一实际动作 | P0-followup 已完成；剩余：检查远端 head 无冲突后提交推送（普通 push，不强推、不碰 main/PR） |
+| PR/main | 草稿PR #3未合并；main快照e82f95eb8d71ca1dd212377507e72ef67c89ad1b；不改main、不强推、不修改PR元数据 |
+| 基础链路 | 110张一秒抽样画面→17候选+40原帧→57项已处理、0待处理；有实际文件，不证明内容完整 |
+| 最新真实OCR | 2026-09-29_1018_testvm01，提交77a8c57；2920/2950 mobile两项完成，pending0、error=null，记录344个原生文件未变 |
+| 第07条 | 本次raw两处已经是vcen；2950另有“进配置”缺“行”，首次识别层已复现错误 |
+| 第08条首行 | 根因已用同次轨迹确认并修复：hurdles 循环旁观者误伤；同图对照 text 由 '' 恢复完整；guard 精确拦截 3 次误伤；2920 回归零拦截；Word 实读+渲染通过（证据 docs/test_runs/2026-09-29_1215_testvm01_p3/TEST_REPORT.md） |
+| 第08条续行 | 原JSON标vision_footnote，原Markdown保留“其他使能信号（比如vcen等）打开；”；不是整条从Markdown消失 |
+| 原计划识别对照 | mobile两项已完成；server两项尚未执行，现由测试端按任务A自主完成，不重跑mobile凑数量 |
+| 图表与输出 | g78有局部结构改善、Pandoc有合并保留改善；g18、密集表、全部接缝和全部Office未通过 |
+| 内容验收 | 原57项完整约束锚点4/8；11一级单元0完整通过、4已知失败、7未完成核对；没有整片通过样本 |
+| 环境 | testvm01已可运行；Python支持范围3.10—3.12，已用3.11.16跑通就复用，不重新安装 |
 
-## 1. 先读当前结论，不重读全部历史
+[实测原报告](docs/test_runs/2026-09-29_1018_testvm01/TEST_REPORT.md)及其raw/日志不可改写；[REVIEW_AND_NEXT](docs/test_runs/2026-09-29_1018_testvm01/REVIEW_AND_NEXT.md)对续行、独立复测归因和计时的更正继续有效。其旧单步执行节奏由本页覆盖。
 
-环境准入先按 [Python环境策略](docs/PYTHON_ENVIRONMENT_POLICY.md)，不要继续执行旧文档中的3.11-only限制。此变更不要求切换已经可用的测试机解释器。
+## 3. 已下发的技术方向，不冒充已验证解决
 
-1. [本次实测复核与下一步任务](docs/test_runs/2026-09-29_1018_testvm01/REVIEW_AND_NEXT.md)：当前最高优先内容修复执行单，以其中对原报告的更正为准。
-2. [测试电脑原报告](docs/test_runs/2026-09-29_1018_testvm01/TEST_REPORT.md)及同目录run_metadata.json、results/mobile/summary.json、raw_ocr.json、comparisons和日志。原报告和SHA256SUMS保持不可变，审阅补充单独保存。
-3. [独立测试电脑交接](docs/LOCAL_AGENT_TEST_HANDOFF_2026-09-29.md)：下载、日志和归档命令仍有效；环境范围以新Python策略为准。其中“先跑两帧mobile”的首次任务已完成，不重复执行。
-4. 实现需要时再读src/mp4_analysis/thin/parser.py、output.py和固定PaddleX3.7.2源码。8条独立源原文在docs/step11_evidence.json的limit_clauses.records。
+具体依据、候选及禁止事项见[整包执行文档第4—6节](docs/LOCAL_AGENT_TEST_HANDOFF_2026-09-29.md)。
 
-测试电脑已有 `.venv-test`、模型缓存和 `work/test_machine_baseline/restored/sarc`；实际路径仍由测试机核查，不假定聊天机器拥有同一环境。缺少PP-Structure其他模型时才补齐，不重建已可用环境或下载相同工件。
+- **内容保留**：调查small-overlap使小片段清空长行的机制；同次轨迹证实后，只在实际删除点验证保守覆盖/有效替代条件，不全局改重叠算法，不手补原文。上游large模式仅为候选。
+- **实际运行绑定**：固定PaddleOCR封装包含layout运行时补丁，会替换PaddleX的部分函数；采集轨迹同时核对真实函数身份，避免只查静态文件。该补丁解决溢出/空框，不等于已解决本项目漏行。
+- **表格路径**：固定版本已有use_e2e_wired_table_rec_model，可验证不经单元格检测器的结构识别路径；只在历史没有相同实验时执行，不盲换后端、不把接口存在当有效。
+- **跨画面整合**：复用现成映射和源坐标，把原始证据与派生正文分开；允许有来源的片段关联和录屏叠加内容排除，但不按字符串猜测删除，不把人工真值注入结果。上游Markdown拼装不等于自动录屏去重。
 
-## 2. 复核发现与不能夸大的结论
+本次ChatGPT做的是技术分析与路线下发；这些新候选尚未在测试机实际验证。若证明无效，按最小反例升级，不继续无依据排列组合。
 
-本次读取了提交报告、日志、summary、原生OCR关键字段；还对会话已有完整基线ZIP重算SHA256并读取其中原JSON/Markdown。两个提交的baseline_layout.json之Git blob及SHA256与原ZIP对应成员一致。未对全部新提交文件独立重算哈希，未重新推理。
+## 4. 只读必要资料，不重新遍历历史
 
-原报告的“2950第08条整条及续行均未进入Markdown”不准确：续行实际在图片后、2.5标题前保留，标签为vision_footnote。原Markdown SHA256为 `30566ae11793ada6cea978ef1a7f3c70d55d8ec2813fbbe861c116af5ac66a3d`，具体路径及逐项证据见REVIEW_AND_NEXT.md。修复时必须区分首行丢失、续行关联/标签和下划线错误。
+1. 本页及[整包执行文档](docs/LOCAL_AGENT_TEST_HANDOFF_2026-09-29.md)。
+2. [Python策略](docs/PYTHON_ENVIRONMENT_POLICY.md)：覆盖历史3.11-only要求，现有环境优先复用。
+3. [testvm01复核](docs/test_runs/2026-09-29_1018_testvm01/REVIEW_AND_NEXT.md)和同目录原报告/JSON：mobile结果已存在。
+4. [8条原文](docs/step11_evidence.json)中的limit_clauses.records、[11单元清单](tests/fixtures/sarc_review_units_v1.json)。原文只用于验收，不改写模型输出。
+5. 实现需要时读取src/mp4_analysis/thin/{video,parser,pipeline,output}.py与固定上游源码；表格/导出旧实测见docs/step9_word_export_2026-09-28.md、step10_saved_table_repair_2026-09-29.md、step11_detection_and_acceptance_2026-09-29.md。
 
-本次GeneralOCR与历史PP-Structure是独立两次运行；不能直接把差异当成同一次调用的清空轨迹。下一步深拷贝GeneralOCR刚返回的结果，捕获standardized_data前/后和实际清空/替换位置，再作最小修复。不要再把最终overall_ocr_res误称未经改写的首次OCR快照。
+旧TASKS.md和REFACTOR_PLAN.md仍为历史方案，不重启大框架。不得重复g18/g78原样对照、47处静态扫描、旧31/26续跑或完整SARC OCR，只为拿到已存在的证据。
 
-耗时应按summary解释：同引擎初始化22.496秒；两个case各自处理7.793秒、4.1659秒；总elapsed38.183秒。报告“7.793秒含22.5秒初始化”不成立，两个case重复记录的初始化字段不能重复相加。首个模型下载失败日志保留；后续失败summary也要保留，用新attempt目录，不能清空后复用。
+## 5. 缓存、环境与取回方式
 
-## 3. 下一轮执行与停止条件
-
-详见REVIEW_AND_NEXT.md第4节。仅用2950做原配置局部PP-Structure观测，保留原生前后快照及源位置。诊断包装不全局修改site-packages；不从验收原文补写输出，不按帧号、索引或关键字特判，不自行重造重组平台。
-
-一旦捕获可复现路径，优先上游已有能力或最小版本限定适配；同图原实现/修改实现对照，检查首行恢复且续行不丢、不重复，并用2920回归。将合约匹配的原生结果经现有输出路径导出Word，实际读文本、渲染检查。不能把GeneralOCR JSON伪造成NativeParser成功缓存。
-
-第07条raw本身已错，不能指望重组修复自动补下划线。P0取得结果后，确有需要才直接用现有probe的--recognizer server进行同检测器对照；不调用固定追加mobile的bundle包装器，不重复成功mobile推理，不全局改默认模型。
-
-首行改善只报局部改善；完整8条、无污染/缺条/错序、跨屏关联及实际Word都合格才讨论2.4通过。无法复现或修复时保留真实失败和差异，不硬补、不假报通过。
-
-## 4. 原缓存与历史参考环境
+测试机已有.venv-test、官方模型缓存和work/test_machine_baseline/restored/sarc；路径由测试机核查，不假定聊天容器可访问。同哈希副本直接复用。缺缓存才从已有Actions工件读取，不需要新工作流。
 
 ```text
 Full baseline run: 36439891744
 Artifact: 10978920126 / full-recording-resumed-validation
 ZIP bytes: 103046931
 ZIP SHA256: 6a215eeb43435bd13619005fb8db87bcdc2cf4cd162315b6bd37cb88282f6f86
-Recorded expiry UTC: 2026-10-28T15:06:46Z（缺缓存时先实时核查）
+Recorded expiry UTC: 2026-10-28T15:06:46Z（下载前实时核查）
 Output root: restored/sarc
-Current summary: restored/resume_summary.json
-Current report: restored/sarc/report.json
+Current summaries: restored/resume_summary.json; restored/sarc/report.json
 ```
 
-`restored/summary.json`是历史31/26状态，不能混用。原五份MP4在仓库MP4目录，不索要重传；缓存不在Git文件树，git pull不等于下载工件。有相同哈希副本就直接复用。
+restored/summary.json是历史31/26，不混用。git pull不包含二进制缓存；原五份MP4在MP4目录，不索要重传。
 
-源视频SHA256：`e4f131ad8a2393ca5b6eade841bbce55a2e3ea105c1023954a746a8524d7e09a`。
-原解析指纹：`878d1346af4cf2e518548be01c300f05ee15c8d4e5e5bee0223697d61cebd4bb`。
-基线：sample_seconds=1、start=0、无end/max_frames/ROI、reconstruct=True、mobile、default、CPU2线程、MKLDNN、word=True。不要修改抽样/start冒充续跑或改指纹骗缓存。
+源视频SHA256：e4f131ad8a2393ca5b6eade841bbce55a2e3ea105c1023954a746a8524d7e09a。
+原解析指纹：878d1346af4cf2e518548be01c300f05ee15c8d4e5e5bee0223697d61cebd4bb。
+原57项显式配置：sample_seconds1、start0、无end/max_frames/ROI、reconstruct=True、mobile、default表格模式、CPU2线程、MKLDNN、word=True。工程构造默认ocr_models为server，不与这份实验混称。
 
-历史参考环境：Python3.11.16、PaddleOCR3.7.0、PaddleX3.7.2、PaddlePaddle3.2.2、opencv-contrib-python4.10.0.84、PyAV16.0.1、python-docx1.2.0。Python准入范围按新策略为3.10—3.12；模型/上游依赖在本次故障对照中继续固定。平台、权重身份和实际返回参数分别记录；Pandoc3.1.11.1仅用于可选Word输出。其他受支持Python上应在同一环境对比原实现与修改实现，不把跨版本差异冒充修复。
+Python按3.10—3.12策略；当前机制对照固定PaddleOCR3.7.0/PaddleX3.7.2/PaddlePaddle3.2.2及模型参数。原OpenCV4.10.0.84、PyAV16.0.1、python-docx1.2.0；Pandoc3.1.11.1用于既有Word转换。同环境比较原/修改实现，跨环境差异必须记录。
 
-历史153项回归：run36504291037 / artifact11006127883，SHA256 `951e2f4e9355d26b2b60a1d462dddc146c4ac8deb2335ad31f9948d449cc59e9`，记录到期2026-10-29T00:41:41Z。
+原参考153项代码回归为d99ff89的历史运行36504291037；后续Python策略测试提交f62b4b4的既有CI运行36514074396也已成功。均不是本次新OCR或内容验收。
 
-## 5. 回写与项目边界
+## 6. 连续推进、提交与验收
 
-新运行另建docs/test_runs/<新RUN_ID>/，原报告、raw、日志、失败summary和SHA清单不覆盖；保存真实前后轨迹、源位置差异及适用的Word检查。必要代码、测试和报告提交同一分支并更新本页，不把聊天传ZIP作为必须步骤。大二进制放获授权位置并记录哈希/取得方式，不提交环境、模型权重、凭证或全量旧缓存。
+每个任务包使用docs/test_runs/<新RUN_ID>/记录成果，实验内保留attempt、原生JSON、真实轨迹、日志、退出码、哈希及源位置对照。可审查的小规模Office样本按现有约定进入同一私有仓库；大二进制只放已批准的持久位置并记录可取回路径。不存在可取回文件就明确归档缺口，不依赖聊天附件、不虚构工件ID。
 
-提交前检查工作区、远端head和并发修改；只暂存本轮文件，不强推、不改main、不合并或改PR元数据。不要创建/修改工作流或通过无关提交触发整片OCR。
+保留原图、旧缓存、原始报告和失败summary。新修复必须记录新身份/配置，使用新目录；不以旧缓存命中冒充新代码执行。真实验收未通过，只报局部改善或REVIEW_REQUIRED，不硬补内容、不调低标准。
 
-三个模块、一条本地流水线、一个默认PP-StructureV3后端保持。禁止重做框架、盲换引擎、手改原文/标点/下划线/单元格/真值。不要重复g18/g78已完成对照、47处静态扫描、旧31/26恢复或全片重跑。每轮20分钟内汇报真实已完成/失败/未完成，不以测试数量代替资料恢复。
+提交前重查工作区和远端，处理并发修改，只暂存本轮文件；不reset/clean覆盖别人改动、不强推、不改main、不合并或改PR元数据、不新建工作流。检查既有CI触发范围，避免无关全片推理。
 
-历史根交接完整保留在[77a8c57固定版本](https://github.com/abba-labs/mp4_anyisis/blob/77a8c575c175e9c4ae6f320e85af5451ac89c88d/NEXT_CHAT_HANDOFF.md)及其链接；旧TASKS.md/REFACTOR_PLAN.md不是当前方案。此前聊天端执行受阻只属历史，不能继续阻止已可用的测试电脑推进。
+**无需等ChatGPT给每个小步骤发“继续”。** 测试端在已授权范围内自行完成实现→对照→修正→回归→成品检查；只把有最小证据的路线级问题升级，其他任务继续。ChatGPT仅在当前会话处理交回的问题，不承诺后台自动开发。
 
-识别污染、编号/条款、g18结构、全部接缝/内容覆盖、密集MemoryMap、整片Office及其余视频仍未验收。当前新增的是已完成真实诊断、审阅后的明确修复入口和更合理的Python准入，不是生产修复或整体交付通过。
+修订前全部交接与记录保留在[7d28c3b固定版本](https://github.com/abba-labs/mp4_anyisis/blob/7d28c3b670ceda673af4102b4660c6159d4a57ee/NEXT_CHAT_HANDOFF.md)及其链接。当前推进方式改变，不意味着内容进度已增加。

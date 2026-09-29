@@ -1,0 +1,43 @@
+{
+  "entry_head": "62cd6774770d7960a68ee72780c3e5352c7502d7",
+  "code_commit": "d99ff89a2ae2c65a25e55145b6a451d8a6da06bf",
+  "record_type": "execution_readiness_not_new_inference",
+  "inference": {"original_plan": 4, "executed": 0, "pending": 4, "mobile_first_stage": {"planned": 2, "executed": 0, "pending": 2}},
+  "runtime_preflight": {
+    "status": "BLOCKED_RUNTIME", "exit_code": 2, "python": "3.13.5",
+    "versions": {"paddleocr": "not-installed", "paddlex": "not-installed", "paddlepaddle": "not-installed"},
+    "source_integrity_check": "PASS_SELECTED_ONLY", "inference_performed": false,
+    "model_cache_checked": false,
+    "text_det_params": {"limit_side_len": 736, "limit_type": "min", "thresh": 0.3, "max_side_limit": 4000, "box_thresh": 0.6, "unclip_ratio": 1.5},
+    "text_rec_score_thresh": 0.0
+  },
+  "blockers": {
+    "local_runtime": "No Python3.11 or the three fixed parser packages in current sandbox.",
+    "network": "DNS resolution failed for public dependency hosts; a public metadata download also failed.",
+    "harness_capability_read": "HTTP404: tunnel client not seen for 300 seconds; currently exposed adapter actions are read-only.",
+    "prior_refused_workflow": "Not recreated, retried or rerouted through another endpoint this round."
+  },
+  "bundle": {
+    "filename": "mp4_step13_two_frame_run_bundle.zip", "bytes": 841220,
+    "sha256": "ff69c1ce0d20c01c056508bc1606c7e87bb4fbfffdde434b692e04a69b813ab1",
+    "full_57_job_cache": false, "frames": [2920, 2950], "native_files": 9,
+    "original_archive_members_compared_byte_for_byte": 12,
+    "source_artifact_id": 10978920126,
+    "source_artifact_sha256": "6a215eeb43435bd13619005fb8db87bcdc2cf4cd162315b6bd37cb88282f6f86",
+    "source_image_sha256": {
+      "frame_00002920.png": "567bd31e2447165c93aaee349869edf4c0eb28b16d0137db70799214fb083cb7",
+      "frame_00002950.png": "d2fe16ef0d8c919e3ed9d48cce4d9920f3e95c420a26bc5e1a28802953b86770"
+    },
+    "step11_evidence_git_blob_verified": "409c04e32e33120ca5ed26b2f711813188f917b8",
+    "includes_interpreter_or_models": false
+  },
+  "tests": {
+    "local": {"python": "3.13.5", "passed": 16, "failures": 0, "skipped": 0, "contains_fake_engine": true},
+    "ci": {"run": 36504291037, "artifact": 11006127883, "zip_bytes": 4974,
+      "sha256": "951e2f4e9355d26b2b60a1d462dddc146c4ac8deb2335ad31f9948d449cc59e9",
+      "expires_at_utc": "2026-10-29T00:41:41Z", "passed": 153, "failures": 0, "errors": 0, "skipped": 0, "downloaded_hash_and_junit_verified": true},
+    "ocr_accuracy_validation": false
+  },
+  "content_progress": {"new_office_outputs": 0, "new_accepted_units": 0, "accepted_units": 0, "total_units": 11, "baseline_exact_clause_anchors": 4, "total_clause_anchors": 8, "project_completion_percent": null},
+  "next_action": "Run the two mobile controls in an authorized, prepared Python3.11 environment and return raw_ocr.json plus summary.json; do not repeat static audits or the full-video pipeline."
+}

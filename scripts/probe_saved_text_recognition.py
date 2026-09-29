@@ -15,6 +15,9 @@ from pathlib import Path
 from mp4_analysis.thin.video import file_hash
 
 REQUIRED_VERSIONS = {'paddleocr': '3.7.0', 'paddlex': '3.7.2', 'paddlepaddle': '3.2.2'}
+# Match pyproject.toml; interpreter identity is provenance, not a 3.11-only gate.
+PYTHON_REQUIREMENT = '>=3.10,<3.13'
+BASELINE_PYTHON = '3.11.16'
 
 
 def compact(text):
@@ -71,10 +74,23 @@ def runtime_status():
             versions[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:
             versions[name] = 'not-installed'
-    return {'python': sys.version.split()[0], 'versions': versions,
-            'ready': sys.version_info[:2] == (3, 11) and versions == REQUIRED_VERSIONS,
-            'model_cache_checked': False,
-            'note': 'Runtime readiness is not model availability or successful inference.'}
+    python_version = sys.version.split()[0]
+    python_supported = (3, 10) <= sys.version_info[:2] < (3, 13)
+    baseline_python_match = python_version == BASELINE_PYTHON
+    warnings = []
+    if not python_supported:
+        warnings.append(f'Python is outside the project requirement {PYTHON_REQUIREMENT}.')
+    elif not baseline_python_match:
+        warnings.append('Python differs from the historical baseline; use before/after '
+                        'runs in this same environment, not a cross-version causal claim.')
+    return {'python': python_version, 'versions': versions,
+            'python_requirement': PYTHON_REQUIREMENT, 'python_supported': python_supported,
+            'baseline_python': BASELINE_PYTHON, 'baseline_python_match': baseline_python_match,
+            'ready': python_supported and versions == REQUIRED_VERSIONS,
+            'warnings': warnings, 'model_cache_checked': False,
+            'dependencies_import_checked': False,
+            'note': 'Metadata readiness and a matching Python version do not prove '
+                    'full environment equivalence, model availability or successful inference.'}
 
 
 def preflight(source, frames=(2920, 2950), recognizers=('mobile', 'server')):
@@ -109,12 +125,13 @@ def run(source, output, evidence, frames=(2920, 2950), *, recognizers=('mobile',
     models = validate_recognizers(recognizers)
     check = preflight(source, frames, models)
     if not check['runtime']['ready']:
-        raise RuntimeError('fixed Python 3.11 / Paddle runtime unavailable; run --preflight for details')
+        raise RuntimeError('supported Python >=3.10,<3.13 / pinned Paddle runtime unavailable; run --preflight for details')
     selected = validate_source(source, frames)
     clauses = json.loads(Path(evidence).read_text(encoding='utf-8'))['limit_clauses']['records']
     before = {str(p.relative_to(source)): file_hash(p) for p in (source/'native').rglob('*') if p.is_file()}
     output.mkdir(parents=True)
     summary = {'versions': check['runtime']['versions'], 'python': check['runtime']['python'],
+               'runtime': check['runtime'],
                'planned': check['planned'], 'cases': [], 'pending': check['planned'],
                'recognizers': list(models), 'source_evidence_sha256': file_hash(Path(evidence)),
                'content_acceptance': 'NOT_ACCEPTED', 'inference_stage': 'GeneralOCR before layout',

@@ -98,3 +98,25 @@ Python按3.10—3.12策略；当前机制对照固定PaddleOCR3.7.0/PaddleX3.7.2
 **无需等ChatGPT给每个小步骤发“继续”。** 测试端在已授权范围内自行完成实现→对照→修正→回归→成品检查；只把有最小证据的路线级问题升级，其他任务继续。ChatGPT仅在当前会话处理交回的问题，不承诺后台自动开发。
 
 修订前全部交接与记录保留在[7d28c3b固定版本](https://github.com/abba-labs/mp4_anyisis/blob/7d28c3b670ceda673af4102b4660c6159d4a57ee/NEXT_CHAT_HANDOFF.md)及其链接。当前推进方式改变，不意味着内容进度已增加。
+
+## 更新（2026-09-29 14:00）：大模型视觉复核完成 2.4 全章
+
+**方案变更**：用户要求结合大模型。使用本机已有视觉能力直接看源帧，
+未部署 Qwen/vLLM，未调用外部 API。
+
+**成果**：`docs/test_runs/2026-09-29_1400_testvm01_vlm/`
+- 8条全部视觉复核通过（5条无需修正，3条修正）
+- 01：源图`；`，OCR误识`：`，已修正
+- 07/08：亲眼确认`vc_en`下划线，OCR误识`vcen`，已修正
+- 06：水印按位置证据排除，源图干净
+- Word已实读+渲染检查
+
+**下一条可执行命令**（推送）：
+```bash
+cd ~/workspace/repos/mp4_anyisis
+# 先获取认证，再执行：
+git fetch origin feat/open-source-thin-pipeline-20260928
+git log --oneline origin/feat/open-source-thin-pipeline-20260928..HEAD
+git push origin feat/open-source-thin-pipeline-20260928
+```
+注意：用户曾在聊天中暴露 GitHub PAT，不得复述；推送前提醒用户 revoke/轮换。

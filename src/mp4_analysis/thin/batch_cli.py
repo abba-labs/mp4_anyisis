@@ -1,11 +1,15 @@
-"""Sequential multi-document adapter; unavailable sources fail per group."""
+"""Sequential screenshot processing; failed execution is not a document delivery."""
 from __future__ import annotations
 
 import argparse
 import html
+import importlib.metadata
+import importlib.util
 import json
 import re
+import shutil
 import signal
+import sys
 import time
 import uuid
 from pathlib import Path
@@ -43,8 +47,7 @@ def load_plan(path):
         ids.add(identifier)
         source = relative(entry.get('source'))
         require_disjoint(source,root)
-        # Syntax/unsafe paths fail globally; availability is checked by _prepare
-        # per document. An unplugged input drive must not cancel another group.
+        # Invalid/unsafe paths fail globally; unavailable sources fail per group.
         full = entry.get('full_image',False)
         if type(full) is not bool or bool(entry.get('roi_config')) == full:
             raise ValueError('Each document needs roi_config OR explicit full_image=true')
@@ -67,6 +70,61 @@ def load_plan(path):
     if not isinstance(export['pandoc'],str) or type(export['timeout']) is not int or export['timeout'] < 1:
         raise ValueError('Invalid converter or timeout')
     return {'schema':1,'plan_file':str(path),'output_root':str(root),'documents':normalized,'ocr':ocr,'export':export}
+
+
+def inspect_runtime(plan):
+    """Cheap prerequisite discovery, not model loading, inference or acceptance.
+
+    Inspect THIS interpreter, not another Python on PATH. Do not install packages,
+    download weights, invoke a model or read credentials. Actual imports/native
+    libraries and the converter version are still checked during their use.
+    """
+    started = time.monotonic()
+    required = ['PIL', 'numpy', 'cv2', 'paddle', 'paddlex', 'paddleocr', 'lxml']
+    if plan['export']['xlsx']:
+        required.extend(['openpyxl', 'premailer'])
+    if plan['ocr']['word']:
+        required.append('docx')
+    missing = []
+    for module in required:
+        try:
+            present = importlib.util.find_spec(module) is not None
+        except (ImportError, ValueError, AttributeError):
+            present = False
+        if not present:
+            missing.append(module)
+    packages = {}
+    for name in ('paddleocr', 'paddlex', 'paddlepaddle', 'paddlepaddle-gpu', 'numpy', 'Pillow'):
+        try:
+            packages[name] = importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            packages[name] = None
+    issues = [f'Missing module in the selected interpreter: {name}' for name in missing]
+    converter = None
+    if plan['export']['word']:
+        converter = shutil.which(plan['export']['pandoc'])
+        if converter is None:
+            issues.append('Requested Word export but Pandoc is not available to this process')
+    warnings = []
+    if not ((3, 10) <= sys.version_info[:2] < (3, 13)):
+        warnings.append('Python is outside the repository-declared 3.10..3.12 range; this is NOT proof of OCR compatibility')
+    for name, expected in (('paddleocr', '3.7.0'), ('paddlex', '3.7.2')):
+        if packages[name] is not None and packages[name] != expected:
+            warnings.append(f'{name}={packages[name]} differs from the pinned adapter baseline {expected}')
+    return {'schema': 1, 'status': 'ENVIRONMENT_BLOCKED' if issues else 'PREREQUISITES_PRESENT',
+            'interpreter': sys.executable, 'python_version': sys.version.split()[0],
+            'packages': packages, 'missing_modules': missing, 'pandoc': converter,
+            'issues': issues, 'warnings': warnings, 'elapsed_seconds': round(time.monotonic()-started, 4),
+            'check_scope': 'module discovery and executable presence only; imports, models, DLLs and converter version not verified',
+            'ocr_performed': False, 'model_initialized': False, 'accuracy_verified': False}
+
+
+def _successful_inputs(report):
+    """Count actual successful native-result entries, never crops or test cases."""
+    return sum(bool(item.get('status') == 'PARSED_UNVERIFIED'
+                    and item.get('native', {}).get('files')
+                    and not item.get('native', {}).get('errors'))
+               for item in report.get('items', []))
 
 
 def _own_root(plan):
@@ -96,8 +154,7 @@ def _prepare(plan,root):
         except Exception as exc:
             row['error']=f'{type(exc).__name__}: {exc}'
         entries.append(row)
-    # Do not put durations/timestamps in this identity: retries with unchanged
-    # source/settings must retain the same approval token.
+    # Runtime diagnostics and durations are intentionally excluded from approval.
     prepared = {'schema':1,'plan':plan,'documents':entries,'inference_performed':False}
     prepared['approval_id']=json_hash(prepared)
     write_json(root/'collection_preparation.json',prepared)
@@ -114,12 +171,14 @@ def _prepare(plan,root):
 
 
 def _deliver(run_dir,root,options):
-    """Reuse a sealed successful bundle or create a new version; never overwrite."""
+    """Reuse a sealed bundle or build a new one; zero OCR success is diagnostic only."""
     from .document_bundle import build_document,read_bundle
     from .document_format import local_file
     run_dir,root = checked_directory(run_dir),checked_directory(root)
-    root.mkdir(parents=True,exist_ok=True)
     report = json.loads(local_file(run_dir,'report.json').read_text(encoding='utf-8'))
+    if _successful_inputs(report) == 0:
+        raise ValueError('No successful OCR inputs: automatic document delivery is disabled; retain diagnostics and fix execution first')
+    root.mkdir(parents=True,exist_ok=True)
     approval_hash = file_hash(local_file(run_dir,'crop_approval.json'))
     items = []
     for item in report['items']:
@@ -172,10 +231,14 @@ def _publish(root,state):
             if row.get(key):
                 relative=(Path(row[key])/filename).relative_to(root).as_posix()
                 refs.append(f'<a href="{quote(relative,safe="/")}">{html.escape(key)}</a>')
+        success = row.get('successful_ocr_inputs', 0)
         links.append(f'<section><h2>{html.escape(row["id"])}</h2><p>{html.escape(row["status"])} '
-                     f'{html.escape(str(row.get("error","")))}</p>'+ ' · '.join(refs)+'</section>')
+                     f'{html.escape(str(row.get("error","")))}</p><p>成功OCR输入：{success}；不是内容准确率。</p>'
+                     + ' · '.join(refs)+'</section>')
+    runtime_issues = html.escape('; '.join(state.get('runtime', {}).get('issues', [])))
     (root/'index.html').write_text('<!doctype html><meta charset="utf-8"><title>截图批量结果</title>'
-        '<h1>截图批量结果（未验收）</h1><p>每组来源和输出独立；失败不隐藏。</p>'+''.join(links),encoding='utf-8')
+        '<h1>截图批量结果（未验收）</h1><p>每组来源和输出独立；失败不隐藏。</p>'
+        + f'<p>{runtime_issues}</p>' + ''.join(links),encoding='utf-8')
 
 
 def execute(plan,*,accept_plan=None):
@@ -183,6 +246,26 @@ def execute(plan,*,accept_plan=None):
     root=checked_directory(plan['output_root'])
     with output_lock(root):
         _own_root(plan)
+        runtime = None
+        if accept_plan is not None:
+            runtime = inspect_runtime(plan)
+            if runtime['status'] == 'ENVIRONMENT_BLOCKED':
+                # Keep historical runs; do not manufacture an all-image fallback
+                # delivery when neither OCR nor the requested exporter can run.
+                aid = uuid.uuid4().hex[:16]
+                if (root/'collection_status.json').exists():
+                    write_json(root/'attempts'/(aid+'.previous.json'), _read_json(root/'collection_status.json'))
+                message = '; '.join(runtime['issues'])
+                state = {'schema':1,'status':'ENVIRONMENT_BLOCKED','attempt_id':aid,
+                    'runtime':runtime,'crop_approval_checked':False,
+                    'documents':[{'id':d['id'],'status':'ENVIRONMENT_BLOCKED','error':message,
+                                  'successful_ocr_inputs':0,'delivery_created':False} for d in plan['documents']],
+                    'successful_ocr_inputs':0,'inference_performed':False,'accuracy_verified':False,
+                    'elapsed_seconds':round(time.monotonic()-begun,4),
+                    'timing_scope':'this failed preflight only; not screenshot OCR throughput'}
+                _publish(root,state)
+                write_json(root/'attempts'/(aid+'.json'),state)
+                return state
         prepare_started=time.monotonic()
         prepared=_prepare(plan,root)
         preparation_seconds=time.monotonic()-prepare_started
@@ -198,9 +281,11 @@ def execute(plan,*,accept_plan=None):
         if prior.exists():
             write_json(root/'attempts'/(aid+'.previous.json'),_read_json(prior))
         state={'schema':1,'status':'RUNNING','attempt_id':aid,'approval_id':accept_plan,
-               'documents':[{'id':d['id'],'status':'PENDING'} for d in plan['documents']],
+               'runtime':runtime,'crop_approval_checked':True,
+               'documents':[{'id':d['id'],'status':'PENDING','successful_ocr_inputs':0,
+                             'delivery_created':False} for d in plan['documents']],
                'accuracy_verified':False,
-               'timing_scope':'execute entry INCLUDING initial preparation to final snapshot; excludes process startup/plan parsing/final serialization',
+               'timing_scope':'execute entry including prerequisite discovery and preparation; excludes interpreter startup/plan parsing/final serialization',
                'prepare_seconds':round(preparation_seconds,4)}
         parser=None
         startup_error=None
@@ -236,19 +321,24 @@ def execute(plan,*,accept_plan=None):
                                counts=report['counts'],cache_hits=report['cache_hits'],
                                cross_batch_cache_hits=report.get('cross_batch_cache_hits',0),
                                pipeline_elapsed_seconds=report['elapsed_seconds'],
-                               pipeline_stage_timings=report.get('stage_timings',{}))
+                               pipeline_stage_timings=report.get('stage_timings',{}),
+                               successful_ocr_inputs=_successful_inputs(report))
                     if getattr(parser,'engine',None) is None and report.get('inference_attempts_this_run'):
                         startup_error='Native engine failed to initialize; other groups retained for resume'
-                    export_start=time.monotonic()
-                    try:
-                        candidate=_deliver(report['run_directory'],root/'deliveries'/('d_'+document['id']),plan['export'])
-                    finally:
-                        row['export_elapsed_seconds']=round(time.monotonic()-export_start,4)
-                    row.update(delivery_directory=candidate['directory'],delivery_reused=candidate['reused'],
-                               unresolved_count=candidate['unresolved_count'])
-                    row['status']='PARTIAL_FAILURE' if report['status']=='PARTIAL_FAILURE' else candidate['status']
-                    if candidate.get('export_errors'):
-                        row['export_errors']=candidate['export_errors']
+                    if row['successful_ocr_inputs'] == 0:
+                        row.update(status='OCR_FAILED', error='No successful OCR inputs; automatic delivery suppressed',
+                                   export_elapsed_seconds=0.0)
+                    else:
+                        export_start=time.monotonic()
+                        try:
+                            candidate=_deliver(report['run_directory'],root/'deliveries'/('d_'+document['id']),plan['export'])
+                        finally:
+                            row['export_elapsed_seconds']=round(time.monotonic()-export_start,4)
+                        row.update(delivery_directory=candidate['directory'],delivery_reused=candidate['reused'],
+                                   delivery_created=not candidate['reused'],unresolved_count=candidate['unresolved_count'])
+                        row['status']='PARTIAL_FAILURE' if report['status']=='PARTIAL_FAILURE' else candidate['status']
+                        if candidate.get('export_errors'):
+                            row['export_errors']=candidate['export_errors']
                 except Exception as exc:
                     row.update(status='FAILED',error=f'{type(exc).__name__}: {exc}')
                 row['elapsed_seconds']=round(time.monotonic()-start,4)
@@ -260,10 +350,13 @@ def execute(plan,*,accept_plan=None):
         finally:
             total=time.monotonic()-begun
             documents_seconds=sum(r.get('elapsed_seconds',0) for r in state['documents'])
+            runtime_seconds=runtime['elapsed_seconds'] if runtime else 0.0
             state['elapsed_seconds']=round(total,4)
-            state['stage_timings']={'initial_prepare_seconds':round(preparation_seconds,4),
+            state['successful_ocr_inputs']=sum(r.get('successful_ocr_inputs',0) for r in state['documents'])
+            state['stage_timings']={'runtime_check_seconds':runtime_seconds,
+                'initial_prepare_seconds':round(preparation_seconds,4),
                 'document_execution_seconds':round(documents_seconds,4),
-                'other_seconds':round(max(0,total-preparation_seconds-documents_seconds),4)}
+                'other_seconds':round(max(0,total-runtime_seconds-preparation_seconds-documents_seconds),4)}
             state['status']='REVIEW_REQUIRED' if all(r['status']=='REVIEW_REQUIRED' for r in state['documents']) else 'PARTIAL_FAILURE'
             _publish(root,state)
             write_json(root/'attempts'/(aid+'.json'),state)
@@ -272,8 +365,8 @@ def execute(plan,*,accept_plan=None):
 
 def main():
     command_started=time.monotonic()
-    command=argparse.ArgumentParser(description='多份截图目录：准备、一次确认、连续OCR/导出、恢复')
-    command.add_argument('action',choices=['prepare','run','status'])
+    command=argparse.ArgumentParser(description='多份截图目录：环境检查、准备、确认、连续OCR/导出、恢复')
+    command.add_argument('action',choices=['doctor','prepare','run','status'])
     command.add_argument('plan',help='JSON计划；相对路径以此文件目录为基准')
     command.add_argument('--accept-plan',help='整组预览的完整approval_id')
     args=command.parse_args()
@@ -287,12 +380,16 @@ def main():
         signal.signal(signal.SIGTERM,terminate)
     try:
         plan=load_plan(args.plan)
-        result=(_read_json(Path(plan['output_root'])/'collection_status.json') if args.action=='status'
-                else execute(plan,accept_plan=args.accept_plan))
+        if args.action=='doctor':
+            result=inspect_runtime(plan)
+        elif args.action=='status':
+            result=_read_json(Path(plan['output_root'])/'collection_status.json')
+        else:
+            result=execute(plan,accept_plan=args.accept_plan)
         result['current_command_seconds']=round(time.monotonic()-command_started,4)
         result['current_command_scope']='main entry to stdout snapshot, not previous OCR time or interpreter startup'
         print(json.dumps(result,ensure_ascii=False,indent=2))
-        if result['status']=='PARTIAL_FAILURE':
+        if result['status'] in {'PARTIAL_FAILURE','ENVIRONMENT_BLOCKED'}:
             command.exit(2)
     except KeyboardInterrupt:
         command.exit(130,'已中断；保留成功缓存及状态，使用同一命令恢复。\n')

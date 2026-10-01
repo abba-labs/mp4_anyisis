@@ -18,6 +18,7 @@ dev = ["pytest>=8,<10"]
 [project.scripts]
 screenshot-analysis = "mp4_analysis.thin.cli:main"
 screenshot-document = "mp4_analysis.thin.document_cli:main"
+screenshot-batch = "mp4_analysis.thin.batch_cli:main"
 mp4-analysis = "mp4_analysis.thin.cli:main"
 
 [tool.setuptools.packages.find]

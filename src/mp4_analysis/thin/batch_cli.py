@@ -1,8 +1,4 @@
-"""Small sequential multi-document CLI; reuses the existing pipeline/exporter.
-
-Not an Agent platform: a JSON plan, per-document outputs and one durable index.
-No visual-model service is started. Crop approval never means content approval.
-"""
+"""Sequential multi-document adapter; unavailable sources fail per group."""
 from __future__ import annotations
 
 import argparse
@@ -33,7 +29,7 @@ def load_plan(path):
         candidate = Path(value)
         return checked_directory(candidate if candidate.is_absolute() else path.parent/candidate)
     root = relative(plan.get('output_root'))
-    require_disjoint(path.parent/path.name,root)
+    require_disjoint(path,root)
     docs = plan.get('documents')
     if not isinstance(docs,list) or not 1 <= len(docs) <= 100:
         raise ValueError('documents must contain 1..100 document objects')
@@ -47,14 +43,16 @@ def load_plan(path):
         ids.add(identifier)
         source = relative(entry.get('source'))
         require_disjoint(source,root)
-        if not source.is_dir():
-            raise ValueError(f'Screenshot source directory is unavailable: {source}')
+        # Syntax/unsafe paths fail globally; availability is checked by _prepare
+        # per document. An unplugged input drive must not cancel another group.
         full = entry.get('full_image',False)
         if type(full) is not bool or bool(entry.get('roi_config')) == full:
             raise ValueError('Each document needs roi_config OR explicit full_image=true')
         config = str(relative(entry['roi_config'])) if entry.get('roi_config') else None
         normalized.append({'id':identifier,'source':str(source),'roi_config':config,'full_image':full})
     ocr = {'device':'cpu','threads':2,'mkldnn':True,'table_mode':'default','ocr_models':'server','word':False}
+    if not isinstance(plan.get('ocr',{}),dict) or not isinstance(plan.get('export',{}),dict):
+        raise ValueError('ocr/export must be objects')
     ocr.update(plan.get('ocr',{}))
     if set(ocr)-{'device','threads','mkldnn','table_mode','ocr_models','word'}:
         raise ValueError('Unknown OCR options')
@@ -98,6 +96,8 @@ def _prepare(plan,root):
         except Exception as exc:
             row['error']=f'{type(exc).__name__}: {exc}'
         entries.append(row)
+    # Do not put durations/timestamps in this identity: retries with unchanged
+    # source/settings must retain the same approval token.
     prepared = {'schema':1,'plan':plan,'documents':entries,'inference_performed':False}
     prepared['approval_id']=json_hash(prepared)
     write_json(root/'collection_preparation.json',prepared)
@@ -136,7 +136,7 @@ def _deliver(run_dir,root,options):
                 raise ValueError('Delivery input crop changed')
         items.append(row)
     implementation = {name:file_hash(Path(__file__).with_name(name))
-                      for name in ('document_bundle.py','document_format.py','batch_cli.py')}
+                      for name in ('document_bundle.py','document_format.py','document_checks.py','batch_cli.py')}
     request = {'batch_id':report['batch_id'],'approval_id':report['approval_id'],'approval_sha256':approval_hash,
                'items':items,'export':options,'implementation':implementation}
     digest = json_hash(request)
@@ -170,8 +170,7 @@ def _publish(root,state):
         refs=[]
         for key,filename in (('run_directory','index.html'),('delivery_directory','document.html')):
             if row.get(key):
-                path=Path(row[key])/filename
-                relative=path.relative_to(root).as_posix()
+                relative=(Path(row[key])/filename).relative_to(root).as_posix()
                 refs.append(f'<a href="{quote(relative,safe="/")}">{html.escape(key)}</a>')
         links.append(f'<section><h2>{html.escape(row["id"])}</h2><p>{html.escape(row["status"])} '
                      f'{html.escape(str(row.get("error","")))}</p>'+ ' · '.join(refs)+'</section>')
@@ -180,13 +179,18 @@ def _publish(root,state):
 
 
 def execute(plan,*,accept_plan=None):
+    begun=time.monotonic()
     root=checked_directory(plan['output_root'])
     with output_lock(root):
         _own_root(plan)
+        prepare_started=time.monotonic()
         prepared=_prepare(plan,root)
+        preparation_seconds=time.monotonic()-prepare_started
         if accept_plan is None:
             return {'status':'CROPS_PREPARED','approval_id':prepared['approval_id'],
-                    'preview':str(root/'collection_preview.html'),'documents':prepared['documents']}
+                    'preview':str(root/'collection_preview.html'),'documents':prepared['documents'],
+                    'elapsed_seconds':round(time.monotonic()-begun,4),
+                    'prepare_seconds':round(preparation_seconds,4),'inference_performed':False}
         if accept_plan!=prepared['approval_id']:
             raise ValueError('Collection inputs/settings changed; inspect the new previews and approve again')
         prior=root/'collection_status.json'
@@ -195,8 +199,9 @@ def execute(plan,*,accept_plan=None):
             write_json(root/'attempts'/(aid+'.previous.json'),_read_json(prior))
         state={'schema':1,'status':'RUNNING','attempt_id':aid,'approval_id':accept_plan,
                'documents':[{'id':d['id'],'status':'PENDING'} for d in plan['documents']],
-               'accuracy_verified':False}
-        begun=time.monotonic()
+               'accuracy_verified':False,
+               'timing_scope':'execute entry INCLUDING initial preparation to final snapshot; excludes process startup/plan parsing/final serialization',
+               'prepare_seconds':round(preparation_seconds,4)}
         parser=None
         startup_error=None
         current=None
@@ -230,13 +235,16 @@ def execute(plan,*,accept_plan=None):
                     row.update(run_directory=report['run_directory'],ocr_status=report['status'],
                                counts=report['counts'],cache_hits=report['cache_hits'],
                                cross_batch_cache_hits=report.get('cross_batch_cache_hits',0),
-                               ocr_elapsed_seconds=report['elapsed_seconds'])
+                               pipeline_elapsed_seconds=report['elapsed_seconds'],
+                               pipeline_stage_timings=report.get('stage_timings',{}))
                     if getattr(parser,'engine',None) is None and report.get('inference_attempts_this_run'):
                         startup_error='Native engine failed to initialize; other groups retained for resume'
                     export_start=time.monotonic()
-                    candidate=_deliver(report['run_directory'],root/'deliveries'/('d_'+document['id']),plan['export'])
+                    try:
+                        candidate=_deliver(report['run_directory'],root/'deliveries'/('d_'+document['id']),plan['export'])
+                    finally:
+                        row['export_elapsed_seconds']=round(time.monotonic()-export_start,4)
                     row.update(delivery_directory=candidate['directory'],delivery_reused=candidate['reused'],
-                               export_elapsed_seconds=round(time.monotonic()-export_start,4),
                                unresolved_count=candidate['unresolved_count'])
                     row['status']='PARTIAL_FAILURE' if report['status']=='PARTIAL_FAILURE' else candidate['status']
                     if candidate.get('export_errors'):
@@ -250,7 +258,12 @@ def execute(plan,*,accept_plan=None):
                 current['status']='INTERRUPTED'
             raise
         finally:
-            state['elapsed_seconds']=round(time.monotonic()-begun,4)
+            total=time.monotonic()-begun
+            documents_seconds=sum(r.get('elapsed_seconds',0) for r in state['documents'])
+            state['elapsed_seconds']=round(total,4)
+            state['stage_timings']={'initial_prepare_seconds':round(preparation_seconds,4),
+                'document_execution_seconds':round(documents_seconds,4),
+                'other_seconds':round(max(0,total-preparation_seconds-documents_seconds),4)}
             state['status']='REVIEW_REQUIRED' if all(r['status']=='REVIEW_REQUIRED' for r in state['documents']) else 'PARTIAL_FAILURE'
             _publish(root,state)
             write_json(root/'attempts'/(aid+'.json'),state)
@@ -258,6 +271,7 @@ def execute(plan,*,accept_plan=None):
 
 
 def main():
+    command_started=time.monotonic()
     command=argparse.ArgumentParser(description='多份截图目录：准备、一次确认、连续OCR/导出、恢复')
     command.add_argument('action',choices=['prepare','run','status'])
     command.add_argument('plan',help='JSON计划；相对路径以此文件目录为基准')
@@ -275,6 +289,8 @@ def main():
         plan=load_plan(args.plan)
         result=(_read_json(Path(plan['output_root'])/'collection_status.json') if args.action=='status'
                 else execute(plan,accept_plan=args.accept_plan))
+        result['current_command_seconds']=round(time.monotonic()-command_started,4)
+        result['current_command_scope']='main entry to stdout snapshot, not previous OCR time or interpreter startup'
         print(json.dumps(result,ensure_ascii=False,indent=2))
         if result['status']=='PARTIAL_FAILURE':
             command.exit(2)

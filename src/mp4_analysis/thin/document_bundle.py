@@ -1,9 +1,4 @@
-"""Assemble saved screenshot OCR into an immutable, crop-only document bundle.
-
-This is output organization, not a second parser. Native reading order and
-explicit table spans are preserved. Missing/unsupported results become visible
-source-image fallbacks rather than silently disappearing from a document.
-"""
+"""Assemble saved OCR into a crop-only candidate using existing converters."""
 from __future__ import annotations
 
 import json
@@ -15,9 +10,20 @@ from pathlib import Path
 from PIL import Image
 
 from .document_format import checked_bbox, export_bundle, local_file, table_model
-from .utils import file_hash, json_hash, output_lock, require_disjoint, write_json
+from .utils import checked_directory, file_hash, json_hash, output_lock, require_disjoint, write_json
 
 _IMAGE_LABELS = {'image', 'chart', 'figure', 'formula', 'seal'}
+
+
+def require_delivery_target(document, target):
+    """Apply recorded input boundaries to build, review and re-export alike."""
+    target = checked_directory(target)
+    protection = document.get('source_protection', {})
+    for key in ('source_directory', 'ocr_project_directory'):
+        value = protection.get(key)
+        if value:
+            require_disjoint(value, target)
+    return target
 
 
 def seal_bundle(root, document):
@@ -33,7 +39,7 @@ def seal_bundle(root, document):
 
 
 def read_bundle(root):
-    root = Path(root).resolve()
+    root = checked_directory(root)
     receipt = json.loads(local_file(root, 'bundle.json').read_text(encoding='utf-8'))
     identity = dict(receipt)
     bid = identity.pop('bundle_id', None)
@@ -92,31 +98,39 @@ def publish_candidate(work, document, *, word=True, xlsx=True, pandoc='pandoc', 
 
 
 def build_document(run_directory, target_directory, *, word=True, xlsx=True, pandoc='pandoc', timeout=180):
-    """Use an existing approved run; never initialize OCR or edit its native cache."""
-    run = Path(run_directory).resolve()
-    target = Path(target_directory).resolve()
-    if run.parent.name != 'runs':
+    """Use an approved run. Enforce ALL source boundaries before any writes."""
+    run, target = checked_directory(run_directory), checked_directory(target_directory)
+    if run.parent.name != 'runs' or run.parent.parent.parent.name != 'batches':
         raise ValueError('Expected the run_directory printed by the screenshot pipeline')
-    batch = run.parent.parent
-    require_disjoint(batch, target)
+    batch, project = run.parent.parent, run.parent.parent.parent.parent
+    # This is the whole per-document OCR project, not just the selected batch.
+    # Collection-level deliveries remain valid siblings of d_<document>.
+    require_disjoint(project, target)
     if target.exists():
         raise FileExistsError('Bundle target exists; use a new version directory')
     report_path = local_file(run, 'report.json')
     approval_path = local_file(run, 'crop_approval.json')
     manifest_path = local_file(batch, 'manifest.json')
-    frozen_inputs = {report_path: file_hash(report_path), approval_path: file_hash(approval_path),
-                     manifest_path: file_hash(manifest_path)}
+    owner_path = local_file(project, '.screenshot_project.json')
+    frozen_inputs = {p: file_hash(p) for p in (report_path, approval_path, manifest_path, owner_path)}
     report = json.loads(report_path.read_text(encoding='utf-8'))
     approval = json.loads(approval_path.read_text(encoding='utf-8'))
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+    owner = json.loads(owner_path.read_text(encoding='utf-8'))
+    source_value = manifest.get('source_directory')
+    if not isinstance(source_value, str) or not Path(source_value).is_absolute():
+        raise ValueError('Missing absolute source-directory protection in screenshot manifest')
+    if owner.get('source_directory') != source_value:
+        raise ValueError('Source directory differs from OCR project ownership')
+    source_protection = {'source_directory': source_value, 'ocr_project_directory': str(project)}
+    require_delivery_target({'source_protection': source_protection}, target)
     if (report.get('input_kind') != 'document_region_screenshots'
             or report.get('batch_id') != manifest.get('batch_id')
             or report.get('approval_id') != manifest.get('approval_id')
             or approval.get('approval_id') != manifest.get('approval_id')
             or approval.get('acknowledgement') != 'caller_acknowledged'):
         raise ValueError('Run does not match an explicitly acknowledged screenshot batch')
-    frames = manifest.get('frames', [])
-    items = report.get('items', [])
+    frames, items = manifest.get('frames', []), report.get('items', [])
     if not frames or len(items) != len(frames):
         raise ValueError('Run inventory is incomplete; preserve pending/input-error entries')
     expected_ids = [f'screenshot_{i+1:04d}' for i in range(len(frames))]
@@ -125,6 +139,7 @@ def build_document(run_directory, target_directory, *, word=True, xlsx=True, pan
     document = {'schema': 1, 'kind': 'screenshot_document_candidate',
                 'document': report.get('document', 'Document'), 'batch_id': manifest['batch_id'],
                 'approval_id': manifest['approval_id'], 'source_report_sha256': file_hash(report_path),
+                'source_protection': source_protection,
                 'variant': 'tool', 'units': [], 'evidence': {}, 'unresolved': [],
                 'accuracy_verified': False, 'content_completeness_verified': False,
                 'limitations': ['Ordered screenshot observations, not inferred original pagination.',
@@ -178,8 +193,7 @@ def build_document(run_directory, target_directory, *, word=True, xlsx=True, pan
                     frozen_inputs[adapter_path] = file_hash(adapter_path)
                     files = adapter.get('files', {})
                     for name, digest in files.items():
-                        p = local_file(native_dir, name, digest)
-                        frozen_inputs[p] = digest
+                        frozen_inputs[local_file(native_dir, name, digest)] = digest
                     native_json = adapter.get('native_json')
                     if native_json not in files:
                         raise ValueError('No hashed native JSON')
@@ -191,8 +205,7 @@ def build_document(run_directory, target_directory, *, word=True, xlsx=True, pan
                     unit['native_json_sha256'] = files[native_json]
                     for index, original in enumerate(blocks):
                         bid = f'{uid}.b{index+1:04d}'
-                        label = str(original.get('block_label', 'unknown'))
-                        text = original.get('block_content', '')
+                        label, text = str(original.get('block_label', 'unknown')), original.get('block_content', '')
                         if not isinstance(text, str):
                             raise ValueError('Native block content is not text/HTML')
                         block = {'id': bid, 'label': label, 'native_index': index,
@@ -207,22 +220,22 @@ def build_document(run_directory, target_directory, *, word=True, xlsx=True, pan
                                 block.update(kind='table', table=table_model(text, bid))
                             except Exception as exc:
                                 block.update(kind='image', image=rel)
+                                if block['bbox']:
+                                    block['image'] = 'images/'+bid+'.png'
+                                    crop.crop(block['bbox']).save(work/block['image'], format='PNG')
                                 document['unresolved'].append({'unit_id': uid, 'block_id': bid,
-                                    'type': 'unsupported_table', 'detail': str(exc), 'fallback': 'approved_crop'})
+                                    'type': 'unsupported_table', 'detail': str(exc),
+                                    'fallback': 'table_region' if block['bbox'] else 'approved_crop',
+                                    'editable_table_recovered': False})
                         elif label in _IMAGE_LABELS:
-                            block.update(kind='image')
+                            block.update(kind='image', image=rel)
                             if block['bbox']:
-                                image_rel = 'images/'+bid+'.png'
-                                crop.crop(block['bbox']).save(work/image_rel, format='PNG')
-                                block['image'] = image_rel
-                            else:
-                                block['image'] = rel
+                                block['image'] = 'images/'+bid+'.png'
+                                crop.crop(block['bbox']).save(work/block['image'], format='PNG')
                         else:
                             block.update(kind='text', text=text, before_hash=json_hash(text))
                         unit['blocks'].append(block)
                 except Exception as exc:
-                    # Preserve visible source content even if native output cannot
-                    # be interpreted safely. Never label a fallback as recognized.
                     unit['blocks'] = [{'id': uid+'.fallback', 'kind': 'image', 'label': 'source_fallback',
                                        'image': rel, 'bbox': [0, 0, *crop.size], 'evidence_id': eid}]
                     document['unresolved'].append({'unit_id': uid, 'type': 'native_unavailable', 'detail': str(exc)})
@@ -235,6 +248,5 @@ def build_document(run_directory, target_directory, *, word=True, xlsx=True, pan
             return dict(result, directory=str(target))
         except BaseException as exc:
             write_json(work / 'FAILED_BUILD.json', {'error': f'{type(exc).__name__}: {exc}'})
-            failed = target.parent / (target.name+'.failed-'+uuid.uuid4().hex[:8])
-            work.rename(failed)
+            work.rename(target.parent / (target.name+'.failed-'+uuid.uuid4().hex[:8]))
             raise

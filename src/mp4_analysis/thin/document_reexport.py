@@ -1,4 +1,4 @@
-"""Retry only mature document exporters from an immutable candidate bundle."""
+"""Retry only existing exporters from an immutable candidate bundle."""
 from __future__ import annotations
 
 import shutil
@@ -6,24 +6,21 @@ import tempfile
 import uuid
 from pathlib import Path
 
-from .document_bundle import publish_candidate, read_bundle
+from .document_bundle import publish_candidate, read_bundle, require_delivery_target
 from .document_format import local_file
 from .utils import checked_directory, output_lock, require_disjoint, write_json
 
 
 def reexport_bundle(bundle_directory, target_directory, *, word=True, xlsx=True,
                     pandoc='pandoc', timeout=180):
-    """Keep the exact frozen content; export to a new version, never over the old.
-
-    Handles a prior EXPORT_ERROR or a candidate originally built without Office
-    outputs. No parser initialization, review replay or generated replacement text.
-    """
+    """Keep frozen content; no OCR, review replay or overwrite of older versions."""
     source = checked_directory(bundle_directory)
     target = checked_directory(target_directory)
     require_disjoint(source, target)
     if target.exists():
         raise FileExistsError('Choose a new re-export version directory')
     document, receipt = read_bundle(source)
+    require_delivery_target(document, target)
     resources = {entry['image'] for entry in document.get('evidence', {}).values()}
     resources.update(block['image'] for unit in document['units'] for block in unit['blocks']
                      if block['kind'] == 'image')

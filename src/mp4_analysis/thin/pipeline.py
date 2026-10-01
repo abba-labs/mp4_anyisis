@@ -21,20 +21,23 @@ class ScreenshotRunError(RuntimeError):
         super().__init__('Screenshot run incomplete; see '+str(Path(report['run_directory'])/'report.json'))
 
 
-def _publish(run_dir, manifest, items, elapsed, *, attempt_id=None, cache_scan=None):
+def _publish(run_dir, manifest, items, elapsed, *, attempt_id=None, cache_scan=None, stages=None):
     counts = Counter(item['status'] for item in items)
     unfinished = sum(counts[s] for s in ('PENDING','RUNNING','INTERRUPTED','BLOCKED'))
     failed = counts['INPUT_ERROR'] + counts['FAILED']
-    state = 'PARTIAL_FAILURE' if unfinished or failed else 'REVIEW_REQUIRED'
-    report = {'schema': 1, 'status': state, 'input_kind': 'document_region_screenshots',
-        'batch_id': manifest['batch_id'], 'approval_id': manifest['approval_id'],
-        'document': manifest['document'], 'total_inputs': len(items), 'counts': dict(counts),
-        'pending_inputs': unfinished, 'failed_inputs': failed,
+    stage_times = dict(stages or {})
+    stage_times['other_seconds'] = max(0.0, elapsed - sum(stage_times.values()))
+    report = {'schema': 1, 'status': 'PARTIAL_FAILURE' if unfinished or failed else 'REVIEW_REQUIRED',
+        'input_kind': 'document_region_screenshots', 'batch_id': manifest['batch_id'],
+        'approval_id': manifest['approval_id'], 'document': manifest['document'],
+        'total_inputs': len(items), 'counts': dict(counts), 'pending_inputs': unfinished, 'failed_inputs': failed,
         'cache_hits': sum(bool(i.get('native', {}).get('cache_hit')) for i in items),
         'cross_batch_cache_hits': sum(i.get('cache_origin', {}).get('kind')=='cross_batch_exact_cache' for i in items),
         'inference_attempts_this_run': sum(bool(i.get('inference_attempted')) for i in items),
         'attempt_id': attempt_id, 'elapsed_seconds': round(elapsed,4),
-        'timing_scope': 'current invocation; native timings on cache hits are historical',
+        'stage_timings': {k: round(v,4) for k,v in stage_times.items()},
+        'timing_scope': 'run function entry INCLUDING preparation to report snapshot; excludes final report write and caller export',
+        'parser_call_scope': 'current parse() call including lazy initialization and native exports; cached native.timings are historical',
         'cache_scan_warnings': cache_scan or [], 'items': items,
         'accuracy_verified': False, 'content_completeness_verified': False,
         'limitations': ['Screenshots are observations, not guaranteed original pages.',
@@ -75,12 +78,19 @@ def _publish(run_dir, manifest, items, elapsed, *, attempt_id=None, cache_scan=N
 def run(source, output, *, roi_config=None, full_image=False, prepare_only=False,
         accept_crops=None, word=False, device='cpu', threads=2, parser=None,
         mkldnn=True, table_mode='default', ocr_models='server'):
+    started = time.monotonic()
     if prepare_only and accept_crops is not None:
         raise ValueError('Preparation and crop approval are separate actions')
     output = checked_directory(output)
+    preparation_start = time.monotonic()
     manifest = prepare_screenshots(source,output,roi_config=roi_config,full_image=full_image)
+    stages = {'prepare_seconds': time.monotonic()-preparation_start,
+              'cache_scan_seconds': 0.0, 'cache_lookup_seconds': 0.0, 'parser_call_seconds': 0.0}
     if prepare_only or accept_crops is None:
-        return dict(manifest,status='CROPS_PREPARED',inference_performed=False)
+        return dict(manifest,status='CROPS_PREPARED',inference_performed=False,
+                    elapsed_seconds=round(time.monotonic()-started,4),
+                    prepare_seconds=round(stages['prepare_seconds'],4),
+                    timing_scope='run entry through crop preparation; no inference')
     if accept_crops != manifest['approval_id']:
         raise ValueError('Stale crop approval; inspect the current preview and use its approval_id')
     batch = checked_directory(manifest['batch_directory'])
@@ -94,7 +104,6 @@ def run(source, output, *, roi_config=None, full_image=False, prepare_only=False
         else:
             item['error']=frame.get('input_error','Input preparation failed')
         items.append(item)
-    started = time.monotonic()
     attempt_id = uuid.uuid4().hex[:16]
     with output_lock(output):
         implementation = {p.name:file_hash(p) for p in (Path(__file__),Path(__file__).with_name('parser.py'),
@@ -113,7 +122,6 @@ def run(source, output, *, roi_config=None, full_image=False, prepare_only=False
                                      'mkldnn':mkldnn,'table_mode':table_mode,'ocr_models':ocr_models})
         execution_id = json_hash({'schema':1,'parser':fingerprint,'word':word,'implementation':implementation})
         run_dir = identity_directory(batch/'runs',execution_id,prefix='r_')
-        # Preserve previous snapshots before a resume replaces the latest report.
         previous = run_dir/'report.json'
         if previous.exists():
             history = checked_directory(run_dir/'attempts')
@@ -122,7 +130,12 @@ def run(source, output, *, roi_config=None, full_image=False, prepare_only=False
         write_json(run_dir/'crop_approval.json',{'approval_id':accept_crops,'acknowledgement':'caller_acknowledged',
             'content_accuracy_verified':False,'parser_fingerprint':fingerprint,'implementation':implementation,
             'native_word_requested':bool(word),'execution_id':execution_id})
+        scan_started = time.monotonic()
         candidates, warnings = find_candidates(output,fingerprint,implementation,word,exclude=run_dir)
+        stages['cache_scan_seconds'] = time.monotonic()-scan_started
+        def publish():
+            return _publish(run_dir,manifest,items,time.monotonic()-started,
+                            attempt_id=attempt_id,cache_scan=warnings,stages=stages)
         current = None
         try:
             for item in items:
@@ -132,7 +145,7 @@ def run(source, output, *, roi_config=None, full_image=False, prepare_only=False
                 item['directory']='native/'+item['id']
                 item['status']='RUNNING'
                 begun = time.monotonic()
-                _publish(run_dir,manifest,items,time.monotonic()-started,attempt_id=attempt_id,cache_scan=warnings)
+                publish()
                 try:
                     image = (run_dir/item['input_image']).resolve()
                     if image.parent != (batch/'frames').resolve() or file_hash(image)!=item['crop_sha256']:
@@ -140,22 +153,30 @@ def run(source, output, *, roi_config=None, full_image=False, prepare_only=False
                     target = checked_directory(run_dir/item['directory'])
                     signature = {'input_sha256':item['crop_sha256'],'parser':fingerprint,'word':word}
                     native = None
-                    if target.exists():
-                        try:
-                            native = validate_native(target,signature)
-                            item['cache_origin']={'kind':'same_run_exact_cache'}
-                        except (OSError,ValueError,KeyError,TypeError) as exc:
-                            preserve_attempt(target,run_dir,str(exc))
-                    if native is None and not unavailable:
-                        native, origin = restore_candidate(candidates,page_key(item,fingerprint,word),target,signature,output)
-                        item['cache_origin']=origin
+                    cache_started = time.monotonic()
+                    try:
+                        if target.exists():
+                            try:
+                                native = validate_native(target,signature)
+                                item['cache_origin']={'kind':'same_run_exact_cache'}
+                            except (OSError,ValueError,KeyError,TypeError) as exc:
+                                preserve_attempt(target,run_dir,str(exc))
+                        if native is None and not unavailable:
+                            native, origin = restore_candidate(candidates,page_key(item,fingerprint,word),target,signature,output)
+                            item['cache_origin']=origin
+                    finally:
+                        stages['cache_lookup_seconds'] += time.monotonic()-cache_started
                     if native is not None:
                         item['native']=dict(native,cache_hit=True)
                     elif unavailable:
                         item.update(status='BLOCKED',error=unavailable)
                     else:
                         item['inference_attempted']=True
-                        item['native']=parser.parse(image,target,word=word)
+                        parse_started = time.monotonic()
+                        try:
+                            item['native']=parser.parse(image,target,word=word)
+                        finally:
+                            stages['parser_call_seconds'] += time.monotonic()-parse_started
                         if item['native'].get('errors'):
                             item.update(status='FAILED',error=item['native']['errors'])
                         else:
@@ -169,14 +190,14 @@ def run(source, output, *, roi_config=None, full_image=False, prepare_only=False
                     if item.get('inference_attempted') and getattr(parser,'engine',None) is None:
                         unavailable='Parser unavailable after first inference attempt: '+str(exc)
                 item['elapsed_seconds']=round(time.monotonic()-begun,4)
-                _publish(run_dir,manifest,items,time.monotonic()-started,attempt_id=attempt_id,cache_scan=warnings)
+                publish()
                 print(f'{item["ordinal"]}/{len(items)} {item["source_image"]}: {item["status"]}',flush=True)
         except KeyboardInterrupt:
             if current and current['status']=='RUNNING':
                 current.update(status='INTERRUPTED',error='Caller interrupted; completed caches retained')
             raise
         finally:
-            report=_publish(run_dir,manifest,items,time.monotonic()-started,attempt_id=attempt_id,cache_scan=warnings)
+            report=publish()
             write_json(run_dir/'attempts'/(attempt_id+'.json'),report)
             write_json(output/'latest_result.json',{'run':run_dir.relative_to(output).as_posix(),
                        'status':report['status'],'batch_id':manifest['batch_id'],'approval_id':manifest['approval_id']})

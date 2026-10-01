@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "output_root": "../work/screenshot_collection",
+  "documents": [
+    {
+      "id": "efc_detail",
+      "source": "../screenshots/efc详细设计文档",
+      "roi_config": "../work/regions/efc_detail.json"
+    },
+    {
+      "id": "efc_lrs",
+      "source": "../screenshots/efc模块lrs设计文档",
+      "roi_config": "../work/regions/efc_lrs.json"
+    }
+  ],
+  "ocr": {
+    "device": "cpu",
+    "threads": 2,
+    "mkldnn": true,
+    "table_mode": "default",
+    "ocr_models": "server",
+    "word": false
+  },
+  "export": {
+    "word": true,
+    "xlsx": true,
+    "pandoc": "pandoc",
+    "timeout": 180
+  }
+}

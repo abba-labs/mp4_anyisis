@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 
 from PIL import Image
-from mp4_analysis.thin.video import file_hash
+from mp4_analysis.thin.utils import file_hash
 
 
 def run(source, output):

@@ -3,7 +3,7 @@ import json
 import pytest
 from test_saved_word_export import native, converter_available
 from mp4_analysis.thin.output import export_saved_word
-from mp4_analysis.thin.video import file_hash
+from mp4_analysis.thin.utils import file_hash
 
 
 def test_html_cell_is_not_markdown_list(native, tmp_path):

@@ -8,7 +8,7 @@ import argparse
 import json
 import math
 from pathlib import Path
-from mp4_analysis.thin.video import file_hash
+from mp4_analysis.thin.utils import file_hash
 
 
 def inspect_payload(data):

@@ -4,7 +4,7 @@ import html
 import json
 import os
 from pathlib import Path
-from mp4_analysis.thin.video import file_hash
+from mp4_analysis.thin.utils import file_hash
 
 GATES = ('coverage', 'text', 'tables', 'images', 'office')
 STATES = {'PASS', 'FAIL', 'NOT_REVIEWED', 'NOT_APPLICABLE'}

@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from mp4_analysis.thin.output import export_saved_word
-from mp4_analysis.thin.video import file_hash
+from mp4_analysis.thin.utils import file_hash
 
 TABLE = ('<table><tr><td rowspan="2">logo</td><td>ET6601</td>'
          '<td rowspan="2">5/16</td><td rowspan="2">V1.0</td></tr>'

@@ -9,7 +9,7 @@ from pathlib import Path
 from docx import Document
 from openpyxl import load_workbook
 from openpyxl.cell.cell import MergedCell
-from mp4_analysis.thin.video import file_hash
+from mp4_analysis.thin.utils import file_hash
 
 
 def snapshot(table):

@@ -63,7 +63,7 @@ class NativeParser:
         self._last_prediction = None
 
     def parse(self, image, target, *, word=False):
-        from .video import file_hash
+        from .utils import file_hash
         image, target = Path(image).resolve(), Path(target).resolve()
         if image == target or target in image.parents:
             raise ValueError('output directory must not contain the source image')

@@ -45,7 +45,8 @@ def write_index(output, manifest, items, *, stitch=None, reconstruction=None):
     cards = []
     for item in items:
         frame = item['frame']
-        title = f"画面 {frame['frame_index']} · {frame['start_time']:.3f} 秒"
+        time_str = f" · {frame['start_time']:.3f} 秒" if 'start_time' in frame else ""
+        title = f"画面 {frame['frame_index']}{time_str}"
         lines += [f'## {title}', '']
         links=[]
         for name in item.get('native', {}).get('files', {}):
@@ -89,7 +90,7 @@ def export_saved_word(native_directory, target_directory, *, pandoc='pandoc', ti
     from copy import deepcopy
     from html.parser import HTMLParser
     from urllib.parse import unquote, urlsplit
-    from .video import file_hash
+    from .utils import file_hash
 
     source, target = Path(native_directory).resolve(), Path(target_directory).resolve()
     if source == target or source in target.parents or target in source.parents:

@@ -12,7 +12,7 @@ import shutil
 import sys
 import time
 from pathlib import Path
-from mp4_analysis.thin.video import file_hash
+from mp4_analysis.thin.utils import file_hash
 
 REQUIRED_VERSIONS = {'paddleocr': '3.7.0', 'paddlex': '3.7.2', 'paddlepaddle': '3.2.2'}
 # Match pyproject.toml; interpreter identity is provenance, not a 3.11-only gate.

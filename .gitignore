@@ -4,8 +4,13 @@ __pycache__/
 *.pyo
 *.pyd
 .venv/
+.venv*/
 venv/
 .cache/
+*.egg-info/
+dist/
+build/
+work/
 
 # System
 .DS_Store

@@ -14,7 +14,7 @@ from pathlib import Path
 
 from mp4_analysis.thin.parser import NativeParser
 from mp4_analysis.thin.output import export_saved_word
-from mp4_analysis.thin.video import file_hash
+from mp4_analysis.thin.utils import file_hash
 
 BASE_FINGERPRINT = '878d1346af4cf2e518548be01c300f05ee15c8d4e5e5bee0223697d61cebd4bb'
 CASES = [('group_000078_a', 'cells'), ('group_000018_b', 'cells'),

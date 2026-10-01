@@ -8,6 +8,7 @@ from __future__ import annotations
 import html
 import importlib.metadata
 import math
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -83,8 +84,6 @@ def table_model(markup, block_id):
             raise ValueError('Semantic/unsupported table markup cannot be flattened: '+str(el.tag))
         if any(k.lower().startswith('on') or k.lower() in {'src', 'href', 'srcset'} for k in el.attrib):
             raise ValueError('Active or linked table content is not supported')
-        # CSS can encode the same semantics as sup/sub/strike. Do not silently
-        # discard it on literal text nodes, or semantic styles on table cells.
         style = el.get('style', '').lower()
         if style and (el.tag not in {'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th'}
                       or any(k in style for k in ('vertical-align', 'text-decoration', 'display', 'visibility'))):
@@ -115,14 +114,25 @@ def table_model(markup, block_id):
     result = {'rows': canonical, 'cells': cells,
               'caption': ''.join(_cell_text(c) for c in table.xpath('./caption')),
               'geometry_source': 'native_html_explicit_spans', 'geometry_verified': False}
-    declared_cells(result)  # Validate explicit contracts; no geometry inference.
+    declared_cells(result)
     return result
 
 
 def _literal_html(text):
-    # HTML/Pandoc may collapse ordinary repeated spaces. Encode them explicitly;
-    # verification permits NBSP/space equivalence, never separator deletion.
-    return html.escape(literal_text(text)).replace(' ', '&#160;').replace('\n', '<br>')
+    """Protect repeated/edge spaces while retaining ordinary line-wrap points."""
+    lines = []
+    for line in literal_text(text).split('\n'):
+        escaped = html.escape(line)
+        # Alternate normal and protected spaces rather than making entire
+        # English sentences unbreakable. Edge whitespace must not be trimmed.
+        def spaces(match):
+            n = len(match.group())
+            edge = match.start() == 0 or match.end() == len(escaped)
+            if edge:
+                return '&#160;' * n
+            return ''.join(' ' if i % 2 == 0 else '&#160;' for i in range(n))
+        lines.append(re.sub(r' +', spaces, escaped))
+    return '<br>'.join(lines)
 
 
 def table_html(table, name='Table'):
@@ -220,8 +230,6 @@ def export_bundle(root, document, *, word=True, xlsx=True, pandoc='pandoc', time
                 if len(wb.worksheets) != 1:
                     raise ValueError('Expected one native-converted sheet')
                 ws = wb.worksheets[0]
-                # Compare BEFORE any local formatting: candidate -> converter,
-                # not merely converter -> saved file. Literal formula text stays data.
                 conversion = check_worksheet(ws, table)
                 for row in ws:
                     for cell in row:

@@ -8,7 +8,6 @@ from __future__ import annotations
 import hashlib
 import html
 import importlib.metadata
-import json
 import math
 import shutil
 import subprocess
@@ -22,8 +21,10 @@ from .utils import file_hash, json_hash, write_json
 def local_file(root, relative, digest=None):
     """Resolve only a regular, non-symlink file below a trusted directory."""
     root = Path(root).resolve()
+    if not isinstance(relative, str) or not relative:
+        raise ValueError('Resource name must be a nonempty string')
     rel = Path(relative)
-    if not isinstance(relative, str) or not relative or rel.is_absolute() or '..' in rel.parts or '\\' in relative or ':' in relative:
+    if rel.is_absolute() or '..' in rel.parts or '\\' in relative or ':' in relative:
         raise ValueError(f'Unsafe resource name: {relative!r}')
     path = root
     for part in rel.parts:
@@ -48,13 +49,28 @@ def checked_bbox(box, size):
     return [math.floor(l), math.floor(t), math.ceil(r), math.ceil(b)]
 
 
+def _cell_text(element):
+    """Preserve explicit line boundaries while reading literal inline text."""
+    pieces = [element.text or '']
+    for child in element:
+        if child.tag == 'br':
+            pieces.append('\n')
+        else:
+            if child.tag == 'p' and pieces and not pieces[-1].endswith('\n'):
+                pieces.append('\n')
+            pieces.append(_cell_text(child))
+            if child.tag == 'p':
+                pieces.append('\n')
+        pieces.append(child.tail or '')
+    return ''.join(pieces)
+
+
 def table_model(markup, block_id):
     """Read upstream HTML physical cells without solving a table grid.
 
-    Canonical rows preserve their order and explicit spans. All cells become
-    td for the pinned upstream exporter, which otherwise reorders mixed th/td.
-    Raw upstream HTML remains in the native cache. No remote/active markup is
-    accepted, and cell contents become literal text, never executable formulae.
+    Canonical rows preserve order and explicit spans. Cells become td for the
+    pinned upstream exporter, which otherwise reorders mixed th/td. Raw HTML
+    stays in the native cache. No remote/active markup or formulas are accepted.
     """
     from lxml import html as LH
     if not isinstance(markup, str) or len(markup) > 4_000_000:
@@ -86,7 +102,7 @@ def table_model(markup, block_id):
                 if not value.isdigit() or not 1 <= int(value) <= 1000:
                     raise ValueError('Unsupported cell span')
                 spans[key] = int(value)
-            text = ''.join(el.itertext())
+            text = _cell_text(el)
             cell = {'id': f'{block_id}.c{len(cells)+1:04d}', 'text': text,
                     'before_hash': json_hash(text), **spans}
             cells.append(cell)
@@ -94,7 +110,7 @@ def table_model(markup, block_id):
         canonical.append(entries)
     if not cells or len(cells) > 100000:
         raise ValueError('Empty or oversized cell list')
-    caption = ''.join(''.join(c.itertext()) for c in table.xpath('./caption'))
+    caption = ''.join(_cell_text(c) for c in table.xpath('./caption'))
     return {'rows': canonical, 'cells': cells, 'caption': caption,
             'geometry_source': 'native_html_explicit_spans', 'geometry_verified': False}
 
@@ -194,15 +210,17 @@ def check_docx(path, document):
 
 
 def export_bundle(root, document, *, word=True, xlsx=True, pandoc='pandoc', timeout=180):
-    """Always retain HTML/content when optional exporters fail; never mark PASS."""
+    """Retain HTML/content when optional exporters fail; never mark PASS."""
+    if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
+        raise ValueError('Export timeout must be finite and positive')
     root = Path(root)
-    checks, errors = {}, []
+    checks, errors, table_index = {}, [], []
     markup = render_html(document)
     (root / 'document.html').write_text(markup, encoding='utf-8')
-    # HTML blocks inside Markdown retain spans and literal identifiers. HTML is
-    # authoritative for conversion; Markdown is not reparsed to make the DOCX.
-    (root / 'document.md').write_text('\n\n'.join(markup.split('<section')) if False else
-                                    markup[markup.index('<body>')+6:markup.rindex('</body>')] + '\n', encoding='utf-8')
+    # Markdown's raw HTML blocks retain table spans and literal identifiers.
+    # HTML is authoritative for DOCX; Markdown is not reparsed during export.
+    body_markup = markup[markup.index('<body>')+6:markup.rindex('</body>')]
+    (root / 'document.md').write_text(body_markup + '\n', encoding='utf-8')
     if word:
         try:
             executable = shutil.which(pandoc)
@@ -231,6 +249,10 @@ def export_bundle(root, document, *, word=True, xlsx=True, pandoc='pandoc', time
         table = block['table']
         table_markup = '<html><body>' + table_html(table, f'T{index:04d}') + '</body></html>'
         (folder / (filename + '.html')).write_text(table_markup, encoding='utf-8')
+        entry = {'block_id': block['id'], 'html': f'tables/{filename}.html',
+                 'evidence_id': block.get('evidence_id'), 'bbox': block.get('bbox'),
+                 'table_model_sha256': json_hash(table), 'xlsx': None}
+        table_index.append(entry)
         if not xlsx:
             continue
         try:
@@ -249,19 +271,17 @@ def export_bundle(root, document, *, word=True, xlsx=True, pandoc='pandoc', time
                     if isinstance(cell, MergedCell):
                         continue
                     if cell.value is not None:
-                        # Treat screenshots as literal text, including = and
-                        # identifiers/leading zeroes. Do not execute formulas.
-                        cell.data_type = 's'
+                        cell.data_type = 's'  # Literal screenshot text, never Excel formulas.
                         cell.number_format = '@'
                         cell.alignment = Alignment(vertical='top', wrap_text=True)
             for col in ws.column_dimensions.values():
                 col.width = min(42, max(10, col.width or 10))
             path = folder / (filename + '.xlsx')
+            # OOXML may serialize an empty string as an empty cell. Treat only
+            # this storage distinction as equivalent; other characters stay exact.
             expected_cells = [(c.coordinate, c.value, c.data_type) for row in ws for c in row
-                              if not isinstance(c, MergedCell) and c.value is not None]
+                              if not isinstance(c, MergedCell) and c.value not in (None, '')]
             expected_merges = sorted(str(r) for r in ws.merged_cells.ranges)
-            # Check native conversion as well as the save/reload boundary. Empty
-            # geometrical cells are not inferred from missing XML cell records.
             model_values = [_compact(c['text']) for c in table['cells'] if _compact(c['text'])]
             converted_values = [_compact(str(v)) for _, v, _ in expected_cells if _compact(str(v))]
             wb.save(path)
@@ -270,14 +290,15 @@ def export_bundle(root, document, *, word=True, xlsx=True, pandoc='pandoc', time
             try:
                 observed_ws = saved.worksheets[0]
                 observed_cells = [(c.coordinate, c.value, c.data_type) for row in observed_ws for c in row
-                                  if not isinstance(c, MergedCell) and c.value is not None]
+                                  if not isinstance(c, MergedCell) and c.value not in (None, '')]
                 observed_merges = sorted(str(r) for r in observed_ws.merged_cells.ranges)
                 same = (expected_cells == observed_cells and expected_merges == observed_merges
                         and model_values == converted_values)
             finally:
                 saved.close()
+            entry['xlsx'] = f'tables/{filename}.xlsx'
             checks[block['id']] = {'status': 'CONSISTENT' if same else 'EXPORT_MISMATCH',
-                'xlsx': f'tables/{filename}.xlsx', 'sha256': file_hash(path),
+                'xlsx': entry['xlsx'], 'sha256': file_hash(path),
                 'saved_cells_and_merges_equal': expected_cells == observed_cells and expected_merges == observed_merges,
                 'html_nonempty_cell_text_equal': model_values == converted_values,
                 'source_geometry_verified': False, 'source_accuracy_verified': False}
@@ -285,6 +306,7 @@ def export_bundle(root, document, *, word=True, xlsx=True, pandoc='pandoc', time
                 errors.append({'stage': 'xlsx', 'block_id': block['id'], 'message': 'Table conversion changed cell text or saved geometry'})
         except Exception as exc:
             errors.append({'stage': 'xlsx', 'block_id': block['id'], 'message': f'{type(exc).__name__}: {exc}'})
+    write_json(root / 'table_index.json', table_index)
     result = {'schema': 1, 'status': 'EXPORT_ERROR' if errors else 'REVIEW_REQUIRED',
               'candidate_sha256': json_hash(document), 'checks': checks, 'errors': errors,
               'word_requested': word, 'xlsx_requested': xlsx, 'table_count': len(blocks),

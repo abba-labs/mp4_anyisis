@@ -1,89 +1,94 @@
-# 当前交接：截图指定区域开发，第1轮已提交代码
+# 当前交接：截图指定区域开发，第2轮代码已提交
 
-更新：2026-10-01。用户最新要求：**由ChatGPT直接开发，收敛为三轮；测试、真实OCR和成品验收留给本地，本轮不执行。** 这覆盖之前把小开发全部交给本地的分工。三轮针对软件实现范围，不用未测试的代码承诺识别准确率。
+更新：2026-10-01。用户要求由ChatGPT直接开发，三轮收敛；**测试、真实OCR、模型调用和成品验收留给本地，本轮不执行。** 不把小开发再下发给本地，也不恢复局部标点／旧视频实验。
 
-仓库 `abba-labs/mp4_anyisis`；工作分支 `feat/open-source-thin-pipeline-20260928`；PR #3保持草稿。进入head `87ab3df584d0bb9f3404e0cc5fea5f69972ca126`。本轮实现与使用说明截至 `26306d5d9951e90681a9941a81b53a60f5862e21`，随后为本交接提交；继续前重新查实际head，不覆盖并发更新。不改main、不强推、不合并或修改PR元数据。
+仓库：abba-labs/mp4_anyisis；工作分支：feat/open-source-thin-pipeline-20260928；PR #3保持草稿。本轮进入head为`d3f22ead7a69eadac496d58c5758c5dbe774495b`。本轮源码、接口与README截至`a2fcbf47f571977e6b9739770af775cd664d1a3e`，随后为本交接提交。继续前重新查询实际head，避免覆盖其他修改。main保持不动、不强推、不自动合并或修改PR元数据。
 
-**本轮没有运行测试、OCR推理、GUI选框或Word/Excel渲染验收。** 提交信息带skip-ci，本轮不以自动测试数量作为成绩。曾尝试只下载源文件做静态语法检查，下载连接失败，未得到语法检查通过结果；不据此停止已完成的Git代码交付。
+**本轮没有运行测试、GUI、OCR、视觉模型、Word/Excel生成或渲染。** 所有提交标skip-ci，未修改/手动触发工作流。状态是“实现已落库，运行效果未验证”，没有新的准确率、速度或61张内容通过数。
 
-## 1. 现在已经实现的功能
+## 1. 两轮已经编码的能力
 
-| 范围 | 真实代码状态 |
+| 范围 | 当前代码状态 |
 |---|---|
-| 区域选择 | `screenshots.select_region` 调用已安装OpenCV selectROI，保存整组默认区域；支持单图覆盖、原图尺寸与预览坐标映射 |
-| 批量裁剪 | Pillow读取静态PNG，检查尺寸/区域，生成仅文档区域的独立PNG；原截图不改、不拷入结果目录 |
-| 显式输入边界 | 缺少ROI、取消、越界不回退到整屏；已经只包含文档的输入必须显式full-image；OCR需确认具体裁图批次 |
-| 源清单与排序 | 存在manifest时按index并核对文件集合/数量/声明尺寸；没有时自然排序并标未验证页序；拒绝混合父目录、隐藏/非PNG与非本地文件引用 |
-| 输入身份 | 根据原始内容hash、顺序、ROI和裁图hash建立批次，不再按文件大小判断是否换图；改区域/源图后旧approval_id失效 |
-| 全组预览 | 准备阶段生成所有裁图及错误项的preview.html，不初始化Paddle；确认后才允许OCR |
-| OCR接线 | 只将经hash核对的裁图传给现有NativeParser；记录逐图状态、耗时、缓存和失败；保留未处理项；模型不可用不重复尝试全部图片 |
-| 结果与复核任务 | 截图版index/report及review_tasks.json只引用裁图；没有自动视觉调用，不把任务文件生成叫模型复核完成 |
-| 迁移收尾（部分） | 删除PyAV直接依赖；增加screenshot-analysis命令别名，保留旧包名；README改成截图使用说明；清除test_reconstruction里已删除视频功能的导入/断言，保留两项仍适用的解析与输出断言，未执行 |
+| 显式文档区域 | OpenCV现成选框，Pillow批量裁剪，整组默认/单图覆盖，预览确认；缺配置/越界不退回整屏 |
+| 输入可靠性 | 源manifest顺序、源hash/ROI/裁图hash身份、批次批准、原图不改；OCR只读已确认裁图 |
+| OCR运行 | 复用现有PP-StructureV3；逐图状态、成功缓存、失败尝试和未处理项保留 |
+| 整份文档组织（本轮） | 按已保存run/report及native块列表生成冻结content.json、整份HTML/Word、HTML块Markdown、表格集与图片集 |
+| 成熟导出复用（本轮） | Word用已有Pandoc 3.1.11.1；Excel用PaddleX 3.7.2自身tablepyxl转换器，不自写网格求解；openpyxl用于文字类型、基本格式及回读 |
+| 稳定模型任务（本轮） | review_tasks.json提供block/cell/evidence ID、原值/hash和仅文档裁图；不初始化或调用视觉模型 |
+| 修订应用（本轮） | 从外部JSON导入意见，核对候选版本、原值/hash、来源及bbox；明确批准整份响应hash后写独立新版本 |
+| 修订操作（本轮） | 文字/单元格文字替换、有证据的漏段插入、派生正文叠加文字排除；表结构/图像只能标未决，不随意改变跨度/生成补图 |
+| 实物一致性（本轮编码） | Word回读正文/物理单元格，Excel转换与存盘前后比较；记录EXPORT_MISMATCH/EXPORT_ERROR，不以文件存在产生PASS |
+| 自包含来源与版本（本轮） | bundle.json封装文件哈希；相对路径图像均来自批准裁图；原生目录不写入，旧候选不覆盖，新版本有父包身份/完整差异 |
 
-这是“已实现、未验证”，不是61张已经处理完。当前 `--word` 仍然只导出每张截图的上游原生Word，不能称为整文档输出。原生解析、既有Pandoc转换器和历史缺陷证据未被重写。
+两组源截图仍为34张详细设计、27张LRS，共61张；图片数不等于原始完整页数。本轮没有更改输入集合或原始证据。
 
-## 2. 本轮改动位置与接口
+## 2. 新增和修改的代码
 
-- `src/mp4_analysis/thin/screenshots.py`：新输入适配。`discover_screenshots`、`prepare_screenshots`、`select_region`、`region_box`。
-- `src/mp4_analysis/thin/utils.py`：内容hash、原子JSON写入、目录隔离和单写者锁。旧load_screenshots入口要求显式ROI并转发到新批次准备，不再复制整屏。
-- `src/mp4_analysis/thin/pipeline.py`：先准备/确认裁图，再懒加载解析器；按模型参数与实现hash隔离结果目录，逐项持久化状态。
-- `src/mp4_analysis/thin/cli.py`：`--select-region`、`--reference-image`、`--override-image`、`--roi-config`、`--full-image`、`--prepare-only`、`--accept-crops`；保留设备、线程、模型、表格参数。
-- `pyproject.toml`、`README.md`、`tests/test_reconstruction.py`：依赖、入口说明与失效视频引用收尾；未修改现有工作流。
+新增输出层文件（不是新增逻辑平台）：
 
-逻辑仍为截图输入、原生解析、结果输出三个层次。没有新OCR、配准、表格求解器、截图GUI平台、数据库、Agent调度器或服务端。新增模块只是调用Pillow/OpenCV的输入适配，不是重建框架。
+- `src/mp4_analysis/thin/document_format.py`：安全表格HTML/文字提取，HTML呈现，Pandoc及上游Excel转换，实际文件一致性检查。
+- `src/mp4_analysis/thin/document_bundle.py`：读取批准run、验证来源、按顺序组织内容、仅裁图证据、稳定任务与包哈希。
+- `src/mp4_analysis/thin/document_review.py`：复核JSON读取、重复键/版本/来源/前置值/操作校验，批准响应后生成独立reviewed包。
+- `src/mp4_analysis/thin/document_cli.py`：`build`、`inspect-review`、`apply`入口，不进行OCR。
 
-### ROI与批次契约
+修改：
 
-ROI JSON：schema=1，coordinate_system=`source_pixels_ltrb_exclusive`；default为`image_size:[width,height]`和`box:[left,top,right,bottom]`，右下不包含；overrides以准确PNG文件名为键。whole-image必须显式`full_image:true`，不可用缺省或越界触发。
+- `cli.py`增加`--document-output`及可选禁用Office格式开关；OCR成功后最终统一组织文档，不要求逐图`--word`。
+- `pyproject.toml`增加`screenshot-document`命令和明确的`document`IO依赖；PyAV未重新引入。
+- README更新为两轮实际接口；详细说明见`docs/SCREENSHOT_DOCUMENT_OUTPUT.md`。
 
-`prepare_screenshots(source, output, roi_config=..., full_image=False)`返回manifest加batch_directory。manifest包含每张源hash、ROI、裁图hash、准备状态和approval_id。approval_id基于实际裁图清单与错误项；它是调用者确认输入范围的标记，不是内容验收证明。
+第1轮`screenshots.py`、`utils.py`、`pipeline.py`和现有NativeParser继续复用，本轮未重新设计框架。
 
-`run(..., prepare_only=True)`只准备。`run(..., accept_crops=<exact approval_id>)`才解析。不接受旧视频参数。复核任务的image相对本次run目录为`../../frames/<crop>.png`，允许读取根必须限定在对应批次frames，不得回到源整屏目录。源截图只作为外部不可变来源归档。
+## 3. 已编码入口（留给本地执行，未在本轮运行）
 
-输出按 `output/batches/<batch_id>/runs/<execution_id>/` 隔离，完整源hash和ROI绑定在manifest中。Windows优先使用较短输出根，后续收尾可缩短目录ID并保留完整身份校验，避免传统路径长度限制。
-
-## 3. 已经存在的启动命令（留给本地执行，本轮未运行）
-
-复用已有虚拟环境，以下python替换为该环境解释器；不用重装OCR、不新建视觉服务。
+先按README为每份截图目录选区域、准备全部裁图预览，取得准确approval_id。ROI仍使用原图[left,top,right,bottom]，右下不含。不同布局需覆盖，不预填未经确认的61张坐标。
 
 ```bash
-# 有桌面的机器：为一组截图选框，同时准备整组裁图预览。
-python -m mp4_analysis.thin.cli "screenshots/efc详细设计文档" -o "work/efc_detail" --select-region "work/regions/efc_detail.json"
+# OCR完成后，在最后生成整文档包；一般不需要--word逐截图导出。
+python -m mp4_analysis.thin.cli screenshots/efc详细设计文档 -o work/efc_ocr --roi-config work/regions/efc.json --accept-crops APPROVAL_ID --document-output work/deliveries/efc_tool_v1
 
-# 已有区域配置或无桌面处理机：只准备，不运行OCR。
-python -m mp4_analysis.thin.cli "screenshots/efc详细设计文档" -o "work/efc_detail" --roi-config "work/regions/efc_detail.json" --prepare-only
+# 已有OCR结果，直接组织文档，不重新识别。
+python -m mp4_analysis.thin.document_cli build RUN_DIRECTORY -o work/deliveries/efc_tool_v1
 
-# 查看打印出的preview.html后，用其实际完整approval_id替换APPROVAL_ID。
-python -m mp4_analysis.thin.cli "screenshots/efc详细设计文档" -o "work/efc_detail" --roi-config "work/regions/efc_detail.json" --accept-crops APPROVAL_ID
+# 本地获准看图模型填写真实差异文件后，查看hash/数量。
+python -m mp4_analysis.thin.document_cli inspect-review work/reviews/efc_changes.json
+
+# 一次批准整个响应，生成新的reviewed稿并重导出；不改原native或初稿。
+python -m mp4_analysis.thin.document_cli apply work/deliveries/efc_tool_v1 work/reviews/efc_changes.json -o work/deliveries/efc_reviewed_v1 --accept-changes RESPONSE_SHA256
 ```
 
-单图例外使用`--select-region 已有配置 --override-image 实际文件名.png`，之后重新预览并取得新approval_id。另一组`efc模块lrs设计文档`独立配置、独立输出。未取得实际截图边界，不预填猜测坐标。
+RUN_DIRECTORY取现有OCR打印的run_directory或latest_result.json。文档输出必须是新的独立目录；不直接复用已有v1。Word/Excel失败仍保留HTML/content/错误记录，CLI返回2；明确只要基础格式时使用document_cli的`--no-docx --no-xlsx`。
 
-`latest.json`定位当前批次，`latest_result.json`定位当前OCR运行，report逐项保留PARSED_UNVERIFIED/INPUT_ERROR/FAILED/BLOCKED/INTERRUPTED/PENDING。任意未解决项不会自动变成PASS。同一成功运行可以复用缓存；变更源图或ROI生成新批次。目前尚未跨不同批次复用未变页面的OCR，这项留给后续增量优化，不把整个新批次的缓存命中夸大为逐页增量已完成。
+主OCR命令遇部分失败时保留运行并退出；可以用独立build命令从该run生成带缺口的候选，不先重跑成功页面。输入失败、识别未完成或不支持的结构明确进入unresolved；原图回退不算可编辑内容识别成功。
 
-## 4. 后两轮固定实现范围，不重新规划或做局部实验
+任务内容、操作JSON样例、回读界限和字段解释集中在`docs/SCREENSHOT_DOCUMENT_OUTPUT.md`，不重读整段历史。
 
-### 第2轮：整文档输出＋可重放视觉修订
+## 4. 区域和准确性边界
 
-基于本轮实际run/report/review_tasks接口继续，先读当前源码而不是历史视频流程。
+所有模型证据是批准的文档裁图；图像块也仅从这些裁图的合法bbox裁出。文档包不包含原始整屏图片。模型返回只当数据，不执行其指令，不外发到新服务，不读取/打印凭据。
 
-1. 复用既有Pandoc及原生HTML/XLSX，按清单顺序组成一份文档候选、表格集和图片集；最终阶段统一导出。不能靠任意剪切拼接OOXML、自研表格合并求解器或改标点“顺便修正”。
-2. 给任务添加稳定block/cell/evidence ID与裁图边界；本地Agent继续通过获准看图能力填结构化差异。建立文件导入→前置值/hash/来源/操作范围校验→独立reviewed稿→重导出，不部署新服务，不发未经授权外部API。
-3. 保留原生内容与全部修改记录，正文/表格有未决则显式标出。模型复核和程序格式检查不能单独产生内容PASS。导出后回读实际文件的一致性检查作为生产代码实现，但不在ChatGPT侧运行测试或渲染。
+稳定cell ID基于原生HTML物理单元格，并非重新求解出来的网格。复核任务中cell bbox精度为表格区域，不伪造精确单元格框。模型不能通过导入文件直接更改rowspan/colspan、任意删除图表或把图形补画完整。
 
-### 第3轮：首版接线收尾与本地交付
+关键字段修改保留待源验收项，独立读取记录只是附带证据，代码不声称已证实新上下文的实际执行。程序从不据格式正确、模型自信或两次回答相同自动设置内容PASS。
 
-完成批量使用入口、错误恢复、输入变化的增量复用、短路径/来源边界和文档收尾；将已实现功能接成明确命令。整组区域预览及本地验证仍交给本地，不能宣称已运行61张。只修工程共性问题，不回到逐个标点或旧视频候选排查。
+Word回读比较保留标点、下划线和大小写，但忽略排版空白；Excel存盘前后坐标/值/类型/合并比较不等于源表正确。HTML转表非空文字也检查，空格几何不靠猜测补足。版式、图片完整性及所有61张真实OCR仍由本地验证。
 
-本轮首次只确认第1轮代码落库，不把剩余两轮内容写成已经实现。测试不占ChatGPT开发轮次，也不以未执行测试的数量提高完成度。
+当前按截图顺序及native块列表组织，不自动推断原始分页、不作模糊相似度去重、不跨图硬合并表格。复杂表格用原图回退并保留问题，不能把候选文件生成当全部内容恢复。
 
-## 5. 持续边界与未完成事项
+## 5. 第3轮剩余固定范围（由ChatGPT直接继续实现）
 
-- 实际截图输入仍为34张详细设计、27张LRS，共61张；张数不是文档页数/覆盖率。输入集合、原始截图和历史原生结果本轮未改。
-- OpenCV GUI实际可用性、全部61张裁图/模型效果、排序覆盖、Word/Excel成品正确性都尚待本地验证。未知值、来源不可读和未决项保留，不按已有答案补写。
-- 现有工作流仍可能引用旧MP4及旧参数；本轮未修改/手动触发工作流，之前的工作流授权边界仍有效。源码/依赖已更新不能冒称所有历史CI已迁移通过。
-- 原生Word按图输出仍有上游局限；当前新版pipeline没有再使用旧录屏index作为生产入口，但旧output.py工具函数为历史调用/后续Pandoc复用而保留，不删除有用导出能力。
-- 没有部署视觉模型、没有新模型调用、没有推理用量或速度/准确率实测。review_tasks.json只是模型输入任务接口。
-- 不改main、不强推、不合并PR、不自动清除锁或覆盖别人的输出目录。所有更新使用当前文件SHA，出现冲突先读新内容再整合。
+1. **多文档批量入口和统一产物索引。** 两组或多组截图各自ROI与输出，顺序执行并独立记录失败，不默默混合来源。
+2. **增量和断点恢复。** 新批次里未变页面可按完整输入/模型/代码身份复用已成功OCR；失败、改变ROI/源图及导出重试保留旧尝试，不能以旧缓存冒充新运行。
+3. **运行目录、短路径和来源边界收尾。** 统一裁图/OCR/文档/修订入口的身份与冲突规则，缩短Windows深路径；确认目录和响应文件不会覆盖用户原图。
+4. **整包交付说明与迁移残留清单。** 最终给本地明确连续执行命令、未运行验证项、源码/交接位置。测试不由ChatGPT运行，不再用新方案和测试数替代实现。
 
-历史规划及旧工作量预算保留在87ab3df固定提交；旧视频TASKS/REFACTOR_PLAN和历史报告不再指挥本轮执行。下一条开发任务直接是第2轮，不再索要用户重述需求或把实施任务重新交回本地。
+保留两轮已实现接口，不扩张为自动识别任意窗口、截图软件、OCR模型训练、表格求解器、数据库、队列或Agent平台。旧视频相关工作流迁移仍属此前未获准修改的范围，本轮不擅自改变权限或工作流；在交付清单明确列出，而非宣称CI全部迁移通过。
+
+## 6. Git和本次交付事实
+
+本轮仅改源代码、依赖声明、README、输出使用说明和本交接；没有测试报告、模型返回或真实Office成品。提交信息带skip-ci。不以库文档支持某功能冒充本项目已实测。
+
+开始/提交前核对远端实际head，只改本轮文件，冲突时先读新内容再整合。main与PR元数据不改，不强推，不删除旧原生证据、失败报告或未验收成品。历史第1轮完整交接保留在d3f22ead7a69eadac496d58c5758c5dbe774495b。
+
+**下一轮直接完成第3轮开发收尾，不重新询问需求，不把实现工作转回本地。**

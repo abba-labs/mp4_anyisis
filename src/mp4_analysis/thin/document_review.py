@@ -1,21 +1,17 @@
-"""Import review data, validate its scope, and publish a separate candidate.
-
-A reviewer is an external, explicitly authorized Agent/service. This module
-never calls a model, runs commands from a response or declares source accuracy.
-The caller approves the exact response file hash; the original bundle is read-only.
-"""
+"""Validate external review data and publish a separate candidate; no model call."""
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import shutil
 import tempfile
 import uuid
 from pathlib import Path
 
-from .document_bundle import publish_candidate, read_bundle
+from .document_bundle import publish_candidate, read_bundle, require_delivery_target
 from .document_format import checked_bbox, local_file
-from .utils import file_hash, json_hash, output_lock, require_disjoint, write_json
+from .utils import checked_directory, json_hash, output_lock, require_disjoint, write_json
 
 _OPERATIONS = {'replace_text', 'replace_cell', 'restore_fragment', 'exclude_overlay',
                'flag_structure', 'flag_image'}
@@ -26,7 +22,6 @@ def read_response(path):
     if path.stat().st_size > 8_000_000:
         raise ValueError('Review response exceeds 8 MB; use bounded document batches')
     raw = path.read_bytes()
-    import hashlib
     digest = hashlib.sha256(raw).hexdigest()
     def no_duplicate_keys(pairs):
         result = {}
@@ -46,8 +41,6 @@ def read_response(path):
         raise ValueError('Record the actual reviewer mode')
     if not isinstance(reviewer.get('name'), str) or not reviewer['name'].strip():
         raise ValueError('Record reviewer name, or explicit unknown if unavailable')
-    # This is a review data format, not a job manifest. No program, executable,
-    # URL or output-path field is interpreted by this adapter.
     return response, digest
 
 
@@ -94,38 +87,82 @@ def _evidence_refs(change, unit, document):
     return checked
 
 
+def _merge_coverage(previous, reviewed, reported_ids, response_digest):
+    """Accumulate claims for unchanged evidence/content; never grant accuracy.
+
+    Coverage is bound to both source pixels and the resulting unit content.
+    Modifying a previously covered unit without a new review claim invalidates
+    it. Pending entries are regenerated once; all other unresolved issues stay.
+    """
+    evidence = reviewed['evidence']
+    if (not isinstance(reported_ids, list)
+            or any(not isinstance(eid, str) or eid not in evidence for eid in reported_ids)):
+        raise ValueError('Unknown reviewed evidence ID')
+    reported = set(reported_ids)
+    old_units = {u['id']: u for u in previous['units']}
+    units = {u['id']: u for u in reviewed['units']}
+    old_records = copy.deepcopy(previous.get('review_coverage', {}))
+    # Legacy bundles only stored a list. Import claims against their sealed
+    # source/content identity; do not invent independent acceptance records.
+    if not old_records:
+        for eid in previous.get('reviewed_evidence_ids_reported', []):
+            old_e = previous.get('evidence', {}).get(eid)
+            if old_e and old_e['unit_id'] in old_units:
+                old_records[eid] = {'image_sha256': old_e['sha256'],
+                    'unit_content_sha256': json_hash(old_units[old_e['unit_id']]['blocks']),
+                    'origin': 'legacy_reported_claim', 'source_accuracy_verified': False}
+    coverage = {}
+    history = reviewed.setdefault('review_coverage_history', [])
+    for eid, image in evidence.items():
+        identity = {'image_sha256': image['sha256'],
+                    'unit_content_sha256': json_hash(units[image['unit_id']]['blocks'])}
+        old = old_records.get(eid)
+        if eid in reported:
+            coverage[eid] = dict(identity, response_sha256=response_digest,
+                                origin='reviewer_reported', source_accuracy_verified=False)
+            history.append({'evidence_id': eid, 'event': 'REVIEW_REPORTED',
+                            'response_sha256': response_digest, **identity})
+        elif old and all(old.get(k) == v for k,v in identity.items()):
+            coverage[eid] = old
+        elif old:
+            history.append({'evidence_id': eid, 'event': 'COVERAGE_INVALIDATED',
+                            'response_sha256': response_digest, 'previous_claim': old})
+    active = []
+    for issue in reviewed.get('unresolved', []):
+        if isinstance(issue, dict) and issue.get('type') == 'source_review_pending':
+            history.append({'event': 'PENDING_CLOSED' if issue.get('evidence_id') in coverage else 'PENDING_REBUILT',
+                            'evidence_id': issue.get('evidence_id'), 'response_sha256': response_digest})
+        else:
+            active.append(issue)
+    active.extend({'type': 'source_review_pending', 'evidence_id': eid}
+                  for eid in evidence if eid not in coverage)
+    reviewed['unresolved'] = active
+    reviewed['review_coverage'] = coverage
+    reviewed['reviewed_evidence_ids_reported'] = sorted(coverage)
+    reviewed['accuracy_verified'] = False
+    reviewed['content_completeness_verified'] = False
+
+
 def apply_review(bundle_directory, response_file, target_directory, *, accept_changes,
                  word=True, xlsx=True, pandoc='pandoc', timeout=180):
-    source = Path(bundle_directory).resolve()
-    target = Path(target_directory).resolve()
+    source, target = checked_directory(bundle_directory), checked_directory(target_directory)
     require_disjoint(source, target)
     if target.exists():
         raise FileExistsError('Reviewed target already exists; use a new version')
     document, receipt = read_bundle(source)
+    require_delivery_target(document, target)
     response, digest = read_response(response_file)
     if accept_changes != digest:
-        raise ValueError('Response approval is missing/stale; inspect the response file and acknowledge its exact SHA256')
+        raise ValueError('Response approval is missing/stale; acknowledge its exact SHA256')
     if response.get('base_content_sha256') != receipt['content_sha256']:
         raise ValueError('Review belongs to another candidate version')
     reviewed = copy.deepcopy(document)
-    reviewed['variant'] = 'reviewed'
-    reviewed['parent_bundle_id'] = receipt['bundle_id']
-    reviewed['response_sha256'] = digest
-    reviewed['reviewer'] = response['reviewer']
-    reviewed['accuracy_verified'] = False
-    reviewed['content_completeness_verified'] = False
+    reviewed.update(variant='reviewed', parent_bundle_id=receipt['bundle_id'],
+                    response_sha256=digest, reviewer=response['reviewer'],
+                    accuracy_verified=False, content_completeness_verified=False)
     reviewed.setdefault('unresolved', [])
     targets = _index(reviewed)
     seen_issues, changed_targets, applied = set(), set(), []
-    checked_eids = response.get('reviewed_evidence_ids', [])
-    if not isinstance(checked_eids, list) or any(eid not in reviewed['evidence'] for eid in checked_eids):
-        raise ValueError('Unknown reviewed evidence ID')
-    reviewed['reviewed_evidence_ids_reported'] = sorted(set(checked_eids))
-    for eid in reviewed['evidence']:
-        if eid not in checked_eids:
-            reviewed['unresolved'].append({'type': 'source_review_pending', 'evidence_id': eid})
-    # Validate on the isolated copy first. A malformed item rejects the entire
-    # application; no partial revision is ever written into the base bundle.
     for change in response['changes']:
         if not isinstance(change, dict):
             raise ValueError('A review change must be an object')
@@ -146,8 +183,7 @@ def apply_review(bundle_directory, response_file, target_directory, *, accept_ch
             raise ValueError('A change must include a source-based reason')
         refs = _evidence_refs(change, unit, reviewed)
         log = {'issue_id': issue, 'operation': operation, 'target_id': target_id,
-               'reason': change['reason'], 'evidence_refs': refs,
-               'source_accuracy_verified': False}
+               'reason': change['reason'], 'evidence_refs': refs, 'source_accuracy_verified': False}
         if operation in {'flag_structure', 'flag_image'}:
             reviewed['unresolved'].append(log)
             continue
@@ -156,18 +192,14 @@ def apply_review(bundle_directory, response_file, target_directory, *, accept_ch
         changed_targets.add(target_id)
         before = node.get('text')
         if before is None:
-            # restore_fragment can anchor after a table or image; its precondition
-            # binds the complete unchanged block rather than an invented text.
             before = node
         if change.get('before') != before or change.get('target_before_hash') != json_hash(before):
             raise ValueError(f'Stale or incorrect modification precondition: {target_id}')
         log['before'] = copy.deepcopy(before)
-        if operation == 'replace_text':
-            if block['kind'] != 'text' or node is not block:
-                raise ValueError('replace_text requires a text block')
-        elif operation == 'replace_cell':
-            if block['kind'] != 'table' or node is block:
-                raise ValueError('replace_cell requires a physical cell; geometry is immutable')
+        if operation == 'replace_text' and (block['kind'] != 'text' or node is not block):
+            raise ValueError('replace_text requires a text block')
+        if operation == 'replace_cell' and (block['kind'] != 'table' or node is block):
+            raise ValueError('replace_cell requires a physical cell; geometry is immutable')
         if operation in {'replace_text', 'replace_cell', 'restore_fragment'}:
             text = change.get('text')
             if not isinstance(text, str) or len(text) > 100000 or '\x00' in text:
@@ -176,7 +208,7 @@ def apply_review(bundle_directory, response_file, target_directory, *, accept_ch
                 raise ValueError('Text removal requires explicit exclude_overlay')
             if operation == 'restore_fragment':
                 if node is not block:
-                    raise ValueError('A restored paragraph must be anchored after a block, not inside a cell')
+                    raise ValueError('A restored paragraph must be anchored after a block')
                 new_id = unit['id']+'.restored_'+json_hash({'issue': issue, 'response': digest})[:12]
                 new_block = {'id': new_id, 'kind': 'text', 'label': 'restored_text', 'text': text,
                              'bbox': refs[0]['bbox'], 'evidence_id': refs[0]['evidence_id'],
@@ -189,12 +221,10 @@ def apply_review(bundle_directory, response_file, target_directory, *, accept_ch
             log['after'] = text
         elif operation == 'exclude_overlay':
             if block['kind'] != 'text' or node is not block:
-                raise ValueError('Only a text block can be excluded as an overlay; no table/figure deletion')
+                raise ValueError('Only text overlays can be excluded; no table/figure deletion')
             block['excluded'] = True
             block['exclusion_reason'] = change['reason']
             log['after'] = None
-        # Independent reads are attached records, not proof that an isolated
-        # model invocation happened. Never upgrade the content status to PASS.
         critical = change.get('critical', True)
         if not isinstance(critical, bool):
             raise ValueError('critical must be boolean')
@@ -209,25 +239,21 @@ def apply_review(bundle_directory, response_file, target_directory, *, accept_ch
     if not isinstance(extra, list):
         raise ValueError('unresolved must be a list')
     reviewed['unresolved'].extend({'type': 'reviewer_unresolved', 'detail': x} for x in extra)
+    _merge_coverage(document, reviewed, response.get('reviewed_evidence_ids', []), digest)
     target.parent.mkdir(parents=True, exist_ok=True)
     with output_lock(target.parent):
         work = Path(tempfile.mkdtemp(prefix='.reviewed-', dir=target.parent))
         try:
-            # Only program-generated, hashed crop resources are carried into a
-            # new candidate; no model-controlled file path is ever copied.
-            resource_names = {e['image'] for e in document['evidence'].values()}
-            resource_names.update(b['image'] for u in document['units'] for b in u['blocks'] if b['kind'] == 'image')
-            for relative in resource_names:
+            resources = {e['image'] for e in document['evidence'].values()}
+            resources.update(b['image'] for u in document['units'] for b in u['blocks'] if b['kind'] == 'image')
+            for relative in resources:
                 if relative not in receipt['files']:
                     raise ValueError('Unsealed document image')
                 src = local_file(source, relative, receipt['files'][relative])
                 dst = work / relative
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(src, dst)
-            # Keep full validated response and the exact input bytes (with their
-            # hash) for reproduction, without printing or inventing API usage.
             response_bytes = Path(response_file).read_bytes()
-            import hashlib
             if hashlib.sha256(response_bytes).hexdigest() != digest:
                 raise ValueError('Review response changed during application')
             (work/'review_response.json').write_bytes(response_bytes)

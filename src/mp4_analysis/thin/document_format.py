@@ -1,20 +1,18 @@
-"""Output-only adapters: safe HTML, existing Pandoc and PaddleX table export.
+"""Thin output adapters for the existing Pandoc and PaddleX converters.
 
-No OCR, inferred table geometry, OOXML splicing or network requests. Export
-checks compare actual files with the frozen candidate, NOT with source truth.
+Unsupported semantic formatting becomes an explicit source-image fallback in
+bundle assembly. Export checks do not infer source accuracy or repair geometry.
 """
 from __future__ import annotations
 
-import hashlib
 import html
 import importlib.metadata
 import math
 import shutil
 import subprocess
-import zipfile
 from pathlib import Path
-from xml.etree import ElementTree as ET
 
+from .document_checks import check_docx, check_worksheet, declared_cells, literal_text
 from .utils import file_hash, json_hash, write_json
 
 
@@ -50,7 +48,6 @@ def checked_bbox(box, size):
 
 
 def _cell_text(element):
-    """Preserve explicit line boundaries while reading literal inline text."""
     pieces = [element.text or '']
     for child in element:
         if child.tag == 'br':
@@ -66,11 +63,10 @@ def _cell_text(element):
 
 
 def table_model(markup, block_id):
-    """Read upstream HTML physical cells without solving a table grid.
+    """Accept only literal cells and explicit spans supported without guessing.
 
-    Canonical rows preserve order and explicit spans. Cells become td for the
-    pinned upstream exporter, which otherwise reorders mixed th/td. Raw HTML
-    stays in the native cache. No remote/active markup or formulas are accepted.
+    In particular sup/sub/deletions and styled inline text are NOT flattened.
+    The caller retains a source crop and records unsupported_table instead.
     """
     from lxml import html as LH
     if not isinstance(markup, str) or len(markup) > 4_000_000:
@@ -81,12 +77,18 @@ def table_model(markup, block_id):
         raise ValueError('Expected exactly one non-nested native table')
     table = tables[0]
     allowed = {'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'caption',
-               'b', 'strong', 'i', 'em', 'span', 'p', 'br', 'sup', 'sub', 'u', 's', 'code'}
+               'b', 'strong', 'i', 'em', 'span', 'p', 'br', 'u', 'code'}
     for el in table.iter():
         if not isinstance(el.tag, str) or el.tag not in allowed:
-            raise ValueError('Unsupported table markup; retain source crop for review')
+            raise ValueError('Semantic/unsupported table markup cannot be flattened: '+str(el.tag))
         if any(k.lower().startswith('on') or k.lower() in {'src', 'href', 'srcset'} for k in el.attrib):
             raise ValueError('Active or linked table content is not supported')
+        # CSS can encode the same semantics as sup/sub/strike. Do not silently
+        # discard it on literal text nodes, or semantic styles on table cells.
+        style = el.get('style', '').lower()
+        if style and (el.tag not in {'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th'}
+                      or any(k in style for k in ('vertical-align', 'text-decoration', 'display', 'visibility'))):
+            raise ValueError('Styled table text requires source-image review')
     rows = table.xpath('./thead/tr | ./tbody/tr | ./tfoot/tr | ./tr')
     if not rows or len(rows) > 10000:
         raise ValueError('Empty or oversized table')
@@ -110,30 +112,37 @@ def table_model(markup, block_id):
         canonical.append(entries)
     if not cells or len(cells) > 100000:
         raise ValueError('Empty or oversized cell list')
-    caption = ''.join(_cell_text(c) for c in table.xpath('./caption'))
-    return {'rows': canonical, 'cells': cells, 'caption': caption,
-            'geometry_source': 'native_html_explicit_spans', 'geometry_verified': False}
+    result = {'rows': canonical, 'cells': cells,
+              'caption': ''.join(_cell_text(c) for c in table.xpath('./caption')),
+              'geometry_source': 'native_html_explicit_spans', 'geometry_verified': False}
+    declared_cells(result)  # Validate explicit contracts; no geometry inference.
+    return result
+
+
+def _literal_html(text):
+    # HTML/Pandoc may collapse ordinary repeated spaces. Encode them explicitly;
+    # verification permits NBSP/space equivalence, never separator deletion.
+    return html.escape(literal_text(text)).replace(' ', '&#160;').replace('\n', '<br>')
 
 
 def table_html(table, name='Table'):
     cells = {c['id']: c for c in table['cells']}
     parts = [f'<table name="{html.escape(name, quote=True)}">']
     if table.get('caption'):
-        parts.append('<caption>' + html.escape(table['caption']) + '</caption>')
+        parts.append('<caption>' + _literal_html(table['caption']) + '</caption>')
     parts.append('<tbody>')
     for row in table['rows']:
         parts.append('<tr>')
         for cid in row:
             c = cells[cid]
             parts.append(f'<td rowspan="{c["rowspan"]}" colspan="{c["colspan"]}" class="TYPE_STRING">'
-                         + html.escape(c['text']).replace('\n', '<br>') + '</td>')
+                         + _literal_html(c['text']) + '</td>')
         parts.append('</tr>')
     parts.append('</tbody></table>')
     return ''.join(parts)
 
 
 def render_html(document):
-    """Build a literal, local-only HTML candidate; no text-similarity deletion."""
     parts = ['<!doctype html><html><head><meta charset="utf-8"><title>Document candidate</title>',
              '<style>body{max-width:1100px;margin:24px auto;font-family:sans-serif;line-height:1.5}'
              'table{border-collapse:collapse;width:100%}td{border:1px solid #999;padding:5px;white-space:normal}'
@@ -144,83 +153,27 @@ def render_html(document):
         for block in unit['blocks']:
             if block.get('excluded'):
                 continue
-            kind = block['kind']
-            if kind == 'table':
+            if block['kind'] == 'table':
                 parts.append(table_html(block['table'], block['id']))
-            elif kind == 'image':
-                parts.append(f'<p><img src="{block["image"]}" alt="Document image"></p>')
+            elif block['kind'] == 'image':
+                parts.append(f'<p><img src="{html.escape(block["image"], quote=True)}" alt="Document image"></p>')
             else:
                 tag = 'h2' if block.get('label') in {'doc_title', 'paragraph_title', 'title'} else 'p'
-                parts.append(f'<{tag} id="{block["id"]}">' + html.escape(block.get('text', '')).replace('\n', '<br>') + f'</{tag}>')
+                parts.append(f'<{tag} id="{block["id"]}">' + _literal_html(block.get('text', '')) + f'</{tag}>')
         parts.append('</section>')
     parts.append('</body></html>')
     return ''.join(parts)
 
 
-def _compact(text):
-    return ''.join(text.split())
-
-
-def _expected(document):
-    body, tables = [], []
-    for unit in document['units']:
-        for block in unit['blocks']:
-            if block.get('excluded'):
-                continue
-            if block['kind'] == 'table':
-                table = block['table']
-                if table.get('caption'):
-                    body.append(table['caption'])
-                values = {c['id']: c['text'] for c in table['cells']}
-                ordered = [values[cid] for row in table['rows'] for cid in row]
-                body.extend(ordered)
-                tables.append([_compact(v) for v in ordered])
-            elif block['kind'] != 'image':
-                body.append(block.get('text', ''))
-    return _compact(''.join(body)), tables
-
-
-def check_docx(path, document):
-    ns = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
-    with zipfile.ZipFile(path) as archive:
-        root = ET.fromstring(archive.read('word/document.xml'))
-    body = root.find('w:body', ns)
-    if body is None:
-        raise ValueError('DOCX has no document body')
-    observed = _compact(''.join(x.text or '' for x in body.findall('.//w:t', ns)))
-    actual_tables = []
-    for tbl in body.findall('.//w:tbl', ns):
-        values = []
-        for row in tbl.findall('./w:tr', ns):
-            for cell in row.findall('./w:tc', ns):
-                merge = cell.find('./w:tcPr/w:vMerge', ns)
-                if merge is not None and merge.get('{'+ns['w']+'}val') != 'restart':
-                    continue
-                values.append(_compact(''.join(t.text or '' for t in cell.findall('.//w:t', ns))))
-        actual_tables.append(values)
-    expected, tables = _expected(document)
-    same = observed == expected and actual_tables == tables
-    return {'status': 'CONSISTENT' if same else 'EXPORT_MISMATCH',
-            'body_equal_ignoring_whitespace': observed == expected,
-            'physical_cell_text_equal': actual_tables == tables,
-            'expected_text_sha256': hashlib.sha256(expected.encode()).hexdigest(),
-            'actual_text_sha256': hashlib.sha256(observed.encode()).hexdigest(),
-            'file_sha256': file_hash(path), 'source_accuracy_verified': False,
-            'layout_rendered': False, 'merge_geometry_verified': False}
-
-
 def export_bundle(root, document, *, word=True, xlsx=True, pandoc='pandoc', timeout=180):
-    """Retain HTML/content when optional exporters fail; never mark PASS."""
+    """Retain candidates on failure. A consistent export is still unaccepted."""
     if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError('Export timeout must be finite and positive')
     root = Path(root)
     checks, errors, table_index = {}, [], []
     markup = render_html(document)
     (root / 'document.html').write_text(markup, encoding='utf-8')
-    # Markdown's raw HTML blocks retain table spans and literal identifiers.
-    # HTML is authoritative for DOCX; Markdown is not reparsed during export.
-    body_markup = markup[markup.index('<body>')+6:markup.rindex('</body>')]
-    (root / 'document.md').write_text(body_markup + '\n', encoding='utf-8')
+    (root / 'document.md').write_text(markup[markup.index('<body>')+6:markup.rindex('</body>')]+'\n', encoding='utf-8')
     if word:
         try:
             executable = shutil.which(pandoc)
@@ -238,7 +191,7 @@ def export_bundle(root, document, *, word=True, xlsx=True, pandoc='pandoc', time
             if result.stderr.strip():
                 errors.append({'stage': 'word', 'message': result.stderr.strip()})
             if checks['docx']['status'] != 'CONSISTENT':
-                errors.append({'stage': 'word', 'message': 'Export changed frozen candidate text/cells'})
+                errors.append({'stage': 'word', 'message': 'Frozen blocks, word separators, tables or image resources changed'})
         except Exception as exc:
             errors.append({'stage': 'word', 'message': f'{type(exc).__name__}: {exc}'})
     blocks = [b for u in document['units'] for b in u['blocks'] if b['kind'] == 'table' and not b.get('excluded')]
@@ -263,51 +216,47 @@ def export_bundle(root, document, *, word=True, xlsx=True, pandoc='pandoc', time
             from openpyxl.cell.cell import MergedCell
             from openpyxl.styles import Alignment
             wb = document_to_workbook(table_markup)
-            if len(wb.worksheets) != 1:
-                raise ValueError('Expected one native-converted sheet')
-            ws = wb.worksheets[0]
-            for row in ws:
-                for cell in row:
-                    if isinstance(cell, MergedCell):
-                        continue
-                    if cell.value is not None:
-                        cell.data_type = 's'  # Literal screenshot text, never Excel formulas.
-                        cell.number_format = '@'
-                        cell.alignment = Alignment(vertical='top', wrap_text=True)
-            for col in ws.column_dimensions.values():
-                col.width = min(42, max(10, col.width or 10))
-            path = folder / (filename + '.xlsx')
-            # OOXML may serialize an empty string as an empty cell. Treat only
-            # this storage distinction as equivalent; other characters stay exact.
-            expected_cells = [(c.coordinate, c.value, c.data_type) for row in ws for c in row
-                              if not isinstance(c, MergedCell) and c.value not in (None, '')]
-            expected_merges = sorted(str(r) for r in ws.merged_cells.ranges)
-            model_values = [_compact(c['text']) for c in table['cells'] if _compact(c['text'])]
-            converted_values = [_compact(str(v)) for _, v, _ in expected_cells if _compact(str(v))]
-            wb.save(path)
-            wb.close()
+            try:
+                if len(wb.worksheets) != 1:
+                    raise ValueError('Expected one native-converted sheet')
+                ws = wb.worksheets[0]
+                # Compare BEFORE any local formatting: candidate -> converter,
+                # not merely converter -> saved file. Literal formula text stays data.
+                conversion = check_worksheet(ws, table)
+                for row in ws:
+                    for cell in row:
+                        if isinstance(cell, MergedCell):
+                            continue
+                        if cell.value is not None:
+                            cell.data_type = 's'
+                            cell.number_format = '@'
+                            cell.alignment = Alignment(vertical='top', wrap_text=True)
+                for col in ws.column_dimensions.values():
+                    col.width = min(42, max(10, col.width or 10))
+                path = folder / (filename + '.xlsx')
+                wb.save(path)
+            finally:
+                wb.close()
             saved = load_workbook(path, data_only=False, keep_links=False)
             try:
-                observed_ws = saved.worksheets[0]
-                observed_cells = [(c.coordinate, c.value, c.data_type) for row in observed_ws for c in row
-                                  if not isinstance(c, MergedCell) and c.value not in (None, '')]
-                observed_merges = sorted(str(r) for r in observed_ws.merged_cells.ranges)
-                same = (expected_cells == observed_cells and expected_merges == observed_merges
-                        and model_values == converted_values)
+                if len(saved.worksheets) != 1:
+                    raise ValueError('Saved workbook sheet count changed')
+                stored = check_worksheet(saved.worksheets[0], table)
             finally:
                 saved.close()
             entry['xlsx'] = f'tables/{filename}.xlsx'
+            same = conversion['status'] == stored['status'] == 'CONSISTENT'
             checks[block['id']] = {'status': 'CONSISTENT' if same else 'EXPORT_MISMATCH',
                 'xlsx': entry['xlsx'], 'sha256': file_hash(path),
-                'saved_cells_and_merges_equal': expected_cells == observed_cells and expected_merges == observed_merges,
-                'html_nonempty_cell_text_equal': model_values == converted_values,
+                'candidate_to_converter': conversion, 'candidate_to_saved': stored,
                 'source_geometry_verified': False, 'source_accuracy_verified': False}
             if not same:
-                errors.append({'stage': 'xlsx', 'block_id': block['id'], 'message': 'Table conversion changed cell text or saved geometry'})
+                errors.append({'stage': 'xlsx', 'block_id': block['id'],
+                               'message': 'Candidate text/positions/explicit spans differ from converter or saved workbook'})
         except Exception as exc:
             errors.append({'stage': 'xlsx', 'block_id': block['id'], 'message': f'{type(exc).__name__}: {exc}'})
     write_json(root / 'table_index.json', table_index)
-    result = {'schema': 1, 'status': 'EXPORT_ERROR' if errors else 'REVIEW_REQUIRED',
+    result = {'schema': 2, 'status': 'EXPORT_ERROR' if errors else 'REVIEW_REQUIRED',
               'candidate_sha256': json_hash(document), 'checks': checks, 'errors': errors,
               'word_requested': word, 'xlsx_requested': xlsx, 'table_count': len(blocks),
               'inference_performed': False, 'accuracy_verified': False, 'layout_rendered': False}

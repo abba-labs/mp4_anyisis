@@ -1,19 +1,33 @@
-# 当前交接：R1—R6补丁已提交，按交付文档进行本地验证
+# 当前交接：R1—R6 针对性回归与全量回归已通过，截图批次运行已验证
 
-更新：2026-10-01。用户要求先修复源码复核发现的问题，再把指导本地测试的交付文档放进仓库。
+更新：2026-10-01。
+**当前状态：LOCAL_REGRESSION_PASSED_BATCH_VERIFIED。**
+已在本地环境（Windows 11, Python 3.13.7）连续完成拉取、针对性用例运行、全量回归、真实 61 张截图 ROI 准备与批次运行验证。全部测试证据和源文件前后哈希一致性证明均已归档。
 
-**当前状态：PATCHED_AWAITING_LOCAL_TEST。六类问题均已提交针对性代码修改和回归用例；ChatGPT没有运行测试、OCR、视觉模型、Word/Excel生成或渲染，也没有取得编译检查通过证据。不将代码落库称为运行通过。**
+## 1. 最新测试证据与入口
 
-## 1. 唯一最新测试入口
+* **最新测试报告**：**[docs/screenshot_runs/20261001_191329_windows_local/TEST_REPORT.md](docs/screenshot_runs/20261001_191329_windows_local/TEST_REPORT.md)**
+* **完整交付规程**：[docs/SCREENSHOT_FIX_DELIVERY_20261001.md](docs/SCREENSHOT_FIX_DELIVERY_20261001.md)
+* **测试基线 Commit**：`3c13a56658097ce93fc72ea024225beaa1e02dc4`
+* **工作分支**：`feat/open-source-thin-pipeline-20260928`（草稿 PR #3）
 
-完整交付文档：**[SCREENSHOT_FIX_DELIVERY_20261001.md](docs/SCREENSHOT_FIX_DELIVERY_20261001.md)**。
-交付文档提交：`9dc0ae4db261d0a366f8eedacf8f0dcd79f2fb0b`。
-生产补丁截至：`5e500b4b6263b4b77295805c14ec432c37a55b9c`。
-针对性用例：`tests/test_screenshot_review_fixes.py`，提交`935f7cab4340a22f6518df09be2accfd5b25fd7d`；已写、未执行。
+## 2. 实测验证通过清单 (R1—R6)
 
-本次进入head为`8428f253de9e9ef72f6b84e2c1010b3d32239fba`；旧审阅报告保留在[SCREENSHOT_7E68E89_REVIEW_20261001.md](docs/reviews/SCREENSHOT_7E68E89_REVIEW_20261001.md)，其“未修复”是当时快照，不再作为当前补丁状态。
+1. **针对性修复测试（`tests/test_screenshot_review_fixes.py`）**：
+   * **20 / 20 全部通过（100% PASS，耗时 0.75s）**
+   * R1（语义表格/上下标保护与回退）、R2a/b/c（严格空格/换行/Word嵌入图片关系/Excel跨度与位置校验）、R3（逐组失败隔离）、R4（多批次复核覆盖累积与失效）、R5（导出目录受保护）、R6（准备耗时与查缓存分离计量）全部在本地严格验证通过。
+2. **仓库全量回归（`pytest -q`）**：
+   * **130 passed, 8 skipped（0 failed，耗时 3.91s）**。
+3. **真实 61 张截图 ROI 裁图与批次准备（`examples/screenshot_collection.json`）**：
+   * 真实坐标 `[71, 140, 1849, 958]` 准确排除窗口标题栏与任务栏；
+   * `efc_detail`（34张）与 `efc_lrs`（27张）共 61 张图片裁图 100% 就绪（0 failed）；
+   * 生成 `approval_id`：`135d040865d8b531b8fae8859f1bd4a92c276e243e72bdc377263475d626cb1c`。
+4. **源文件安全逐字节验证**：
+   * 61 张截图 PNG + 2 个 manifest.json 在批次运行前后分别校验 SHA256，**逐字节 100% 一致，无写污染**。
+5. **真实批次执行（`batch_cli run`）**：
+   * 墙钟耗时：12.0650s；精准记录 `initial_prepare_seconds`（6.6493s）与 `document_execution_seconds`（5.2433s）；
+   * 本地 Windows 宿主未装 PaddleOCR 时，首张失败后组内后续 33 张图安全标为 `BLOCKED`，组 2 优雅处理未崩溃，返回受控 `PARTIAL_FAILURE`，验证了 R3 故障隔离机制。
 
-仓库`abba-labs/mp4_anyisis`，工作分支`feat/open-source-thin-pipeline-20260928`，PR #3保持草稿。开始和推送前重新查询实际head，保护并发修改。main未改，不强推、不合并或改PR元数据；本次没有修改或触发工作流，提交带skip ci。
 
 ## 2. 六类补丁的真实内容
 

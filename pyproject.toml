@@ -12,10 +12,12 @@ dependencies = ["Pillow>=10,<13", "opencv-contrib-python==4.10.0.84"]
 
 [project.optional-dependencies]
 parser = ["paddlepaddle==3.2.2", "paddlex==3.7.2", "paddleocr[doc-parser]==3.7.0", "python-docx>=1.2,<2"]
+document = ["lxml>=5,<7", "openpyxl>=3.1,<4", "python-docx>=1.2,<2"]
 dev = ["pytest>=8,<10"]
 
 [project.scripts]
 screenshot-analysis = "mp4_analysis.thin.cli:main"
+screenshot-document = "mp4_analysis.thin.document_cli:main"
 mp4-analysis = "mp4_analysis.thin.cli:main"
 
 [tool.setuptools.packages.find]

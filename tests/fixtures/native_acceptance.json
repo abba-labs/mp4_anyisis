@@ -1,8 +1,0 @@
-{
-  "note": "Manually transcribed anchors from authorized source frames. These are sample checks, not whole-video completeness.",
-  "sarc_requirement": {"video": "ET6601_SRC_LRS设计文档.mp4", "frame": 2891, "text": "ADC数字控制器不能早于模拟ADC解复位"},
-  "sarc_diagram": {"video": "ET6601_SRC_LRS设计文档.mp4", "frame": 479, "label": "image", "note": "This frame cuts the architecture diagram at its bottom edge. Detecting an image does not pass full-figure reconstruction."},
-  "memorymap": {"video": "GameViewer_96iLJ4Cokv.mp4", "frame": 60, "required_columns": 17,
-    "cells": {"A3": "ITCM_M7_0", "D3": "32KB", "E3": "0x0000_0000", "F3": "0x0000_7FFF", "P21": "sram容量由256KB改为64KB", "P23": "sram容量由256KB改为64KB"},
-    "note": "Expected A:Q grid from original worksheet. A shifted/restructured export requires explicit source mapping, not a silent PASS."}
-}

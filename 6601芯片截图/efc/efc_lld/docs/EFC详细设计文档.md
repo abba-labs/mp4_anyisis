@@ -35,7 +35,6 @@ VREADI
 **图2-16**
 
 ECC域段翻转写入图
-ETMOU hua
 
 
 ### 【右页】
@@ -46,7 +45,6 @@ ETMOU hua
 
 #### 3.1错误说明
 
-ETMCU han. Ji
 1. 写保护错误(wrperr):
 当配置接口/数据接口尝试对受保护区域进行写/擦除操作时，
 该信号置1．当信号置1后，写/擦除动作终止，不会对数据产
@@ -81,7 +79,6 @@ GFBPOWERPROC与NVREFUSEPROC执行的命令，发送
 #### 2.2.1. GFB AXIM PROC
 
 GFB_CTRL
-ETMCImuan.1
 
 **图2-3GFBAXIMPROC模块框图**
 
@@ -214,7 +211,6 @@ EFC
 AXLMASTER
 AXIM_PROC (1D)
 CACHE (1D)
-ETMCVT2a7i12026-1002-21:40
 ECC_GEN(1D)
 GFB_CTRL(OD)
 GFB_IF(1D)
@@ -262,7 +258,6 @@ BIMCU
 C）不一致错误标记还未清零，又发出了新的写/擦除操
 作；
 D)
-ETMCO
 配置ECC2bit错误标记还未清零，又发出了新的写/擦
 除操作;
 E）数据ECC 2bit错误标记还未清零，又发出了新的写/擦
@@ -375,7 +370,6 @@ GFB_POWER_OFF
 inthis state
 state to initial Flash
 ua2z 11 0026-70-02-21.37
-ETMCi
 s12_fctr_state==GFB_PWR_WORKINGhard_arst_n=1b0
 GFB_RD_NVRC
 GFB_SETC
@@ -398,7 +392,6 @@ GFB_RST_DLE
 in this state
 RICU
 reset use eft_arst_n
-RTMC muan.1i
 efc_power_state==GFB_RST_WORKING
 fc_arst_n=160
 GFB_RD_NVR
@@ -496,8 +489,6 @@ CMD_MERGE
 CMD_MLX
 RD_MUX
 ECC_GEN_W
-RTMC!
-ETMCII 2
 GFB_IF
 EFC_FCTR
 GFB_POWER_PROC
@@ -637,8 +628,6 @@ NormalRead的tMH等待时间不够的违例，因此将VREADl
 INVS
 PROG/ERASE/CEb/ARRDN/NVR/NVR_CFG/CHIP/Ato WEb setup
 time
-ETMOu 2
-ETMCU Tuan. 1i
 
 
 ### 【右页】
@@ -654,7 +643,6 @@ NVR/ARRDN
 /NVR_CFG
 CHIP
 RDEN
-ETMO/ hoar 1 2026-10-02-21-39
 CLOCK
 PROG
 Figure 4: Sector Erase Timing Diagram
@@ -748,7 +736,6 @@ TEST_EN
 0：测试不使能，正常工作；
 1：测试使能，可执行ATE、Wafertesting等动
 作；
-ETMCII
 EFC_VREF
 输入
 Flash参考电压输入
@@ -895,7 +882,6 @@ AXI反馈通道ID
 efc bresp[1:0]
 输出
 AXI反馈内容
-12080F
 
 
 
@@ -910,7 +896,6 @@ EFC 内的3个时钟（apb 时钟、axi时钟、EFC内部core 时
 死；Flash时钟与EFC内部core时钟门控一致。
 EFSUE时钟与EFC内部core时钟在OSC25MHz下同频同
 源。
-ETMCIman.
 
 #### 1.2接口列表和接口时序
 
@@ -1026,7 +1011,6 @@ CRG
 nvi_shift_done
 Option奇存器准备好，高电平有效；
 SYSC模块可以根据该信号，锁定启动模式；
-12080F
 
 
 ## 原图：`GameViewer_l6EdkNy5JN.png`
@@ -1089,7 +1073,6 @@ EFC_INT_PARSE、INT_GEN MRG：中断上报、汇聚模块，
 CFGFLASHIDS并且汇聚后上报给
 SOC CORE。
 EINCU
-ETMCUua). 3 2026-10-02-21;37
 ETNCUhan.13
 080F
 
@@ -1197,7 +1180,6 @@ clg_efc_ecc_ergen_sec_r
 **图3-1ECC错误注入对应寄存器配置**
 
 TMCLFHuTan.11
-ETMCV g-m7
 FTNCU han. 3 3026-10-02-71:40
 13080F
 
@@ -1309,7 +1291,6 @@ GFB_CTRL_RD
 GFS_CTRL_BRESP
 所有数需已限驱膜存后的mdlenm1发送完成
 下一拍通图GFB.CTRLIDLE
-ETMCyian 1i2
 GFB_CTRL_WRESP
 净持Flash的resp退国并提手，确认色完全写入Fush
 
@@ -1702,7 +1683,6 @@ EFCPFLASH接口信号说明
 说明
 输入
 输入时钟，频率为25MHz~200MHz
-12080F
 
 
 
@@ -2054,7 +2034,6 @@ ET6601方案中存在以下问题：
 1、ET6001、ET6601为了满足READMODE的RDEN使能后
 的HOLD时序tMH，三种读模式在每次进行最后一个读操作之
 后都进行了等待，降低了连续读的性能；
-ETMCV
 155 n
 080F
 
@@ -2178,7 +2157,6 @@ gfb2fctrl_cmd_rdy
 输出
 EFC命令反压信号，高电平有效
 160 {
-12080F
 
 ---
 

@@ -198,7 +198,6 @@ Flash
 
 （正常掉电）
 2D26-10-02-21:47
-2080F
 
 
 
@@ -376,7 +375,6 @@ EFC复位：表示只对EFC进行复位，对Flash没有断电。配
 
 置master也为EFC_GFB中的电源管理部分;
 正常阶段：配置master为系统CPU;
-ETHCU
 NVR、NVR_CFG读取，需要进行间接寻址，避免总线ready
 拉低挂住系统；
 数据写操作
@@ -401,7 +399,6 @@ Waftertesting阶段：配置master为测试接口；
 2026-10-02-21;47
 上电阶段：配置master为EFCGFB中的电源管理部分；
 正常阶段：配置master为系统CPU;
-2080F
 
 
 
@@ -552,7 +549,6 @@ Flash
 5）EFC转移状态到IDLE;
 6）EFC上报擦除完成中断，以及更新间接访问完成寄存器；
 SectorErase和RetryErase操作过程基本一致。
-2080F
 
 
 
@@ -664,7 +660,6 @@ i.写入 cfg_efc_nvr_keyl= 0x45670123；--pflash
 ii. 写入 cfg_efc_nvr_key2 = 0xCDEF89AB；--pflash
 i.写入 cfg_efc_nvr_keyl=0xCDEF0123；--flash
 ii.写入 cfg_efc_nvr_key2 = 0x456789AB；--flash
-2080F
 
 
 

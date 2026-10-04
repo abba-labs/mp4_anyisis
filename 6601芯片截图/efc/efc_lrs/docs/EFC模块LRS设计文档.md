@@ -21,8 +21,6 @@ DFLASH nvr sector;
 9.PFLASHmain空间，不受rdp保护；受wrp保护，以整片为
 单位;
 ETMCV
-BTNCUhuan7
-BTMCU huan,li
 
 #### 1.2.10.2 OTP需求
 
@@ -82,7 +80,6 @@ chip_ers_key[31:0]
 FLASHNVR通过配置NVRprot实现NVR空间读写保护，避
 dan
 免在软件被恶意攻击或者注入的时候，恶意串改NVR内容。
-11080F
 
 
 
@@ -167,7 +164,6 @@ USER_NVR_OTP_GEN_N 定义，变成OTP 后，"禁止擦除，
 7.pflashdflashNVR_CFG空间受nvr_cfg_unlock保护，保护锁
 定后，禁止读写擦除，芯片回收才会修改；
 8.dflashmain空间，受rdp、wrp保护，以sector/16KB为单位，
-1080F
 
 
 
@@ -195,7 +191,6 @@ ETMCU huas, li
 FC
 BTMCU man,
 适过不网bit来表示：
-BTMCU huan, 1i
 MVR_CFG(wafertesting价段/上电阶段)。
 NVR（上电阶投/EFC复位/正常阶段）
 读NVR_CFG/MVR对应地址
@@ -205,7 +200,6 @@ NVR（上电阶投/EFC复位/正常阶段）
 DLE
 ETMC han, 71 202F-10-02-77:4
 等待EFC重新启用
-BTMOU huan, li
 配置master
 EFC
 
@@ -241,10 +235,8 @@ ConfigRegister(上电视),
 根弱配置写换作时间，状志机进入IDLE
 JOLE
 等特EFC蛋新启用
-BTMCU hian.1 2026-
 EFC
 配置master
-ETMCU Tnuan. J1 2026-10-02-21:
 
 **图1-9数据写操作流程（NVR_CFG，NVR，Config Register）**
 
@@ -279,14 +271,12 @@ efuse为NVR中的一部分，当前版本中不进行额外保护；
 软件配置寄存器
 一每个扇区可独立管理
 ETMCV hinan. i 2026-10
-BTMCU huan, 1i
 致件启动写操作推除操作
 硬件check写/排降征含地址是否受保护
 （根据配置寄存器的写保护配置）
 硬件上报中断
 (完成和写保护插递）
 nan.11
-BTNCV hian 7i
 
 **图1-18Main写保护流程**
 
@@ -318,7 +308,6 @@ wrp保护，变成OTP后，芯片回收才会修改；
 才会修改；
 4.DFLASHOB空间（nvrsector6、7）受rdp、wrp保护，可修
 改，上电后自动生效；
-1080F
 
 
 
@@ -396,7 +385,6 @@ LRS.EFC.FUNC.SEC【05】支持DFLASH上电复位释放后，
 LRS.EFC.FUNC.SEC【06】安全级别只能由应用程序通过写
 OTP的方式由低向高配置，由高向低配置会被屏蔽；
 1 fp
-1080F
 
 
 
@@ -421,7 +409,6 @@ cfg_efc_reg_wrprot_flg，并返回总线错误）
 LCKCFG在CP测试后即拉高，用户在使用过程中无法进行
 读写；
 实现中使用 nvrcfg_unlock==8"h00 做为LCK_CFG;
-BTNCUhian7i2
 ETMOI
 
 
@@ -434,7 +421,6 @@ NVR写保护
 释先疾行fgregprotag倍存静清程
 orot_fig需存器款以为1
 ETMCU hvan. 11
-EINCU huan. Ji
 素性dfg_efc_nvr_key1 NVR_KEYI
 &作dg_efc_mvr_key2 - NVR_KEY2-
 并将cfg_n_arprot_fig量新配照力1
@@ -499,7 +485,6 @@ LRS.EFC.RBST【03】：模块从正常功能切到软复位或
 ClockGate模式，数据接口访问未完成时，按LRS.EFC.RBST
 【01、02】方式处理；
 STNCU
-BTMCU hnan,15
 
 #### 2.2 中断管理
 
@@ -538,7 +523,6 @@ ECC错误，并且建议一直开启MAIN/NVR/NVR_CFG的ECC使
 能，只进行64bit的写操作（否则可能导致一直上报ECC错误），
 防止出现单bit失效无法校验；
 LRS.EFC.LIMIT.SPEC【06】：总线不支持跨4Kbyte;
-1080F
 
 
 
@@ -591,7 +575,6 @@ FLASH支持双字、字、半字和字节进行编程操作；
 LRS.EFC.SOC【09】支持PFLASH、DFLASH
 数据对应
 2fp
-1080F
 
 
 
@@ -609,7 +592,6 @@ Flash
 CRG
 电源管理
 EFC
-ITMCU huan, 1i
 wait tRT
 产生PORb
 .por.rst.n.
@@ -620,11 +602,8 @@ wait tRT
 2) set config register,
 3）读取NVROPTIONBYTES城股
 rdn高存器更新
-BTMCU man, 11 2026-1y-02-21 43
 4）更新OPTIONBYTES寄存器
-BTMCV huan.J1 2026-10-02
 5）输出invr_shiftdone高电平
-BTMCU nuan i
 6）读取NVROTP域段
 7）更新OTP寄存器
 8）输出otp_shiftdone高电平
@@ -637,12 +616,10 @@ EFC
 **图1-1Flashpoweron流程图**
 
 实现：
-ETMOU huan, li
 1.子模块S40_FCTRL需要实现POWER-ON时序；
 2.EFCGFB子模块需要实现（通过控制S40FCTRL）：
 1)读取 NVR_CFG;
 2) Set config register;
-ETMCU hian.11
 RDN寄存器更新；
 
 
@@ -652,7 +629,6 @@ RDN寄存器更新；
 
 3）读取NVROPTION BYTES 域段（DFLASH）；
 4)输出nvr_shift_done高电平；
-huan, 11
 5）更新OPTION BYTES寄存器（DFLASH）；
 6)读取NVROTP域段（DFLASH);
 7）更新OTP寄存器（DFLASH）；
@@ -752,14 +728,12 @@ LRS.EFC.FLASH【06]：支持 Retry 擦除：Main Array Retry
 其方案示意图如下：
 09,T=[u]eμ_d.m
 .Ji
-BTMCU huan,1i
 wr_op
 test_code!±32d0
 SECTOR[n]
 09,t -[u]m]f dp]
 an112026-11
 rd_op
-BTMCU nuan, li
 
 **图1-19FLASHNVR读写保护示意图**
 
@@ -770,7 +744,6 @@ BTMCU nuan, li
 
 #### 1.2.11紧急撤销
 
-MCU han.11 2026-10-0
 在EFC硬件上没有额外处理，软件只需要对1.2.11.3/1.2.11.4
 中的master进行操作，EFC即可实现；
 
@@ -803,7 +776,6 @@ LRS.EFC.CLK【03】：功能模块工作频率25MHz~200MHz
 LRS.EFC.RST【O1】：上电复位（POR），低电平有效；
 LRS.EFC.RST【02】：DFTMODE切换复位，低电平有效；
 LRS.EFC.RST【03】：硬复位（PAD），低电平有效；
-1080F
 
 
 
@@ -871,8 +843,6 @@ LIDLE状态
 配置cfg_efc_rstn为0
 复位处理
 EFC模块复
-BTMCU man, 11 2026-10-02-21-41
-ETMCU nuan, 1i
 配置cfg_efc_rstn为1
 复位释放
 释效EFC模块复位
@@ -883,7 +853,6 @@ ETMCU nuan, 1i
 重新对efc操作
 ETMO/ han, 7i 202F-10-02-27:41
 避续工作
-BTMOU huan, li
 EFC
 SoC软件
 CRG
@@ -903,8 +872,6 @@ SoC软件看到，原因是gating时的处理需要分步骤，这里也就统
 
 #### 1.2.4模块门控
 
-huan.Ji
-CU huan, 11
 模块门控通过系统控制
 SYSC/CRG模块来实现，执行Flash
 深度睡眠，需要由软件来管理控制顺序；（dpd的配置，在SYSC
@@ -913,7 +880,6 @@ SoC收件
 CRG
 等格Flash不工作场架
 配瓶Flash进行保度cy_elcdpd=1bl
-BTMCu huan Jj 2026-10-0
 执行Flash联
 Ncmtcfg_efc_gating71
 Gating
@@ -921,7 +887,6 @@ Gating
 cfgfc.gating60
 Gating处理
 打开EFC程块时件
-ETCU huan.J1 2026-10-02-21:
 配低Flash保度维联唤mctg__dpd=1b0
 执行Flashte联换照
 正在工作
@@ -934,7 +899,6 @@ CRG
 （不带复位）
 ;47
 2D26-10-02-21:47
-1080F
 
 
 
@@ -983,14 +947,12 @@ EFC
 Flash
 配画indirect_cmd为擦除
 接收察除指令到命令队列
-huan, 11
 启动Flash进行擦除操作
 Flash进行擦除操作
 根据配面时间确定擦除完成
 状态机进入IDLE
 繁除完成中断（同时indirect_sts也机完成）
 等待EFC重新启用
-huan.T3
 SoC款件
 EFC
 Flash
@@ -1065,7 +1027,6 @@ Main
 对Flash进行读操作
 通过AX总线，反情rdata和resp
 结束数据传输新环
-BTMCU hmua,11 2026-10-02-21:4
 , 1i
 欢态机进入IDLE
 数据处理充成中断
@@ -1079,7 +1040,6 @@ EFC
 
 数据读操作流程（MainArray，
 Redundancy)
-huan, 1i
 ETMOU
 EFC只与Master（CPU或者系统DMA）产生数据交换；
 1）总线上接收到来自master的读命令（软件先启动Master）；
@@ -1095,7 +1055,6 @@ OK；如果受lock限制，则反馈ERR）
 
 5）EFC转移状态到IDLE；1（最后是master给CPU中断表示
 数据处理完成）
-ETWCU huan, 12
 数据写操作
 (Main Array,
 Redundancy)
@@ -1106,7 +1065,6 @@ master
 通过不同bit来表示：
 Redundancy,
 Main
-MCUhuan.Ji
 配置启动写数据
 开始数据传输暂环
 遵过AX总线，发送写命令和写数据
@@ -1182,7 +1140,6 @@ LRS.EFC.RBST【O1】：若该模块配置为ClockGate模式时，
 操作被屏蔽，且resp返回ERR;
 LRS.EFC.RBST【02】：若该模块进行软复位时，不会导致CPU
 1 fp!
-1080F
 
 
 

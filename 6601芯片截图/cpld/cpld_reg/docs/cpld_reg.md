@@ -945,29 +945,3 @@ symc_sel
 ro
 34H
 1'bo:bypass
-
-
-
----
-## 第二部分：ET6601 专项修改点提取
-
-> 以下条目为从原始截图中精确检索到的关于 ET6601 芯片的专项说明、变更标注与修订记录：
-
-- `images/GameViewer_6BxAbFuaFj.png` (全页): 新增域段
-- `images/GameViewer_6BxAbFuaFj.png` (全页): 新增寄存器
-- `images/GameViewer_ehusonHEeP.png` (全页): 新增寄存器
-- `images/GameViewer_ehusonHEeP.png` (全页): 新增域段
-- `images/GameViewer_er1i0CeSs6.png` (全页): 新增域段
-- `images/GameViewer_er1i0CeSs6.png` (全页): 新增寄存器
-- `images/GameViewer_Fi0vMedNfB.png` (全页): 新增寄存器
-- `images/GameViewer_Fi0vMedNfB.png` (全页): 新增域段
-- `images/GameViewer_L2kHUqr7hq.png` (全页): 新增域段
-- `images/GameViewer_L2kHUqr7hq.png` (全页): 新增寄存器
-- `images/GameViewer_lCjo9mFfHG.png` (全页): 新增寄存器
-- `images/GameViewer_lCjo9mFfHG.png` (全页): 新增域段
-- `images/GameViewer_lGL9ilGPp4.png` (全页): 新增寄存器
-- `images/GameViewer_lGL9ilGPp4.png` (全页): 新增域段
-- `images/GameViewer_VyNqGG3Mj6.png` (全页): 新增寄存器
-- `images/GameViewer_VyNqGG3Mj6.png` (全页): 新增域段
-- `images/GameViewer_ZlKSgCi2AU.png` (全页): 新增寄存器
-- `images/GameViewer_ZlKSgCi2AU.png` (全页): 新增域段

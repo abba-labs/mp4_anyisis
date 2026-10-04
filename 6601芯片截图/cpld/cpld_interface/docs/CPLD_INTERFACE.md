@@ -7,9 +7,9 @@
 ## 1. CPLD 顶层接口
 
 原图：
-- ../../interface_cpld/images/GameViewer_atyH2wpPCk.png
-- ../../interface_cpld/images/GameViewer_BtApOlYWLK.png
-- ../../interface_cpld/images/GameViewer_hN7LUohFXY.png
+- ../images/GameViewer_atyH2wpPCk.png
+- ../images/GameViewer_BtApOlYWLK.png
+- ../images/GameViewer_hN7LUohFXY.png
 
 | 信号类 | 来源 | 输出目的地 | Signal name | inout | pre-process | width | sync type | 说明 |
 |---|---|---|---|---|---|---:|---|---|
@@ -98,7 +98,7 @@
 
 ## 2. CPLD_CRG 接口
 
-原图：../../interface_cpld_crg/images/GameViewer_UipiANJp8o.png
+原图：../images/GameViewer_UipiANJp8o.png
 
 | interface | inout | width | connect signal |
 |---|---|---:|---|
@@ -138,7 +138,7 @@
 
 ## 3. CPLD_TCU 接口
 
-原图：../../interface_cpld_tcu/images/GameViewer_W0SBPxoKtt.png
+原图：../images/GameViewer_W0SBPxoKtt.png
 
 | interface | inout | width | connect signal |
 |---|---|---:|---|
@@ -157,7 +157,7 @@
 
 ## 4. DMA 接口
 
-原图：../../interface_dma/images/GameViewer_VIiEW5kIvW.png
+原图：../images/GameViewer_VIiEW5kIvW.png
 
 | signal | inout | width | connect_sig |
 |---|---|---:|---|
@@ -167,7 +167,7 @@
 
 ## 5. EFPGA_CFG 接口
 
-原图：../../interface_efpga_cfg/images/GameViewer_MLLzggVIdI.png
+原图：../images/GameViewer_MLLzggVIdI.png
 
 | signal | inout | width | connect_sig |
 |---|---|---:|---|
@@ -192,7 +192,7 @@
 
 ## 6. INT 接口
 
-原图：../../interface_int/images/GameViewer_UdwODJm0Oy.png
+原图：../images/GameViewer_UdwODJm0Oy.png
 
 | signal | inout | width | connect_sig |
 |---|---|---:|---|
@@ -203,7 +203,7 @@
 
 ## 7. PPI 接口
 
-原图：../../interface_ppi/images/GameViewer_E5Lo6kLaVW.png
+原图：../images/GameViewer_E5Lo6kLaVW.png
 
 | signal | inout | width | connect_sig |
 |---|---|---:|---|
@@ -223,7 +223,7 @@
 
 ## 8. TEST_PIN 接口
 
-原图：../../interface_test_pin/images/GameViewer_aGuTuqYiQP.png
+原图：../images/GameViewer_aGuTuqYiQP.png
 
 | signal | inout | width | connect_sig | list number |
 |---|---|---:|---|---|
@@ -250,12 +250,12 @@
 ## 9. CPLD_CFG 接口
 
 原图：
-- ../../../interface_cpld_cfg/images/GameViewer_DeXJCeTp8c.png
-- ../../../interface_cpld_cfg/images/GameViewer_DjmYAqFskT.png
-- ../../../interface_cpld_cfg/images/GameViewer_1AL3gcTZwO.png
-- ../../../interface_cpld_cfg/images/GameViewer_zJTLoUFpvE.png
-- ../../../interface_cpld_cfg/images/GameViewer_XN1mwSbZGj.png
-- ../../../interface_cpld_cfg/images/GameViewer_sB1DKm1Cn1.png
+- ../../images/GameViewer_DeXJCeTp8c.png
+- ../../images/GameViewer_DjmYAqFskT.png
+- ../../images/GameViewer_1AL3gcTZwO.png
+- ../../images/GameViewer_zJTLoUFpvE.png
+- ../../images/GameViewer_XN1mwSbZGj.png
+- ../../images/GameViewer_sB1DKm1Cn1.png
 
 | signal | inout | width | connect_sig |
 |---|---|---:|---|
@@ -419,22 +419,22 @@
 ## 10. EFPGA 接口
 
 原始截图按表格行号恢复顺序：
-- ../../interface_efpga/images/GameViewer_8iXOmcDGE1.png（行 1–38）
-- ../../interface_efpga/images/GameViewer_cU12ydgZ8V.png（行 39–74）
-- ../../interface_efpga/images/GameViewer_Vhor9olOSG.png（行 75–110）
-- ../../interface_efpga/images/GameViewer_J6lAwKnIhm.png（行 111–146）
-- ../../interface_efpga/images/GameViewer_Nbjags3WBm.png（行 147–182）
-- ../../interface_efpga/images/GameViewer_xPU5bUtZ6p.png（行 183–218）
-- ../../interface_efpga/images/GameViewer_S8SQhpMWC2.png（行 219–254）
-- ../../interface_efpga/images/GameViewer_grCDK0KTgW.png（行 255–290）
-- ../../interface_efpga/images/GameViewer_uxeRXbUM3q.png（行 291–326）
-- ../../interface_efpga/images/GameViewer_P0NFLfV564.png（行 327–362）
-- ../../interface_efpga/images/GameViewer_3BoqyOeJgh.png（行 363–398）
-- ../../interface_efpga/images/GameViewer_I7FEkY4HxN.png（行 399–434）
-- ../../interface_efpga/images/GameViewer_gvjimz0mF4.png（行 435–470）
-- ../../interface_efpga/images/GameViewer_2zddazPQIp.png（行 471–506）
-- ../../interface_efpga/images/GameViewer_bCW62ClcKC.png（行 507–542）
-- ../../interface_efpga/images/GameViewer_qhGTBAxdTy.png（行 543–554）
+- ../images/GameViewer_8iXOmcDGE1.png（行 1–38）
+- ../images/GameViewer_cU12ydgZ8V.png（行 39–74）
+- ../images/GameViewer_Vhor9olOSG.png（行 75–110）
+- ../images/GameViewer_J6lAwKnIhm.png（行 111–146）
+- ../images/GameViewer_Nbjags3WBm.png（行 147–182）
+- ../images/GameViewer_xPU5bUtZ6p.png（行 183–218）
+- ../images/GameViewer_S8SQhpMWC2.png（行 219–254）
+- ../images/GameViewer_grCDK0KTgW.png（行 255–290）
+- ../images/GameViewer_uxeRXbUM3q.png（行 291–326）
+- ../images/GameViewer_P0NFLfV564.png（行 327–362）
+- ../images/GameViewer_3BoqyOeJgh.png（行 363–398）
+- ../images/GameViewer_I7FEkY4HxN.png（行 399–434）
+- ../images/GameViewer_gvjimz0mF4.png（行 435–470）
+- ../images/GameViewer_2zddazPQIp.png（行 471–506）
+- ../images/GameViewer_bCW62ClcKC.png（行 507–542）
+- ../images/GameViewer_qhGTBAxdTy.png（行 543–554）
 
 ### 10.1 eFPGA interface
 

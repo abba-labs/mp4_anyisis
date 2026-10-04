@@ -1,5 +1,8 @@
 # CPLD - INTERFACE_PPI 设计与接口说明
 
+> ⚠️ 临时来源片段：本文件不是最终文档边界；最终文档为 `../../cpld_interface/docs/CPLD_INTERFACE.md`。CPLD 为新 IP，不做 ET6601 继承修改点总结。
+
+
 > 提取说明：本文档由 AI Agent 严格按照原始截图提取，未作主观改动。
 > 模糊或包含复杂波形处均已精确标明原截图文件索引。
 
@@ -51,10 +54,3 @@ ppi_data_outrpt
 input
 ppi_fifo_waterline
 5cfg_ppi_fifo_waterline
-
-
-
----
-## 第二部分：ET6601 专项修改点提取
-
-> 经全页视觉文本检索，本组截图中未出现显式的 'ET6601' 特殊字色修改标注或修订记录文本，整体属于该模块标准基线配置。

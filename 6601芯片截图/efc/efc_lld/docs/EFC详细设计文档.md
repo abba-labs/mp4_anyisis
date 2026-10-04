@@ -249,7 +249,6 @@ EFC接口信号说明
 
 EFC FCTRL 接口信号说明
 532 I
-2080F
 
 
 
@@ -488,7 +487,6 @@ SECUREERASE/OTP相关
 nvrcfg_unlock[7:0]
 输入
 pflash0/pflash1/dflashnvr_cfg空间的读/写/擦
-EIMCU
 除保护
 0x5A：打开保护，数据不能被读/写/擦除；
 其他：关闭保护，数据能被读/写擦除；
@@ -675,7 +673,6 @@ AXI写命令通道ID
 efe_awaddr[31:0]
 输入
 AXI写地址
-8IMCU
 efc_awlen[3:0]
 输入
 AXI写burstlen
@@ -912,7 +909,6 @@ CFGFLASHIDS并且汇聚后上报给
 SOC CORE。
 EINCU
 ETNCUhan.13
-080F
 
 
 ## 原图：`GameViewer_hMzpsucGw1.png`
@@ -1287,7 +1283,6 @@ CACHE空间；
 CACHE空间;
 7）AXIMPROC后续发送的地址，如果小于CACHE首地
 址，CACHE自动清空后，再和4）做同样动作；
-ETHCUh1a112026
 
 **图2-7Cache状态转移图**
 
@@ -1304,7 +1299,6 @@ RD DMUX;
 如果一致，则表明没有错误；
 2)
 如果有1bit错误，则产生中断并纠错；
-ETICU
 3)
 如果有2bit及以上错误，则产生中断，并原始数据返
 RD DMUX
@@ -1534,7 +1528,6 @@ Flash Write 根据 SMIC 要求，最多只能一次翻转 36bit，因此将写�
 
 O1D μmpteRD_St_OuE
 .Ti
-RIMCU manz Ti
 
 **图2-14FlashRead状态转移图**
 
@@ -1545,14 +1538,11 @@ HAC/03
 方案
 LRS/EFC/V100/03.设计/02.LLD/《FLASH读时序分析.xlsx》
 将读采样修改为efc_clk，提高读效率
-心美86.630.5
 efs_el
-ETHCU Truan. 1i
 
 
 ### 【右页】
 
-87Icu
 FLASH读模式切换tMH/tMS时间优化：
 tMS
 Read Modes: RECALL/VREAD1 read (CLOCK rising edge @RDEN=1)
@@ -1561,15 +1551,12 @@ US
 MH
 Read Modes: RECALL/VREAD1 read (CLOCK rising edge @RDEN=1)
 holdtime
-a.132026-10-02-2139
 工规FLASHMARCO一共三种读模式NormalRead、Recall
 Read、Vreadl。
 ET6601方案中存在以下问题：
 1、ET6001、ET6601为了满足READMODE的RDEN使能后
 的HOLD时序tMH，三种读模式在每次进行最后一个读操作之
 后都进行了等待，降低了连续读的性能；
-155 n
-080F
 
 
 ## 原图：`GameViewer_Jv14xpHsSC.png`
@@ -1611,14 +1598,12 @@ end
 begin
 RD_ST_GETCMD;
 read_nxtst
-RIMCU manTi
 end
 else begin
 read_nxtst
 RD_ST_IDLE;
 end
 RDST_CHANGE
-pua
 begin
 if
 (cnt>=(12'de,maxs)
@@ -1629,7 +1614,6 @@ end
 else begin
 read_nxtst
 RD_ST_CHANGE;
-pua
 if
 VREADI
 begin
@@ -1715,9 +1699,6 @@ CBA.
 (4) ADDR column includes Address, NVR and NVR_CFG, and ARRDN pins.
 (5) RETRYμsoj are '11' for single pulse sector erase, or changed regarding to retry order.
 ET6601优化方案为：
-IMCU
-dan
-13080F
 
 
 
@@ -1737,7 +1718,6 @@ RDIODE
 Change
 Normal
 Recall
-RIMCU manzTi
 Read
 Read
 RD MODE
@@ -1754,7 +1734,6 @@ Retry
 Program Or
 Erase(inc retry)
 VREAD1==1' b1
-ETNOUm/a11
 1、ET6601中优化为只有RecallRead需要等待tMH，Normal
 Read、Vreadl不等待，提升NormalRead、、Vreadl效率；
 2、VREAD1在RETRYERASE操作中提前拉高，在非RETRY
@@ -1772,7 +1751,6 @@ Ax
 ERAS
 wEb
 NEXT ERASE
-ETICu
 ERASE
 CEb
 NVR/ARRDN
@@ -1792,7 +1770,6 @@ ERASE/PROGRAM都认为READMODE发生过变化;
 #### 2.3.5 FCTRL GFB FLASH IF
 
 根据状态机信息进行具体接口信号的生成；
-080F
 
 
 
@@ -1812,7 +1789,6 @@ ERASE/PROGRAM都认为READMODE发生过变化;
 开启ECC和ECCRDRVS时，对于读出的ECC8bit内容的
 第0、1、4-7bit进行取反，保证ECC校验时ECC数据为写入前
 未取反的数据。
-8TMCV
 
 **图2-15**
 
@@ -1971,7 +1947,6 @@ n712026-10-02-21-4
 #### 3.2 DFX 设计
 
 Truan.11
-EIMCU
 1.ECC错误注入（模拟ECC错误产生）：
 由于Flash的特殊性（写入数据后无法直接更新，需要擦除后
 再写入，并且Flash本身有擦除寿命），因此尽量减少对Flash的
@@ -2005,7 +1980,6 @@ clg_efc_ecc_ergen_sec_r
 
 TMCLFHuTan.11
 FTNCU han. 3 3026-10-02-71:40
-13080F
 
 
 
@@ -2052,14 +2026,12 @@ GFB_CTRL(OD)
 GFB_IF(1D)
 S40_FCTRL (2D)
 FLASH(XMS)
-KIMCU
 
 **图4-2写数datapath示意图**
 
 写数据时，性能瓶颈在FLASH处，可以提升的地方就只在连
 续编程上;
 单次（72bit）编程大概39us-约
-BIMCU
 分两次36bit编程大概78us一约
 
 

@@ -1058,176 +1058,76 @@ output
 
 ## INTERFACE_CPLD_CRG
 
-### 截图编号 1 (`../../interface_cpld_crg/images/GameViewer_UipiANJp8o.png`)
+> 原图：`../../interface_cpld_crg/images/GameViewer_UipiANJp8o.png`
 
-#### 【全页】
+| interface | inout | width | connect signal |
+|---|---|---:|---|
+| dft_mode | input | 1 | dft_mode |
+| dft_crg_rst_n | input | 1 | dft_crg_rst_n |
+| dft_lgc_rst_n | input | 1 | dft_lgc_rst_n |
+| dft_glb_gt_se | input | 1 | dft_glb_gt_se |
+| dft_div_freeclk0 | input | 8 | dft_div_freeclk0 |
+| dft_div_freeclk1 | input | 8 | dft_div_freeclk1 |
+| dft_div_freeclk3 | input | 8 | dft_div_freeclk3 |
+| soc_sys_clk | input | 1 | soc_sys_clk |
+| cpld_25m | input | 1 | cpld_25m |
+| cpld_clk | input | 1 | cpld_clk |
+| cfg_clk_div_freeclk0 | input | 8 | cfg_clk_div_freeclk0 |
+| cfg_clk_div_freeclk1 | input | 8 | cfg_clk_div_freeclk1 |
+| cfg_clk_div_freeclk3 | input | 8 | cfg_clk_div_freeclk3 |
+| cpld_clk_gten | input | 5 | cpld_clk_gten |
+| efpga_sys_clk | output | 1 | efpga_sys_clk |
+| freeclk0 | output | 1 | free_clk0 |
+| freeclk1 | output | 1 | free_clk1 |
+| freeclk2 | output | 1 | free_clk2 |
+| freeclk3 | output | 1 | free_clk3 |
+| cpld_glb_rst_n | input | 1 | cpld_glb_rst_n |
+| cpld_cfg_rst_n | input | 1 | cpld_cfg_rst_n |
+| cpld_lgc_rst_n | input | 1 | cpld_lgc_rst_n |
+| cpld_user_rst_n | input | 1 | cpld_user_rst_n |
+| efpga_io_resetn0 | output | 1 | efpga_io_resetn0 |
+| efpga_io_resetn1 | output | 1 | efpga_io_resetn1 |
+| efpga_sys_resetn | output | 1 | efpga_sys_resetn |
+| efpga_c2s_rst_n | input | 1 | efpga_c2s_rst_n |
+| c2s_rst_n | output | 1 | c2s_rst_n |
+| cpld_f0esync_rst_n | output | 1 | cpld_f0esync_rst_n |
+| cpld_syscfg_rst_n | output | 1 | cpld_syscfg_rst_n |
+| cpld_sys_rst_n | output | 1 | cpld_sys_rst_n |
 
-interface
-inout
-width
-connect sianal
-dft_mode
-input
-1 dft mode
-dft_crg_rst_n
-dft_crg.rst.n
-input
-dft_lgc_rst_n
-input
-dft_lac_rstn
-dftalb_gat se
-input
-1dft_alb_at se
-dft div freeclko
-input
-8dft div freeclko
-dft_div_freeclk1
-input
-8dft_ div_freeclk1
-dft_div_freeclk3
-input
-8dft_div_freeclk3
-input
-soc_sys_clk
-1 soc_sys_clk
-cpld_
-input
-1cpld_
-cpld_clk
-input
-1 cpld_clk
-cfa_clk_div_freeclko
-input
-8cfa_clk_div_freeclko
-cfg_clk_div_freeclk1
-input
-8cfg_clk_div_freeclk1
-cfo_clk div freeclk3
-input
-8cfa clk div freeclk3
-cpld_clk_gten
-input
-5cpld_clk_gten
-efpga_sys_clk
-output
-1 efpga_sys_clk
-freeclko
-1 free_clk0
-freeclk1
-1 free_clk1
-freeclk2
-output
-1 free_clk2
-freeclk3
-output
-1 free_clk3
-cpld_glb_rst_n
-input
-1 cpld_glb_rst.n
-input
-cpld_cfg_rst_n
-1 cpld_cfg_rst_n
-cpld_lgc.rst_n
-input
-1 cpld_lgc_rst_n
-cpld_user_rst_n
-input
-1 cpld_user_rst_n
-output
-efpga_io_resetn0
-1efpga_io_resetn0
-efpga_io_resetn1
-output
-1efpga_io_resetn1
-efpga_sys_resetn
-output
-1 efpga_sys_resetn
-efpga_c2s_rst_n
-input
-1 efpga_c2s_rst_n
-c2s_rst_n
-output
-1 c2s_rst_n
-cpld_fOesync_rst_n
-output
-1 cpld_fOesync_rst_n
-cpld_syscfg_rst_n
-output
-1 cpld_syscfa_rst_n
-cpld_sys_rst.n
-1cpld_sys_rst_n
-INSERTSIGNALBEFORETHISROW
+> 原图备注：`INSERT SIGNAL BEFORE THIS ROW`
 
 ---
 
 ## INTERFACE_CPLD_TCU
 
-### 截图编号 1 (`../../interface_cpld_tcu/images/GameViewer_W0SBPxoKtt.png`)
+> 原图：`../../interface_cpld_tcu/images/GameViewer_W0SBPxoKtt.png`
 
-#### 【全页】
-
-interface
-inout
-width
-connectsignal
-dft_mode
-output
-dft_mode
-dft_crg.rst.n
-output
-dft_crg_rst_ng
-dft_lgc_rst_n
-output
-dft_lgc_rst_n
-dft_glb_gt_se
-output
-dft_glb_gt_se
-dft_div_freeclk0
-output
-8dft_div_freeclko
-dft_div_freeclk1
-output
-dft_div_freeclk1
-dft_div_freeclk3
-output
-8dft_div_freeclk3
-dft_efpga_scan_in
-output
-200dft_efpga_scan_in
-dft_efpaa_scan_out
-input
-200dft_efpga_scan_out
-dft_efpga_scan_en
-output
-dft_efpga_scan_en
-dft_efpga_scan_clk
-output
-dft_efpga_scan_clk
-13dft_efpgauscan_rstn
-output
-1dft_efpga_scan_rstn
+| interface | inout | width | connect signal |
+|---|---|---:|---|
+| dft_mode | output | 1 | dft_mode |
+| dft_crg_rst_n | output | 1 | dft_crg_rst_n |
+| dft_lgc_rst_n | output | 1 | dft_lgc_rst_n |
+| dft_glb_gt_se | output | 1 | dft_glb_gt_se |
+| dft_div_freeclk0 | output | 8 | dft_div_freeclk0 |
+| dft_div_freeclk1 | output | 8 | dft_div_freeclk1 |
+| dft_div_freeclk3 | output | 8 | dft_div_freeclk3 |
+| dft_efpga_scan_in | output | 200 | dft_efpga_scan_in |
+| dft_efpga_scan_out | input | 200 | dft_efpga_scan_out |
+| dft_efpga_scan_en | output | 1 | dft_efpga_scan_en |
+| dft_efpga_scan_clk | output | 1 | dft_efpga_scan_clk |
+| dft_efpga_scan_rstn | output | 1 | dft_efpga_scan_rstn |
 
 ---
 
 ## INTERFACE_DMA
 
-### 截图编号 1 (`../../interface_dma/images/GameViewer_VIiEW5kIvW.png`)
+> 原图：`../../interface_dma/images/GameViewer_VIiEW5kIvW.png`
 
-#### 【全页】
-
-sianal
-inout
-width
-connect_sig
-efpga_dma_reqo
-input
-1efpga_dma_req0
-efpga_dma_req1
-input
-efpga_dma_req1
-cpld_dma_req
-Output
-2 cpld_usr_dma
+| signal | inout | width | connect_sig |
+|---|---|---:|---|
+| efpga_dma_req0 | input | 1 | efpga_dma_req0 |
+| efpga_dma_req1 | input | 1 | efpga_dma_req1 |
+| cpld_dma_req | output | 2 | cpld_usr_dma |
 
 ---
 
@@ -3040,207 +2940,88 @@ ADCH事件
 
 ## INTERFACE_EFPGA_CFG
 
-### 截图编号 1 (`../../interface_efpga_cfg/images/GameViewer_MLLzggVIdI.png`)
+> 原图：`../../interface_efpga_cfg/images/GameViewer_MLLzggVIdI.png`
 
-#### 【全页】
-
-signal
-inout
-width
-connectsig
-sys_clk
-input
-1 efpga_sys_clk
-sys_rstn
-input
-1 cpld_sys_rst_n
-input
-efpga_clk
-1free_clko
-efpga_rstn
-input
-cpld_fOesync_rst_n
-cfg_efpga_mask_en
-input
-1cfg_efpga_mask_en
-cfg_efpgao_enb
-input
-1cfg_efpga0_enb_nc
-cfg_efpgao_val
-input
-32cfg_efpga0_val
-cfg_efpga1_enb
-input
-1 cfg_efpga1_enb_nc
-32cfg_efpga1_val
-cfo_efpgal_val
-input
-cfg_efpga0_esync
-output
-32 cfg_efpga0_esync
-cfg_efpga1_esync
-output
-32 cfg_efpga1_esync
-efpga0_rpt
-input
-32efpga0_rpt
-input
-efpga1_rpt
-32efpga1_rpt
-output
-efpga0_rpt_valin
-32 efpga_rpt0_val_in
-output
-efpga1_rpt_val_in
-32 efpga_rpt1_val_in
-s2c_cfg_enb
-input
-1s2c_cfg_enb
-s2c_cfg
-input
-32s2c_cfg
-s2c_cfa_esync
-output
-32s2c_cfa_esync
+| signal | inout | width | connect_sig |
+|---|---|---:|---|
+| sys_clk | input | 1 | efpga_sys_clk |
+| sys_rstn | input | 1 | cpld_sys_rst_n |
+| efpga_clk | input | 1 | free_clk0 |
+| efpga_rstn | input | 1 | cpld_f0esync_rst_n |
+| cfg_efpga_mask_en | input | 1 | cfg_efpga_mask_en |
+| cfg_efpga0_enb | input | 1 | cfg_efpga0_enb_nc |
+| cfg_efpga0_val | input | 32 | cfg_efpga0_val |
+| cfg_efpga1_enb | input | 1 | cfg_efpga1_enb_nc |
+| cfg_efpga1_val | input | 32 | cfg_efpga1_val |
+| cfg_efpga0_esync | output | 32 | cfg_efpga0_esync |
+| cfg_efpga1_esync | output | 32 | cfg_efpga1_esync |
+| efpga0_rpt | input | 32 | efpga0_rpt |
+| efpga1_rpt | input | 32 | efpga1_rpt |
+| efpga0_rpt_val_in | output | 32 | efpga_rpt0_val_in |
+| efpga1_rpt_val_in | output | 32 | efpga_rpt1_val_in |
+| s2c_cfg_enb | input | 1 | s2c_cfg_enb |
+| s2c_cfg | input | 32 | s2c_cfg |
+| s2c_cfg_esync | output | 32 | s2c_cfg_esync |
 
 ---
 
 ## INTERFACE_INT
 
-### 截图编号 1 (`../../interface_int/images/GameViewer_UdwODJm0Oy.png`)
+> 原图：`../../interface_int/images/GameViewer_UdwODJm0Oy.png`
 
-#### 【全页】
-
-inout
-wWiotn
-connect_sig
-clk
-input
-1 soc_sys_clk
-input
-rst_n
-efpga_sys_resetn
-int_src_pulse
-input
-2 cpld_usr_intr_src
-cpld_usr_intr
-2 cpld_usr_intr
+| signal | inout | width | connect_sig |
+|---|---|---:|---|
+| clk | input | 1 | soc_sys_clk |
+| rst_n | input | 1 | efpga_sys_resetn |
+| int_src_pulse | input | 2 | cpld_usr_intr_src |
+| cpld_usr_intr | output | 2 | cpld_usr_intr |
 
 ---
 
 ## INTERFACE_PPI
 
-### 截图编号 1 (`../../interface_ppi/images/GameViewer_E5Lo6kLaVW.png`)
+> 原图：`../../interface_ppi/images/GameViewer_E5Lo6kLaVW.png`
 
-#### 【全页】
-
-signal
-inout
-width
-connectsig
-sys_clk
-input
-1 efpga_sys_clk
-input
-sys_rstn
-1 cpld_sys_rst_n
-efpga_clk
-input
-1 free_clk0
-input
-efpga_rstn
-1 cpld_fOesync_rst_n
-ppi_data_bus
-12ppi_bus_din
-ppi_csn
-1ppi_csn
-ppi_bus_enb
-input
-1ppibus_enb_nc
-ppi_addr
-input
-5ppi_bus_addr
-input
-ppi_data_out
-12ppi_data_out
-12ppi_data_bus_esync
-ppi_data_bus_esync
-output
-ppi_addr_esync
-5ppi_addr_esync
-ppi_data_outrpt
-12ppi_bus_dout_in
-input
-ppi_fifo_waterline
-5cfg_ppi_fifo_waterline
+| signal | inout | width | connect_sig |
+|---|---|---:|---|
+| sys_clk | input | 1 | efpga_sys_clk |
+| sys_rstn | input | 1 | cpld_sys_rst_n |
+| efpga_clk | input | 1 | free_clk0 |
+| efpga_rstn | input | 1 | cpld_f0esync_rst_n |
+| ppi_data_bus | input | 12 | ppi_bus_din |
+| ppi_csn | output | 1 | ppi_csn |
+| ppi_bus_enb | input | 1 | ppi_bus_enb_nc |
+| ppi_addr | input | 5 | ppi_bus_addr |
+| ppi_data_out | input | 12 | ppi_data_out |
+| ppi_data_bus_esync | output | 12 | ppi_data_bus_esync |
+| ppi_addr_esync | output | 5 | ppi_addr_esync |
+| ppi_data_out_rpt | output | 12 | ppi_bus_dout_in |
+| ppi_fifo_waterline | input | 5 | cfg_ppi_fifo_waterline |
 
 ---
 
 ## INTERFACE_TEST_PIN
 
-### 截图编号 1 (`../../interface_test_pin/images/GameViewer_aGuTuqYiQP.png`)
+> 原图：`../../interface_test_pin/images/GameViewer_aGuTuqYiQP.png`
 
-#### 【全页】
-
-sianal
-inout
-width
-connect sig
-listnumber
-input
-sysc_cpld_testpinO_sel
-sysc_cpld_testpin_sel
-sysc_cpld_testpin1_sel
-input
-sysc_cpld_testpin1_sel
-Sysc_cpld_testpin2sel
-input
-sysc_cpld_testpin2_sel
-sysc_cpld_testpin3_sel
-input
-sysc_cpld_testpin3_sel
-cpld_sysc_testpin
-output
-4 cpld_sysc_testpin
-freeclko
-input
-1 free_clk0
-freeclk1
-input
-1free_clk1
-1 free_clk2
-freeclk2
-input
-freeclk3
-1 free_clk3
-input
-input
-efpga_io_resetn0
-1efpga_io_resetn0
-efpga_io_resetn1
-input
-efpga_io_resetnl
-efpga_sys.resetn
-input
-efpga_sys_resetn
-1c2s_rst_n
-c2s_rst_n
-input
-input
-cpld_fOesync_rst_n
-cpld_fOesync_rst_n
-input
-cpld_syscfg_rst_n
-1 cpld_syscfg_rst_n
-input
-cpld_sys_rst_n
-1 cpld_sys_rst_n
-input
-cpld_usr_intr_src
-cpld_usr_intr_src
-cpld_cfa_done_sync
-input
-cpld_cfg_done_sync
-cpld_cfg_err_sync
-input
-cpld_cfg_err_sync
+| signal | inout | width | connect_sig | list number |
+|---|---|---:|---|---|
+| sysc_cpld_testpin0_sel | input | 8 | sysc_cpld_testpin0_sel | |
+| sysc_cpld_testpin1_sel | input | 8 | sysc_cpld_testpin1_sel | |
+| sysc_cpld_testpin2_sel | input | 8 | sysc_cpld_testpin2_sel | |
+| sysc_cpld_testpin3_sel | input | 8 | sysc_cpld_testpin3_sel | |
+| cpld_sysc_testpin | output | 4 | cpld_sysc_testpin | |
+| freeclk0 | input | 1 | free_clk0 | 5 |
+| freeclk1 | input | 1 | free_clk1 | 6 |
+| freeclk2 | input | 1 | free_clk2 | 7 |
+| freeclk3 | input | 1 | free_clk3 | 8 |
+| efpga_io_resetn0 | input | 1 | efpga_io_resetn0 | 10 |
+| efpga_io_resetn1 | input | 1 | efpga_io_resetn1 | 11 |
+| efpga_sys_resetn | input | 1 | efpga_sys_resetn | 12 |
+| c2s_rst_n | input | 1 | c2s_rst_n | 13 |
+| cpld_f0esync_rst_n | input | 1 | cpld_f0esync_rst_n | 14 |
+| cpld_syscfg_rst_n | input | 1 | cpld_syscfg_rst_n | 15 |
+| cpld_sys_rst_n | input | 1 | cpld_sys_rst_n | 16 |
+| cpld_usr_intr_src | input | 2 | cpld_usr_intr_src | 17/18 |
+| cpld_cfg_done_sync | input | 1 | cpld_cfg_done_sync | 19 |
+| cpld_cfg_err_sync | input | 1 | cpld_cfg_err_sync | 20 |

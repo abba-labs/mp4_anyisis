@@ -822,109 +822,36 @@ LRS.EFC.RST【03】：硬复位（PAD），低电平有效；
 ### 【右页】
 
 ### 1.2.5 芯片系统启动
-
----
-
-## 图像编号 18 (原图: `GameViewer_nD3eu17L6q.png`)
+## 原图：`GameViewer_nD3eu17L6q.png`
 
 ### 【左页】
 
-配置
-说明
-间接导址命令，由IDS产生脉冲启动：
-bit[15:13]-指令类型:
-an 11 026-10-02-21:41
-O: Read;
-ETNCUman. 71
-1: Write;
-,li
-2:正常擦除；
-3:retry擦除；
-4: vread;
-default: NA;
-bit[12:10]-选择类型;
-O: NVR_CFG;
-1: NVR;
-2: Main;
-cfg_efc_indirect_cmd_r
-16°d0
-3: Redundancy;
-4:整片；
-default: Main
-BTMCU hua,11
-ETMCU uan, li
-bit[9:0]-地址选择:
-sector选择：
-选择类型NVR时，低4bit有效；
-选择类型Main时，9bit有效；
-选择类型Redundancy时，低1bit有效；
-选择类型整片时，低2bit有效，表示含义为：
-O: All Main Array:
-1: All Main Array + All Redundancy.
-2: All Main Array + All Redundancy + All NVR;
-other: reserved.
-87euhuan, i
-, li
-0:正在操作；
-cfg_efc_indirect_sts_rpt
-2'b0
-1:操作完成(OK);
-2:操作完成(ERR);
-other: Reserved,
-cfg_efc_indirect_wdatao_r
-32b0
-间接写数据0，低32bit；
-间接写数据1，高32bit；
-cfg_efc_indirect_wdata1_r
-32'bo
-如果涉及到byte级的操作，软件写入该毒存器
-hua
-时，不操作部分置1
-32'bo
-cfg_efc_indirect_rdatao_rpt
-间接数据0返回，
-低32bit：
-32'bo
-间接数据1返回，
-cfg_efc_indirect_rdata1_rpt
-高32bit;
-
+| 序号 | 配置 | 默认值 | 说明 |
+|---:|---|---|---|
+| 1 | cfg_efc_indirect_cmd_r | 16'd0 | 间接寻址命令，由 IDS 产生脉冲启动；bit[15:13] - 指令类型：0：Read；1：Write；2：正常擦除；3：retry擦除；4：vread；default：NA；bit[12:10] - 选择类型：0：NVR_CFG；1：NVR；2：Main；3：Redundancy；4：整片；default：Main；bit[9:0] - 地址选择：sector选择；选择类型 NVR 时，低4bit有效；选择类型 Main 时，9bit有效；选择类型 Redundancy 时，低1bit有效；选择类型整片时，低2bit有效，表示含义为：0：All Main Array；1：All Main Array + All Redundancy；2：All Main Array + All Redundancy + All NVR；other：reserved。 |
+| 2 | cfg_efc_indirect_sts_rpt | 2'b0 | 读取状态寄存器，只读：0：正在操作；1：操作完成(OK)；2：操作完成(ERR)；other：Reserved。 |
+| 3 | cfg_efc_indirect_wdata0_r | 32'b0 | 间接写数据0，低32bit； |
+| 4 | cfg_efc_indirect_wdata1_r | 32'b0 | 间接写数据1，高32bit；如果涉及到byte级的操作，软件写入该寄存器时，不操作部分置1 |
+| 5 | cfg_efc_indirect_rdata0_rpt | 32'b0 | 间接数据0返回，低32bit； |
+| 6 | cfg_efc_indirect_rdata1_rpt | 32'b0 | 间接数据1返回，高32bit； |
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图1-14 `，完整结构与时序请查看原图 `GameViewer_nD3eu17L6q.png`。
+#### 1.2.8.6 Redundancy 处理
 
-Redundancy处理
-同正常的读、写操作流程，区别只是是否使用RDN替代。
-maser
-anay中sectori
-RDN sectoriR,Mainattay
-使用RDNsector换
-通送A0总线。发送读命令
-huan.J3
-ETMCUaa
-新读取地址是否活费RDN用物的地L，
-通过AM总线，及rdataesp
-状惠机进入OLE
-DLE
-等EFC新名用
-master
-EFC
-MC/Tuan.Ji2026-10-02-21:
+同正常的读、写操作流程，区别只是是否使用 RDN 替代。
 
-**图1-14**
+**图1-14 Redundancy读操作流程**
 
-Redundancy读操作流程
-RECALL读取
-由于在上电初始阶段，VREF不稳定，Flash工作也就不稳定，
-需要使用RECALL花更长时间以及内部特殊的处理，才能正常
-读取数据。
-2D26-10-02-21
-11080F
+> 复杂流程图按原图保留，不自行重画。  
+> 原图：`../images/GameViewer_nD3eu17L6q.png`
 
+#### 1.2.8.7 RECALL 读取
 
+由于在上电初始阶段，VREF 不稳定，Flash 工作也就不稳定，需要使用 RECALL 花更长时间以及内部特殊的处理，才能正常读取数据。
 
 ---
+
 ## 图像编号 19 (原图: `GameViewer_oT9ct4X3PL.png`)
 
 ### 【左页】

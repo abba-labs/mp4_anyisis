@@ -1,21 +1,18 @@
 # ET6601 原图还原进度与验收台账
 
-更新日期：2026-10-04。工作分支：`docs/restore-6601-screenshots`。
+更新日期：2026-10-05。工作分支：`docs/restore-6601-screenshots`。
 
 ## 1. 当前断点
 
-**EFC LRS的24张原图已完成本轮首轮逐图核对并提交；有1处局部文字仍待复核，整份文档尚未最终验收。**
+**第三轮已将EFC LLD累计前24/36张首轮核对正文写回GitHub；本批新增核对第13～24张，第二轮仅本地保存的前12张也已并入。下一张为第25张GameViewer_Jv14xpHsSC.png。**
 
-正文：[EFC模块LRS设计文档](efc/efc_lrs/docs/EFC模块LRS设计文档.md)。修改点证据在同一文件的第二部分，不另拆最终正文。
+正文：[EFC详细设计文档](efc/efc_lld/docs/EFC详细设计文档.md)。正文提交：`5ebf63883ab20d5bd97fd2fc01bbda7ae10c4679`；blob：`f1d78519289d23f9b8833ba9f02de1cf07fdc20f`，91310字节；GitHub回读与本地一致。
 
-- 正文提交：`0de59b53b4ed6134ade4bc3320880d5b6f2c9ae9`。
-- 正文Git blob SHA：`06b91f036a6427d0c48ec71525f0caf3c415af38`。
-- 本地输出与GitHub写入返回的blob一致，已按该提交回读文件头及blob确认。
-- 本轮实际读取原始PNG，不使用1600像素JPEG缓存做最终依据，不进行OCR猜补。
-- 24/200仅表示本轮已开展逐图核对的截图数量，不是正确率、验收率或硬件通过数。
-- 已建立25条修订/红字/删除线证据记录；另列4条蓝字说明。证据记录数量不等于独立功能修改数量。
+本批记录：[逐图复核记录](reviews/EFC_LLD_ROUND3_REVIEW_20261005.md)、[36张原图清单](reviews/EFC_LLD_ROUND3_IMAGE_LEDGER_20261005.json)、[保存检查](reviews/EFC_LLD_ROUND3_SAVE_VERIFY_20261005.json)。LLD有9组局部小字/条件仍待复核，详见记录；不是仅9个字。累计41条修订/红字/删除线证据、5条蓝字说明，证据数不是独立功能修改数。
 
-下一批：`efc/efc_lld/docs/EFC详细设计文档.md`。从`GameViewer_vUFYITp5T4.png`开始核对封面、修订记录及目录，然后按原文页序推进。不得重新合并已经存在的CPLD_INTERFACE，也不得重新从LRS第一页盲目开始。
+全仓已首轮核对48/200张：LRS24＋LLD24；剩余152张未完成本轮逐图核对。这不是正确率或最终验收率。LRS原24张成果未改动，仍保留1处U01；LRS正文提交`0de59b53b4ed6134ade4bc3320880d5b6f2c9ae9`、blob`06b91f036a6427d0c48ec71525f0caf3c415af38`，25条证据和4条蓝字说明均保留。
+
+只继续具体断点，不从封面重做，不重新合并CPLD_INTERFACE。所有文档均未最终验收；不可用链接/列数/哈希通过来替代逐字符核对。
 
 ## 2. 原始截图清点
 
@@ -27,7 +24,7 @@
 | CPLD_REG | 9 | 本轮待复核 | 逐行核对寄存器表 |
 | CPLD PPI说明文档 | 7 | 本轮待复核 | 保持原始独立文档 |
 | EFC LRS | 24 | 首轮逐图核对已保存；1处待复核 | 保留准确断点，后续处理局部疑点与二次复核 |
-| EFC LLD | 36 | 原始PNG已取出并校验；本轮尚未逐图核对 | 下一批执行 |
+| EFC LLD | 36 | 前24张首轮核对并提交；9组局部待复核，后12张待处理 | 从第25张继续 |
 | SARC功能框图资料组 | 11 | 本轮待复核，原始文档边界待确认 | 不以截图分组自动认定文档边界 |
 | SARC LLD | 40 | 本轮待复核 | 正文精校及明确修改标记 |
 | SARC LRS | 13 | 本轮待复核 | 正文精校及明确修改标记 |
@@ -37,7 +34,7 @@
 
 模块合计：CPLD48，EFC60，SARC91，HAC_WRAP1。CPLD_INTERFACE来源分布：interface_cpld3、interface_cpld_cfg6、interface_cpld_crg1、interface_cpld_tcu1、interface_dma1、interface_efpga16、interface_efpga_cfg1、interface_int1、interface_ppi1、interface_test_pin1。
 
-## 3. EFC LRS逐图记录
+## 3. EFC LRS逐图记录（第一轮保留）
 
 下表按原文阅读顺序排列，不按文件名排序。每张均核对左页后右页；状态“首轮核对”不代表最终验收。图片目录统一为`efc/efc_lrs/images/`；正文中保留每张原图链接。
 
@@ -68,7 +65,7 @@
 | 23 | GameViewer_gLi3yEXagB.png | 9e880a571cc75627d844ec424c5afb6fee0441fa | RBST续页、中断、事件、LIMIT01~06；首轮核对 |
 | 24 | GameViewer_BMgqvo1P0z.png | 0e2e17ab03fd5b3e800a9a5d22e91afc85b1f1c4 | LIMIT07/08、触发源、五条参考文献；首轮核对 |
 
-## 4. 待复核与原文差异分开管理
+## 4. EFC LRS待复核与原文差异（保留）
 
 ### U01：局部像素不足，仍待复核
 
@@ -87,7 +84,7 @@
 | D04 | 5UxkiNGtxh架构第9条；LLELUTfGM7 SEC13 | PFLASH写保护“以整片为单位”与“以sector/32KB为单位”并存 | 保留两处并标记出处，不选一个覆盖另一个 |
 | D05 | jyfWngVZvO图1-1；6F5qGwog2V图1-6 | 上电流程默认25MHz，Boot图默认256KHz | 保留各自图中文字，不按常识改动 |
 
-## 5. 本批检查证据与验收边界
+## 5. EFC LRS第一轮检查证据与验收边界
 
 已执行：83个导出文件SHA-256校验；EFC LRS24个唯一原图锚点；图1-1至1-19引用覆盖；原图链接存在性；Markdown表格列数一致性；25个修改证据编号连续性；ECC删除线和CPU1关键字检查；1处显式待复核标记检查；正文远端blob与本地输出一致性。
 
@@ -96,3 +93,14 @@
 正文以一份Markdown保存，跨页表格/续句已连续衔接并标出来源。复杂时序图和连线仍以原图为准；没有凭空重画图形。
 
 CPLD为新IP，不机械增加旧IP修改总结。继承IP的红字只说明原图标红；没有明确旧版本依据时，不擅自写“旧值→新值”。蓝字单列，不混入确定修改数量。
+
+
+## 6. EFC LLD接续与保存记录
+
+完整36张原图的阅读序号、文件名、字节数、Git blob、SHA-256和首轮核对状态见`reviews/EFC_LLD_ROUND3_IMAGE_LEDGER_20261005.json`；第13～24张详细转录范围及LLD-U01～U09见`reviews/EFC_LLD_ROUND3_REVIEW_20261005.md`。25～36张的顺序仍待原图确认，已有转录不当作已验收。
+
+本批正文恢复两处nSWBOOT1/nBOOT1删除线，核对34行FCTRL接口、图2-3～2-14可辨文字、访问保护与READ MODE修改标记。第25～36张未核对正文原样保留；其尾段SHA-256为`de869668e70cee995b18312196756ac18cedb68ee127bed09ca34f381f8b4e94`。
+
+下一张路径：`efc/efc_lld/images/GameViewer_Jv14xpHsSC.png`。先核对问题单、READ MODE CHANGE等待tMH批注及代码截图，再继续26～36张。对看不清的字段定位登记，不依据代码常识或其他芯片资料补全。后续再进行局部疑点及全文二次复核。
+
+保存异常已处理：首次写入的未核对尾段有1处AXI被误转写成APB，全文比对发现后恢复原字节，最终blob回读一致。一时性修复workflow已自删除；该次额外artifact上传失败不影响已成功提交的正文，但不能标为运行全成功。详情留存在保存检查JSON。

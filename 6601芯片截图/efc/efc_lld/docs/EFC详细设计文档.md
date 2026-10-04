@@ -1592,81 +1592,6 @@ ET6601方案中存在以下问题：
 
 ---
 
-## 原图：`GameViewer_isM3FELYfq.png`
-
-### 【左页】
-
-Program Or
-not retry Erase
-RD MODE
-VREAD1==1' b0
-No Change
-RD MODE
-Change
-RDIODE
-Change
-Normal
-Recall
-RIMCU manzTi
-Read
-Read
-RD MODE
-Vreadl
-RD MODE
-Change
-Change
-Only to
-ARD MODE
-Only to
-Retry
-No Change
-Retry
-Program Or
-Erase(inc retry)
-VREAD1==1' b1
-ETNOUm/a11
-1、ET6601中优化为只有RecallRead需要等待tMH，Normal
-Read、Vreadl不等待，提升NormalRead、、Vreadl效率；
-2、VREAD1在RETRYERASE操作中提前拉高，在非RETRY
-ERASE和PROGRAM中保持不变，按照之前代码可能会出现
-NormalRead的tMH等待时间不够的违例，因此将VREADl
-拉高时间修改为tNVS之后：
-INVS
-PROG/ERASE/CEb/ARRDN/NVR/NVR_CFG/CHIP/Ato WEb setup
-time
-
-
-### 【右页】
-
-Ax
-ERAS
-wEb
-NEXT ERASE
-ETICu
-ERASE
-CEb
-NVR/ARRDN
-/NVR_CFG
-CHIP
-RDEN
-CLOCK
-PROG
-Figure 4: Sector Erase Timing Diagram
-Notes: (1) Ax is X address, means Au-7)
-3、进入Program、ERASE时都将Recall拉低；（与ET6601方
-案保持一致)
-4、进入READ模式时，只根据VREAD1和Recall信号的变化
-记录的READ MODE来决定是否要等待tMS，而不是每次
-ERASE/PROGRAM都认为READMODE发生过变化;
-
-#### 2.3.5 FCTRL GFB FLASH IF
-
-根据状态机信息进行具体接口信号的生成；
-080F
-
-
-
----
 ## 原图：`GameViewer_SnGFBV0cqH.png`
 
 ### 【左页】
@@ -1793,6 +1718,81 @@ ET6601优化方案为：
 IMCU
 dan
 13080F
+
+
+
+---
+## 原图：`GameViewer_isM3FELYfq.png`
+
+### 【左页】
+
+Program Or
+not retry Erase
+RD MODE
+VREAD1==1' b0
+No Change
+RD MODE
+Change
+RDIODE
+Change
+Normal
+Recall
+RIMCU manzTi
+Read
+Read
+RD MODE
+Vreadl
+RD MODE
+Change
+Change
+Only to
+ARD MODE
+Only to
+Retry
+No Change
+Retry
+Program Or
+Erase(inc retry)
+VREAD1==1' b1
+ETNOUm/a11
+1、ET6601中优化为只有RecallRead需要等待tMH，Normal
+Read、Vreadl不等待，提升NormalRead、、Vreadl效率；
+2、VREAD1在RETRYERASE操作中提前拉高，在非RETRY
+ERASE和PROGRAM中保持不变，按照之前代码可能会出现
+NormalRead的tMH等待时间不够的违例，因此将VREADl
+拉高时间修改为tNVS之后：
+INVS
+PROG/ERASE/CEb/ARRDN/NVR/NVR_CFG/CHIP/Ato WEb setup
+time
+
+
+### 【右页】
+
+Ax
+ERAS
+wEb
+NEXT ERASE
+ETICu
+ERASE
+CEb
+NVR/ARRDN
+/NVR_CFG
+CHIP
+RDEN
+CLOCK
+PROG
+Figure 4: Sector Erase Timing Diagram
+Notes: (1) Ax is X address, means Au-7)
+3、进入Program、ERASE时都将Recall拉低；（与ET6601方
+案保持一致)
+4、进入READ模式时，只根据VREAD1和Recall信号的变化
+记录的READ MODE来决定是否要等待tMS，而不是每次
+ERASE/PROGRAM都认为READMODE发生过变化;
+
+#### 2.3.5 FCTRL GFB FLASH IF
+
+根据状态机信息进行具体接口信号的生成；
+080F
 
 
 

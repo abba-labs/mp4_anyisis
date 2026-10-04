@@ -433,7 +433,6 @@ Main
 SoC软件
 master
 EFC
-202F-10-02-27:47
 
 **图1-10**
 
@@ -1095,7 +1094,6 @@ LRS.EFC.FLASH【11】FLASH有2Redundancy Sectors，用于
 
 #### 2.1.6 LRS.EFC.DFT
 
-BTMC han.
 LRS.EFC.DFT【O1】：支持BIST自检;
 
 

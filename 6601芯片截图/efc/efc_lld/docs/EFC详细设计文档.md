@@ -1120,126 +1120,59 @@ ETNCUhan.13
 080F
 
 
-
----
-## 图像编号 20 (原图: `GameViewer_nCyHpYzZqG.png`)
+## 原图：`GameViewer_nCyHpYzZqG.png`
 
 ### 【左页】
 
-efe bvalid
-输出
-AXI反馈有效指示，高电平有效
-efe_bready
-输入
-AXI反馈准备好指示，高电平有效
-efc arid[5:0]
-输入
-AXI读命令通道ID
-输入
-efc_araddr[31:0]
-AXI读地址
-输入
-efc_arlen[3:0]
-AXI读burstlen
-efc_arsize[2:0]
-输入
-AXI读数据宽度
-输入
-efc_arburst[1:0]
-AXI读类型
-efe_arvalid
-输入
-AXI读有效指示，高电平有效
-efc_arready
-输出
-AXI读准备好指示，高电平有效
-efc_arlock
-输入
-AXI锁
-efc arcache
-输入
-AXI cache
-efe_arprot
-输入
-AXI保护
-efc _rid[5:0]
-输出
-AXI读数据通道ID
-输出
-efc_rdata[63:0]
-AXI读数据
-ZTMCIImuan.1
-efc_rresp[1:0]
-输出
-AXI读数据反馈指示
-输出
-efe rlast
-AXI读数据1ast指示
-efe_rvalid
-输出
-AXI读数据有效指示，高电平有效
-efc rready
-输入
-AXI读数据准备好指示，高电平有效
-AXIGS 相关信号
-输入
-efc _awlock[1:0]
-外部可固定连接0
-efc_awcache[3:0]
-输入
-外部可固定连接0
-输入
-efc_awprot[2:0]
-外部可固定连接0
-efc_arlock[1:0]
-输入
-EIMCU
-外部可固定连接0
-BIMCU H
-efc_arcache[3:0]
-输入
-外部可固定连接0
-输入
-efc_arprot[2:0]
-外部可固定连接0
-,1i 2026-10-02-21.3
+| 信号 | 方向 | 说明 |
+|---|---|---|
+| efc_bvalid | 输出 | AXI反馈有效指示，高电平有效 |
+| efc_bready | 输入 | AXI反馈准备好指示，高电平有效 |
+| efc_arid[5:0] | 输入 | AXI读命令通道ID |
+| efc_araddr[31:0] | 输入 | AXI读地址 |
+| efc_arlen[3:0] | 输入 | AXI读burstlen |
+| efc_arsize[2:0] | 输入 | AXI读数据宽度 |
+| efc_arburst[1:0] | 输入 | AXI读类型 |
+| efc_arvalid | 输入 | AXI读有效指示，高电平有效 |
+| efc_arready | 输出 | AXI读准备好指示，高电平有效 |
+| efc_arlock | 输入 | AXI锁 |
+| efc_arcache | 输入 | AXI cache |
+| efc_arprot | 输入 | AXI保护 |
+| efc_rid[5:0] | 输出 | AXI读数据通道ID |
+| efc_rdata[63:0] | 输出 | AXI读数据 |
+| efc_rresp[1:0] | 输出 | AXI读数据反馈指示 |
+| efc_rlast | 输出 | AXI读数据last指示 |
+| efc_rvalid | 输出 | AXI读数据有效指示，高电平有效 |
+| efc_rready | 输入 | AXI读数据准备好指示，高电平有效 |
 
+**AXI GS 相关信号**
+
+| 信号 | 方向 | 说明 |
+|---|---|---|
+| efc_awlock[1:0] | 输入 | 外部可固定连接0 |
+| efc_awcache[3:0] | 输入 | 外部可固定连接0 |
+| efc_awprot[2:0] | 输入 | 外部可固定连接0 |
+| efc_arlock[1:0] | 输入 | 外部可固定连接0 |
+| efc_arcache[3:0] | 输入 | 外部可固定连接0 |
+| efc_arprot[2:0] | 输入 | 外部可固定连接0 |
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图2-1 EFC_CFG模块框图`，完整结构与时序请查看原图 `GameViewer_nCyHpYzZqG.png`。
+## 第2章 详细设计
 
-Q1:37
-
-### 第2章详细设计
-
-
-#### 2.1 EFC CFG
-
-BTMCUhu8n.112026-10-02-21;37
-FTMCU
-SOC.CORE_MISC
-EFC_CFG
-INT_GEN_MRG
-m.112026-10
-CFG_REGPROT
-APB_MASTER
-ETMCOhuam.11
-CFG_FLASH_IDS
+### 2.1 EFC_CFG
 
 **图2-1 EFC_CFG模块框图**
 
+> 图内可确认模块：SOC_CORE_MISC、INT_GEN_MRG、EFC_INT_PARSE、CFG_REGPROT、EFC_CFG_IDS、EFC_CFG_MAN、EFC_CFG、APB_MASTER、EFC_GFB、EFC_FCTRL。  
+> 原图：`../images/GameViewer_nCyHpYzZqG.png`
+
 该模块功能框图，主要功能模块概述；
-CFG_REGPROT：当 EFC 时钟 gating或者复位后FLASH未
-进入Working状态时，禁止APB总线对IDS寄存器进行读写操
-作；寄存器写保护未解除前，除了寄存器、NVR解除写保护操
-作外，禁止APB总线对IDS寄存器进行写操作；产生APB总
-线的各类错误告警。
-2080F
 
-
+CFG_REGPROT：当 EFC 时钟 gating 或者复位后 FLASH 未进入 working 状态时，禁止 APB 总线对 IDS 寄存器进行读写操作；寄存器写保护未解除前，除了寄存器、NVR 解除写保护操作外，禁止 APB 总线对 IDS 寄存器进行写操作；产生 APB 总线的各类错误告警。
 
 ---
+
 ## 图像编号 21 (原图: `GameViewer_OCJBCUSbNK.png`)
 
 ### 【左页】

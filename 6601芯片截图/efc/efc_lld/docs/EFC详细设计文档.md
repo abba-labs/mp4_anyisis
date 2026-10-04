@@ -21,7 +21,6 @@
 第0、1、4-7bit进行取反，保证ECC校验时ECC数据为写入前
 未取反的数据。
 8TMCV
-EIuCUhian.1i
 
 **图2-15**
 
@@ -64,7 +63,6 @@ A)
 B）
 写保护错误标记还未清零，又发出了新的写/擦除操
 作;
-1080F
 
 
 
@@ -127,7 +125,6 @@ F7NCU muan. 13
 因此将动作拆分为两个子过程：
 1） EFC_POWER -- 读 NVR_CFG，set Config register；见图
 1 fp!
-1080F
 
 
 ## 原图：`GameViewer_Apm6lwGGlA.png`
@@ -162,7 +159,6 @@ GFBPOWERPROC完成nvrshiftdone后，该模块发起flash
 的NVRROM/OTPSECTOR区域的读，将其内容全部读出来返
 回到其内部寄存器锁存下来。
 模块接口说明
-TMCIfhuan
 >时钟复位接口：时钟为晶振时钟；复位源为上电复位和硬
 复位；
 >nvr shiftdone接口：该信号用指示GFBPOWERPROC解
@@ -201,7 +197,6 @@ nvr_shift_done信号进行二选一仲裁；
 令，发送给下级模块；
 999+
 999+
-1080F
 
 
 
@@ -216,13 +211,10 @@ nvr_shift_done信号进行二选一仲裁；
 #### 4.2 写性能评估
 
 EFC
-BTMCU huan.
-KIICU huan Ti
 AXLMASTER
 AXIM_PROC (1D)
 CACHE (1D)
 ETMCVT2a7i12026-1002-21:40
-BIMCU huan J
 ECC_GEN(1D)
 GFB_CTRL(OD)
 GFB_IF(1D)
@@ -253,14 +245,12 @@ BIMCU
 数据擦除时，datasheet中给出的典型擦除时间是8~，根
 据SMIC回复，可以直接使用:
 1）sector擦除性能=1KB/=125KBps;
-ETNCU huan.
 2）
 整片擦除性能=512KB/=
 块擦除时，使用RETRY模式可能会有一定的时间节省，单
 次　sector RETRY²擦除是　0.~lms ＋VREAD2读 取
 200ns*128=26us，需要RETRY擦除多少次不确定；如果只擦除
 一次，那么 sector擦除性能可以提升到：1KB/=
-1080F
 
 
 
@@ -287,7 +277,6 @@ TC当数据接口连续2次以上向同一个地址写同一字节时，该信
 误，继续执行当前写操作，并可以继续执行新的写/擦除操作；
 该状态受对应的清零标志清零；
 该状态不须清零也可以执行新的写/擦除操作；
-TMCUhuan.
 4.不一致错误(incerr)：
 当配置接口上一笔命令还未执行完成，配置接口再次发出新的
 
@@ -313,7 +302,6 @@ TMCUhuan.
 该状态受对应的清零标志清零；
 对于配置接口，该状态必须清零才可以执行新的读/写/擦除
 1 fp
-1080F
 
 
 ## 原图：`GameViewer_ceValKI1oj.png`
@@ -400,7 +388,6 @@ readNVR_CFG
 
 **图2-4EFCPOWER状态转移图**
 
-BTMOU huan,11
 
 
 ### 【右页】
@@ -437,7 +424,6 @@ nvr_shift_done信号；从复位释放（porrstn和efc_rst n），到进
 flash_main_rdp_n[31:0],flash_main_wrp_n[31:0],flash_nvr_rdp_n[
 0],flash_nvr_wrp_n[0] ; securelevel[16:0],nSWBOOT1,nBOOT1,
 flash_nvr_otp_n[7:0][4:0]进行多数判决;
-1080F
 
 
 ## 原图：`GameViewer_GsJtl9ctbU.png`
@@ -497,7 +483,6 @@ flash_nvr_otp_n[7:0][4:0]进行多数判决;
 
 #### 2.2 EFC GFB
 
-Jhuan.
 EFC_GFB
 GFB_AXIM_PROC
 GFB_CTRL
@@ -568,7 +553,6 @@ H080E
 操作；
 数据接口不受该错误影响；
 7.数据ECC1bit错误：
-EIMCU huan.
 数据接口读取Main/RDN时，发生ECC1bit错误，并纠错，
 该信号置1.当信号置1后，读取返回数据正确，应用程序可忽
 略该错误，继续执行当前读操作，以及下一步操作（不需要对当
@@ -607,7 +591,6 @@ n712026-10-02-21-4
 成，避免总线挂死；
 该状态不须清零也可以执行新的读/写/擦除操作；
 上报中断，总线数据返回O，RESP返回ERROR；
-1080F
 
 
 
@@ -625,7 +608,6 @@ RD MODE
 Change
 RDIODE
 Change
-BTMCUhzan.11
 Normal
 Recall
 RIMCU manzTi
@@ -646,7 +628,6 @@ Program Or
 Erase(inc retry)
 VREAD1==1' b1
 ETNOUm/a11
-gMCU huan Ji
 1、ET6601中优化为只有RecallRead需要等待tMH，Normal
 Read、Vreadl不等待，提升NormalRead、、Vreadl效率；
 2、VREAD1在RETRYERASE操作中提前拉高，在非RETRY
@@ -678,8 +659,6 @@ CLOCK
 PROG
 Figure 4: Sector Erase Timing Diagram
 Notes: (1) Ax is X address, means Au-7)
-huan.Ji
-huan.Ti9026-10-02-21:
 3、进入Program、ERASE时都将Recall拉低；（与ET6601方
 案保持一致)
 4、进入READ模式时，只根据VREAD1和Recall信号的变化
@@ -805,7 +784,6 @@ nvrshift_done
 Option奇存器准备好，高电平有效；
 CRG可以根据该信号，撤销CPU的复位，让CPU
 开始进行Boot动作；
-ETMOUhuan,1
 内部增加超时机制，超时后拉高；
 cfg_efc_core_gate_en
 输入
@@ -914,7 +892,6 @@ AXI写数据准备好指示，高电平有效
 输出
 efc bid[5:0]
 AXI反馈通道ID
-fps
 efc bresp[1:0]
 输出
 AXI反馈内容
@@ -933,7 +910,6 @@ EFC 内的3个时钟（apb 时钟、axi时钟、EFC内部core 时
 死；Flash时钟与EFC内部core时钟门控一致。
 EFSUE时钟与EFC内部core时钟在OSC25MHz下同频同
 源。
-STMCUhuan.71
 ETMCIman.
 
 #### 1.2接口列表和接口时序
@@ -967,7 +943,6 @@ flash por rst n
 输入
 flash硬件por复位信号，低电平有效
 测试相关
-ETMOUhuan,1
 TEST_EN
 输入
 测试使能信号
@@ -1041,7 +1016,6 @@ pflash1/dflashnvr_cg空间的读/写/擦除保护
 0x00：打开保护，数据不能被读/写/擦除；
 其他：关闭保护，数据能被读/写/擦除；
 PFLASH相关
-huan,Ti
 secure_erase_main done pf输入
 PFLASHMAIN擦除结束标志
 输出
@@ -1274,7 +1248,6 @@ CACHE空间;
 7）AXIMPROC后续发送的地址，如果小于CACHE首地
 址，CACHE自动清空后，再和4）做同样动作；
 ETHCUh1a112026
-ETCu huan, 11
 
 **图2-7Cache状态转移图**
 
@@ -1307,7 +1280,6 @@ GFBIF进来的数据是否全1，不经过ECCCORR，目的是检查
 
 将ECC_GEN_W的数据，从接口发送给EFCFCTRL；
 接收EFC_FCTRL返回的数据和RESP，发送给下级模块；
-1080F
 
 
 
@@ -1325,12 +1297,10 @@ GFBIF进来的数据是否全1，不经过ECCCORR，目的是检查
 器在EFC 实现;
 otp的读写访问，受寄存器sysc_boot_exitlockj控制；
 rom的读访问，受寄存器rom_rd_en控制;
-SIMCU huan Ji
 
 #### 2.2.6 GFB CTRL
 
 GFB_CTRL_WAITING
-EICuhuan,i 2026-1
 GFB_CTRL_IDLE
 送到下吸模快
 1b11g/b_cmd_ye
@@ -1368,7 +1338,6 @@ CACHE空间；
 5）AXIM_PROC后续发送的地址，正常情况下是和CACHE
 中的首地址是一致的，则按1）处理即可；
 5 fp
-1080F
 
 
 
@@ -1440,7 +1409,6 @@ etc rst n
 Tead cd Lan
 elsebegin
 reao_chd
-nuan.
 但根据DATASHEET，只需要保证写和擦除时，Recall信号拉
 低即可，NormalRead、VREAD1和写擦除交叉操作并不需要发
 
@@ -1622,7 +1590,6 @@ AXI保护
 efc_ wid[5:0]
 输入
 AXI写数据通道ID
-ETMOUhuan,11
 efe_wdata[63:0]
 输入
 AXI写数据
@@ -1725,7 +1692,6 @@ Option输出
 cfg _efc timing r[447:0]
 输出
 Flash使用的timing信息；
-huan,li2026-10-02-{1:37
 FINCU
 
 **表1-2**
@@ -1734,7 +1700,6 @@ EFCPFLASH接口信号说明
 时钟信号
 输入输出
 说明
-fps
 输入
 输入时钟，频率为25MHz~200MHz
 12080F
@@ -1954,7 +1919,6 @@ EFC接口信号说明
 **表 2-1,**
 
 EFC FCTRL 接口信号说明
-BTMCU huan.
 532 I
 2080F
 
@@ -2044,7 +2008,6 @@ a)命令格式：Mindcmd_subtype[23:20]=='h5,indcmd_ sub-
 type[19:16]=='h2, indcmd_subtype[15:0]=='hAA55;
 b）该命令保护寄存器受寄存器 sysc_boot_exit_lockj控制，该
 4fp
-1080F
 
 
 
@@ -2058,8 +2021,6 @@ b）该命令保护寄存器受寄存器 sysc_boot_exit_lockj控制，该
 O1D μmpteRD_St_OuE
 .Ti
 RIMCU manz Ti
-ETMCU hua.73 2026-10-02-21:
-SIMCU huan Ji
 
 **图2-14FlashRead状态转移图**
 
@@ -2093,7 +2054,6 @@ ET6601方案中存在以下问题：
 1、ET6001、ET6601为了满足READMODE的RDEN使能后
 的HOLD时序tMH，三种读模式在每次进行最后一个读操作之
 后都进行了等待，降低了连续读的性能；
-IMCUhzan 1i
 ETMCV
 155 n
 080F
@@ -2147,7 +2107,6 @@ ETMCV
 EFC_FCTRL
 CRG
 FLASI
-huanJi
 EFC_CFG
 
 **图2-8EFCFCTRL模块框图**

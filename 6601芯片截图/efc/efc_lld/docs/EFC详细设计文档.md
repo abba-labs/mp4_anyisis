@@ -1,4 +1,4 @@
-# EFC 详细设计文档
+# EFC 模块详细设计文档
 
 > 本文档由大模型逐图逐页提取自原始截图，不作主观修饰，忠实还原原文。
 > 图表、时序波形及模糊部分均标注对应截图原图文件名供查阅。
@@ -1965,57 +1965,38 @@ dan
 
 
 ---
-## 图像编号 26 (原图: `GameViewer_Ts8jfg57vy.png`)
+## 原图：`GameViewer_Ts8jfg57vy.png`
 
 ### 【左页】
 
+**表1-1 修订记录**
 
-**表1-1**
-
-修订记录
-, 1i
-版本号
-修订内容
-修订日期
-修订人员
-从ET6003EFC模块详细设计文档复制，参考ET6801进行修改
-周玮
-根据ET6601OR-DR更新，新增64KX72=512KB的PFLASH，
-周玮玮
-原有FLASH回退为DFLASH
-RTMOU huan.Ji
-BTHOU huam 11
-ETMCU uan.li
-
+| 版本号 | 修订内容 | 修订日期 | 修订人员 |
+|---|---|---|---|
+| 1.0 | 从ET6003 EFC模块详细设计文档复制，参考ET6801进行修改 | 20260715 | 周玮玮 |
+| 1.1 | 根据ET6601 OR-DR更新，新增64KX72=512KB的PFLASH，原有FLASH回退为DFLASH | 20260922 | 周玮玮 |
 
 ### 【右页】
 
-ETMCU fmuan.11
-目录
+# 目录
+
 Contents
-且录
-图且录
-ETMO
-表且录
 
-### 第1章
-
-概要设计
-功能框图
-Flash结构框图
-时钟域说明
-接口列表和接口时序
-Safety Mechanism
-第2 章
-详细设计
-EFC CFG
-EFC GFB
-166 Ⅱ
-12080F
-
-
+- 目录
+- 图目录
+- 表目录
+- 第1章 概要设计
+  - 1.1 功能框图
+    - 1.1.2 Flash 结构框图
+    - 1.1.3 时钟域说明
+  - 1.2 接口列表和接口时序
+  - 1.3 Safety Mechanism
+- 第2章 详细设计
+  - 2.1 EFC_CFG
+  - 2.2 EFC_GFB
 
 ---
+
 ## 图像编号 27 (原图: `GameViewer_U3Lm9vj4H7.png`)
 
 ### 【左页】
@@ -2222,114 +2203,52 @@ fps
 
 
 ---
-## 图像编号 28 (原图: `GameViewer_V6W79lgJB6.png`)
+## 原图：`GameViewer_V6W79lgJB6.png`
 
 ### 【左页】
 
-参考文献
-uan.71 2026-10-08-21:40
-[]
-《ET6001EFC模块需求规格书》
-BIICU huan. Ti
-[2]
-《PegasusEFC模块修改方案》
-[3]
-S40NEF64KX72_S0_Application_Notes.pdf
-[4]
-S40NEF64KX72_S0 Datasheet.pdf
-[5]
-ST_AN2606.pdf
-BTICU
-[6]
-STM32H7x3参考手册.pdf
-BIMCUhuan Ji
-[7]
-TMS320F28004x Real-Time Microcontrollers Technical Reference Man-
-ual
-文栏结尾
-ETMCU han. 1 8026-10-02-
-BTMCV huan. 77 8026-10-02-21
-ETHCI/ ;40
-BTMCV
-RIMC
-第71屏(共71屏)
+# 参考文献
 
+[1] 《ET6001 EFC 模块需求规格书》  
+[2] 《Pegasus EFC 模块修改方案》  
+[3] S40NEF64KX72_S0_Application_Notes.pdf  
+[4] S40NEF64KX72_S0_Datasheet.pdf  
+[5] ST_AN2606.pdf  
+[6] STM32H7x3 参考手册.pdf  
+[7] TMS320F28004x Real-Time Microcontrollers Technical Reference Manual
 
 ### 【右页】
 
-BTMOU han.1i
-BTMCIV
-BTNCI haan T)
-ZTMCV/
-ETMCI7 huan.
-ETNCV
-fps
-13080F
-
-
+（原图右页无正文内容。）
 
 ---
-## 图像编号 29 (原图: `GameViewer_vC7gPIngZA.png`)
+
+## 原图：`GameViewer_vC7gPIngZA.png`
 
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-1efcclk和flashclk时钟关系示意图`，完整结构与时序请查看原图 `GameViewer_vC7gPIngZA.png`。
+**图5-1 efc_clk和flash_clk时钟关系示意图**
 
-flash_clk
-efc_gclken
-Us/ Jod
-efc_rst_n
-BTMCU huan. Ti 2026
-BIICU huanz. Ti
-efc_cik[
-flash_clk
-efc_gclken
-Uis/Jod
-efc_rst_n
-FTMCU muan. 11 2026
-EIMCU huan Ji
-efc_clk
-flash_clk
-efc_gclken
-efe_rst_n
+> 图中可确认信号：efc_clk、flash_clk、efc_gclken、por_rst_n、efc_rst_n。复杂时序波形不自行重画。  
+> 原图：`../images/GameViewer_vC7gPIngZA.png`
 
-**图5-1efcclk和flashclk时钟关系示意图**
+## 第6章 测试相关
 
-KIMCU
+| 测试点 | UT | SVA | IT | FPGA |
+|---|---|---|---|---|
+| 正常功能 | √ |  |  |  |
+| 内部接口 |  | √ |  |  |
+| 内部 FIFO |  |  |  |  |
 
-### 第6章 测试相关
-
-7u8n,11
-测试点
-IT
-SVA
-FPGA
-ETMC/ huan. Ji
-RIMU
-正常功能
-内部接口
-内部FFO
-
+> ⚠️ 原图待复核：测试矩阵在右页顶部仍有续表（可确认包含“连接关系”“性能”“BOOT”及勾选项），当前截图无法 100% 确认各勾选项所属列，因此不猜测。  
+> 原图：`../images/GameViewer_vC7gPIngZA.png`
 
 ### 【右页】
 
-连接关系
-性能
-BOOT
-为FPGA测试，编写verilog代码eflash_fpga.v用于模拟
-eFlash的功能行为（可综合）；那么EFC的整个功能都可得
-到测试，也可测试到EFC在系统中的行为（不可测试eFlash
-的时序，因为时序需要在UT测试保证）；
-BTMCaa
-ZTMCU
-ETMCI7 huan.Zi
-BTMC hian.1) 2026-10-02-21;40
-ETNC/ huan 3
-2080F
-
-
+为 FPGA 测试，编写 verilog 代码 eflash_fpga.v 用于模拟 eFlash 的功能行为（可综合）；那么 EFC 的整个功能都可得到测试，也可测试到 EFC 在系统中的行为（不可测试 eFlash 的时序，因为时序需要在 UT 测试保证）；
 
 ---
+
 ## 图像编号 30 (原图: `GameViewer_vOtMQKhCkV.png`)
 
 ### 【左页】
@@ -2503,38 +2422,21 @@ BTMCU huan.
 
 
 ---
-## 图像编号 31 (原图: `GameViewer_vUFYITp5T4.png`)
+## 原图：`GameViewer_vUFYITp5T4.png`
 
 ### 【左页】
 
-, 1i
-KTMOU Thuan.Ti
-8TMCU muam 21
-BTHCU uan 11
-EFC 模块详细设计文档
-RTMOU
-设计：
-KTMOU
-周玮玮
-评审：XXXXXXX
+# EFC 模块详细设计文档
 
+设计：周玮玮  
+评审：XXXXXXX
 
 ### 【右页】
 
-批准：
-ETMCU hruan.
-ETMOU
-ETMCV
-huan.J1
-FINCU
-fps
-156 Ⅱ
-Q026-10-02-21:37
-13080F
-
-
+批准：XXXXXXX
 
 ---
+
 ## 图像编号 32 (原图: `GameViewer_x2k55BuYBA.png`)
 
 ### 【左页】
@@ -2833,3 +2735,15 @@ EFC命令反压信号，高电平有效
 160 {
 12080F
 
+---
+
+## 第二部分：截图明确标注的 ET6601 修改点
+
+### 修订记录 1.1
+
+- **原始文字**：根据ET6601 OR-DR更新，新增64KX72=512KB的PFLASH，原有FLASH回退为DFLASH
+- **所在位置**：表1-1 修订记录，版本 1.1
+- **修订日期**：20260922
+- **修订人员**：周玮玮
+- **原图**：`../images/GameViewer_Ts8jfg57vy.png`
+- **修改性质**：原图修订记录明确标注的 ET6601 更新

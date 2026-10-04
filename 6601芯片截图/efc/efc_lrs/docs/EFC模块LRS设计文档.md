@@ -1,4 +1,4 @@
-# ET6601 EFC 模块 LRS 设计文档
+# EFC 模块 LRS 设计文档
 
 > 本文档由大模型逐图逐页提取自原始截图，不作主观修饰，忠实还原原文。
 > 图表、时序波形及模糊部分均标注对应截图原图文件名供查阅。
@@ -87,119 +87,41 @@ dan
 
 
 ---
-## 图像编号 2 (原图: `GameViewer_6F5qGwog2V.png`)
+## 原图：`GameViewer_6F5qGwog2V.png`
 
 ### 【左页】
 
-电源管理
-EFC
-CPU
-CRG
-BootRom
-PORb
-por_rst_n
-·拉低芯片复位
-把CPUHold生
-ETMCU/ mian. i 2026-10-02
-·EFC复位微钠，
-s, li
-B给EFC作
-执行POWER-ON过程
-1)NVR_CFG(RECALL)
-使用default时件操率（256KHz）
-2)set config register
-3）读取NVR(RECALL)
-更新到Option寄存器
-EFC上电结束
-销CPU爱位
-CPUM启动地址开始启动程序
-BTMCU muan,11 2026-10-02-21
-BTMCU nuan, li
-iOption寄存器
-松据表图的Option者存圈内容，
-去排酒续居动模式等
-配通EFC工作时钟造件(25MH2)
-）让RNVR(RECAL）
-2）更新timing毒存器
-配酒CRG等待EFC状完成
-k.option_ready.
-切换EFC工作时件
-ETMC/ Tmnan, Ti 202K-10-02-71:
-ETMOU huan, li
-返园程序内容
-厂阅加我程序执行。
-等持PLLB动完成等芯片其他准备，
-然后开始代行用产程序
-配圈EFC工作时件送样（100MH2）
-1）咨取NVR(RECALL）
-2）更新timing德存器
-配面CRG等待EFC状忘亮限
-optionreay
-切换EFC工作时针
-ETMCU man. Ti 2026-10-02-21:
-CPU从用产程序地址读取程序内客
-返国程字内容
-执行用产程学
-EFC
-电源管理
-CPU
-CRG
-BootRom
+**图1-6 芯片Boot流程图**
 
+> 时序图参与者可确认：电源管理、CRG、EFC、CPU、BootRom。复杂时序图不自行重画。  
+> 原图：`../images/GameViewer_6F5qGwog2V.png`
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图1-6芯片Boot流程图`，完整结构与时序请查看原图 `GameViewer_6F5qGwog2V.png`。
+### 1.2.6 Wafer Testing
 
+1）Wafeter Testing，详见 SMIC 交付的 BIST 文档；  
+2）LCK_CFG 信号在 TEST_EN 为 0 时，即为 1；  
+3）正常工作；
 
-**图1-6芯片Boot流程图**
+参见 ET6601-DOC/05.数字设计/03 HAC/03 方案  
+LRS/EFC/V100/03.设计/01.LRS/《FLASH 读写擦除保护.xlsx》
 
-ETWCU
-5 Wafer Testing
-Wafeter Testing，详见SMIC交付的BIST文档;
-2)
-LCK CFG信号在TEST EN为O时，即为1;
-3)
-正常工作;
-hoan, 1j
-ET6601-DOC/05.数 字 设 计 /03HAC/03
-方案
-LRS/EFC/V100/03.设计/01.LRS/《FLASH读写擦除保护.xlsx》
+### 1.2.7 地址空间说明
 
-#### 1.2.7地址空间说明
-
-空间
-FLASH
-说明
-sector
-n.J12026-10-02-21:
-PFLASH
-NVR_CFG
-FLASH相关信息，SMIC提供
-NVR
-0~15
-无用途
-Main+RDN
-程序数据
-DFLASH
-NVR_CFG
-FLASH相关信息，SMIC提供
-NVR
-0~1
-ROM空间，共4KB
-2、7
-OTP空间
-van li 2026-10-02-21;47
-3、4、
-OPTIONBYTES空间
-OPTIONBYTES用户空间，供
-用户使用
-2D26-10-02-21:47
-2080F
-
-
+| FLASH | 空间 | sector | 说明 |
+|---|---|---|---|
+| PFLASH | NVR_CFG | 0 | FLASH 相关信息，SMIC 提供 |
+|  | NVR | 0~15 | 无用途 |
+|  | Main+RDN | 0~511 | 程序数据 |
+| DFLASH | NVR_CFG | 0 | FLASH 相关信息，SMIC 提供 |
+|  | NVR | 0~1 | ROM 空间，共 4KB |
+|  |  | 2、7 | OTP 空间 |
+|  |  | 3、4、6 | OPTION BYTES 空间 |
+|  |  | 5 | OPTION BYTES 用户空间，供用户使用 |
 
 ---
+
 ## 图像编号 3 (原图: `GameViewer_7Jsq6PhQM2.png`)
 
 ### 【左页】
@@ -401,180 +323,30 @@ wrp保护，变成OTP后，芯片回收才会修改；
 
 
 ---
-## 图像编号 6 (原图: `GameViewer_BMgqvo1P0z.png`)
+## 原图：`GameViewer_BMgqvo1P0z.png`
 
 ### 【左页】
 
-LRS.EFC.LIMIT.SPEC【07】:Flash限制：不允许对同一个flash
-地址重复编程数据‘0'；
-LRS.EFC.LIMIT.SPEC【08】：FlashDPD限制：需要保证进入
-DPD模式时（配置DPD使能），AXI/APB总线对FLASH无操
-作，并且已经发起的操作已结束，否则可能导致AXI总线超时，
-APB间接命令一直BUSY;
-ETMCUHAa
-BTMCU huan. : 2026-
-BIMCUhran,15
+LRS.EFC.LIMIT.SPEC【07】：Flash 限制：不允许对同一个 flash 地址重复编程数据 ‘0’；
 
-#### 2.5触发源说明
+LRS.EFC.LIMIT.SPEC【08】：Flash DPD 限制：需要保证进入 DPD 模式时（配置 DPD 使能），AXI/APB 总线对 FLASH 无操作，并且已经发起的操作已结束，否则可能导致 AXI 总线超时，APB 间接命令一直 BUSY；
+
+### 2.5 触发源说明
 
 无。
-BTMC) ruan.11
-ETMCU haan. 1i
-RTMCU ;41
-8TMC/han.11 2026-10-02-21;4)
-BTMCU haa. li
-
 
 ### 【右页】
 
-参考文献
-[1]
-S40NEF64KX72S0_Application_Notes.pdf
-ETMC huan.Ji
-[2]
-S40NEF64KX72_S0 _Datasheet.pdf
-ST_AN2606.pdf
-[4]
-STM32H7x3参考手册.pdf
-[5]
-TMS320F28004x Real-Time Microcontrollers Technical Reference Man-
-ual
-文栏结尾
-ETMCU hian. 1
-TMCU hzan. 11
-12080F
+# 参考文献
 
-
+[1] S40NEF64KX72_S0_Application_Notes.pdf  
+[2] S40NEF64KX72_S0_Datasheet.pdf  
+[3] ST_AN2606.pdf  
+[4] STM32H7x3 参考手册.pdf  
+[5] TMS320F28004x Real-Time Microcontrollers Technical Reference Manual
 
 ---
-## 图像编号 7 (原图: `GameViewer_bqG5XHiWOd.png`)
 
-### 【左页】
-
-> 📌 **【图表提示】**: 此处包含图表 `图 2-1`，完整结构与时序请查看原图 `GameViewer_bqG5XHiWOd.png`。
-
-图目录
-ETMCU muan. 1i 2026-70-02-21:42
-BTMCU huan, li
-
-**图 2-1**
-
-表目录
-BTMCU huat, 11 2026-70-02-21 41
-BTMCU uan, li
-
-**表 1-1**
-
-修订记录
-
-**表 2-1**
-
-基带板卡详细指标
-ETMCUman 1
-ETMOU huan, li
-ETMCV
-
-
-### 【右页】
-
-
-### 第1章
-
-模块介绍
-
-#### 1.1模块简介
-
-EFC(eFlashController)模块是嵌入式eFlash控制器，对eFlash
-的读、写、擦除操作进行控制管理。
-数据接口为AXI Salve接口，挂接在AXI4.0总线上；
-配置接口为APBSlave接口，挂接在APB3.0总线上；
-外部电源信号，打开或者关闭Flash电源；
-（这里的外部电
-源，就是芯片内部的模拟部分--FlashPowerSwitch）
-
-#### 1.2应用说明
-
-E7MOV h1237.17
-ETNCU ;47
-2D26-10-02-21:47
-080F
-
-
-
----
-## 图像编号 8 (原图: `GameViewer_bTZBDjzsW4.png`)
-
-### 【左页】
-
-> 📌 **【图表提示】**: 此处包含图表 `图1-15`，完整结构与时序请查看原图 `GameViewer_bTZBDjzsW4.png`。
-
-NVR_CFG/NVR的读取，SMIC建议都使用RECALL读取
-方式。
-EINCU huan
-,1i
-RetryErase处理
-EFC
-SoC软件
-Flash
-配面indirect_cmd为retry擦除
-接收retry漂除到命令队列
-后动Flash进行擦除探作
-ETMCU tzan.11 2026-10-02-22
-, li
-Flash进行操除操作：
-EFC根据配适时间硝定禁除完成：
-自动执行VREAD判断擦除结果是否正硝：
-VREAD判断错误，续擦除
-VREAD判断倍误超过20次，也返回；
-VREAD判断正码，禁除完成；
-状态机进入IDLE
-擦除完成中断
-等待EFC重新后用
-ETMC mian. 2 Q026-10-02-21:47
-, li
-SoC软件
-EFC
-Flash
-
-**图1-15**
-
-Retry擦除操作流程
-TMCV hian li 2026-10-02-21
-ETMO
-
-
-### 【右页】
-
-> 📌 **【图表提示】**: 此处包含图表 `图1-16寄存器写保护流程`，完整结构与时序请查看原图 `GameViewer_bTZBDjzsW4.png`。
-
-
-#### 1.2.9写保护（参考STM32，3.3.12扇区写保护部分）
-
-寄存器写保护
-UINCU huan.
-cfg_reg_wrprot_ig毒存默为1
-模块复位后
-教dfg_efcreg_key1REGKEY
-kmco_efc_reg_key2=REGKEY2
-cfg_reg_wrprotfg摄清磷
-ETMCaaY
-件配通高存器
-执行摩除、品轻等操作
-EINCU muan.J1
-cfg_reg_wrprot_fig商存器重新配盟为1
-
-**图1-16寄存器写保护流程**
-
-Tuan.11 2026-10-02-21:
-1）模块复位后，cfg_efc_reg_wrprot_flg寄存器默认为l;
-2）软件按顺序写cfg_efc_reg_keyl、cfg_efc_reg_key2寄存
-i. 写入 cfg_efc_reg_keyl = 0x01234567；-- pflash
-ii. 写入 cfg_efc_reg_key2 =0x89ABCDEF；--pflash
-2080F
-
-
-
----
 ## 图像编号 9 (原图: `GameViewer_cQ0Ir7RHZa.png`)
 
 ### 【左页】
@@ -683,62 +455,39 @@ ii.写入 cfg_efc_nvr_key2 = 0x456789AB；--flash
 
 
 ---
-## 图像编号 11 (原图: `GameViewer_fpb2HKWthL.png`)
+## 原图：`GameViewer_fpb2HKWthL.png`
 
 ### 【左页】
 
+**表1-1 修订记录**
 
-**表1-1**
-
-修订记录
-ETMCUmuan.1i 2026-70-02-21:40
-ETMCL
-版本号
-修订内容
-修订日期
-修订人员
-从ET6003拷贝，参考ET6801EFCLRS和ET6601OR-DR修改
-周玮玮
-刷新
-根据ET6601OR-DR更新，新增64KX72=512KB的PFLASH，
-周玮玮
-原有FLASH回退为DFLASH
-BTMCUhuan,13
-BTMCU uan, 1i
-BTMOU huan, li
-ETHCU 3
-
+| 版本号 | 修订内容 | 修订日期 | 修订人员 |
+|---|---|---|---|
+| 1.0 | 从ET6003拷贝，参考ET6801 EFC LRS和ET6601 OR-DR修改刷新 | 20260715 | 周玮玮 |
+| 1.1 | 根据ET6601 OR-DR更新，新增64KX72=512KB的PFLASH，原有FLASH回退为DFLASH | 20260920 | 周玮玮 |
 
 ### 【右页】
 
-8TMOU huar2.15
-目录
+# 目录
+
 Contents
-且录
-图且录
-ETMCU a, 15
-ETHCI hoan IJ 2006-10-02-21:40
-表且录
 
-### 第1章
-
-模块介绍
-模块简介
-应用说明
-RTNCU Tmuan. J1 2026-10-08-21:
-Power On
-Power Off
-模块软复位
-模块门控
-芯片系统启动
-;40
-数据预取
-Wafer Testing
-12080F
-
-
+- 目录
+- 图目录
+- 表目录
+- 第1章 模块介绍
+  - 1.1 模块简介
+  - 1.2 应用说明
+    - 1.2.1 Power On
+    - 1.2.2 Power Off
+    - 1.2.3 模块软复位
+    - 1.2.4 模块门控
+    - 1.2.5 芯片系统启动
+    - 1.2.6 数据预取
+    - 1.2.7 Wafer Testing
 
 ---
+
 ## 图像编号 12 (原图: `GameViewer_gLi3yEXagB.png`)
 
 ### 【左页】
@@ -1059,66 +808,23 @@ LRS.EFC.RST【03】：硬复位（PAD），低电平有效；
 
 
 ---
-## 图像编号 17 (原图: `GameViewer_N4leDL0su5.png`)
+## 原图：`GameViewer_N4leDL0su5.png`
 
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图1-5模块门控流程图`，完整结构与时序请查看原图 `GameViewer_N4leDL0su5.png`。
+**图1-5 模块门控流程图（带复位）**
 
-EFC
-SoC软件
-CRG
-等特Fiash不工价
-配置Flash通行保度联cgec_dpd=1b1
-执行Fiashie
-EIMCU huan, 1i
-配置cfg,efc.gating为1配置cg_efcrstn
-Gating处理，复位处理
-关斯EFC模块时外及复位
-等特EFC重新启用
-clg_efc_gating70
-Gating处理
-打开EFC模块时钟
-BTCU muan, 11 2026-10-02-21 41
-配Flashi深/度肌换rcfg_efc_dpd=110
-, li
-执行Flash银晚
-配置efg_efc st n71
-进行复像后动作（NVR，写国Option海存器）
-正在工作
-ETMC/ hmuan.i 202F-10-02-1:41
-CRG
-SoC软件
-EFC
-ETMOU huan, li
+> 时序图参与者可确认：SoC软件、EFC、CRG。复杂时序图不自行重画。  
+> 原图：`../images/GameViewer_N4leDL0su5.png`
 
-**图1-5模块门控流程图**
-
-（带复位）
-带复位的流程主要体现在EFC的复位信号需要在Flash睡眠
-唤醒后才能释放，然后EFC再执行复位后动作，动作完成后才
-能执行后续的正常功能。
-ETMO
-
+带复位的流程主要体现在 EFC 的复位信号需要在 Flash 睡眠唤醒后才能释放，然后 EFC 再执行复位后动作，动作完成后才能执行后续的正常功能。
 
 ### 【右页】
 
-
-#### 1.2.5芯片系统启动
-
-ETMOU hizan.JJ
-ETWCU
-TMCU huan JJ
-.J1 2026-10-02-21:4
-;47
-fps
-191 Ⅱ
-223 I
-12080F
-
-
+### 1.2.5 芯片系统启动
 
 ---
+
 ## 图像编号 18 (原图: `GameViewer_nD3eu17L6q.png`)
 
 ### 【左页】
@@ -1381,53 +1087,36 @@ SectorErase和RetryErase操作过程基本一致。
 
 
 ---
-## 图像编号 21 (原图: `GameViewer_tD5gCQa3Jp.png`)
+## 原图：`GameViewer_tD5gCQa3Jp.png`
 
 ### 【左页】
 
-NVR地址空间划分说明
-
-#### 1.2.9正常工作启动和结束（包含上报内容）
-
-
-#### 1.2.10写保护（参考STM32，3.3.12扇区写保护部分）
-
-FLASHNVR读写保护
-紧急撤销
-第2 章
-需求规格
-功能需求
-LRS.EFC.CLK
-, 1i
-LRS.EFC.RST
-LRS.EFC.SOC
-LRS.EFC.SEC
-LRS.EFC.FLASH
-LRS.EFC.DFT
-ETMOU huan, 1i
-LRS.EFC.DFX
-LRS.EFC.RBST
-中断管理
-事件管理
-约束说明
-触发源说明
-
+- 1.2.8 NVR 地址空间划分说明
+- 1.2.9 正常工作启动和结束（包含上报内容）
+- 1.2.10 写保护（参考 STM32，3.3.12 扇区写保护部分）
+- 1.2.11 FLASH NVR 读写保护
+- 1.2.12 紧急撤销
+- 第2章 需求规格
+  - 2.1 功能需求
+    - 2.1.1 LRS.EFC.CLK
+    - 2.1.2 LRS.EFC.RST
+    - 2.1.3 LRS.EFC.SOC
+    - 2.1.4 LRS.EFC.SEC
+    - 2.1.5 LRS.EFC.FLASH
+    - 2.1.6 LRS.EFC.DFT
+    - 2.1.7 LRS.EFC.DFX
+    - 2.1.8 LRS.EFC.RBST
+  - 2.2 中断管理
+  - 2.3 事件管理
+  - 2.4 约束说明
+  - 2.5 触发源说明
 
 ### 【右页】
 
-参考文献
-8TMOU huar2.15
-8026-10-02-21;40
-ETMCU a3,15
-ETHCI hoan, T) 2086-10-02-31:40
-BTMOU
-RTMCU huan.J1 2026-10-02-21:
-;40
-13080F
-
-
+# 参考文献
 
 ---
+
 ## 图像编号 22 (原图: `GameViewer_u7x2KWkvm5.png`)
 
 ### 【左页】
@@ -1571,35 +1260,30 @@ LRS.EFC.RBST【02】：若该模块进行软复位时，不会导致CPU
 
 
 ---
-## 图像编号 24 (原图: `GameViewer_XujivZGdpN.png`)
+## 原图：`GameViewer_XujivZGdpN.png`
 
 ### 【左页】
 
-, i
-BTMOT huar,13
-BTMCU Tuan.11
-BTMCU uan, li
-EFC 模块LRS 设计文档
-ETMOU huan, 1i
-设计：
-周玮玮
-ETMO huan. J3
-评审：XXXXXXX
+# EFC 模块 LRS 设计文档
 
+设计：周玮玮  
+评审：XXXXXXX
 
 ### 【右页】
 
-批准：
-ETMCU A3,15 2026-10-02-217:40
-ETHCu hoan 11 2086-10-02-21:40
-BTMOU hian. 11
-RTNCU huan.J1
-ETMCU huzan.17
-;40
-欢迎回来！
-从离开的位置继P
-fps
-参考文献
-星期二
-13080F
+批准：XXXXXXX
 
+---
+
+---
+
+## 第二部分：截图明确标注的 ET6601 修改点
+
+### 修订记录 1.1
+
+- **原始文字**：根据ET6601 OR-DR更新，新增64KX72=512KB的PFLASH，原有FLASH回退为DFLASH
+- **所在位置**：表1-1 修订记录，版本 1.1
+- **修订日期**：20260920
+- **修订人员**：周玮玮
+- **原图**：`../images/GameViewer_fpb2HKWthL.png`
+- **修改性质**：原图修订记录明确标注的 ET6601 更新

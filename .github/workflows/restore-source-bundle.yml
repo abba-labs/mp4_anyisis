@@ -3,13 +3,15 @@ name: restore-source-bundle
 on:
   push:
     branches: [docs/restore-6601-screenshots]
-    paths: ['.github/workflows/restore-source-bundle.yml']
+    paths:
+      - '.github/workflows/restore-source-bundle.yml'
+      - '6601芯片截图/**/docs/*.md'
   workflow_dispatch:
     inputs:
       module:
-        description: Original screenshot module to export
+        description: Original screenshot module to export, or text-only readback
         type: choice
-        options: [efc, sarc, hac_wrap, cpld, all]
+        options: [efc, sarc, hac_wrap, cpld, all, text]
         default: efc
 
 permissions:
@@ -30,7 +32,7 @@ jobs:
           persist-credentials: false
       - name: Package original bytes and source inventory
         env:
-          SELECTED_MODULE: ${{ inputs.module || 'efc' }}
+          SELECTED_MODULE: ${{ inputs.module || 'text' }}
         run: |
           python3 - <<'PY'
           import hashlib
@@ -42,7 +44,7 @@ jobs:
 
           root = Path('6601芯片截图')
           module = os.environ['SELECTED_MODULE']
-          if module not in {'efc', 'sarc', 'hac_wrap', 'cpld', 'all'}:
+          if module not in {'efc', 'sarc', 'hac_wrap', 'cpld', 'all', 'text'}:
               raise SystemExit('Unsupported source module')
           head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
           raw = subprocess.check_output(['git', 'ls-tree', '-rlz', 'HEAD'])

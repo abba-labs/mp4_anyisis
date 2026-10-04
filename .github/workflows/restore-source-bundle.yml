@@ -1,0 +1,90 @@
+name: restore-source-bundle
+
+on:
+  push:
+    branches: [docs/restore-6601-screenshots]
+    paths: ['.github/workflows/restore-source-bundle.yml']
+  workflow_dispatch:
+    inputs:
+      module:
+        description: Original screenshot module to export
+        type: choice
+        options: [efc, sarc, hac_wrap, cpld, all]
+        default: efc
+
+permissions:
+  contents: read
+
+concurrency:
+  group: restore-source-bundle-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Package original bytes and source inventory
+        env:
+          SELECTED_MODULE: ${{ inputs.module || 'efc' }}
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import zipfile
+
+          root = Path('6601芯片截图')
+          module = os.environ['SELECTED_MODULE']
+          if module not in {'efc', 'sarc', 'hac_wrap', 'cpld', 'all'}:
+              raise SystemExit('Unsupported source module')
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          raw = subprocess.check_output(['git', 'ls-tree', '-rlz', 'HEAD'])
+          inventory = []
+          for item in raw.split(b'\0'):
+              if not item:
+                  continue
+              meta, path = item.split(b'\t', 1)
+              mode, kind, sha, size = meta.decode().split()
+              inventory.append({'path': path.decode('utf-8'), 'type': kind,
+                                'blob_sha': sha, 'bytes': int(size)})
+          out = Path('source_export')
+          out.mkdir()
+          manifest = {'source_commit': head, 'module': module,
+                      'original_bytes_preserved': True,
+                      'inventory_order_is_not_document_reading_order': True,
+                      'repository_inventory': inventory, 'exported_files': []}
+          with zipfile.ZipFile(out / 'sources.zip', 'w', zipfile.ZIP_STORED) as archive:
+              for item in inventory:
+                  path = Path(item['path'])
+                  if '.review_cache' in path.parts:
+                      continue
+                  is_text = path.suffix.lower() in {'.md', '.json', '.txt', '.csv', '.yml', '.yaml', '.py'}
+                  is_image = path.suffix.lower() in {'.png', '.jpg', '.jpeg', '.webp'}
+                  in_module = module == 'all' or tuple(path.parts[:2]) == (str(root), module)
+                  if not (is_text or (is_image and in_module)):
+                      continue
+                  data = path.read_bytes()
+                  actual_blob = hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
+                  if actual_blob != item['blob_sha']:
+                      raise SystemExit('Source blob verification failed: ' + str(path))
+                  archive.writestr(str(path), data)
+                  manifest['exported_files'].append({**item, 'sha256': hashlib.sha256(data).hexdigest()})
+              archive.writestr('SOURCE_MANIFEST.json', json.dumps(manifest, ensure_ascii=False, indent=2))
+          print('Original source files exported:', len(manifest['exported_files']))
+          print('Pinned source commit:', head)
+          print('No resizing, OCR, or document verification is performed by this workflow.')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: restore-original-sources
+          path: source_export/sources.zip
+          compression-level: 0
+          retention-days: 3
+          if-no-files-found: error

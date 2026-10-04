@@ -1,6 +1,6 @@
 # CPLD - INTERFACE_CPLD_CFG 设计与接口说明
 
-> ⚠️ 临时来源片段：本文件不是最终文档边界；最终文档为 `../..//cpld_interface/docs/CPLD_INTERFACE.md`。CPLD 为新 IP，不做 ET6601 继承修改点总结。
+> ⚠️ 临时来源片段：本文件不是最终文档边界；最终文档为 `../../cpld_interface/docs/CPLD_INTERFACE.md`。CPLD 为新 IP，不做 ET6601 继承修改点总结。
 
 
 > 提取说明：本文档由 AI Agent 严格按照原始截图提取，未作主观改动。

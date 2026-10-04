@@ -1,0 +1,527 @@
+# CPLD - INTERFACE_CPLD_CFG 设计与接口说明
+
+> 提取说明：本文档由 AI Agent 严格按照原始截图提取，未作主观改动。
+> 模糊或包含复杂波形处均已精确标明原截图文件索引。
+
+---
+
+## 第一部分：文档原始正文内容
+
+
+### 截图编号 1 (`images/GameViewer_1AL3gcTZwO.png`)
+
+#### 【全页】
+
+CFGINXB_CPLD_DATA_EDGE_enb
+output
+1ctg_inxb_cpld_data_edge_enb_nc
+CFG_INXB_CPLD_DATA_PIPE_sel_r
+output
+16cfg_inxb_cpld_data_pipe_sel
+CFG_INXB_CPLD_DATA_PIPE_enb
+output
+1cfg_inxb_cpld_data_pipe_enb_nc
+CFG_PFXB_CPLD_DATA_EXTEND_selr
+output
+11cfg_pfxb_cpld_data_extend_sel
+CFG_PFXB_CPLD_DATA_EXTEND_enb
+output
+1cfg_pfxb_cpld_data_extend_enb_nc
+CFG_PFXBCPLDDATASYNC_selr
+output
+22 cfg_pfxb_cpld_data_sync_sel
+CFG_PFXB_CPLD_DATA_SYNC_enb
+output
+1cfg_pfxb_cpld_data_sync_enb_nc
+CFG_PFXB_CPLD_DATA_EDGE_sel_r
+output
+22cfg_pfxb_cpld_data_edge_sel
+CFG_PFXB_CPLD_DATA_EDGE_enb
+output
+1cfg_pfxb_cpld_data_edge_enb_nc
+CFG_PFXB_CPLD_DATA_PIPE_sel_r
+output
+11cfg_pfxb_cpld_data_pipe_sel
+CFG_PFXB_CPLD_DATA_PIPE_enb
+output
+1cfg_pfxb_cpld_data_pipe_enb_nc
+CFG_ETXB_CPLD_DATA_EXTEND_selr
+output
+10 cfg_etxb_cpld_data_extend_sel
+CFG_ETXB_CPLD_DATA_EXTEND_enb
+output
+1cfg_etxb_cpld_data_extend_enb_nc
+CFGETXB_CPLDDATASYNC_selr
+output
+20 cfg_etxb_cpld_data_sync_sel
+CFG_ETXB_CPLDDATA_SYNC_enb
+output
+1cfg_etxb_cpld_data_sync_enb_nc
+CFG_ETXB_CPLD_DATA_EDGE_sel_r
+output
+20cfg_etxb_cpld_data_edge_sel
+CFG_ETXB_CPLD_DATA_EDGE_enb
+output
+1cfg_etxb_cpld_data_edge_enb_nc
+CFG_ETXB_CPLD_DATA_PIPE_sel_r
+output
+10 cfg_etxb_cpld_data_pipe_sel
+CFG_ETXB_CPLD_DATA_PIPE_enb
+output
+1cfg_etxb_cpld_data_pipe_enb_nc
+CFG_CMPC_CPLD_EVTH_EXTEND_sel_r
+output
+10 cfg_cmpc_cpld_evth_extend_sel
+CFG_CMPC_CPLD_EVTH_EXTEND_enb
+output
+1cfg_cmpc_cpld_evth_extend_enb_nc
+CFG_CMPC_CPLD_EVTH_SYNC_sel_r
+output
+20cfg_cmpc_cpld_evth_sync_sel
+CFGCMPC_CPLD_EVTH_SYNC_enb
+output
+1cfg_cmpc_cpld_evth_sync_enb_nc
+CFG_CMPC_CPLD_EVTH_EDGE_sel_r
+output
+20 cfg_cmpc_cpld_evth_edge_sel
+CFG_CMPC_CPLD_EVTH_EDGE_enb
+output
+1cfg_cmpc_cpld_evth_edge_enb_nc
+CFG_CMPC_CPLD_EVTH_PIPE_selLr
+output
+10 cfg_cmpc_cpld_evth_pipe_sel
+CFG_CMPC_CPLD_EVTH_PIPE_enb
+output
+1cfg_cmpc_cpld_evth_pipe_enb_nc
+CFG_CMPC_CPLD_EVTL_EXTEND_selr
+output
+10 cfg_cmpc_cpld_evtl_extend_sel
+CFG CMPC_CPLD_EVTL_EXTEND_enb
+output
+1cfg_cmpc_cpld_evtl_extend_enb_nc
+CFG CMPC CPLD EVTL SYNC selr
+output
+20cfgcmpccpldevtlsyncsel
+
+
+
+### 截图编号 2 (`images/GameViewer_DeXJCeTp8c.png`)
+
+#### 【全页】
+
+signal
+inout
+width
+connect_sig
+CFG_EFPGA0_val_r
+output
+32 cfg_efpga0_val
+CFG_EFPGA0_enb
+output
+1cfg_efpga0_enb_nc
+CFG_EFPGA1_val.r
+output
+32 cfg_efpga1_val
+CFG_EFPGA1_enb
+output
+1 cfg_efpgal_enb_nc
+CFG_EFPGA_MASK_en_r
+output
+1 cfg_efpga_mask_en
+CFG_EFPGA_MASK_enb
+output
+1 cfg_efpga_mask_enb_nc
+EFPGA_RPTO_val_in
+input
+32 efpga_rpt0_val_in
+EFPGA_RPT1_val in
+input
+32 efpga_rpt1_val_in
+CFG_CPLD_PLL_LOS_STATUS_sync_sel_r
+output
+1 cfg_cpld_pll_los_status_sync_sel
+CFG_CPLD_PLL_LOS_STATUS_enb
+output
+1cfg_cpld_pll/los_status_enb_nc
+CFG_SRPWM_CPLD_PWM_A_pipe_sel_r
+output
+11cfg_srpwm_cpld_pwm_a_pipe_sel
+CFG_SRPWM_CPLD_PWM_A_sync_selr
+output
+11 cfg_srpwm_cpld_pwm_a_sync_sel
+CFG_SRPWM_CPLD_PWM_A_enb
+output
+1cfg_srpwm_cpld_pwm_a_enb_nc
+CFG_SRPWM_CPLD_PWM_B_pipe_sel_r
+output
+11 cfg_srpwm_cpld_pwm_b_pipe_sel
+CFG_SRPWM_CPLD_PWM_B_sync_sel_r
+output
+11 cfg_srpwm_cpld_pwm_b_sync_sel
+CFGSRPWMCPLDPWMBenb
+output
+1cfg_srpwm_cpld_pwm_b_enb_nc
+CFG_SRPWM_CPLD_PWMA_OEN_pipe_sel_r
+output
+11cfg_srpwm_cpld_pwma_oen_pipe_sel
+CFG_SRPWM_CPLD_PWMA_OEN_sync_sel_r
+output
+11cfg_srpwm_cpld_pwma_oen_sync_sel
+CFG_SRPWM_CPLD_PWMA_OEN_enb
+1cfg_srpwm_cpld_pwma_oen_enb_nc
+output
+CFG_SRPWM_CPLD_PWMB_OEN_pipe_selr
+output
+11cfg_srpwm_cpld_pwmb_oen_pipe_sel
+CFG_SRPWM_CPLD_PWMB_OEN_sync_sel.r
+output
+11 cfg_srpwm_cpld_pwmb_oen_sync_sel
+CFG_SRPWM_CPLD_PWMB_OEN_enb
+output
+1 cfg_srpwm_cpld_pwmb_oen_enb_nc
+CFG_ETIM_CPLD_PWM_pipe_sel_r
+output
+10 cfg_etim_cpld_pwm_pipe_sel
+output
+CFG_ETIM_CPLD_PWM_sync_sel_r
+10cfg_etim_cpld_pwm_sync_sel
+CFG_ETIM_CPLD_PWM_enb
+output
+1cfg_etim_cpld_pwm_enb_nc
+huar
+CFG_PAD_CPLD_IN_sync_sel.r
+output
+4 cfg_pad_cpld_in_sync_sel
+CFG_PAD_CPLD_IN_enb
+output
+1cfg_pad_cpld_in_enb
+CFG_CPUO_LOCKUP_sync_selr
+output
+1cfg_cpuo_lockup_sync_sel
+CFG_CPUO_LOCKUP_enb
+output
+1 cfg_cpuo_lockup_enb_nc
+CFG_CPU1_LOCKUP_sync_sel_r
+output
+1 cfg_cpu1_lockup_sync_sel
+CFGCPU1LOCKUPenb
+output
+1cfacpu1lockupenbnc
+
+
+
+### 截图编号 3 (`images/GameViewer_DjmYAqFskT.png`)
+
+#### 【全页】
+
+CFG_BUS_TIMEOUT_sync_sel_r
+output
+1 cfa bustimeout sync sel
+CFG_BUS_TIMEOUT_enb
+output
+1cfg_bus_timeout_enb_nc
+CFG_TEMP_WARN_sync_selr
+output
+1cfg_temp_warn_sync_sel
+CFG_TEMP_WARN_enb
+output
+1cfg_temp_warn_enb_nc
+CFG_POWER_ERR_sync_sel_r
+output
+1 cfg_power_err_sync_sel
+CFG_POWER_ERR_enb
+output
+1cfg_power_err_enb_nc
+CFG_PWR_OCP_WARN_sync_sel_r
+output
+1 cfg_pwr_ocp_warn_sync_sel
+CFG_PWR_OCP_WARN_enb
+output
+1cfg_pwr_ocp_warn_enb_nc
+CFG_POR_UV_WARN_sync_sel.r
+output
+1cfg_por_uv_warn_sync_sel
+CFG_POR_UV_WARN_enb
+output
+1cfg_por_uv_warn_enb_nc
+CFG_POR_OV_WARN_sync_selr
+output
+1 cfg_por_ov_warn_sync_sel
+CFG_POR_OV_WARN_enb
+output
+1cfg_por_ov_warn_enb_nc
+CFG_SOC_HARD_RST_N_sync_sel.r
+output
+1 cfg_soc_hard_rst_n_sync_sel
+CFG_SOCHARD_RSTNenb
+output
+1cfg_soc_hard_rst_n_enb_nc
+CFG_SOC_WDGO_RST_N_sync_sel_r
+output
+1cfg_soc_wdgo_rst_n_sync_sel
+CFG_SOC_WDGO_RST_N_enb
+output
+1cfg_soc_wdgo_rst_n_enb_nc
+CFG_SOC_WDG1_RST_N_sync_sel_r
+output
+1 cfg_soc_wdg1_rst_n_sync_sel
+CFG_SOC_WDG1_RST_N_enb
+output
+1cfg_soc_wdg1_rst_n_enb_nc
+CFG_SOC_SOFT_RST_N_sync_sel_r
+output
+1 cfg_soc_soft_rst_n_sync_sel
+CFG_SOC_SOFT_RST_N_enb
+output
+1 cfg_soc_soft_rst_n_enb_nc
+output
+CFG_ETIM_CPLD_SYNC_pipe_selr
+1 cfg_etim_cpld_sync_pipe_sel
+CFG_ETIM_CPLD_SYNC_edge_sel_r
+output
+2 cfg_etim_cpld_sync_edge_sel
+CFG_ETIM_CPLD_SYNC_sync_sel_r
+output
+2cfg_etim_cpld_sync_sync_sel
+output
+CFG_ETIM_CPLD_SYNC_extend_sel_r
+1 cfg_etim_cpld_sync_extend_sel
+hua
+CFG_ETIM_CPLD_SYNC_enb
+output
+1cfg_etim_cpld_sync_enb_nc
+CFG_INXB_CPLD_DATA_EXTEND_selr
+output
+16cfg_inxb_cpld_data_extend_sel
+CFG_INXB_CPLDDATA_EXTEND_enb
+output
+1cfg_inxb_cpld_data_extend_enb_nc
+CFGINXB_CPLDDATASYNC_selrA9
+output
+32 cfg_inxb_cpld_data_sync_sel
+CFG_INXB_CPLD_DATA_SYNC_enb
+output
+1 cfg_inxb_cpld_data_sync_enb_nc
+CEGINXBCPIDDATAEDGESeL
+output
+32cfginxb.cpld.dataedgesel
+
+
+
+### 截图编号 4 (`images/GameViewer_sB1DKm1Cn1.png`)
+
+#### 【全页】
+
+157 hbuttinput 3cpld ahbo hburst
+
+
+
+### 截图编号 5 (`images/GameViewer_XN1mwSbZGj.png`)
+
+#### 【全页】
+
+125CFG_ADC1_CPLD_EVTLSYNC_enb
+output
+1cfg_adc1_cpld_evtl_sync_enb_nc
+output
+CFG_ADC1_CPLD_EVTLEDGE_selr
+32 cfg_adc1_cpld_evtl_edge_sel
+output
+CFG_ADC1_CPLD_EVTL_EDGE_enb
+1 cfg_adc1_cpld_evtl_edge_enb_nc
+CFG_ADC1_CPLD_EVTL_PIPE_selr
+output
+16cfg_adc1_cpld_evtl_pipe_sel
+CFG_ADC1_CPLD_EVTL_PIPE_enb
+output
+1cfg_adc1_cpld_evtl_pipe_enb_nc
+PPI_BUS_dout_in
+input
+12 ppi_bus_dout_in
+PPI_BUS_din_r
+output
+12 ppi_bus_din
+PPI_BUS_addrr
+output
+uppesngidds
+PPI_BUS_enb
+output
+1ppi_bus_enb_nc
+CFG_CPLD_INT_EN_val_r
+output
+2 cfg_cpld_int_en_val
+CFG_CPLD_INT_EN_enb
+output
+1 cfg_cpld_int_en_enb_nc
+CFG_CPLD_INT_MASK_val_r
+output
+2cfg_cpld_int_mask_val
+CFG_CPLD_INT_MASK_enb
+output
+1 cfg_cpld_int_mask_enb_nc
+CFG_CPLD_INT_FORCE_IND_val_r
+output
+2 cfg_cpld_int_force_ind_val
+CFG_CPLDINTFORCEINDenb
+output
+1 cfg_cpld_int_force_ind_enb_nc
+CFG_CPLD_INT_CLR_valr
+output
+2 cfg_cpld_int_clr_val
+CFG_CPLD_INT_CLR_enb
+output
+1cfg_cpld_int_clr_enb_nc
+CPLD_INT_RAW_RPT_val_in
+input
+2 cpld_int_raw_rpt_val_in
+CPLDINT_STATUS_RPT_val_in
+input
+2cpld_int_status_rpt_val_in
+hclk
+input
+1 efpga_sys_clk
+hresetn
+input
+1 cpld_sys_rst_n
+haddr
+input
+32 cpld_ahb0_haddr
+hwrite
+input
+1cpld_ahb0_hwrite
+148hwdata
+input
+32cpld_ahb0_hwdata
+149 hrdata
+output
+32cpld_ahb0_hrdata
+150 hreadyout
+output
+1cpld_ahb0_hreadyout
+151hresp
+output
+1cpld_ahb0_hresp
+hready
+input
+1cpld_ahb0_hready
+153htrans
+input
+2cpld_ahb0_htrans
+hsize
+input
+3cpld_ahb0_hsize
+hprot
+input
+4cpld_ahb0_hprot
+156 hsel
+input
+1cpld ahbo hsel
+
+
+
+### 截图编号 6 (`images/GameViewer_zJTLoUFpvE.png`)
+
+#### 【全页】
+
+output
+1cfg_cmpc_cpldevtlsync_enb_nc
+CFG_CMPC_CPLD_EVTL_EDGE_sel_r
+output
+20 cfg_cmpc_cpld_evtl_edge_sel
+CFG_CMPC_CPLD_EVTL_EDGE_enb
+output
+1cfg_cmpc_cpld_evtl_edge_enb_nc
+CFG_CMPC_CPLD_EVTL_PIPE_sel_r
+output
+10cfg_cmpc_cpld_evtl_pipe_sel
+output
+CFG_CMPC_CPLD_EVTL_PIPE_enb
+1 cfg_cmpc_cpld_evtl_pipe_enb_nc
+CFG_ADCO_CPLD_EVTH_EXTEND_sel_r
+output
+16cfg_adc0_cpld_evth_extend_sel
+output
+CFG_ADCO_CPLD_EVTH_EXTEND_enb
+1cfg_adco_cpld_evth_extend_enb_nc
+CFG_ADCO_CPLD_EVTH_SYNC_sel_r
+output
+32cfg_adc0_cpld_evth_sync_sel
+CFG_ADCO_CPLD_EVTH_SYNC_enb
+output
+1 cfg_adc0_cpld_evth_sync_enb_nc
+CFG_ADCO_CPLD_EVTH_EDGE_sel_r
+output
+32cfg_adc0_cpld_evth_edge_sel
+output
+CFG_ADCO_CPLD_EVTH_EDGE_enb
+1cfg_adc0_cpld_evth_edge_enb_nc
+CFG_ADCO_CPLD_EVTH_PIPE_sel_r
+output
+16cfg_adc0_cpld_evth_pipe_sel
+CFG_ADCO_CPLD_EVTH_PIPE_enb
+output
+1cfg_adc0_cpld_evth_pipe_enb_nc
+CFG_ADCO_CPLD_EVTL_EXTEND_sel_r
+output
+16cfg_adc0_cpld_evtl_extend_sel
+CFG_ADCO_CPLD_EVTL_EXTEND_enb
+output
+1cfg_adc0_cpld_evtl_extend_enb_nc
+CFG_ADCO_CPLD_EVTL_SYNC_selr
+output
+32 cfg_adc0_cpld_evtl_sync_sel
+CFG_ADCO_CPLD_EVTL_SYNC_enb
+output
+1cfg_adco_cpld_evtl_sync_enb_nc
+_ADCo_CPLD_EVTL_EDGE_sel_r
+output
+32 cfg_adc0_cpld_evtl_edge_sel
+CFG_ADCO_CPLD_EVTL_EDGE_enb
+output
+1cfg_adc0_cpld_evtl_edge_enb_nc
+output
+ADCO_CPLD_EVTL_PIPE_selr
+16cfg_adc0_cpld_evtl.pipe_sel
+CFG_ADCO_CPLD_EVTL_PIPE_enb
+output
+1cfg_adc0_cpld_evtl_pipe_enb_nc
+CFG_ADC1_CPLD_EVTH_EXTEND_selr
+output
+16cfg_adc1_cpld_evth_extend_sel
+CFG_ADC1_CPLD_EVTH_EXTEND_enb
+output
+1cfg_adc1_cpld_evth_extend_enb_nc
+CFG_ADC1_CPLD_EVTH_SYNC_sel_r
+output
+32 cfg_adc1_cpld_evth_sync_sel
+CFG_ADC1_CPLD_EVTH_SYNC_enb
+output
+01cfg_adc1_cpld_evth_sync_enb_nc
+CFG_ADC1_CPLD_EVTH_EDGE_sel_r
+output
+32 cfg_adc1_cpld_evth_edge_sel
+CFG_ADC1_CPLD_EVTH_EDGE_enb
+output
+1cfg_adc1_cpld_evth_edge_enb_nc
+CFG_ADC1_CPLD_EVTH_PIPE_sel_r
+output
+16cfg_adc1_cpld_evth_pipe_sel
+CFG_ADC1_CPLD_EVTH_PIPE_enb
+output
+1cfg_adc1_cpld_evth_pipe_enb_nc
+CFG_ADC1_CPLD_EVTL_EXTEND_selr
+output
+16cfg_adc1_cpld_evtl_extend_sel
+output
+CFG_ADC1_CPLD_EVTL_EXTEND_enb
+1 cfg_adc1_cpld_evtl_extend_enb_nc
+CFG_ADC1_CPLD_EVTL_SYNC_selr
+output
+32 cfg_adc1_cpld_evtl_sync_sel
+
+
+
+---
+## 第二部分：ET6601 专项修改点提取
+
+> 经全页视觉文本检索，本组截图中未出现显式的 'ET6601' 特殊字色修改标注或修订记录文本，整体属于该模块标准基线配置。

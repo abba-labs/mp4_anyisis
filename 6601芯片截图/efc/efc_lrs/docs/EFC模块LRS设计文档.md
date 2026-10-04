@@ -1237,6 +1237,38 @@ EFC(eFlash Controller)模块是嵌入式 eFlash 控制器，对 eFlash 的读、
 
 ---
 
+## 原图：`GameViewer_bTZBDjzsW4.png`
+
+### 【左页】
+
+NVR_CFG/NVR 的读取，SMIC 建议都使用 RECALL 读取方式。
+
+#### 1.2.8.8 Retry Erase 处理
+
+**图1-15 Retry擦除操作流程**
+
+> 原图：`../images/GameViewer_bTZBDjzsW4.png`
+
+### 【右页】
+
+#### 1.2.9 写保护（参考 STM32，3.3.12 扇区写保护部分）
+
+##### 1.2.9.1 寄存器写保护
+
+**图1-16 寄存器写保护流程**
+
+> 原图：`../images/GameViewer_bTZBDjzsW4.png`
+
+1）模块复位后，`cfg_efc_reg_wrprot_flg` 寄存器默认为 1；  
+2）软件按顺序写 `cfg_efc_reg_key1`、`cfg_efc_reg_key2` 寄存器；
+
+i. 写入 `cfg_efc_reg_key1 = 0x01234567`； -- pflash  
+ii. 写入 `cfg_efc_reg_key2 = 0x89ABCDEF`； --pflash
+
+或
+
+---
+
 ## 第二部分：截图明确标注的 ET6601 修改点
 
 ### 修订记录 1.1

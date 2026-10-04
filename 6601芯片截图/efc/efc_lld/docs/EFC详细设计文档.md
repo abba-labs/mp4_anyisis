@@ -140,7 +140,6 @@ EFC CFG模块框图
 
 **图 2-1**
 
-ETCU uam 11
 
 **图2-2**
 
@@ -546,7 +545,6 @@ APB写数据
 输出
 APB读数据
 efc_prdata[31:0]
-huem.11
 efc_ pready
 输出
 APB准备好信号，高电平有效
@@ -760,7 +758,6 @@ AXI读准备好指示，高电平有效
 输入
 AXI锁
 efc arlock
-huem 11
 输入
 efc_arcache
 AXI cache
@@ -909,7 +906,6 @@ Q1:37
 6.中断相关：使能、状态、清零
 7.上报：中断状态、Flash状态、DFX信息
 ETMGU
-ETNCO huam
 EFC_INT_PARSE、INT_GEN MRG：中断上报、汇聚模块，
 将中断上报给
 CFGFLASHIDS并且汇聚后上报给
@@ -1033,7 +1029,6 @@ GFBMPROCMERGE：将写命令按FlashRoW进行拆分(Flash
 #### 2.2.2 GFB POWERPROC
 
 根据外部电源信号，进行状态的跳转；
-EIMCU muan 1i
 执行POWER-ON过程，
 用default时钟频率
 ）读NVR_CFG
@@ -1042,7 +1037,6 @@ EIMCU muan 1i
 在复位阶段需要执行：
 ）NVR
 2）更新到Option寄存2
-F7NCU muan. 13
 因此将动作拆分为两个子过程：
 1） EFC_POWER -- 读 NVR_CFG，set Config register；见图
 1 fp!

@@ -176,7 +176,6 @@ RDN寄存器更新；
 
 #### 1.2.2 Power Off
 
-TMCU hoan 1i
 CRG
 EFC
 电源管理
@@ -185,7 +184,6 @@ Flash
 确定掉电的时间点
 再配置电源管理断电
 产生PORb=0
-ETMCUTman.12028-10-02-21:
 por_rst_n=0
 .porrst n=0
 根据CRG的设计进行延时
@@ -232,7 +230,6 @@ EFC模块复
 2)写同Option寄存器：
 复位完成，进行IDLE状态
 重新对efc操作
-ETMO/ han, 7i 202F-10-02-27:41
 避续工作
 EFC
 SoC软件
@@ -347,14 +344,12 @@ Main+RDN
 
 **图1-72个Flash地址空间说明**
 
-ETMCU huas, li
 
 #### 1.2.8正常工作启动和结束（包含上报内容）
 
 数据读操作（NVR_CFG，NVR）
 配置master
 FC
-BTMCU man,
 适过不网bit来表示：
 MVR_CFG(wafertesting价段/上电阶段)。
 NVR（上电阶投/EFC复位/正常阶段）
@@ -363,7 +358,6 @@ NVR（上电阶投/EFC复位/正常阶段）
 状态机进入IDLE
 反馈读国数据
 DLE
-ETMC han, 71 202F-10-02-77:4
 等待EFC重新启用
 配置master
 EFC
@@ -372,7 +366,6 @@ EFC
 
 对图中“配置master”的说明：
 Waftertesting阶段：配置master为测试接口；
-ETMOU
 上电阶段：配置master为EFC_GFB中的电源管理部分；
 EFC复位：表示只对EFC进行复位，对Flash没有断电。配
 
@@ -383,7 +376,6 @@ EFC复位：表示只对EFC进行复位，对Flash没有断电。配
 
 置master也为EFC_GFB中的电源管理部分;
 正常阶段：配置master为系统CPU;
-ETMO
 ETHCU
 NVR、NVR_CFG读取，需要进行间接寻址，避免总线ready
 拉低挂住系统；
@@ -427,7 +419,6 @@ master
 EFC
 通过不同bt来表示
 Redundancy.
-ETMCU huas, li
 Main
 配置启动读数据
 开始数需传输新环
@@ -448,7 +439,6 @@ EFC
 
 数据读操作流程（MainArray，
 Redundancy)
-ETMOU
 EFC只与Master（CPU或者系统DMA）产生数据交换；
 1）总线上接收到来自master的读命令（软件先启动Master）；
 2）EFC对Flash进行读操作；（如果不受lock限制）
@@ -492,7 +482,6 @@ master
 数据写操作流程
 (Main Array，Redundancy)
 EFC只与Master（CPU或者系统DMA）产生数据交换；
-12080F
 
 
 
@@ -525,7 +514,6 @@ Retryi家
 质动：因此每次Retry除眉需要进行一次VerifyRead读取数费
 确认是否换象或功，确认成功后就不再继续排踪。这种方法可以一定程
 度上提升续脉性膜，
-ETMO
 
 **图1-12**
 
@@ -652,7 +640,6 @@ cfg_efc_reg_wrprot_flg，并返回总线错误）
 LCKCFG在CP测试后即拉高，用户在使用过程中无法进行
 读写；
 实现中使用 nvrcfg_unlock==8"h00 做为LCK_CFG;
-ETMOI
 
 
 ### 【右页】
@@ -663,7 +650,6 @@ NVR写保护
 模处复位后，
 释先疾行fgregprotag倍存静清程
 orot_fig需存器款以为1
-ETMCU hvan. 11
 素性dfg_efc_nvr_key1 NVR_KEYI
 &作dg_efc_mvr_key2 - NVR_KEY2-
 并将cfg_n_arprot_fig量新配照力1
@@ -705,7 +691,6 @@ efuse为NVR中的一部分，当前版本中不进行额外保护；
 一打开或关闲对应扇区写保护
 软件配置寄存器
 一每个扇区可独立管理
-ETMCV hinan. i 2026-10
 致件启动写操作推除操作
 硬件check写/排降征含地址是否受保护
 （根据配置寄存器的写保护配置）
@@ -715,7 +700,6 @@ nan.11
 
 **图1-18Main写保护流程**
 
-ETMOI
 1）软件启动写/擦除指令；
 
 
@@ -762,7 +746,6 @@ DFLASH nvr sector;
 动生效；
 9.PFLASHmain空间，不受rdp保护；受wrp保护，以整片为
 单位;
-ETMCV
 
 #### 1.2.10.2 OTP需求
 
@@ -774,7 +757,6 @@ dflash的8个空间（以16个sector为单位）的读保护
 1"b0：打开读保护，数据不能被读取；
 1"b1：关闭读保护，数据能被读取；
 注：TEST_CODEI=O时不做保护
-ETMOI
 dflash_main_wrp_n[7:0]
 dflash的8个空间（以16个sector为单位）的写保护
 标识
@@ -801,7 +783,6 @@ dflash_mvr_otp_n[7:0][4:0]
 0~4分别表示sector9~13
 dflashnvr空间的7个sector确认变成otp
 dflash_otp_gen_n[7:0][6:0]
-TMCUh/an.J1
 0x0：变为otp，数据不能被擦除，可将1写为0；
 其他：正常nvr，数据能被写/擦除；
 0~5分别表示sectoro~5，6表示sector15
@@ -811,7 +792,6 @@ otp的擦除保护，由bootrom配置只写1的寄存器实
 现；
 FLASHnvr_cig空间的读/写/擦除保护
 nvrcfg_unlock[7:0]
-TMCUan11 2026-10-02-21:
 0x0：打开保护，数据不能被读/写/擦除；
 其他：关闭保护，数据能誠读/写/擦除；
 chip_ers_key[31:0]
@@ -1020,7 +1000,7 @@ LRS.EFC.FUNC.SEC【13】FLASH读写保护：
 
 2.dflash OTP空间（nvr'sector 4~5，nvr sector15 ）由
 DFLASH OTPGEN定义，变成OTP后，仅BOOTROM可
-读可写，禁止擦除，芯片回收才会修改；BTICL
+读可写，禁止擦除，芯片回收才会修改；
 3.dflashOPTIONBYTES空间（nvrsector6）仅BOOTROM可
 读可写可擦除，上电后自动生效，（nvrsector7）当
 secure_level等于2'd2/2'd3时，用户可仅读，当securelevel
@@ -1047,7 +1027,6 @@ USER_NVR_OTP_GEN_N 定义，变成OTP 后，"禁止擦除，
 
 可修改，上电后自动生效；
 对AXI总线访问MAIN空间读写保护区域，自动屏蔽写操
-ETMCO
 作，读操作数据返回全0,并且根据配置使能决定是否返回
 总线错误；
 对APB总线对于MAIN空间读取保护区域的擦除命令，自
@@ -1062,7 +1041,6 @@ LRS.EFC.FUNC.SEC【14】BOOTROM发起的DFLASH的全
 3)dflash USER OPTION BYTES (nvr sector8) ;
 4)dflash USER OTP (nvr sector9~13)0;
 5)flash OPTION BYTES (nvr sector 7、14、6);
-BTMCU han.
 6)flash OTP(nvr sector 4~5、 nvr sector15);
 LRS.EFC.FUNC.SEC【15】支持PFLASH和DFLASH
 
@@ -1110,14 +1088,13 @@ LRS.EFC.FLASH【9】适配 SMICFLASHMACRO编程时,
 72bit数据分两次写入：
 1、AXI、APB总线写拆分两次写入；
 2、AXI、APB总线单独写入高/低36bit，由配置选择；
-&TMC3、保留一次性写入72bit能力；
+3、保留一次性写入72bit能力；
 LRS.EFC.FLASH【10】FLASH支持进入低功耗模式；
 LRS.EFC.FLASH【11】FLASH有2Redundancy Sectors，用于
 替换 MAIN Sector;
 
 #### 2.1.6 LRS.EFC.DFT
 
-RTMC) 2
 BTMC han.
 LRS.EFC.DFT【O1】：支持BIST自检;
 
@@ -1160,19 +1137,17 @@ resp 返回 ERR;
 LRS.EFC.RBST【03】：模块从正常功能切到软复位或
 ClockGate模式，数据接口访问未完成时，按LRS.EFC.RBST
 【01、02】方式处理；
-STNCU
 
 #### 2.2 中断管理
 
 LRS.EFC.INTR.SPEC【O1】：功能完成，触发中断;
 LRS.EFC.INTR.SPEC【02】：错误产生，触发中断；错误类型
-参考LRS.EFC.DFX【02】；BTMC)
+参考LRS.EFC.DFX【02】；
 
 #### 2.3事件管理
 
 无。
 87MC) ;4)
-ETMCU man. li
 
 #### 2.4约束说明
 

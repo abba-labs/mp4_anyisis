@@ -2143,6 +2143,13 @@ FLASH(XMS)
 - **原图**：`../images/GameViewer_xS9sUaBAU3.png`
 - **修改性质**：原图明确点名 ET6601 方案存在的问题
 
+### READ MODE CHANGE 等待 tMH 逻辑问题
+
+- **原始文字**：并且进入 READ MODE CHANGE 阶段本身应该等待 tMH 时间逻辑也未生效，实际在等待之前 READ MODE 就切换了；
+- **所在位置**：Synchronous Read Cycle Timing Diagram / 配置代码截图下方红色批注
+- **原图**：`../images/GameViewer_Jv14xpHsSC.png`
+- **修改性质**：原图红字明确指出的 READ MODE CHANGE 时序问题
+
 ### ET6601 READ MODE 优化方案
 
 > 该组修改从“ET6601优化方案为：”开始，内容跨连续页面。

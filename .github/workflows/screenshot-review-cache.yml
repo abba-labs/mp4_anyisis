@@ -1,0 +1,64 @@
+name: screenshot-review-cache
+
+on:
+  push:
+    branches:
+      - docs/restore-6601-screenshots
+    paths:
+      - '.github/workflows/screenshot-review-cache.yml'
+      - '6601芯片截图/efc/**/images/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-review-cache:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/restore-6601-screenshots
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build reduced review images
+        run: |
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          root = Path("6601芯片截图/efc")
+          out_root = Path("6601芯片截图/.review_cache/efc")
+          out_root.mkdir(parents=True, exist_ok=True)
+
+          count = 0
+          for src in sorted(root.glob("**/images/*")):
+              if not src.is_file() or src.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp"}:
+                  continue
+              if src.stat().st_size <= 1_048_576:
+                  continue
+              rel = src.relative_to(root)
+              dst = out_root / rel.parent / (src.stem + ".jpg")
+              dst.parent.mkdir(parents=True, exist_ok=True)
+              with Image.open(src) as im:
+                  im = im.convert("RGB")
+                  im.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
+                  im.save(dst, "JPEG", quality=92, optimize=True)
+              count += 1
+          print(f"generated {count} review images")
+          PY
+      - name: Commit review cache
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "6601芯片截图/.review_cache/efc"
+          if git diff --cached --quiet; then
+            echo "No review cache changes"
+            exit 0
+          fi
+          git commit -m "chore(review): add temporary EFC screenshot review cache [skip ci]"
+          git push origin HEAD:docs/restore-6601-screenshots

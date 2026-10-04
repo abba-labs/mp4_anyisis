@@ -2225,6 +2225,37 @@ EFC命令反压信号，高电平有效
 
 ## 第二部分：截图明确标注的 ET6601 修改点
 
+### Flash Main Normal Read 读采样优化
+
+- **原始文字**：Flash Main Normal Read时序优化方案见：`/ET6601-DOC/05.数字设计/03 HAC/03 方案 LRS/EFC/V100/03.设计/02.LLD/《FLASH读时序分析.xlsx》`；将读采样修改为efc_clk，提高读效率
+- **所在位置**：图2-14 Flash Read状态转移图之后
+- **原图**：`../images/GameViewer_xS9sUaBAU3.png`
+- **修改性质**：原图红字明确给出的 ET6601 读时序优化
+
+### READ MODE 的 tMH/tMS 优化问题
+
+- **原始文字**：ET6601方案中存在以下问题：1、ET6001、ET6601为了满足READMODE的RDEN使能后的HOLD时序tMH，三种读模式在每次进行最后一个读操作之后都进行了等待，降低了连续读的性能；
+- **所在位置**：FLASH读模式切换tMH/tMS时间优化
+- **原图**：`../images/GameViewer_xS9sUaBAU3.png`
+- **修改性质**：原图明确点名 ET6601 方案存在的问题
+
+### ET6601 READ MODE 优化方案
+
+> 该组修改从“ET6601优化方案为：”开始，内容跨连续页面。
+
+1. **原始文字**：ET6601中优化为只有Recall Read需要等待tMH，Normal Read、Vread1不等待，提升Normal Read、Vread1效率；
+   - **原图**：`../images/GameViewer_isM3FELYfq.png`
+2. **原始文字**：VREAD1在RETRY ERASE操作中提前拉高，在非RETRY ERASE和PROGRAM中保持不变，按照之前代码可能会出现Normal Read的tMH等待时间不够的违例，因此将VREAD1拉高时间修改为tNVS之后；
+   - **原图**：`../images/GameViewer_isM3FELYfq.png`
+3. **原始文字**：进入Program、ERASE时都将Recall拉低；（与ET6601方案保持一致）
+   - **原图**：`../images/GameViewer_isM3FELYfq.png`
+4. **原始文字**：进入READ模式时，只根据VREAD1和Recall信号的变化记录的READ MODE来决定是否要等待tMS，而不是每次ERASE/PROGRAM都认为READ MODE发生过变化；
+   - **原图**：`../images/GameViewer_isM3FELYfq.png`
+
+- **所在位置**：FCTRL_GFB_FLASH_IF 前的 READ MODE 优化说明；前一页以“ET6601优化方案为：”引出
+- **关联原图**：`../images/GameViewer_SnGFBV0cqH.png`、`../images/GameViewer_isM3FELYfq.png`
+- **修改性质**：截图红字明确给出的 ET6601 优化方案
+
 ### 修订记录 1.1
 
 - **原始文字**：根据ET6601 OR-DR更新，新增64KX72=512KB的PFLASH，原有FLASH回退为DFLASH

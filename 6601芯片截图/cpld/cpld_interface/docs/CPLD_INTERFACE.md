@@ -9,535 +9,95 @@
 
 ## INTERFACE_CPLD
 
-### 截图编号 1 (`../../interface_cpld/images/GameViewer_atyH2wpPCk.png`)
+> 原图：
+> - `../../interface_cpld/images/GameViewer_atyH2wpPCk.png`
+> - `../../interface_cpld/images/GameViewer_BtApOlYWLK.png`
+> - `../../interface_cpld/images/GameViewer_hN7LUohFXY.png`
 
-#### 【全页】
-
-信号类
-输出目的地
-来源
-Signal name
-说明
-inout
-width
-synctype
-pre-process
-时钟
-TOPCRG
-CPLD
-input
-Soc Sys clk
-MCU系统时钟，对应eFPGAfreeclk3
-时钟
-TOP_CRG
-CPLD
-cpld_clk
-input
-CPLD
-时钟
-TOP_CRG
-cpld.
-input
-时钟
-CPLD
-TOP.CRG
-cfo_clk_div_freeclko
-input
-时钟
-CPLD
-TOP.CRG
-cfa_clk_div_freeclk1
-input
-时钟
-CPLD
-TOP._CRG
-cfa_clk_div_freeclk3
-input
-时钟
-CPLD
-TOP_CRG
-cpld_pllLlos_status
-input
-type1
-门控
-CPLD
-TOP_CRG
-cpld_clk_gten
-input
-TOP CRG
-复位
-CPLD
-cpld_glb. rst n
-input
-在SOC系统SYSC模块的POR域配置，用于SOC系统复位eFPGAFCB和Fabric逻辑，复位配置写保护
-复位
-CPLD
-TOP_CRG
-cpld_cfg_rst_n
-input
-在SOC系统SYSC模块的POR域配置，仅复位CPLD子系统的寄存器配置电路，复位配置写保护
-CPLD
-复位
-TOP_CRG
-cpld_lgc_rst_n
-input
-在SOC系统SYSC模块的POR域配置，仅复位Fabric逻辑，不影响时钟及CPLD配置，是否关联SOC系统复位可配置，默认不关联，复位酉
-复位
-TOP_CRG
-CPLD
-cpld_user_rst.n
-input
-用户软复位输入，用户逻辑使用，连接到eFPGA的i。_resetn，由SOC系统寄存器配置或IO输入（TBD）
-复位
-CRG
-CPLD
-input
-type1
-soc hard rst_n
-SOC硬复位
-复位
-CPLD
-CRG
-soc_wdgo_rst_n
-type1
-input
-SOC看门狗o复位
-复位
-CRG
-CPLD
-soc_wdg1_rst_n
-input
-type1
-SOC看门狗1复位
-复位
-CRG
-CPLD
-input
-type1
-soc_soft_rst_n
-SOC软复位
-复位
-eFPGA
-SYSC/XBAR/CRG
-c2s.rst.n
-output
-eFPGA用户逻辑到SOC系统的C2SRSTN复位输出
-中断
-异步处理
-SOC
-eFPGA
-output
-cpld_usr_intr
-SOC
-output
-DMA
-cpld_usr_dma
-eFPGA
-用户自定义逻辑产生的DMA触发源
-总线
-SOC
-CPLD
-总线桥
-input
-cpld_ahb0_hwrite
-AHBO
-总线
-SOC
-CPLD
-总线桥
-cpldahbo_haddr
-input
-AHBO
-总线
-SOC
-CPLD
-总线桥
-cpld_ahb0_hwdata
-input
-AHBO
-总线
-cpld_ahb0_hready
-CPLD
-总线桥
-SOC
-input
-AHBO
-总线
-SOC
-CPLD
-cpld_ahbo_htrans
-总线桥
-input
-AHBO
-总线
-SOC
-CPLD
-cpld ahbo hsize
-input
-AHBO
-总线
-SOC
-CPLD
-4总线桥
-cpld_ahbo_hprot
-input
-AHBO
-总线
-SOC
-总线桥
-CPLD
-cpld_ahbo_hsel
-input
-AHBO
-总线
-SOC
-总线桥
-CPLD
-cpld_ahb_hburst
-input
-AHBO
-总线
-CPLD
-SOC
-总线桥
-cpld_ahbo_hrdata
-output
-AHBO
-总线
-SOC
-总线桥
-CPLD
-cpld_ahbo hreadyout
-output
-AHBO
-总线
-SOC
-cpld_ahb0_hresp
-总线桥
-CPLD
-AHBO
-output
-总线
-CPLD
-SOC
-总线桥
-cpld_ahb1_hwrite
-input
-AHB1
-SOC
-总线
-总线桥
-CPLD
-cpld_ahb1_haddr
-input
-AHB1
-fp:
-总线
-SOC
-CPLD
-总线桥
-cpld_ahb1_hwdata
-input
-AHB1
-总线
-CPLD
-总线桥
-SOC
-cpld_ahb1_hready
-input
-AHB1
-总线桥
-总线
-SOC
-CPLD
-AHB1
-cpld_ahb1_htrans
-input
-3总线桥
-总线
-AHB1
-SOC
-CPLD
-cpld_ahb1_hsize
-input
-
-
-
-### 截图编号 2 (`../../interface_cpld/images/GameViewer_BtApOlYWLK.png`)
-
-#### 【全页】
-
-总线
-CPLD
-cpld_ahb1_hprot
-input
-4总线桥
-AHB1
-总线
-SOC
-CPLD
-input
-1总线桥
-cpld_ahb1_hsel
-AHB1
-总线
-SOC
-cpld_ahb1_hburst
-3总线桥
-CPLD
-input
-AHB1
-总线
-SOC
-cpldahb1_hrdata
-CPLD
-output
-32总线桥
-AHB1
-总线
-SOC
-1总线桥
-CPLD
-cpld_ahb1_hreadyout
-output
-AHB1
-总线
-SOC
-cpld_ahb1_hresp
-CPLD
-总线桥
-output
-AHB1
-互联
-eFPGA
-SYSC
-cpld_cfa_err sync
-output
-CPLD配置错误信号，已同步在sys_clk时钟下
-互联
-SYSC
-cpld cfa_done sync
-eFPGA
-output
-CPLD配置完成信号，已同步在sysclk时钟下
-互联
-SRPWM
-CPLD
-input
-type0
-srpwm_cpld_pwm_a
-12SYNC
-srpwmA相
-互联
-SRPWM
-CPLD
-input
-SYNC
-srpwm_cpld_pwm_b
-type0
-srpwmB相
-互联
-SRPWM
-CPLD
-input
-12SYNC
-type0
-srpwm_cpld_pwma_oen
-srpwmA相OEN
-互联
-SRPWM
-CPLD
-input
-12SYNC
-type0
-srpwmB相
-srpwm_cpldpwmb_oen
-OEN
-互联
-ETIM
-CPLD
-input
-type0
-10SYNC
-etim_cpld_pwm
-ETIMpwm输出
-互联
-XBAR
-inxb_cpld_data
-16SYNC
-CPLD
-type2
-input
-inputxbar发送到cpld的数据
-互联
-XBAR
-CPLD
-input
-11SYNC
-type2
-pfxb_cpld_data
-pwmxbar发送到cpld的数据
-互联
-CPLD
-10SYNC
-type2
-XBAR
-etxb_cpld_data
-input
-etimxbar发送到cpld的数据
-互联
-XBAR
-CPLD
-cpld_opxb_data
-output
-efpga发送给srpwm的封波信号
-互联
-CPLD
-cpld_srpwm_fault
-SRPWM
-output
-eFPGA发送到SRPWM的FAULT信号，电平信号，高电平有效
-互联
-ETIM
-CPLD
-etim_cpld_sync
-input
-1SYNC
-type2
-ETIM同步信号，脉冲信号，高有效；
-互联
-CMPC
-CPLD
-type2
-cmpc_cpld_evth
-input
-10SYNC
-CMPC高电平比较器事件，电平或脉冲信号，高有效
-互联
-CMPC
-10SYNC
-CPLD
-input
-cmpc_cpld_evtl
-type2
-CMPC高电平比较器事件，电平或脉冲信号，高有效
-互联
-CPLD
-adco_cpld_evth
-ADC
-input
-16SYNC
-type2
-ADCO高事件，电平或脉冲信号，高有效
-互联
-ADC
-16SYNC
-adco_cpld_evtl
-type2
-CPLD
-input
-ADCO低事件，电平或脉冲信号，高有效
-互联
-adc1+bld evth
-CPLD
-ADC
-input
-type2
-16SYNC
-ADC1高事件，电平或脉冲信号，高有效
-互联
-ADC
-CPLD
-type2
-16SYNC
-adc1_cpld_evtl
-input
-ADC1低事件，电平或脉冲信号，高有效
-互联
-GPIO
-CPLD
-pad_cpld_in1
-input
-type1
-PAD直接输入到CPLD的事件
-互联
-CPLD
-GPIO
-pad.cpld.ino
-type1
-32SYNC
-input
-PAD直接输入到CPLD的事件
-互联
-CPLD
-PAD
-cpld_pad_out
-output
-efpaa直接输出到pad
-互联
-PAD
-output
-CPLD
-cpld_pad.oen
-efpga直接输出到padoen端
-PAD
-cpld_debug_out
-互联
-CPLD
-output
-efpga调试管脚输出
-SYSC
-cpuoJockup
-互联
-CPLD
-type1
-1SYNC
-input
-CPUO死锁错误
-互联
-SYSC
-CPLD
-cpu1Jockup
-type1
-SYNC
-input
-CPU1死锁错误
-互联
-SYSC
-bustimeout
-CPLD
-input
-typel
-SYNC
-总线错误
-互联
-SYSC
-SYNC
-temp_warn
-typel
-CPLD
-input
-过温警告
-互联
-SYSC
-SYNC
-CPLD
-type1
-input
-power_err
-Ido._ocp
-互联
-SYSC
-CPLD
-SYNC
-input
-typel
-por_uv_warn
-欠压警告
-
-
-
-### 截图编号 3 (`../../interface_cpld/images/GameViewer_hN7LUohFXY.png`)
+| 信号类 | 来源 | 输出目的地 | Signal name | inout | pre-process | width | sync type | 说明 |
+|---|---|---|---|---|---|---:|---|---|
+| 时钟 | TOP_CRG | CPLD | soc_sys_clk | input |  | 1 |  | MCU系统时钟，对应eFPGA free_clk3 |
+| 时钟 | TOP_CRG | CPLD | cpld_clk | input |  | 1 |  |  |
+| 时钟 | TOP_CRG | CPLD | cpld_25m | input |  | 1 |  |  |
+| 时钟 | TOP_CRG | CPLD | cfg_clk_div_freeclk0 | input |  | 8 |  |  |
+| 时钟 | TOP_CRG | CPLD | cfg_clk_div_freeclk1 | input |  | 8 |  |  |
+| 时钟 | TOP_CRG | CPLD | cfg_clk_div_freeclk3 | input |  | 8 |  |  |
+| 时钟 | TOP_CRG | CPLD | cpld_pll_los_status | input | type1 | 1 |  |  |
+| 门控 | TOP_CRG | CPLD | cpld_clk_gten | input |  | 5 |  |  |
+| 复位 | TOP_CRG | CPLD | cpld_glb_rst_n | input |  | 1 |  | 在SOC系统SYSC模块的POR域配置，用于SOC系统复位eFPGA FCB和Fabric逻辑，复位配置写保护 |
+| 复位 | TOP_CRG | CPLD | cpld_cfg_rst_n | input |  | 1 |  | 在SOC系统SYSC模块的POR域配置，仅复位CPLD子系统的寄存器配置电路，复位配置写保护 |
+| 复位 | TOP_CRG | CPLD | cpld_lgc_rst_n | input |  | 1 |  | 在SOC系统SYSC模块的POR域配置，仅复位Fabric逻辑，不影响时钟及CPLD配置，是否关联SOC系统复位可配置，默认不关联，复位配置写保护 |
+| 复位 | TOP_CRG | CPLD | cpld_user_rst_n | input |  | 1 |  | 用户软复位输入，用户逻辑使用，连接到eFPGA的io_resetn，由SOC系统寄存器配置或IO输入（TBD） |
+| 复位 | CRG | CPLD | soc_hard_rst_n | input | type1 | 1 |  | SOC硬复位 |
+| 复位 | CRG | CPLD | soc_wdg0_rst_n | input | type1 | 1 |  | SOC看门狗0复位 |
+| 复位 | CRG | CPLD | soc_wdg1_rst_n | input | type1 | 1 |  | SOC看门狗1复位 |
+| 复位 | CRG | CPLD | soc_soft_rst_n | input | type1 | 1 |  | SOC软复位 |
+| 复位 | eFPGA | SYSC/XBAR/CRG | c2s_rst_n | output |  | 2 |  | eFPGA用户逻辑到SOC系统的C2S_RSTN复位输出 |
+| 中断 | eFPGA | SOC | cpld_usr_intr | output |  | 1 | 异步处理 | 中断；b0:用户中断0；b1:用户中断1；b2:PPI流水线； |
+| DMA | eFPGA | SOC | cpld_usr_dma | output |  | 2 |  | 用户自定义逻辑产生的DMA触发源 |
+| 总线 | SOC | CPLD | cpld_ahb0_hwrite | input |  | 1 | 总线桥 | AHB0 |
+| 总线 | SOC | CPLD | cpld_ahb0_haddr | input |  | 12 | 总线桥 | AHB0 |
+| 总线 | SOC | CPLD | cpld_ahb0_hwdata | input |  | 32 | 总线桥 | AHB0 |
+| 总线 | SOC | CPLD | cpld_ahb0_hready | input |  | 1 | 总线桥 | AHB0 |
+| 总线 | SOC | CPLD | cpld_ahb0_htrans | input |  | 2 | 总线桥 | AHB0 |
+| 总线 | SOC | CPLD | cpld_ahb0_hsize | input |  | 3 | 总线桥 | AHB0 |
+| 总线 | SOC | CPLD | cpld_ahb0_hprot | input |  | 4 | 总线桥 | AHB0 |
+| 总线 | SOC | CPLD | cpld_ahb0_hsel | input |  | 1 | 总线桥 | AHB0 |
+| 总线 | SOC | CPLD | cpld_ahb0_hburst | input |  | 3 | 总线桥 | AHB0 |
+| 总线 | CPLD | SOC | cpld_ahb0_hrdata | output |  | 32 | 总线桥 | AHB0 |
+| 总线 | CPLD | SOC | cpld_ahb0_hreadyout | output |  | 1 | 总线桥 | AHB0 |
+| 总线 | CPLD | SOC | cpld_ahb0_hresp | output |  | 1 | 总线桥 | AHB0 |
+| 总线 | SOC | CPLD | cpld_ahb1_hwrite | input |  | 1 | 总线桥 | AHB1 |
+| 总线 | SOC | CPLD | cpld_ahb1_haddr | input |  | 12 | 总线桥 | AHB1 |
+| 总线 | SOC | CPLD | cpld_ahb1_hwdata | input |  | 32 | 总线桥 | AHB1 |
+| 总线 | SOC | CPLD | cpld_ahb1_hready | input |  | 1 | 总线桥 | AHB1 |
+| 总线 | SOC | CPLD | cpld_ahb1_htrans | input |  | 2 | 总线桥 | AHB1 |
+| 总线 | SOC | CPLD | cpld_ahb1_hsize | input |  | 3 | 总线桥 | AHB1 |
+| 总线 | SOC | CPLD | cpld_ahb1_hprot | input |  | 4 | 总线桥 | AHB1 |
+| 总线 | SOC | CPLD | cpld_ahb1_hsel | input |  | 1 | 总线桥 | AHB1 |
+| 总线 | SOC | CPLD | cpld_ahb1_hburst | input |  | 3 | 总线桥 | AHB1 |
+| 总线 | CPLD | SOC | cpld_ahb1_hrdata | output |  | 32 | 总线桥 | AHB1 |
+| 总线 | CPLD | SOC | cpld_ahb1_hreadyout | output |  | 1 | 总线桥 | AHB1 |
+| 总线 | CPLD | SOC | cpld_ahb1_hresp | output |  | 1 | 总线桥 | AHB1 |
+| 互联 | eFPGA | SYSC | cpld_cfg_err_sync | output |  | 1 |  | CPLD配置错误信号，已同步在sys_clk时钟下 |
+| 互联 | eFPGA | SYSC | cpld_cfg_done_sync | output |  | 1 |  | CPLD配置完成信号，已同步在sys_clk时钟下 |
+| 互联 | SRPWM | CPLD | srpwm_cpld_pwm_a | input | type0 | 12 | SYNC | srpwm A相 |
+| 互联 | SRPWM | CPLD | srpwm_cpld_pwm_b | input | type0 | 12 | SYNC | srpwm B相 |
+| 互联 | SRPWM | CPLD | srpwm_cpld_pwma_oen | input | type0 | 12 | SYNC | srpwm A相 OEN |
+| 互联 | SRPWM | CPLD | srpwm_cpld_pwmb_oen | input | type0 | 12 | SYNC | srpwm B相 OEN |
+| 互联 | ETIM | CPLD | etim_cpld_pwm | input | type0 | 10 | SYNC | ETIM pwm输出 |
+| 互联 | XBAR | CPLD | inxb_cpld_data | input | type2 | 16 | SYNC | inputxbar发送到cpld的数据 |
+| 互联 | XBAR | CPLD | pfxb_cpld_data | input | type2 | 11 | SYNC | pwmxbar发送到cpld的数据 |
+| 互联 | XBAR | CPLD | etxb_cpld_data | input | type2 | 10 | SYNC | etimxbar发送到cpld的数据 |
+| 互联 | CPLD | XBAR | cpld_opxb_data | output |  | 10 |  | efpga发送给srpwm的封波信号 |
+| 互联 | CPLD | SRPWM | cpld_srpwm_fault | output |  | 24 |  | eFPGA发送到SRPWM的FAULT信号，电平信号，高电平有效 |
+| 互联 | ETIM | CPLD | etim_cpld_sync | input | type2 | 1 | SYNC | ETIM同步信号，脉冲信号，高有效； |
+| 互联 | CMPC | CPLD | cmpc_cpld_evth | input | type2 | 10 | SYNC | CMPC高电平比较器事件，电平或脉冲信号，高有效 |
+| 互联 | CMPC | CPLD | cmpc_cpld_evtl | input | type2 | 10 | SYNC | CMPC高电平比较器事件，电平或脉冲信号，高有效 |
+| 互联 | ADC | CPLD | adc0_cpld_evth | input | type2 | 16 | SYNC | ADC0 高事件，电平或脉冲信号，高有效 |
+| 互联 | ADC | CPLD | adc0_cpld_evtl | input | type2 | 16 | SYNC | ADC0 低事件，电平或脉冲信号，高有效 |
+| 互联 | ADC | CPLD | adc1_cpld_evth | input | type2 | 16 | SYNC | ADC1 高事件，电平或脉冲信号，高有效 |
+| 互联 | ADC | CPLD | adc1_cpld_evtl | input | type2 | 16 | SYNC | ADC1 低事件，电平或脉冲信号，高有效 |
+| 互联 | GPIO | CPLD | pad_cpld_in1 | input | type1 | 4 |  | PAD直接输入到CPLD的事件 |
+| 互联 | GPIO | CPLD | pad_cpld_in0 | input | type1 | 32 | SYNC | PAD直接输入到CPLD的事件 |
+| 互联 | CPLD | PAD | cpld_pad_out | output |  | 36 |  | efpga直接输出到pad |
+| 互联 | CPLD | PAD | cpld_pad_oen | output |  | 36 |  | efpga直接输出到pad oen端 |
+| 互联 | CPLD | PAD | cpld_debug_out | output |  | 4 |  | efpga调试管脚输出 |
+| 互联 | SYSC | CPLD | cpu0_lockup | input | type1 | 1 | SYNC | CPU0死锁错误 |
+| 互联 | SYSC | CPLD | cpu1_lockup | input | type1 | 1 | SYNC | CPU1死锁错误 |
+| 互联 | SYSC | CPLD | bus_timeout | input | type1 | 1 | SYNC | 总线错误 |
+| 互联 | SYSC | CPLD | temp_warn | input | type1 | 1 | SYNC | 过温警告 |
+| 互联 | SYSC | CPLD | power_err | input | type1 | 1 | SYNC | ldo_ocp |
+| 互联 | SYSC | CPLD | por_uv_warn | input | type1 | 1 | SYNC | 欠压警告 |
+| 互联 | SYSC | CPLD | por_ov_warn | input | type1 | 1 | SYNC | 过压警告 |
+| 互联 | SYSC | CPLD | s2c_cfg_enb | input |  | 1 |  | 保留输入0配置寄存器使能 |
+| 互联 | SYSC | CPLD | s2c_cfg | input |  | 14 |  | 保留输入 |
+| 互联 | eFPGA | SYSC | c2s_rpt | output |  | 16 |  | 保留输出 |
+| 互联 | SYSC | CPLD | sysc_cpld_testpin0_sel | input |  | 8 |  | testpin选择 |
+| 互联 | SYSC | CPLD | sysc_cpld_testpin1_sel | input |  | 8 |  | testpin选择 |
+| 互联 | SYSC | CPLD | sysc_cpld_testpin2_sel | input |  | 8 |  | testpin选择 |
+| 互联 | SYSC | CPLD | sysc_cpld_testpin3_sel | input |  | 8 |  | testpin选择 |
+| 互联 | CPLD | SYSC | cpld_sysc_testpin | output |  | 4 |  | testpin |
 
 ---
 

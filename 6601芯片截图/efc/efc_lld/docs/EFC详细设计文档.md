@@ -130,86 +130,26 @@ F7NCU muan. 13
 1080F
 
 
-
----
-## 图像编号 3 (原图: `GameViewer_Apm6lwGGlA.png`)
+## 原图：`GameViewer_Apm6lwGGlA.png`
 
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图2-12Flash Set Config状态转移图`，完整结构与时序请查看原图 `GameViewer_Apm6lwGGlA.png`。
+Flash Write 根据 SMIC 要求，最多只能一次翻转 36bit，因此将写入的数据分成高低 36bit，分两次分别写入，第一次写入低 36bit，高 36bit 置 1，第二次写入高 36bit，低 36bit 置 1；
 
-FlashWrite根据SMIC要求，最多只能一次翻转36bit，因此
-将写入的数据分成高低36bit，分两次分别写入，第一次写入低
-36bit，高36bit置1，第二次写入高36bit，低36bit置1；
-SETC_ST_OLE
-set_d
-SETC_ST_START
-DPON.CEb-B.WE
-ETMCU hua.73
-gMCU huan Ji
-SETC_ST_CONF
-SETC_ST_RL50
-BTMC/12a7.73
-nass_otetLen,m
-EINCU
-SETC.ST_WAT
-SETC_ST_RLS1
-WEt1
+**图2-12 Flash Set Config状态转移图**
 
-**图2-12Flash Set Config状态转移图**
-
-ETNCV hran. 1i 2026-10
-EIMCU
-
+> 状态转移图按原图保留，不自行重画。  
+> 原图：`../images/GameViewer_Apm6lwGGlA.png`
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图2-13`，完整结构与时序请查看原图 `GameViewer_Apm6lwGGlA.png`。
+**图2-13 Flash Erase状态转移图**
 
-ERS_ST_DLE
-ERS_ST_RLS2
-ERS_ST_START
-pntchip_erase_tay
-CED=1.CHP-p
-AmAx.CEmo.CHPnip_erase_ag
-do counterunt
-VR_CFG,NR,ARDN1.0
-docounterur
-(SVOstws)
-cntasmaxwh
-ERS_ST_RLS10
-ERAERS0.cpestsop
-crtismawe(WH)
-ERS_ST_GETCMD
-cnteemaxmrcv
-ETMCU huaY
-ERAERSs1
-docounteruer
-8TCV 3 2026-10-02-21-39
-(crtsmaxe(wS)
-ERS_ST_RLSO
-WEbe1
-decounterum
-cntemmaxe
-maxrev(RCV)
-ERS_ST_WEB
-Sscounterur
-WEb=0
-huan.
-cnbesmaxse(ERAERS) when chip_erast_tapr=1b0
-cnmasa(tsCE)when chip_erase_tagx131
-ETMCV
-
-**图2-13**
-
-FlashErase状态转移图
-IMCU )
-ETMCV
-13080F
-
-
+> 状态转移图按原图保留，不自行重画。  
+> 原图：`../images/GameViewer_Apm6lwGGlA.png`
 
 ---
+
 ## 图像编号 4 (原图: `GameViewer_AUvuEbreZL.png`)
 
 ### 【左页】
@@ -376,165 +316,54 @@ TMCUhuan.
 1080F
 
 
-
----
-## 图像编号 7 (原图: `GameViewer_ceValKI1oj.png`)
+## 原图：`GameViewer_ceValKI1oj.png`
 
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图2-9FlashPower状态转移图`，完整结构与时序请查看原图 `GameViewer_ceValKI1oj.png`。
+**图2-9 Flash Power状态转移图**
 
-hvan Ji
-ETNCuhuan,1i
-IDLE
-RIMCUhuami
-reset is por rst n
-cfg_efc_dpd==1"b0
-POWER_ON
-por_rst_n==1"bo
-do counter until
-Cnt==tRHR
-ETNCUhua7,112026-10-02-22-39
-gIMCU huan J
-cfg_efc_dpd==1'b1
-cnt==tRHR
-por_rst_n==1bo
-WORKING
-when cfg_efc_dpd==1"b1.
-do counter until
-cnt==tDPDSR
-BIMCV hanan. 73
-EINCUhuan.Ji
-cfg_efc_dpd==1b1 &
-kfg_efc_dpd==1"b0 &
-Cnt==tDPDSR
-Hd==D
-DPD
-when cfg_efc_dpd==1"bo,
-do counter until
+> 状态转移图按原图保留，不自行重画。  
+> 原图：`../images/GameViewer_ceValKI1oj.png`
 
-**图2-9FlashPower状态转移图**
-
-EIMCU
-状态会提供到GFB_PPROC模块，GFBPPROC模块在
-
+状态会提供到 GFB_PPROC 模块，GFB_PPROC 模块在
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图2-10`，完整结构与时序请查看原图 `GameViewer_ceValKI1oj.png`。
+WORKING 状态时才会正常工作；
 
-WORKING状态时才会正常工作；
-上电过程和下电过程的时序，由系统（FlashPowerSwitch&
-POR）来实现；
-ETMCI
-注意：在power_off状态下，需要将Flash所有的输入接O;
-(S40NEF64KX72_S0_Application_Notes.pdf -- 1.2 POWER OFF)
+上电过程和下电过程的时序，由系统（Flash Power Switch & POR）来实现；
 
-#### 2.3.4 FCTRL GFB CMD IF
+**注意：在 power_off 状态下，需要将 Flash 所有的输入接 0；**  
+（S40NEF64KX72_S0_Application_Notes.pdf -- 1.2 POWER OFF）
 
-BTMChan.J32026-10
-CTRSTWRE
-WRITE
-ETMCV
-SET CFG
-ad时
-READIIRECALL
-mdcmd_typs
-LIVREAD
-ETNCV
-FCTRL状态转移图
+#### 2.3.4 FCTRL_GFB_CMD_IF
 
-**图2-10**
+**图2-10 FCTRL状态转移图**
 
-2080F
+> 状态转移图按原图保留，不自行重画。  
+> 原图：`../images/GameViewer_ceValKI1oj.png`
+## 原图：`GameViewer_f9t1x50Gvk.png`
 
+## 第5章 对外部模块需求
 
+| 序号 | 外部模块 | 要求 |
+|---:|---|---|
+| 1 | Power Switch/POR | 上电时、异常掉电时，PORb 与 VDD、VDD11 的时序需满足 Flash 要求； |
+| 2 | 系统 | 模块内对 efc_aclk 和 efc_clk 不做异步处理，系统关注异步相关； |
+| 3 | CORE_BUS | 本模块对 AXI 的支持特性：1）burst 类型只支持 INCR；2）Outstanding 为 3；3）不支持 out-of-order；4）不支持 LOCK/PROT/Cache；5）不支持 interleaving；6）不支持总线低功耗接口；7）不支持跨 4K； |
+| 4 | CRG | Flash 工作时钟 flash_clk 频率不能高于 100MHz；两个工作时钟同源，且频率比为 efc_clk：flash_clk = 1:1 或 2:1；时钟关系见下图； |
+| 5 | CRG | 1）模块软复位；2）模块时钟门控；3）芯片硬复位；4）POR 硬复位时，efc_rst_n 必然复位；以上功能由 CRG 模块实现，本模块内部不做额外处理；复位撤销顺序如下：1. 上电启动，撤销顺序为：flash*_por_rst_n -> por*_rst_n -> efc*_rst_n -> efc*_aresetn -> efc*_presetn；2. 系统软复位，撤销顺序为：efc*_rst_n -> efc*_aresetn -> efc*_presetn；3. 模块级软复位，只有 efc*_rst_n；注：如果这几个时钟都连接同一个时钟，那么同时复位也是满足需求的。 |
+| 6 | CRG | EFC 上电过程结束后，需要将 EFC 的工作频率从 256KHz 切换到 25MHz 进行 Boot，再切换到 100MHz 进行工作； |
+| 7 | CRG | 对 EFC 内的 3 个时钟，分开进行时钟门控，避免总线挂死； |
+| 8 | CRG/软件 | EFC 工作频率的改变，必须保证 EFC 已有的操作处理完成，否则可能引起数据错误； |
+| 9 | 软件 | 对 Flash 的先写后读（特别是背靠背操作），需要软件保证写完成以后再发起读操作；否则，可能发生数据不正确问题； |
+| 10 | BOOTROM | NVR_CFG 的 PRO、PR1 信息，需要 bootrom 中进行读取，并配置这个替换内容到 efc 对应寄存器上，保证程序功能的正确性； |
+| 11 | 软件 | OTA 切换时，cpu cache 需要被 disable，保证进行 OTA 切换时软件不会访问 Flash； |
 
----
-## 图像编号 8 (原图: `GameViewer_f9t1x50Gvk.png`)
-
-### 【左页】
-
-
-### 第5章对外部模块需求
-
-EIMCU 202F-10-02-21:40
-BIICU huanz. Ti
-序号
-外部模块
-要求
-Power Switch/POR
-上电时、异常掉电时，PORb与VDD、VDD11的时序需
-满足Flash要求；
-系统
-模块内对efc_aclk和efc_clk不做异步处理，系统关注异
-步相关；
-CORE_BUS
-本模块对AXI的支持特性：
-1）burst类型只支持INCR；
-EIMCU huan Ji
-2）Outstanding为3；
-3）不支持out-of-order；
-4）不支持LOCK/PROT/Cache；
-5）不支持interleaving；
-6）不支持总线低功耗接口；
-7）不支持跨4K；
-71 202F-10-02-21:40
-CRG
-Flash工作时钟flash_clk频率不能高于100MHz；
-两个工作时钟同源，且频率比为efc_clk：flash_clk=1:1
-RIMCU
-时钟关系见下图：
-CRG
-1）模块软复位；
-2）模块时钟门控；
-3）芯片硬复位；
-an.li 2026-10-0g
-4）POR硬复位时，efc_rst_n必然复位；
-以上功能由CRG模块实现，本模块内部不做额外处理；
-RIMCU
-复位撤销顺序如下，
-上电启动，撤销顺序为：flash*por_rst_n>
-
-
-### 【右页】
-
-2.系统软复位，撤销顺序为：efc*_rst_n->efe*_aresetn
-->ef*_presetn;
-3.模块级软复位，只有efc*_rst_n；
-注：如果这几个时钟都连接同一个时钟，那么同时复位
-TNCu
-也是满足需求的。
-CRG
-EFC上电过程结束后，需要将EFC的工作频率从256KHz
-切换到25MHz进行Boot，再切换到100MHz进行工作；
-CRG
-对EFC内的3个时钟，分开进行时钟门控，避免总线挂
-死；
-CRG/软件
-EFC工作频率的改变，必须保证EFC已有的操作处理完
-成，否则可能引起数据错误；
-TMCV
-软件
-对Flash的先写后读（特别是背靠背操作），需要软件保
-证写完成以后再发起读操作；否则，可能发生数据不正
-确问题；
-BOOTROM
-NVR CFG 的 PRO、PR1信息，需要 beotrem中进行读
-取、并配置这个替换内容到efe对应寄存器上，保证程序
-功能的正确性
-软件
-OTA切换时，cpucache需要被disable，保证进行OTA切
-换时软件不会访问Flash；
-注：要求确认后，添加到钉钉共享文档，做为系统待办，便于
-统一跟踪。
-BTMCys2026-1
-ETNCV 3 2026-10
-2080F
-
-
+**注：要求确认后，添加到钉钉共享文档，做为系统待办，便于统一跟踪。**
 
 ---
+
 ## 图像编号 9 (原图: `GameViewer_Fio2eDanFe.png`)
 
 ### 【左页】
@@ -611,129 +440,54 @@ flash_nvr_otp_n[7:0][4:0]进行多数判决;
 1080F
 
 
-
----
-## 图像编号 10 (原图: `GameViewer_GsJtl9ctbU.png`)
+## 原图：`GameViewer_GsJtl9ctbU.png`
 
 ### 【左页】
 
-fctrl2gfb_rdata vld
-输出
-Flash读数据有效，高电平有效
-输出
-fctr12gfb_rdata[FLASH_DW-1:0]
-Flash读数据
-fctrl2gfb_resp_vld
-输出
-Flash反馈有效，高电平有效
-fctrl2gfb_resp
-输出
-Flash反馈信号
-0：成功；
-1：失败；
-FTuCU
-efc_pwr_working
-输出
-FlashPower状态信号
-efc fctrl idle
-输出
-Flash未执行指令空闲信号
-Flash接口
-输出
-A[FLASH_AW-1:0]
-地址信号
-输出
-DIN[FLASH_DIW-1:0]
-写数据
-DOUT[FIASH_DOW-1:0]
-输入
-读出数据
-RDEN
-输出
-读使能信号
-NVR
-输出
-NVR指示
-输出
-NVR_CFG
-NVR_CFG指示
-LCK_CFG
-输出
-wafertesting后锁定为1
-CEb
-输出
-片选使能
-输出
-WEb
-写使能
-输出
-PROG
-编程信号
-输出
-PROG2
-编程信号2
-PREPG
-输出
-预编程信号
-ERASE
-输出
-擦除信号
-输出
-CHIP
-片擦除指示
-ETNOU
-输出
-PORb
-电源开关信号
-CONFEN
-输出
-配置寄存器使能
-输出
-ARRDN[FLASH_ARRDNUM-1:0]
-备用资源信号选择
-RECALL
-输出
-RECALL读指示
-输出
-DPD
-低功耗模式
-VREAD1
-输出
-VerifyRead，主要用于retryerase后
-RETRY[FLASH RETRYW-1:0]
-输出
-Sector的Retry Erase
+| 信号 | 方向 | 说明 |
+|---|---|---|
+| fctrl2gfb_rdata_vld | 输出 | Flash读数据有效，高电平有效 |
+| fctrl2gfb_rdata[FLASH_DW-1:0] | 输出 | Flash读数据 |
+| fctrl2gfb_resp_vld | 输出 | Flash反馈有效，高电平有效 |
+| fctrl2gfb_resp | 输出 | Flash反馈信号；0：成功；1：失败； |
+| efc_pwr_working | 输出 | Flash Power状态信号 |
+| efc_fctrl_idle | 输出 | Flash未执行指令空闲信号 |
 
+**Flash接口**
+
+| 信号 | 方向 | 说明 |
+|---|---|---|
+| A[FLASH_AW-1:0] | 输出 | 地址信号 |
+| DIN[FLASH_DIW-1:0] | 输出 | 写数据 |
+| DOUT[FLASH_DOW-1:0] | 输入 | 读出数据 |
+| RDEN | 输出 | 读使能信号 |
+| NVR | 输出 | NVR指示 |
+| NVR_CFG | 输出 | NVR_CFG指示 |
+| LCK_CFG | 输出 | wafer testing后锁定为1 |
+| CEb | 输出 | 片选使能 |
+| WEb | 输出 | 写使能 |
+| PROG | 输出 | 编程信号 |
+| PROG2 | 输出 | 编程信号2 |
+| PREPG | 输出 | 预编程信号 |
+| ERASE | 输出 | 擦除信号 |
+| CHIP | 输出 | 片擦除指示 |
+| PORb | 输出 | 电源开关信号 |
+| CONFEN | 输出 | 配置寄存器使能 |
+| ARRDN[FLASH_ARRDNUM-1:0] | 输出 | 备用资源信号选择 |
+| RECALL | 输出 | RECALL读指示 |
+| DPD | 输出 | 低功耗模式 |
+| VREAD1 | 输出 | Verify Read，主要用于retry erase后 |
+| RETRY[FLASH_RETRYW-1:0] | 输出 | Sector的Retry Erase |
 
 ### 【右页】
 
+#### 2.3.3 FCTRL_POWER_PROC
 
-#### 2.3.3 FCTRL POWER PROC
-
-IT00A/00A
-PORb
-cu
-DPO
-CED
-READIOPERATION
-RDEN
-DPOH
-CLOCK
-PROGRAM OPERATION
-uCVhan.J32026-10-02-21-39
-PROG
-ERASEOPERATION
--ERASE
-TMCUTuan J2026
-ETMCV
-IMCU
-167 I
-199 Ⅱ
-13080F
-
-
+> 原图为 Flash Power 时序图，图内可确认信号包括 VDD/VDD11、PORb、DPD、CEb、RDEN、CLOCK、PROG、ERASE。复杂波形不自行重画。  
+> 原图：`../images/GameViewer_GsJtl9ctbU.png`
 
 ---
+
 ## 图像编号 11 (原图: `GameViewer_hMzpsucGw1.png`)
 
 ### 【左页】
@@ -965,88 +719,26 @@ ERASE/PROGRAM都认为READMODE发生过变化;
 3 个时钟（apb 时钟、axi 时钟、EFC 内部 core 时钟）在系统上都是给的同一个时钟（如果有异步处理，也是在 NOC 总线上实现）；
 
 Flash 时钟与 EFC 内部 core 时钟同源，时钟频率比为 1:1、1:2
-
----
-
-## 图像编号 15 (原图: `GameViewer_Jv14xpHsSC.png`)
+## 原图：`GameViewer_Jv14xpHsSC.png`
 
 ### 【左页】
 
-1[EFC-BT】APB与AXI同时对NVR和MAIN进行访问时功能出错
-由许排在将近2年之前源加，更新于将近2年之前。
-计完度日期：
-优先费：
-数享HAC
-ETMoUhuian.7i 2026
-EJMCU
-RIMCU manz T
-在通过APB要口AX要口对NVRRMAIN地处空调进行有间时，基本读可动能出，清良计修改代弱，谢期~
-文件
-(dipboard-202208081231-e2cyv.png (97.6 KB) ± 王洪, 2022-08-08 12:31
-王洪2022-08-08 12-45 B
-梦送人员
-gIMCU
-杨验，王军，王满，照净9，特约，许
-子任务
-相关的问题
-87NCV31an.11 2026-10-02-8139
-RINCU
-8TNCV
-
+> 原页嵌入问题单截图，标题可确认：  
+> **[EFC-BT] APB与AXI同时对NVR和MAIN进行访问时功能出错**  
+> 其余问题单字段、附件与人员信息不作为正文猜测性转录。  
+> 原图：`../images/GameViewer_Jv14xpHsSC.png`
 
 ### 【右页】
 
-atabeetBeT
-DOUT
-READMODE
-Synchronous Read Cycle Timing Diagram
-Figure 2:
-Notes:
-(1I) READ MODE is a greup sigals to cnable read modes, including RECALL, VREADI.
-+//assign
-//modifybugs434,start
-cfg.efc.tol
-cfg_efc_tol
-2'd2;
-+assign
-cfg_etc_tmh[4:0]:
-+//modifybug=434,end
-assign
-cfg_efc_tcrc
-2'd1;
-assign
-cfg_etc_tas
-2'd0;
-cfg_efc_tah
-assign
--878,11 +881,11 00
-2'd0;
-always
-(recall_flag==1"b1 Il vread_flag==1'b1) begin
-begin
-saxrc
-cfg_efc_trc_11;
-RTHCV huan. J3 2026-10-02-21 39
-maxacc
-maxacc
-(1'bo,ctg_efc_tacc_1)+(1'de,cfg_efctol);
-else begin
-pua
-maxrc
-(2'd0,cfg_efc_trc_0):
-(2'de.ctg.etc_tacc0)+(4.de.cfg.etc.tol);
-maxacc
-(2'do,cfo_efc_tacc_e)+(1'de,cfg_efc_tol);
-end
-并且进入READMODECHANGE阶段本身应该等待tMH时间逻
-辑也未生效，实际在等待之前READMODE就切换了：
-IMCU .39
-ETMCV
-13080F
+> 原页包含 Synchronous Read Cycle Timing Diagram、配置代码截图及红色批注；复杂图和代码截图按原图保留。  
+> 原图：`../images/GameViewer_Jv14xpHsSC.png`
 
+红色批注：
 
+**并且进入 READ MODE CHANGE 阶段本身应该等待 tMH 时间逻辑也未生效，实际在等待之前 READ MODE 就切换了；**
 
 ---
+
 ## 图像编号 16 (原图: `GameViewer_kpuE7cPAm8.png`)
 
 ### 【左页】
@@ -1363,111 +1055,25 @@ SYSC模块可以根据该信号，锁定启动模式；
 12080F
 
 
-
----
-## 图像编号 18 (原图: `GameViewer_l6EdkNy5JN.png`)
+## 原图：`GameViewer_l6EdkNy5JN.png`
 
 ### 【左页】
 
-从GFB接口分解出对应的CMD指令和数据信息，根据指令
-类型进行状态跳转，并将状态发送给FCTRLGFBFLASHIF模
-块；
-将写数据信息存放到寄存器阵列中，然后将数据发送到
-FLASHIF发送到Flash;
-将从Flash读取的数据，根据命令类型，进行擦除校验或者发
-送给EFC_GFB模块。
-ETNC!
-BTMC/12a7.732028-10-02-21:39
-8TNCU puan.11 2028-10-02-91;39
-ETNCV hran 1i
-BTMC)g
+从 GFB 接口分解出对应的 CMD 指令和数据信息，根据指令类型进行状态跳转，并将状态发送给 FCTRL_GFB_FLASH_IF 模块；
 
+将写数据信息存放到寄存器阵列中，然后将数据发送到 FLASH_IF 发送到 Flash；
+
+将从 Flash 读取的数据，根据命令类型，进行擦除校验或者发送给 EFC_GFB 模块。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图2-11`，完整结构与时序请查看原图 `GameViewer_l6EdkNy5JN.png`。
+**图2-11 Flash Write状态转移图**
 
-WR.ST_RLS2
-WR_ST_RCWWD
-fash_write
-CEbe1
-receelenm1as
-WR_ST_OLE
-docounterurer
-crbismaxots2(RW)
-hese data for pregrog &grog
-cntmaxlst
-o_data_dom_
-WR_ST_RLS1
-WR_ST_PROGD
-CEm0,PREPG=1,AmAx
-PROO=0
-Socounteru
-MR_CFO.MR.ARRONI:0
-petmass_whe_ta
-t=maxts1(WH)
-docounterunsl
-ttemaitlse
-cntmasprg)
-WR_ST_RLSO
-WR_ST_PROG1
-WEb11
-do counter unsl
-docounterun
-cntsmaxprgt(w/s)
-BTCV huan 3 2026-10-02-21-39
-Cntesmaxtis(RCV
-cnt-maxpeg3
-cnt==maprgt
-WR_ST_PROG3
-WR_ST_WEB
-PROG2-0
-WEt0.A.ODN
-cntsmaprg/oPOHe
-do courberunti
-mane(WDS.sPOS)
-(cntammaxpig2&
-I(ot/beopw'ssiw
-mats_wrte_fag--131 &
-(cmtsmaxpip2&
-cnt=maxpre0 &
-mass_wte_fag=131 &
-xeu'ssew>wo'ssew
-Ctesmanwe
-(xew'sstwwwo"ssew
-ETMCy uan Ji 2026-10-02-21:
-WR_ST_PROG2
-WR_ST_PRE0
-PROG2-1
-do counterural
-ocounterun
-PROG2=1
-(ntmagrg3ROO)
-ctsmapeeoPREPROO)
-cntmmmaxprg2 &,)
-WR_ST_PRE1
-cnt=maxpex2
-mas_wte_fap=1ps
-PR0020
-xrwssrwussstw
-do courunr
-entmapeet(ADH,IPREPOH
-WR_ST_PRE2
-PREPG=0,ApA.DNOIN
-do courter urtl
-EIMCU
-
-**图2-11**
-
-FlashWrite状态转移图
-fps
-176 I
-211 I
-13080F
-
-
+> 状态转移图按原图保留，不自行重画。  
+> 原图：`../images/GameViewer_l6EdkNy5JN.png`
 
 ---
+
 ## 图像编号 19 (原图: `GameViewer_MhzCnwHL7y.png`)
 
 ### 【左页】
@@ -2434,65 +2040,30 @@ BTMCU huan.
 ### 【右页】
 
 批准：XXXXXXX
+## 原图：`GameViewer_x2k55BuYBA.png`
+
+## 第4章 系统评估
+
+### 4.1 读性能评估
+
+**图4-1 读数datapath示意图**
+
+> 原图：`../images/GameViewer_x2k55BuYBA.png`
+
+Cache 处为两级 pipeline 交互的点；
+
+pipeline0，总线读取 Cache：
+
+当数据连续访问时，latency=1 拍，且两次数据读取之间间隔 1cycle 的控制时间；
+
+当数据不是连续时，根据不同的情况花费的时间会有区别。
+
+pipeline1，Cache 到 Flash 读取数据，最少 1 拍发出一个读取申请，latency=2+3*Len+1+1=4+3*Len；
+
+因此最终瓶颈体现在 Flash，正常情况下，可以得到 Flash 的满带宽性能（数据跳着访问的除外，可能还会因为 Flash 多读取数据，导致整体效率变差。当然，平均的 latency 会变小）；
 
 ---
 
-## 图像编号 32 (原图: `GameViewer_x2k55BuYBA.png`)
-
-### 【左页】
-
-> 📌 **【图表提示】**: 此处包含图表 `图4-1读数datapath示意图`，完整结构与时序请查看原图 `GameViewer_x2k55BuYBA.png`。
-
-
-### 第4章
-
-重系统评估
-
-#### 4.1 读性能评估
-
-KIICU huanz Ti
-EFC
-EFC_pipel
-ECC_CORR (1D)
-ETMCU T7a7 11 2026-10-02-21
-BIMCU huan Ji
-EFC_pipeO
-RD_MUX (OD)
-GFB_IF(OD)
-AXIMPROC (1D)
-AXI_MASTER
-S40_FCTRL (2D)
-CACHE,(7+Len)
-FLASH (3*Len+1)
-RIMCU 5
-
-**图4-1读数datapath示意图**
-
-Cache处为两级pipeline交互的点;
-pipelineO，总线读取Cache:
-当数据连续访问时，latency=1拍，且两次数据读取之间间
-隔1cycle的控制时间；
-
-
-### 【右页】
-
-当数据不是连续时，根据不同的情况花费的时间会有区
-别。
-pipelinel，Cache到Flash 读取数据，最少1拍发出一个读取
-申请，latency=2+3*Len+1+1=4+3*Len;
-因此最终瓶颈体现在Flash，正常情况下，可以得到Flash的
-满带宽性能（数据跳着访问的除外，可能还会因为Flash多读取
-数据，导致整体效率变差。当然，平均的latency会变小）；
-ETMCU Hiran.11
-ETNCU 3 2026-10-0g-11:
-ZTMCU hua.11
-FTCU han.13 3026-10-02-21:40
-dan
-2080F
-
-
-
----
 ## 图像编号 33 (原图: `GameViewer_xLTLahbgSa.png`)
 
 ### 【左页】
@@ -2595,57 +2166,39 @@ ETMCV
 080F
 
 
-
----
-## 图像编号 35 (原图: `GameViewer_Yg5PctElzk.png`)
+## 原图：`GameViewer_Yg5PctElzk.png`
 
 ### 【左页】
 
-GFB AXIM PROC
-GFBPOWERPROC
-GFBCFG PROC
-BIMCU
-ETNCU huan, 1i
-GFB CTRL
-GFB IF
-NVR EFUSE PROC
-EFC EFUSE PPROCARB
-EFC CFG PROT PROC
-EFC FCTRL
-BTMCUhuam 11
-接口列表
-FCTRL POWER PROC
-FCTRL GFB CMD IF
-FCTRL GFB FLASH IF
+# 目录（续）
 
-### 第3章
-
-DFX说明
-错误说明
-DFX设计
-
-### 第4章
-
-系统评估
-读性能评估
-写性能评估
-擦除性能评估
-
+- 2.2.1 GFB_AXIM_PROC
+- 2.2.2 GFB_POWER_PROC
+- 2.2.3 GFB_CFG_PROC
+- 2.2.4 GFB_CTRL
+- 2.2.5 GFB_IF
+- 2.2.6 NVR_EFUSE_PROC
+- 2.2.7 EFC_EFUSE_PPROC_ARB
+- 2.2.8 EFC_CFG_PROT_PROC
+- 2.3 EFC_FCTRL
+  - 2.3.2 接口列表
+  - 2.3.3 FCTRL_POWER_PROC
+  - 2.3.4 FCTRL_GFB_CMD_IF
+  - 2.3.5 FCTRL_GFB_FLASH_IF
+- 第3章 DFX说明
+  - 3.1 错误说明
+  - 3.2 DFX设计
+- 第4章 系统评估
+  - 4.1 读性能评估
+  - 4.2 写性能评估
+  - 4.3 擦除性能评估
 
 ### 【右页】
 
-参考文献
-ETMCU man.11
-ETMOV
-ETMCV
-ETMOU
-FTNCU
-Q026-10-02-21:37
-12080F
-
-
+# 参考文献
 
 ---
+
 ## 图像编号 36 (原图: `GameViewer_zQvGQlgTkE.png`)
 
 ### 【左页】

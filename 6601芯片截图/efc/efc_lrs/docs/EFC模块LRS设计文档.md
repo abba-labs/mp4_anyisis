@@ -1204,6 +1204,39 @@ LRS.EFC.RBST【02】：若该模块进行软复位时，不会导致CPU
 
 ---
 
+## 原图：`GameViewer_bqG5XHiWOd.png`
+
+### 【左页】
+
+# 图目录
+
+- 图 2-1：XXXX
+
+# 表目录
+
+- 表 1-1：修订记录
+- 表 2-1：基带板卡详细指标
+
+### 【右页】
+
+## 第1章 模块介绍
+
+### 1.1 模块简介
+
+EFC(eFlash Controller)模块是嵌入式 eFlash 控制器，对 eFlash 的读、写、擦除操作进行控制管理。
+
+数据接口为 AXI Salve 接口，挂接在 AXI 4.0 总线上；
+
+配置接口为 APB Slave 接口，挂接在 APB3.0 总线上；
+
+外部电源信号，打开或者关闭 Flash 电源；（这里的外部电源，就是芯片内部的模拟部分--Flash Power Switch）
+
+### 1.2 应用说明
+
+> 原图：`../images/GameViewer_bqG5XHiWOd.png`
+
+---
+
 ## 第二部分：截图明确标注的 ET6601 修改点
 
 ### 修订记录 1.1

@@ -349,581 +349,581 @@
 
 ## INTERFACE_EFPGA
 
-> 原图（按原始表格行号连续）：
-> - `../../interface_efpga/images/GameViewer_8iXOmcDGE1.png`：1–38
-> - `../../interface_efpga/images/GameViewer_cU12ydgZ8V.png`：39–74
-> - `../../interface_efpga/images/GameViewer_Vhor9olOSG.png`：75–110
-> - `../../interface_efpga/images/GameViewer_J6lAwKnIhm.png`：111–146
-> - `../../interface_efpga/images/GameViewer_Nbjags3WBm.png`：147–182
-> - `../../interface_efpga/images/GameViewer_xPU5bUtZ6p.png`：183–218
-> - `../../interface_efpga/images/GameViewer_S8SQhpMWC2.png`：219–254
-> - `../../interface_efpga/images/GameViewer_grCDK0KTgW.png`：255–290
-> - `../../interface_efpga/images/GameViewer_uxeRXbUM3q.png`：291–326
-> - `../../interface_efpga/images/GameViewer_P0NFLfV564.png`：327–362
-> - `../../interface_efpga/images/GameViewer_3BoqyOeJgh.png`：363–398
-> - `../../interface_efpga/images/GameViewer_I7FEkY4HxN.png`：399–434
-> - `../../interface_efpga/images/GameViewer_gvjimz0mF4.png`：435–470
-> - `../../interface_efpga/images/GameViewer_2zddazPQIp.png`：471–506
-> - `../../interface_efpga/images/GameViewer_bCW62ClcKC.png`：507–542
-> - `../../interface_efpga/images/GameViewer_qhGTBAxdTy.png`：543–554
+> 原图（按原表行号顺序）：
+> - 行 1–38：`../../interface_efpga/images/GameViewer_8iXOmcDGE1.png`
+> - 行 39–74：`../../interface_efpga/images/GameViewer_cU12ydgZ8V.png`
+> - 行 75–110：`../../interface_efpga/images/GameViewer_Vhor9olOSG.png`
+> - 行 111–146：`../../interface_efpga/images/GameViewer_J6lAwKnIhm.png`
+> - 行 147–182：`../../interface_efpga/images/GameViewer_Nbjags3WBm.png`
+> - 行 183–218：`../../interface_efpga/images/GameViewer_xPU5bUtZ6p.png`
+> - 行 219–254：`../../interface_efpga/images/GameViewer_S8SQhpMWC2.png`
+> - 行 255–290：`../../interface_efpga/images/GameViewer_grCDK0KTgW.png`
+> - 行 291–326：`../../interface_efpga/images/GameViewer_uxeRXbUM3q.png`
+> - 行 327–362：`../../interface_efpga/images/GameViewer_P0NFLfV564.png`
+> - 行 363–398：`../../interface_efpga/images/GameViewer_3BoqyOeJgh.png`
+> - 行 399–434：`../../interface_efpga/images/GameViewer_I7FEkY4HxN.png`
+> - 行 435–470：`../../interface_efpga/images/GameViewer_gvjimz0mF4.png`
+> - 行 471–506：`../../interface_efpga/images/GameViewer_2zddazPQIp.png`
+> - 行 507–542：`../../interface_efpga/images/GameViewer_bCW62ClcKC.png`
+> - 行 543–554：`../../interface_efpga/images/GameViewer_qhGTBAxdTy.png`
 
-> 注：原表 `inout`、`width` 存在纵向合并单元格；Markdown 无 rowspan，因此只在对应合并区首行填写，后续行留空，以保持原表语义。
+> 原表中的 `int_fpga_in/input/320` 与 `int_fpga_out/output/200` 为纵向合并单元格；Markdown 中为保证逐行可核对而重复展开。
 
-| eFPGA interface | inout | width | NO. | connect signal | 说明 |
-|---|---|---:|---:|---|---|
-| sys_clk | input | 1 |  | efpga_sys_clk | 200M时钟，与SOC系统时钟同步 |
-| sys_resetn | input | 1 |  | efpga_sys_resetn | CPLD HARD_RST&S2C_ |
-| wdt_sclk | input | 1 |  |  |  |
-| fpga_s0_hrdata | output | 32 |  | cpld_ahb1_hrdata | AHB1 |
-| fpga_s0_hreadyout | output | 1 |  | cpld_ahb1_hreadyout | AHB1 |
-| fpga_s0_hresp | output | 1 |  | cpld_ahb1_hresp | AHB1 |
-| fpga_s0_hsel | input | 1 |  | cpld_ahb1_hsel | AHB1 |
-| fpga_s0_haddr | input | 32 |  | {20'd0,cpld_ahb1_haddr} | AHB1 |
-| fpga_s0_htrans | input | 2 |  | cpld_ahb1_htrans | AHB1 |
-| fpga_s0_hwrite | input | 1 |  | cpld_ahb1_hwrite | AHB1 |
-| fpga_s0_hwdata | input | 32 |  | cpld_ahb1_hwdata | AHB1 |
-| fpga_s0_hready | input | 1 |  | cpld_ahb1_hready | AHB1 |
-| efpga_dec_en | input | 1 |  |  | eFPGA bitstream decipher enable |
-| efpga_dec_key | input | 64 |  |  | eFPGA bitstream decipher key |
-| fpga_intr | output | 4 | 3 | efpga_intr3_nc |  |
-| fpga_intr |  |  | 2 | efpga_intr2_nc |  |
-| fpga_intr |  |  | 1 | cpld_usr_intr_src[1] | 用户自定义中断，脉冲或电平 |
-| fpga_intr |  |  | 0 | cpld_usr_intr_src[0] | 用户自定义中断，脉冲或电平 |
-| fpga_cfg_done_sync | output | 1 |  | cpld_cfg_done_sync | bit流配置完成 |
-| fpga_cfg_err | output | 1 |  | cpld_cfg_err_sync | bit流配置错误 |
-| wdt_rstn_o | output | 1 |  | wdt_rstn_o_nc |  |
-| free_clk0 | input | 1 |  | free_clk0 |  |
-| free_clk1 | input | 1 |  | free_clk1 |  |
-| free_clk2 | input | 1 |  | free_clk2 |  |
-| free_clk3 | input | 1 |  | efpga_sys_clk |  |
-| scan_in | input | 200 |  | dft_efpga_scan_in | DFT |
-| scan_out | output | 200 |  | dft_efpga_scan_out | DFT |
-| scan_en | input | 1 |  | dft_efpga_scan_en | DFT |
-| scan_mode | input | 1 |  | dft_mode | DFT |
-| scan_clk | input | 1 |  | dft_efpga_scan_clk | DFT |
-| scan_rstn | input | 1 |  | dft_efpga_scan_rstn | DFT |
-| io_resetn | input | 2 | 1 | efpga_io_resetn1 | 用户自定义逻辑用IO |
-| io_resetn |  |  | 0 | efpga_io_resetn0 | 用户自定义逻辑用IO |
-| int_fpga_in | input | 320 | 319 | s2c_cfg_esync[7] | SYSC到eFPGA的保留配置 |
-| int_fpga_in |  |  | 318 | s2c_cfg_esync[6] | SYSC到eFPGA的保留配置 |
-| int_fpga_in |  |  | 317 | s2c_cfg_esync[5] | SYSC到eFPGA的保留配置 |
-| int_fpga_in |  |  | 316 | s2c_cfg_esync[4] | SYSC到eFPGA的保留配置 |
-| int_fpga_in |  |  | 315 | s2c_cfg_esync[3] | SYSC到eFPGA的保留配置 |
-| int_fpga_in |  |  | 314 | s2c_cfg_esync[2] | SYSC到eFPGA的保留配置 |
-| int_fpga_in |  |  | 313 | s2c_cfg_esync[1] | SYSC到eFPGA的保留配置 |
-| int_fpga_in |  |  | 312 | s2c_cfg_esync[0] | SYSC到eFPGA的保留配置 |
-| int_fpga_in |  |  | 311 | pad_cpld_in_esync[35] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 310 | pad_cpld_in_esync[34] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 309 | pad_cpld_in_esync[33] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 308 | pad_cpld_in_esync[32] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 307 | pad_cpld_in_esync[31] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 306 | pad_cpld_in_esync[30] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 305 | pad_cpld_in_esync[29] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 304 | pad_cpld_in_esync[28] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 303 | pad_cpld_in_esync[27] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 302 | pad_cpld_in_esync[26] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 301 | pad_cpld_in_esync[25] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 300 | pad_cpld_in_esync[24] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 299 | pad_cpld_in_esync[23] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 298 | pad_cpld_in_esync[22] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 297 | pad_cpld_in_esync[21] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 296 | pad_cpld_in_esync[20] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 295 | pad_cpld_in_esync[19] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 294 | pad_cpld_in_esync[18] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 293 | pad_cpld_in_esync[17] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 292 | pad_cpld_in_esync[16] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 291 | pad_cpld_in_esync[15] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 290 | pad_cpld_in_esync[14] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 289 | pad_cpld_in_esync[13] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 288 | pad_cpld_in_esync[12] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 287 | pad_cpld_in_esync[11] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 286 | pad_cpld_in_esync[10] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 285 | pad_cpld_in_esync[9] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 284 | pad_cpld_in_esync[8] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 283 | pad_cpld_in_esync[7] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 282 | pad_cpld_in_esync[6] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 281 | pad_cpld_in_esync[5] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 280 | pad_cpld_in_esync[4] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 279 | pad_cpld_in_esync[3] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 278 | pad_cpld_in_esync[2] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 277 | pad_cpld_in_esync[1] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 276 | pad_cpld_in_esync[0] | PAD 直接输入eFPGA |
-| int_fpga_in |  |  | 275 | soc_hard_rst_n_esync | SOC HARD复位 |
-| int_fpga_in |  |  | 274 | soc_wdg0_rst_n_esync | SOC看门狗复位 |
-| int_fpga_in |  |  | 273 | soc_wdg1_rst_n_esync | SOC看门狗复位 |
-| int_fpga_in |  |  | 272 | soc_soft_rst_n_esync | SOC 软复位 |
-| int_fpga_in |  |  | 271 | cpld_pll_los_status_esync | CPLD PLL 频率状态；1'b1:无时钟或频率异常 |
-| int_fpga_in |  |  | 270 | ppi_csn | PPI |
-| int_fpga_in |  |  | 269 | ppi_data_bus_esync[11] | PPI |
-| int_fpga_in |  |  | 268 | ppi_data_bus_esync[10] | PPI |
-| int_fpga_in |  |  | 267 | ppi_data_bus_esync[9] | PPI |
-| int_fpga_in |  |  | 266 | ppi_data_bus_esync[8] | PPI |
-| int_fpga_in |  |  | 265 | ppi_data_bus_esync[7] | PPI |
-| int_fpga_in |  |  | 264 | ppi_data_bus_esync[6] | PPI |
-| int_fpga_in |  |  | 263 | ppi_data_bus_esync[5] | PPI |
-| int_fpga_in |  |  | 262 | ppi_data_bus_esync[4] | PPI |
-| int_fpga_in |  |  | 261 | ppi_data_bus_esync[3] | PPI |
-| int_fpga_in |  |  | 260 | ppi_data_bus_esync[2] | PPI |
-| int_fpga_in |  |  | 259 | ppi_data_bus_esync[1] | PPI |
-| int_fpga_in |  |  | 258 | ppi_data_bus_esync[0] | PPI |
-| int_fpga_in |  |  | 257 | ppi_addr_esync[4] | PPI |
-| int_fpga_in |  |  | 256 | ppi_addr_esync[3] | PPI |
-| int_fpga_in |  |  | 255 | ppi_addr_esync[2] | PPI |
-| int_fpga_in |  |  | 254 | ppi_addr_esync[1] | PPI |
-| int_fpga_in |  |  | 253 | ppi_addr_esync[0] | PPI |
-| int_fpga_in |  |  | 252 | inxb_cpld_data_esync[15] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 251 | inxb_cpld_data_esync[14] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 250 | inxb_cpld_data_esync[13] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 249 | inxb_cpld_data_esync[12] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 248 | inxb_cpld_data_esync[11] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 247 | inxb_cpld_data_esync[10] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 246 | inxb_cpld_data_esync[9] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 245 | inxb_cpld_data_esync[8] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 244 | inxb_cpld_data_esync[7] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 243 | inxb_cpld_data_esync[6] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 242 | inxb_cpld_data_esync[5] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 241 | inxb_cpld_data_esync[4] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 240 | inxb_cpld_data_esync[3] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 239 | inxb_cpld_data_esync[2] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 238 | inxb_cpld_data_esync[1] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 237 | inxb_cpld_data_esync[0] | INPUTXBAR数据 |
-| int_fpga_in |  |  | 236 | pfxb_cpld_data_esync[10] | PWMXBAR数据 |
-| int_fpga_in |  |  | 235 | pfxb_cpld_data_esync[9] | PWMXBAR数据 |
-| int_fpga_in |  |  | 234 | pfxb_cpld_data_esync[8] | PWMXBAR数据 |
-| int_fpga_in |  |  | 233 | pfxb_cpld_data_esync[7] | PWMXBAR数据 |
-| int_fpga_in |  |  | 232 | pfxb_cpld_data_esync[6] | PWMXBAR数据 |
-| int_fpga_in |  |  | 231 | pfxb_cpld_data_esync[5] | PWMXBAR数据 |
-| int_fpga_in |  |  | 230 | pfxb_cpld_data_esync[4] | PWMXBAR数据 |
-| int_fpga_in |  |  | 229 | pfxb_cpld_data_esync[3] | PWMXBAR数据 |
-| int_fpga_in |  |  | 228 | pfxb_cpld_data_esync[2] | PWMXBAR数据 |
-| int_fpga_in |  |  | 227 | pfxb_cpld_data_esync[1] | PWMXBAR数据 |
-| int_fpga_in |  |  | 226 | pfxb_cpld_data_esync[0] | PWMXBAR数据 |
-| int_fpga_in |  |  | 225 | etxb_cpld_data_esync[9] | PWMXBAR数据 |
-| int_fpga_in |  |  | 224 | etxb_cpld_data_esync[8] | PWMXBAR数据 |
-| int_fpga_in |  |  | 223 | etxb_cpld_data_esync[7] | PWMXBAR数据 |
-| int_fpga_in |  |  | 222 | etxb_cpld_data_esync[6] | PWMXBAR数据 |
-| int_fpga_in |  |  | 221 | etxb_cpld_data_esync[5] | PWMXBAR数据 |
-| int_fpga_in |  |  | 220 | etxb_cpld_data_esync[4] | PWMXBAR数据 |
-| int_fpga_in |  |  | 219 | etxb_cpld_data_esync[3] | PWMXBAR数据 |
-| int_fpga_in |  |  | 218 | etxb_cpld_data_esync[2] | PWMXBAR数据 |
-| int_fpga_in |  |  | 217 | etxb_cpld_data_esync[1] | PWMXBAR数据 |
-| int_fpga_in |  |  | 216 | etxb_cpld_data_esync[0] | PWMXBAR数据 |
-| int_fpga_in |  |  | 215 | etim_cpld_sync_esync | ETIM PWM相位同步信号 |
-| int_fpga_in |  |  | 214 | cmpc_cpld_evth_esync[10] | CMPC H事件 |
-| int_fpga_in |  |  | 213 | cmpc_cpld_evth_esync[9] | CMPC H事件 |
-| int_fpga_in |  |  | 212 | cmpc_cpld_evth_esync[8] | CMPC H事件 |
-| int_fpga_in |  |  | 211 | cmpc_cpld_evth_esync[7] | CMPC H事件 |
-| int_fpga_in |  |  | 210 | cmpc_cpld_evth_esync[6] | CMPC H事件 |
-| int_fpga_in |  |  | 209 | cmpc_cpld_evth_esync[5] | CMPC H事件 |
-| int_fpga_in |  |  | 208 | cmpc_cpld_evth_esync[4] | CMPC H事件 |
-| int_fpga_in |  |  | 207 | cmpc_cpld_evth_esync[3] | CMPC H事件 |
-| int_fpga_in |  |  | 206 | cmpc_cpld_evth_esync[2] | CMPC H事件 |
-| int_fpga_in |  |  | 205 | cmpc_cpld_evth_esync[1] | CMPC H事件 |
-| int_fpga_in |  |  | 204 | cmpc_cpld_evth_esync[0] | CMPC H事件 |
-| int_fpga_in |  |  | 203 | cmpc_cpld_evtl_esync[10] | CMPC L事件 |
-| int_fpga_in |  |  | 202 | cmpc_cpld_evtl_esync[9] | CMPC L事件 |
-| int_fpga_in |  |  | 201 | cmpc_cpld_evtl_esync[8] | CMPC L事件 |
-| int_fpga_in |  |  | 200 | cmpc_cpld_evtl_esync[7] | CMPC L事件 |
-| int_fpga_in |  |  | 199 | cmpc_cpld_evtl_esync[6] | CMPC L事件 |
-| int_fpga_in |  |  | 198 | cmpc_cpld_evtl_esync[5] | CMPC L事件 |
-| int_fpga_in |  |  | 197 | cmpc_cpld_evtl_esync[4] | CMPC L事件 |
-| int_fpga_in |  |  | 196 | cmpc_cpld_evtl_esync[3] | CMPC L事件 |
-| int_fpga_in |  |  | 195 | cmpc_cpld_evtl_esync[2] | CMPC L事件 |
-| int_fpga_in |  |  | 194 | cmpc_cpld_evtl_esync[1] | CMPC L事件 |
-| int_fpga_in |  |  | 193 | cmpc_cpld_evtl_esync[0] | CMPC L事件 |
-| int_fpga_in |  |  | 192 | adc0_cpld_evtl_esync[15] | ADC L事件 |
-| int_fpga_in |  |  | 191 | adc0_cpld_evtl_esync[14] | ADC L事件 |
-| int_fpga_in |  |  | 190 | adc0_cpld_evtl_esync[13] | ADC L事件 |
-| int_fpga_in |  |  | 189 | adc0_cpld_evtl_esync[12] | ADC L事件 |
-| int_fpga_in |  |  | 188 | adc0_cpld_evtl_esync[11] | ADC L事件 |
-| int_fpga_in |  |  | 187 | adc0_cpld_evtl_esync[10] | ADC L事件 |
-| int_fpga_in |  |  | 186 | adc0_cpld_evtl_esync[9] | ADC L事件 |
-| int_fpga_in |  |  | 185 | adc0_cpld_evtl_esync[8] | ADC L事件 |
-| int_fpga_in |  |  | 184 | adc0_cpld_evtl_esync[7] | ADC L事件 |
-| int_fpga_in |  |  | 183 | adc0_cpld_evtl_esync[6] | ADC L事件 |
-| int_fpga_in |  |  | 182 | adc0_cpld_evtl_esync[5] | ADC L事件 |
-| int_fpga_in |  |  | 181 | adc0_cpld_evtl_esync[4] | ADC L事件 |
-| int_fpga_in |  |  | 180 | adc0_cpld_evtl_esync[3] | ADC L事件 |
-| int_fpga_in |  |  | 179 | adc0_cpld_evtl_esync[2] | ADC L事件 |
-| int_fpga_in |  |  | 178 | adc0_cpld_evtl_esync[1] | ADC L事件 |
-| int_fpga_in |  |  | 177 | adc0_cpld_evtl_esync[0] | ADC L事件 |
-| int_fpga_in |  |  | 176 | adc0_cpld_evth_esync[15] | ADC H事件 |
-| int_fpga_in |  |  | 175 | adc0_cpld_evth_esync[14] | ADC H事件 |
-| int_fpga_in |  |  | 174 | adc0_cpld_evth_esync[13] | ADC H事件 |
-| int_fpga_in |  |  | 173 | adc0_cpld_evth_esync[12] | ADC H事件 |
-| int_fpga_in |  |  | 172 | adc0_cpld_evth_esync[11] | ADC H事件 |
-| int_fpga_in |  |  | 171 | adc0_cpld_evth_esync[10] | ADC H事件 |
-| int_fpga_in |  |  | 170 | adc0_cpld_evth_esync[9] | ADC H事件 |
-| int_fpga_in |  |  | 169 | adc0_cpld_evth_esync[8] | ADC H事件 |
-| int_fpga_in |  |  | 168 | adc0_cpld_evth_esync[7] | ADC H事件 |
-| int_fpga_in |  |  | 167 | adc0_cpld_evth_esync[6] | ADC H事件 |
-| int_fpga_in |  |  | 166 | adc0_cpld_evth_esync[5] | ADC H事件 |
-| int_fpga_in |  |  | 165 | adc0_cpld_evth_esync[4] | ADC H事件 |
-| int_fpga_in |  |  | 164 | adc0_cpld_evth_esync[3] | ADC H事件 |
-| int_fpga_in |  |  | 163 | adc0_cpld_evth_esync[2] | ADC H事件 |
-| int_fpga_in |  |  | 162 | adc0_cpld_evth_esync[1] | ADC H事件 |
-| int_fpga_in |  |  | 161 | adc0_cpld_evth_esync[0] | ADC H事件 |
-| int_fpga_in |  |  | 160 | adc1_cpld_evtl_esync[15] | ADC L事件 |
-| int_fpga_in |  |  | 159 | adc1_cpld_evtl_esync[14] | ADC L事件 |
-| int_fpga_in |  |  | 158 | adc1_cpld_evtl_esync[13] | ADC L事件 |
-| int_fpga_in |  |  | 157 | adc1_cpld_evtl_esync[12] | ADC L事件 |
-| int_fpga_in |  |  | 156 | adc1_cpld_evtl_esync[11] | ADC L事件 |
-| int_fpga_in |  |  | 155 | adc1_cpld_evtl_esync[10] | ADC L事件 |
-| int_fpga_in |  |  | 154 | adc1_cpld_evtl_esync[9] | ADC L事件 |
-| int_fpga_in |  |  | 153 | adc1_cpld_evtl_esync[8] | ADC L事件 |
-| int_fpga_in |  |  | 152 | adc1_cpld_evtl_esync[7] | ADC L事件 |
-| int_fpga_in |  |  | 151 | adc1_cpld_evtl_esync[6] | ADC L事件 |
-| int_fpga_in |  |  | 150 | adc1_cpld_evtl_esync[5] | ADC L事件 |
-| int_fpga_in |  |  | 149 | adc1_cpld_evtl_esync[4] | ADC L事件 |
-| int_fpga_in |  |  | 148 | adc1_cpld_evtl_esync[3] | ADC L事件 |
-| int_fpga_in |  |  | 147 | adc1_cpld_evtl_esync[2] | ADC L事件 |
-| int_fpga_in |  |  | 146 | adc1_cpld_evtl_esync[1] | ADC L事件 |
-| int_fpga_in |  |  | 145 | adc1_cpld_evtl_esync[0] | ADC L事件 |
-| int_fpga_in |  |  | 144 | adc1_cpld_evth_esync[15] | ADC H事件 |
-| int_fpga_in |  |  | 143 | adc1_cpld_evth_esync[14] | ADC H事件 |
-| int_fpga_in |  |  | 142 | adc1_cpld_evth_esync[13] | ADC H事件 |
-| int_fpga_in |  |  | 141 | adc1_cpld_evth_esync[12] | ADC H事件 |
-| int_fpga_in |  |  | 140 | adc1_cpld_evth_esync[11] | ADC H事件 |
-| int_fpga_in |  |  | 139 | adc1_cpld_evth_esync[10] | ADC H事件 |
-| int_fpga_in |  |  | 138 | adc1_cpld_evth_esync[9] | ADC H事件 |
-| int_fpga_in |  |  | 137 | adc1_cpld_evth_esync[8] | ADC H事件 |
-| int_fpga_in |  |  | 136 | adc1_cpld_evth_esync[7] | ADC H事件 |
-| int_fpga_in |  |  | 135 | adc1_cpld_evth_esync[6] | ADC H事件 |
-| int_fpga_in |  |  | 134 | adc1_cpld_evth_esync[5] | ADC H事件 |
-| int_fpga_in |  |  | 133 | adc1_cpld_evth_esync[4] | ADC H事件 |
-| int_fpga_in |  |  | 132 | adc1_cpld_evth_esync[3] | ADC H事件 |
-| int_fpga_in |  |  | 131 | adc1_cpld_evth_esync[2] | ADC H事件 |
-| int_fpga_in |  |  | 130 | adc1_cpld_evth_esync[1] | ADC H事件 |
-| int_fpga_in |  |  | 129 | adc1_cpld_evth_esync[0] | ADC H事件 |
-| int_fpga_in |  |  | 128 | cpu0_lockup_esync | CPU挂死 |
-| int_fpga_in |  |  | 127 | cpu1_lockup_esync | CPU挂死 |
-| int_fpga_in |  |  | 126 | bus_timeout_esync | 总线超时 |
-| int_fpga_in |  |  | 125 | temp_warn_esync | 过温告警 |
-| int_fpga_in |  |  | 124 | power_err_esync | 过流 |
-| int_fpga_in |  |  | 123 | por_uv_warn_esync | 欠压 |
-| int_fpga_in |  |  | 122 | por_ov_warn_esync | 过压 |
-| int_fpga_in |  |  | 121 | cfg_efpga1_esync[31] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 120 | cfg_efpga1_esync[30] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 119 | cfg_efpga1_esync[29] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 118 | cfg_efpga1_esync[28] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 117 | cfg_efpga1_esync[27] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 116 | cfg_efpga1_esync[26] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 115 | cfg_efpga1_esync[25] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 114 | cfg_efpga1_esync[24] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 113 | cfg_efpga1_esync[23] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 112 | cfg_efpga1_esync[22] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 111 | cfg_efpga1_esync[21] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 110 | cfg_efpga1_esync[20] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 109 | cfg_efpga1_esync[19] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 108 | cfg_efpga1_esync[18] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 107 | cfg_efpga1_esync[17] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 106 | cfg_efpga1_esync[16] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 105 | cfg_efpga1_esync[15] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 104 | cfg_efpga1_esync[14] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 103 | cfg_efpga1_esync[13] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 102 | cfg_efpga1_esync[12] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 101 | cfg_efpga1_esync[11] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 100 | cfg_efpga1_esync[10] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 99 | cfg_efpga1_esync[9] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 98 | cfg_efpga1_esync[8] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 97 | cfg_efpga1_esync[7] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 96 | cfg_efpga1_esync[6] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 95 | cfg_efpga1_esync[5] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 94 | cfg_efpga1_esync[4] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 93 | cfg_efpga1_esync[3] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 92 | cfg_efpga1_esync[2] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 91 | cfg_efpga1_esync[1] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 90 | cfg_efpga1_esync[0] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 89 | cfg_efpga0_esync[31] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 88 | cfg_efpga0_esync[30] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 87 | cfg_efpga0_esync[29] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 86 | cfg_efpga0_esync[28] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 85 | cfg_efpga0_esync[27] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 84 | cfg_efpga0_esync[26] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 83 | cfg_efpga0_esync[25] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 82 | cfg_efpga0_esync[24] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 81 | cfg_efpga0_esync[23] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 80 | cfg_efpga0_esync[22] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 79 | cfg_efpga0_esync[21] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 78 | cfg_efpga0_esync[20] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 77 | cfg_efpga0_esync[19] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 76 | cfg_efpga0_esync[18] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 75 | cfg_efpga0_esync[17] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 74 | cfg_efpga0_esync[16] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 73 | cfg_efpga0_esync[15] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 72 | cfg_efpga0_esync[14] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 71 | cfg_efpga0_esync[13] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 70 | cfg_efpga0_esync[12] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 69 | cfg_efpga0_esync[11] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 68 | cfg_efpga0_esync[10] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 67 | cfg_efpga0_esync[9] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 66 | cfg_efpga0_esync[8] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 65 | cfg_efpga0_esync[7] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 64 | cfg_efpga0_esync[6] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 63 | cfg_efpga0_esync[5] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 62 | cfg_efpga0_esync[4] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 61 | cfg_efpga0_esync[3] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 60 | cfg_efpga0_esync[2] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 59 | cfg_efpga0_esync[1] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 58 | cfg_efpga0_esync[0] | eFPGA保留配置接口，与总线交互 |
-| int_fpga_in |  |  | 57 | etim_cpld_pwm_esync[9] | ETIM PWM |
-| int_fpga_in |  |  | 56 | etim_cpld_pwm_esync[8] | ETIM PWM |
-| int_fpga_in |  |  | 55 | etim_cpld_pwm_esync[7] | ETIM PWM |
-| int_fpga_in |  |  | 54 | etim_cpld_pwm_esync[6] | ETIM PWM |
-| int_fpga_in |  |  | 53 | etim_cpld_pwm_esync[5] | ETIM PWM |
-| int_fpga_in |  |  | 52 | etim_cpld_pwm_esync[4] | ETIM PWM |
-| int_fpga_in |  |  | 51 | etim_cpld_pwm_esync[3] | ETIM PWM |
-| int_fpga_in |  |  | 50 | etim_cpld_pwm_esync[2] | ETIM PWM |
-| int_fpga_in |  |  | 49 | etim_cpld_pwm_esync[1] | ETIM PWM |
-| int_fpga_in |  |  | 48 | etim_cpld_pwm_esync[0] | ETIM PWM |
-| int_fpga_in |  |  | 47 | srpwm_cpld_pwmb_oen_esync[11] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 46 | srpwm_cpld_pwma_oen_esync[11] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 45 | srpwm_cpld_pwm_b_esync[11] | SRPWM PWM |
-| int_fpga_in |  |  | 44 | srpwm_cpld_pwm_a_esync[11] | SRPWM PWM |
-| int_fpga_in |  |  | 43 | srpwm_cpld_pwmb_oen_esync[10] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 42 | srpwm_cpld_pwma_oen_esync[10] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 41 | srpwm_cpld_pwm_b_esync[10] | SRPWM PWM |
-| int_fpga_in |  |  | 40 | srpwm_cpld_pwm_a_esync[10] | SRPWM PWM |
-| int_fpga_in |  |  | 39 | srpwm_cpld_pwmb_oen_esync[9] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 38 | srpwm_cpld_pwma_oen_esync[9] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 37 | srpwm_cpld_pwm_b_esync[9] | SRPWM PWM |
-| int_fpga_in |  |  | 36 | srpwm_cpld_pwm_a_esync[9] | SRPWM PWM |
-| int_fpga_in |  |  | 35 | srpwm_cpld_pwmb_oen_esync[8] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 34 | srpwm_cpld_pwma_oen_esync[8] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 33 | srpwm_cpld_pwm_b_esync[8] | SRPWM PWM |
-| int_fpga_in |  |  | 32 | srpwm_cpld_pwm_a_esync[8] | SRPWM PWM |
-| int_fpga_in |  |  | 31 | srpwm_cpld_pwmb_oen_esync[7] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 30 | srpwm_cpld_pwma_oen_esync[7] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 29 | srpwm_cpld_pwm_b_esync[7] | SRPWM PWM |
-| int_fpga_in |  |  | 28 | srpwm_cpld_pwm_a_esync[7] | SRPWM PWM |
-| int_fpga_in |  |  | 27 | srpwm_cpld_pwmb_oen_esync[6] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 26 | srpwm_cpld_pwma_oen_esync[6] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 25 | srpwm_cpld_pwm_b_esync[6] | SRPWM PWM |
-| int_fpga_in |  |  | 24 | srpwm_cpld_pwm_a_esync[6] | SRPWM PWM |
-| int_fpga_in |  |  | 23 | srpwm_cpld_pwmb_oen_esync[5] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 22 | srpwm_cpld_pwma_oen_esync[5] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 21 | srpwm_cpld_pwm_b_esync[5] | SRPWM PWM |
-| int_fpga_in |  |  | 20 | srpwm_cpld_pwm_a_esync[5] | SRPWM PWM |
-| int_fpga_in |  |  | 19 | srpwm_cpld_pwmb_oen_esync[4] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 18 | srpwm_cpld_pwma_oen_esync[4] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 17 | srpwm_cpld_pwm_b_esync[4] | SRPWM PWM |
-| int_fpga_in |  |  | 16 | srpwm_cpld_pwm_a_esync[4] | SRPWM PWM |
-| int_fpga_in |  |  | 15 | srpwm_cpld_pwmb_oen_esync[3] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 14 | srpwm_cpld_pwma_oen_esync[3] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 13 | srpwm_cpld_pwm_b_esync[3] | SRPWM PWM |
-| int_fpga_in |  |  | 12 | srpwm_cpld_pwm_a_esync[3] | SRPWM PWM |
-| int_fpga_in |  |  | 11 | srpwm_cpld_pwmb_oen_esync[2] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 10 | srpwm_cpld_pwma_oen_esync[2] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 9 | srpwm_cpld_pwm_b_esync[2] | SRPWM PWM |
-| int_fpga_in |  |  | 8 | srpwm_cpld_pwm_a_esync[2] | SRPWM PWM |
-| int_fpga_in |  |  | 7 | srpwm_cpld_pwmb_oen_esync[1] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 6 | srpwm_cpld_pwma_oen_esync[1] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 5 | srpwm_cpld_pwm_b_esync[1] | SRPWM PWM |
-| int_fpga_in |  |  | 4 | srpwm_cpld_pwm_a_esync[1] | SRPWM PWM |
-| int_fpga_in |  |  | 3 | srpwm_cpld_pwmb_oen_esync[0] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 2 | srpwm_cpld_pwma_oen_esync[0] | SRPWM PWM_OEN |
-| int_fpga_in |  |  | 1 | srpwm_cpld_pwm_b_esync[0] | SRPWM PWM |
-| int_fpga_in |  |  | 0 | srpwm_cpld_pwm_a_esync[0] | SRPWM PWM |
-| int_fpga_out | output | 200 | 199 | ppi_data_out[11] | PPI |
-| int_fpga_out |  |  | 198 | ppi_data_out[10] | PPI |
-| int_fpga_out |  |  | 197 | ppi_data_out[9] | PPI |
-| int_fpga_out |  |  | 196 | ppi_data_out[8] | PPI |
-| int_fpga_out |  |  | 195 | ppi_data_out[7] | PPI |
-| int_fpga_out |  |  | 194 | ppi_data_out[6] | PPI |
-| int_fpga_out |  |  | 193 | ppi_data_out[5] | PPI |
-| int_fpga_out |  |  | 192 | ppi_data_out[4] | PPI |
-| int_fpga_out |  |  | 191 | ppi_data_out[3] | PPI |
-| int_fpga_out |  |  | 190 | ppi_data_out[2] | PPI |
-| int_fpga_out |  |  | 189 | ppi_data_out[1] | PPI |
-| int_fpga_out |  |  | 188 | ppi_data_out[0] | PPI |
-| int_fpga_out |  |  | 187 | c2s_rpt[14] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 186 | c2s_rpt[13] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 185 | c2s_rpt[12] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 184 | c2s_rpt[11] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 183 | c2s_rpt[10] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 182 | c2s_rpt[9] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 181 | c2s_rpt[8] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 180 | c2s_rpt[7] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 179 | c2s_rpt[6] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 178 | c2s_rpt[5] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 177 | c2s_rpt[4] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 176 | c2s_rpt[3] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 175 | c2s_rpt[2] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 174 | c2s_rpt[1] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 173 | c2s_rpt[0] | eFPGA到SYSC的保留上报 |
-| int_fpga_out |  |  | 172 | efpga_dma_req0 | 用户自定义DMA触发源 |
-| int_fpga_out |  |  | 171 | efpga_dma_req1 | 用户自定义DMA触发源 |
-| int_fpga_out |  |  | 170 | efpga_c2s_rst_n | 用户自定义复位源 |
-| int_fpga_out |  |  | 169 | efpga0_rpt[31] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 168 | efpga0_rpt[30] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 167 | efpga0_rpt[29] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 166 | efpga0_rpt[28] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 165 | efpga0_rpt[27] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 164 | efpga0_rpt[26] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 163 | efpga0_rpt[25] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 162 | efpga0_rpt[24] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 161 | efpga0_rpt[23] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 160 | efpga0_rpt[22] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 159 | efpga0_rpt[21] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 158 | efpga0_rpt[20] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 157 | efpga0_rpt[19] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 156 | efpga0_rpt[18] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 155 | efpga0_rpt[17] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 154 | efpga0_rpt[16] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 153 | efpga0_rpt[15] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 152 | efpga0_rpt[14] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 151 | efpga0_rpt[13] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 150 | efpga0_rpt[12] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 149 | efpga0_rpt[11] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 148 | efpga0_rpt[10] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 147 | efpga0_rpt[9] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 146 | efpga0_rpt[8] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 145 | efpga0_rpt[7] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 144 | efpga0_rpt[6] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 143 | efpga0_rpt[5] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 142 | efpga0_rpt[4] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 141 | efpga0_rpt[3] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 140 | efpga0_rpt[2] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 139 | efpga0_rpt[1] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 138 | efpga0_rpt[0] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 137 | efpga1_rpt[31] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 136 | efpga1_rpt[30] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 135 | efpga1_rpt[29] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 134 | efpga1_rpt[28] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 133 | efpga1_rpt[27] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 132 | efpga1_rpt[26] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 131 | efpga1_rpt[25] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 130 | efpga1_rpt[24] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 129 | efpga1_rpt[23] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 128 | efpga1_rpt[22] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 127 | efpga1_rpt[21] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 126 | efpga1_rpt[20] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 125 | efpga1_rpt[19] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 124 | efpga1_rpt[18] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 123 | efpga1_rpt[17] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 122 | efpga1_rpt[16] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 121 | efpga1_rpt[15] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 120 | efpga1_rpt[14] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 119 | efpga1_rpt[13] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 118 | efpga1_rpt[12] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 117 | efpga1_rpt[11] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 116 | efpga1_rpt[10] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 115 | efpga1_rpt[9] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 114 | efpga1_rpt[8] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 113 | efpga1_rpt[7] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 112 | efpga1_rpt[6] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 111 | efpga1_rpt[5] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 110 | efpga1_rpt[4] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 109 | efpga1_rpt[3] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 108 | efpga1_rpt[2] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 107 | efpga1_rpt[1] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 106 | efpga1_rpt[0] | eFPGA保留上报接口，与总线交互 |
-| int_fpga_out |  |  | 105 | cpld_opxb_data[9] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 104 | cpld_opxb_data[8] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 103 | cpld_opxb_data[7] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 102 | cpld_opxb_data[6] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 101 | cpld_opxb_data[5] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 100 | cpld_opxb_data[4] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 99 | cpld_opxb_data[3] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 98 | cpld_opxb_data[2] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 97 | cpld_opxb_data[1] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 96 | cpld_opxb_data[0] | eFPGA 输出到OUTPUTXBAR |
-| int_fpga_out |  |  | 95 | cpld_pad_oen[35] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 94 | cpld_pad_oen[34] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 93 | cpld_pad_oen[33] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 92 | cpld_pad_oen[32] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 91 | cpld_pad_oen[31] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 90 | cpld_pad_oen[30] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 89 | cpld_pad_oen[29] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 88 | cpld_pad_oen[28] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 87 | cpld_pad_oen[27] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 86 | cpld_pad_oen[26] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 85 | cpld_pad_oen[25] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 84 | cpld_pad_oen[24] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 83 | cpld_pad_oen[23] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 82 | cpld_pad_oen[22] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 81 | cpld_pad_oen[21] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 80 | cpld_pad_oen[20] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 79 | cpld_pad_oen[19] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 78 | cpld_pad_oen[18] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 77 | cpld_pad_oen[17] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 76 | cpld_pad_oen[16] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 75 | cpld_pad_oen[15] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 74 | cpld_pad_oen[14] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 73 | cpld_pad_oen[13] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 72 | cpld_pad_oen[12] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 71 | cpld_pad_oen[11] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 70 | cpld_pad_oen[10] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 69 | cpld_pad_oen[9] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 68 | cpld_pad_oen[8] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 67 | cpld_pad_oen[7] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 66 | cpld_pad_oen[6] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 65 | cpld_pad_oen[5] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 64 | cpld_pad_oen[4] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 63 | cpld_pad_oen[3] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 62 | cpld_pad_oen[2] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 61 | cpld_pad_oen[1] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 60 | cpld_pad_oen[0] | eFPGA 输出到PAD_OEN |
-| int_fpga_out |  |  | 59 | cpld_pad_out[35] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 58 | cpld_pad_out[34] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 57 | cpld_pad_out[33] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 56 | cpld_pad_out[32] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 55 | cpld_pad_out[31] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 54 | cpld_pad_out[30] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 53 | cpld_pad_out[29] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 52 | cpld_pad_out[28] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 51 | cpld_pad_out[27] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 50 | cpld_pad_out[26] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 49 | cpld_pad_out[25] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 48 | cpld_pad_out[24] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 47 | cpld_pad_out[23] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 46 | cpld_pad_out[22] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 45 | cpld_pad_out[21] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 44 | cpld_pad_out[20] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 43 | cpld_pad_out[19] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 42 | cpld_pad_out[18] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 41 | cpld_pad_out[17] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 40 | cpld_pad_out[16] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 39 | cpld_pad_out[15] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 38 | cpld_pad_out[14] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 37 | cpld_pad_out[13] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 36 | cpld_pad_out[12] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 35 | cpld_pad_out[11] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 34 | cpld_pad_out[10] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 33 | cpld_pad_out[9] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 32 | cpld_pad_out[8] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 31 | cpld_pad_out[7] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 30 | cpld_pad_out[6] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 29 | cpld_pad_out[5] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 28 | cpld_pad_out[4] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 27 | cpld_pad_out[3] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 26 | cpld_pad_out[2] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 25 | cpld_pad_out[1] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 24 | cpld_pad_out[0] | eFPGA 输出到PAD |
-| int_fpga_out |  |  | 23 | cpld_srpwm_fault[23] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 22 | cpld_srpwm_fault[22] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 21 | cpld_srpwm_fault[21] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 20 | cpld_srpwm_fault[20] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 19 | cpld_srpwm_fault[19] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 18 | cpld_srpwm_fault[18] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 17 | cpld_srpwm_fault[17] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 16 | cpld_srpwm_fault[16] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 15 | cpld_srpwm_fault[15] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 14 | cpld_srpwm_fault[14] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 13 | cpld_srpwm_fault[13] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 12 | cpld_srpwm_fault[12] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 11 | cpld_srpwm_fault[11] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 10 | cpld_srpwm_fault[10] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 9 | cpld_srpwm_fault[9] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 8 | cpld_srpwm_fault[8] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 7 | cpld_srpwm_fault[7] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 6 | cpld_srpwm_fault[6] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 5 | cpld_srpwm_fault[5] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 4 | cpld_srpwm_fault[4] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 3 | cpld_srpwm_fault[3] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 2 | cpld_srpwm_fault[2] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 1 | cpld_srpwm_fault[1] | eFPGA 输出到SRPWM用于封波 |
-| int_fpga_out |  |  | 0 | cpld_srpwm_fault[0] | eFPGA 输出到SRPWM用于封波 |
+| 行号 | eFPGA interface | inout | width | NO. | connect signal | 说明 |
+|---:|---|---|---:|---:|---|---|
+| 2 | sys_clk | input | 1 |  | efpga_sys_clk | 200M时钟，与SOC系统时钟同步 |
+| 3 | sys_resetn | input | 1 |  | efpga_sys_resetn | CPLD HARD_RST&S2C_ |
+| 4 | wdt_sclk | input | 1 |  |  |  |
+| 5 | fpga_s0_hrdata | output | 32 |  | cpld_ahb1_hrdata | AHB1 |
+| 6 | fpga_s0_hreadyout | output | 1 |  | cpld_ahb1_hreadyout | AHB1 |
+| 7 | fpga_s0_hresp | output | 1 |  | cpld_ahb1_hresp | AHB1 |
+| 8 | fpga_s0_hsel | input | 1 |  | cpld_ahb1_hsel | AHB1 |
+| 9 | fpga_s0_haddr | input | 32 |  | {20'd0,cpld_ahb1_haddr} | AHB1 |
+| 10 | fpga_s0_htrans | input | 2 |  | cpld_ahb1_htrans | AHB1 |
+| 11 | fpga_s0_hwrite | input | 1 |  | cpld_ahb1_hwrite | AHB1 |
+| 12 | fpga_s0_hwdata | input | 32 |  | cpld_ahb1_hwdata | AHB1 |
+| 13 | fpga_s0_hready | input | 1 |  | cpld_ahb1_hready | AHB1 |
+| 14 | efpga_dec_en | input | 1 |  |  | eFPGA bitstream decipher enable |
+| 15 | efpga_dec_key | input | 64 |  |  | eFPGA bitstream decipher key |
+| 16 | fpga_intr | output | 4 | 3 | efpga_intr3_nc |  |
+| 17 | fpga_intr | output | 4 | 2 | efpga_intr2_nc |  |
+| 18 | fpga_intr | output | 4 | 1 | cpld_usr_intr_src[1] | 用户自定义中断，脉冲或电平 |
+| 19 | fpga_intr | output | 4 | 0 | cpld_usr_intr_src[0] | 用户自定义中断，脉冲或电平 |
+| 20 | fpga_cfg_done_sync | output | 1 |  | cpld_cfg_done_sync | bit流配置完成 |
+| 21 | fpga_cfg_err | output | 1 |  | cpld_cfg_err_sync | bit流配置错误 |
+| 22 | wdt_rstn_o | output | 1 |  | wdt_rstn_o_nc |  |
+| 23 | free_clk0 | input | 1 |  | free_clk0 |  |
+| 24 | free_clk1 | input | 1 |  | free_clk1 |  |
+| 25 | free_clk2 | input | 1 |  | free_clk2 |  |
+| 26 | free_clk3 | input | 1 |  | efpga_sys_clk |  |
+| 27 | scan_in | input | 200 |  | dft_efpga_scan_in | DFT |
+| 28 | scan_out | output | 200 |  | dft_efpga_scan_out | DFT |
+| 29 | scan_en | input | 1 |  | dft_efpga_scan_en | DFT |
+| 30 | scan_mode | input | 1 |  | dft_mode | DFT |
+| 31 | scan_clk | input | 1 |  | dft_efpga_scan_clk | DFT |
+| 32 | scan_rstn | input | 1 |  | dft_efpga_scan_rstn | DFT |
+| 33 | io_resetn | input | 2 | 1 | efpga_io_resetn1 | 用户自定义逻辑用IO |
+| 34 | io_resetn | input | 2 | 0 | efpga_io_resetn0 | 用户自定义逻辑用IO |
+| 35 | int_fpga_in | input | 320 | 319 | s2c_cfg_esync[7] | SYSC到eFPGA的保留配置 |
+| 36 | int_fpga_in | input | 320 | 318 | s2c_cfg_esync[6] | SYSC到eFPGA的保留配置 |
+| 37 | int_fpga_in | input | 320 | 317 | s2c_cfg_esync[5] | SYSC到eFPGA的保留配置 |
+| 38 | int_fpga_in | input | 320 | 316 | s2c_cfg_esync[4] | SYSC到eFPGA的保留配置 |
+| 39 | int_fpga_in | input | 320 | 315 | s2c_cfg_esync[3] | SYSC到eFPGA的保留配置 |
+| 40 | int_fpga_in | input | 320 | 314 | s2c_cfg_esync[2] | SYSC到eFPGA的保留配置 |
+| 41 | int_fpga_in | input | 320 | 313 | s2c_cfg_esync[1] | SYSC到eFPGA的保留配置 |
+| 42 | int_fpga_in | input | 320 | 312 | s2c_cfg_esync[0] | SYSC到eFPGA的保留配置 |
+| 43 | int_fpga_in | input | 320 | 311 | pad_cpld_in_esync[35] | PAD 直接输入eFPGA |
+| 44 | int_fpga_in | input | 320 | 310 | pad_cpld_in_esync[34] | PAD 直接输入eFPGA |
+| 45 | int_fpga_in | input | 320 | 309 | pad_cpld_in_esync[33] | PAD 直接输入eFPGA |
+| 46 | int_fpga_in | input | 320 | 308 | pad_cpld_in_esync[32] | PAD 直接输入eFPGA |
+| 47 | int_fpga_in | input | 320 | 307 | pad_cpld_in_esync[31] | PAD 直接输入eFPGA |
+| 48 | int_fpga_in | input | 320 | 306 | pad_cpld_in_esync[30] | PAD 直接输入eFPGA |
+| 49 | int_fpga_in | input | 320 | 305 | pad_cpld_in_esync[29] | PAD 直接输入eFPGA |
+| 50 | int_fpga_in | input | 320 | 304 | pad_cpld_in_esync[28] | PAD 直接输入eFPGA |
+| 51 | int_fpga_in | input | 320 | 303 | pad_cpld_in_esync[27] | PAD 直接输入eFPGA |
+| 52 | int_fpga_in | input | 320 | 302 | pad_cpld_in_esync[26] | PAD 直接输入eFPGA |
+| 53 | int_fpga_in | input | 320 | 301 | pad_cpld_in_esync[25] | PAD 直接输入eFPGA |
+| 54 | int_fpga_in | input | 320 | 300 | pad_cpld_in_esync[24] | PAD 直接输入eFPGA |
+| 55 | int_fpga_in | input | 320 | 299 | pad_cpld_in_esync[23] | PAD 直接输入eFPGA |
+| 56 | int_fpga_in | input | 320 | 298 | pad_cpld_in_esync[22] | PAD 直接输入eFPGA |
+| 57 | int_fpga_in | input | 320 | 297 | pad_cpld_in_esync[21] | PAD 直接输入eFPGA |
+| 58 | int_fpga_in | input | 320 | 296 | pad_cpld_in_esync[20] | PAD 直接输入eFPGA |
+| 59 | int_fpga_in | input | 320 | 295 | pad_cpld_in_esync[19] | PAD 直接输入eFPGA |
+| 60 | int_fpga_in | input | 320 | 294 | pad_cpld_in_esync[18] | PAD 直接输入eFPGA |
+| 61 | int_fpga_in | input | 320 | 293 | pad_cpld_in_esync[17] | PAD 直接输入eFPGA |
+| 62 | int_fpga_in | input | 320 | 292 | pad_cpld_in_esync[16] | PAD 直接输入eFPGA |
+| 63 | int_fpga_in | input | 320 | 291 | pad_cpld_in_esync[15] | PAD 直接输入eFPGA |
+| 64 | int_fpga_in | input | 320 | 290 | pad_cpld_in_esync[14] | PAD 直接输入eFPGA |
+| 65 | int_fpga_in | input | 320 | 289 | pad_cpld_in_esync[13] | PAD 直接输入eFPGA |
+| 66 | int_fpga_in | input | 320 | 288 | pad_cpld_in_esync[12] | PAD 直接输入eFPGA |
+| 67 | int_fpga_in | input | 320 | 287 | pad_cpld_in_esync[11] | PAD 直接输入eFPGA |
+| 68 | int_fpga_in | input | 320 | 286 | pad_cpld_in_esync[10] | PAD 直接输入eFPGA |
+| 69 | int_fpga_in | input | 320 | 285 | pad_cpld_in_esync[9] | PAD 直接输入eFPGA |
+| 70 | int_fpga_in | input | 320 | 284 | pad_cpld_in_esync[8] | PAD 直接输入eFPGA |
+| 71 | int_fpga_in | input | 320 | 283 | pad_cpld_in_esync[7] | PAD 直接输入eFPGA |
+| 72 | int_fpga_in | input | 320 | 282 | pad_cpld_in_esync[6] | PAD 直接输入eFPGA |
+| 73 | int_fpga_in | input | 320 | 281 | pad_cpld_in_esync[5] | PAD 直接输入eFPGA |
+| 74 | int_fpga_in | input | 320 | 280 | pad_cpld_in_esync[4] | PAD 直接输入eFPGA |
+| 75 | int_fpga_in | input | 320 | 279 | pad_cpld_in_esync[3] | PAD 直接输入eFPGA |
+| 76 | int_fpga_in | input | 320 | 278 | pad_cpld_in_esync[2] | PAD 直接输入eFPGA |
+| 77 | int_fpga_in | input | 320 | 277 | pad_cpld_in_esync[1] | PAD 直接输入eFPGA |
+| 78 | int_fpga_in | input | 320 | 276 | pad_cpld_in_esync[0] | PAD 直接输入eFPGA |
+| 79 | int_fpga_in | input | 320 | 275 | soc_hard_rst_n_esync | SOC HARD复位 |
+| 80 | int_fpga_in | input | 320 | 274 | soc_wdg0_rst_n_esync | SOC 看门狗复位 |
+| 81 | int_fpga_in | input | 320 | 273 | soc_wdg1_rst_n_esync | SOC 看门狗复位 |
+| 82 | int_fpga_in | input | 320 | 272 | soc_soft_rst_n_esync | SOC 软复位 |
+| 83 | int_fpga_in | input | 320 | 271 | cpld_pll_los_status_esync | CPLD PLL 频率状态，1'b1:无时钟或频率异常 |
+| 84 | int_fpga_in | input | 320 | 270 | ppi_csn | PPI |
+| 85 | int_fpga_in | input | 320 | 269 | ppi_data_bus_esync[11] | PPI |
+| 86 | int_fpga_in | input | 320 | 268 | ppi_data_bus_esync[10] | PPI |
+| 87 | int_fpga_in | input | 320 | 267 | ppi_data_bus_esync[9] | PPI |
+| 88 | int_fpga_in | input | 320 | 266 | ppi_data_bus_esync[8] | PPI |
+| 89 | int_fpga_in | input | 320 | 265 | ppi_data_bus_esync[7] | PPI |
+| 90 | int_fpga_in | input | 320 | 264 | ppi_data_bus_esync[6] | PPI |
+| 91 | int_fpga_in | input | 320 | 263 | ppi_data_bus_esync[5] | PPI |
+| 92 | int_fpga_in | input | 320 | 262 | ppi_data_bus_esync[4] | PPI |
+| 93 | int_fpga_in | input | 320 | 261 | ppi_data_bus_esync[3] | PPI |
+| 94 | int_fpga_in | input | 320 | 260 | ppi_data_bus_esync[2] | PPI |
+| 95 | int_fpga_in | input | 320 | 259 | ppi_data_bus_esync[1] | PPI |
+| 96 | int_fpga_in | input | 320 | 258 | ppi_data_bus_esync[0] | PPI |
+| 97 | int_fpga_in | input | 320 | 257 | ppi_addr_esync[4] | PPI |
+| 98 | int_fpga_in | input | 320 | 256 | ppi_addr_esync[3] | PPI |
+| 99 | int_fpga_in | input | 320 | 255 | ppi_addr_esync[2] | PPI |
+| 100 | int_fpga_in | input | 320 | 254 | ppi_addr_esync[1] | PPI |
+| 101 | int_fpga_in | input | 320 | 253 | ppi_addr_esync[0] | PPI |
+| 102 | int_fpga_in | input | 320 | 252 | inxb_cpld_data_esync[15] | INPUTXBAR数据 |
+| 103 | int_fpga_in | input | 320 | 251 | inxb_cpld_data_esync[14] | INPUTXBAR数据 |
+| 104 | int_fpga_in | input | 320 | 250 | inxb_cpld_data_esync[13] | INPUTXBAR数据 |
+| 105 | int_fpga_in | input | 320 | 249 | inxb_cpld_data_esync[12] | INPUTXBAR数据 |
+| 106 | int_fpga_in | input | 320 | 248 | inxb_cpld_data_esync[11] | INPUTXBAR数据 |
+| 107 | int_fpga_in | input | 320 | 247 | inxb_cpld_data_esync[10] | INPUTXBAR数据 |
+| 108 | int_fpga_in | input | 320 | 246 | inxb_cpld_data_esync[9] | INPUTXBAR数据 |
+| 109 | int_fpga_in | input | 320 | 245 | inxb_cpld_data_esync[8] | INPUTXBAR数据 |
+| 110 | int_fpga_in | input | 320 | 244 | inxb_cpld_data_esync[7] | INPUTXBAR数据 |
+| 111 | int_fpga_in | input | 320 | 243 | inxb_cpld_data_esync[6] | INPUTXBAR数据 |
+| 112 | int_fpga_in | input | 320 | 242 | inxb_cpld_data_esync[5] | INPUTXBAR数据 |
+| 113 | int_fpga_in | input | 320 | 241 | inxb_cpld_data_esync[4] | INPUTXBAR数据 |
+| 114 | int_fpga_in | input | 320 | 240 | inxb_cpld_data_esync[3] | INPUTXBAR数据 |
+| 115 | int_fpga_in | input | 320 | 239 | inxb_cpld_data_esync[2] | INPUTXBAR数据 |
+| 116 | int_fpga_in | input | 320 | 238 | inxb_cpld_data_esync[1] | INPUTXBAR数据 |
+| 117 | int_fpga_in | input | 320 | 237 | inxb_cpld_data_esync[0] | INPUTXBAR数据 |
+| 118 | int_fpga_in | input | 320 | 236 | pfxb_cpld_data_esync[10] | PWMXBAR数据 |
+| 119 | int_fpga_in | input | 320 | 235 | pfxb_cpld_data_esync[9] | PWMXBAR数据 |
+| 120 | int_fpga_in | input | 320 | 234 | pfxb_cpld_data_esync[8] | PWMXBAR数据 |
+| 121 | int_fpga_in | input | 320 | 233 | pfxb_cpld_data_esync[7] | PWMXBAR数据 |
+| 122 | int_fpga_in | input | 320 | 232 | pfxb_cpld_data_esync[6] | PWMXBAR数据 |
+| 123 | int_fpga_in | input | 320 | 231 | pfxb_cpld_data_esync[5] | PWMXBAR数据 |
+| 124 | int_fpga_in | input | 320 | 230 | pfxb_cpld_data_esync[4] | PWMXBAR数据 |
+| 125 | int_fpga_in | input | 320 | 229 | pfxb_cpld_data_esync[3] | PWMXBAR数据 |
+| 126 | int_fpga_in | input | 320 | 228 | pfxb_cpld_data_esync[2] | PWMXBAR数据 |
+| 127 | int_fpga_in | input | 320 | 227 | pfxb_cpld_data_esync[1] | PWMXBAR数据 |
+| 128 | int_fpga_in | input | 320 | 226 | pfxb_cpld_data_esync[0] | PWMXBAR数据 |
+| 129 | int_fpga_in | input | 320 | 225 | etxb_cpld_data_esync[9] | PWMXBAR数据 |
+| 130 | int_fpga_in | input | 320 | 224 | etxb_cpld_data_esync[8] | PWMXBAR数据 |
+| 131 | int_fpga_in | input | 320 | 223 | etxb_cpld_data_esync[7] | PWMXBAR数据 |
+| 132 | int_fpga_in | input | 320 | 222 | etxb_cpld_data_esync[6] | PWMXBAR数据 |
+| 133 | int_fpga_in | input | 320 | 221 | etxb_cpld_data_esync[5] | PWMXBAR数据 |
+| 134 | int_fpga_in | input | 320 | 220 | etxb_cpld_data_esync[4] | PWMXBAR数据 |
+| 135 | int_fpga_in | input | 320 | 219 | etxb_cpld_data_esync[3] | PWMXBAR数据 |
+| 136 | int_fpga_in | input | 320 | 218 | etxb_cpld_data_esync[2] | PWMXBAR数据 |
+| 137 | int_fpga_in | input | 320 | 217 | etxb_cpld_data_esync[1] | PWMXBAR数据 |
+| 138 | int_fpga_in | input | 320 | 216 | etxb_cpld_data_esync[0] | PWMXBAR数据 |
+| 139 | int_fpga_in | input | 320 | 215 | etim_cpld_sync_esync | ETIM PWM相位同步信号 |
+| 140 | int_fpga_in | input | 320 | 214 | cmpc_cpld_evth_esync[10] | CMPC H事件 |
+| 141 | int_fpga_in | input | 320 | 213 | cmpc_cpld_evth_esync[9] | CMPC H事件 |
+| 142 | int_fpga_in | input | 320 | 212 | cmpc_cpld_evth_esync[8] | CMPC H事件 |
+| 143 | int_fpga_in | input | 320 | 211 | cmpc_cpld_evth_esync[7] | CMPC H事件 |
+| 144 | int_fpga_in | input | 320 | 210 | cmpc_cpld_evth_esync[6] | CMPC H事件 |
+| 145 | int_fpga_in | input | 320 | 209 | cmpc_cpld_evth_esync[5] | CMPC H事件 |
+| 146 | int_fpga_in | input | 320 | 208 | cmpc_cpld_evth_esync[4] | CMPC H事件 |
+| 147 | int_fpga_in | input | 320 | 207 | cmpc_cpld_evth_esync[3] | CMPC H事件 |
+| 148 | int_fpga_in | input | 320 | 206 | cmpc_cpld_evth_esync[2] | CMPC H事件 |
+| 149 | int_fpga_in | input | 320 | 205 | cmpc_cpld_evth_esync[1] | CMPC H事件 |
+| 150 | int_fpga_in | input | 320 | 204 | cmpc_cpld_evth_esync[0] | CMPC H事件 |
+| 151 | int_fpga_in | input | 320 | 203 | cmpc_cpld_evtl_esync[10] | CMPC L事件 |
+| 152 | int_fpga_in | input | 320 | 202 | cmpc_cpld_evtl_esync[9] | CMPC L事件 |
+| 153 | int_fpga_in | input | 320 | 201 | cmpc_cpld_evtl_esync[8] | CMPC L事件 |
+| 154 | int_fpga_in | input | 320 | 200 | cmpc_cpld_evtl_esync[7] | CMPC L事件 |
+| 155 | int_fpga_in | input | 320 | 199 | cmpc_cpld_evtl_esync[6] | CMPC L事件 |
+| 156 | int_fpga_in | input | 320 | 198 | cmpc_cpld_evtl_esync[5] | CMPC L事件 |
+| 157 | int_fpga_in | input | 320 | 197 | cmpc_cpld_evtl_esync[4] | CMPC L事件 |
+| 158 | int_fpga_in | input | 320 | 196 | cmpc_cpld_evtl_esync[3] | CMPC L事件 |
+| 159 | int_fpga_in | input | 320 | 195 | cmpc_cpld_evtl_esync[2] | CMPC L事件 |
+| 160 | int_fpga_in | input | 320 | 194 | cmpc_cpld_evtl_esync[1] | CMPC L事件 |
+| 161 | int_fpga_in | input | 320 | 193 | cmpc_cpld_evtl_esync[0] | CMPC L事件 |
+| 162 | int_fpga_in | input | 320 | 192 | adc0_cpld_evtl_esync[15] | ADC L事件 |
+| 163 | int_fpga_in | input | 320 | 191 | adc0_cpld_evtl_esync[14] | ADC L事件 |
+| 164 | int_fpga_in | input | 320 | 190 | adc0_cpld_evtl_esync[13] | ADC L事件 |
+| 165 | int_fpga_in | input | 320 | 189 | adc0_cpld_evtl_esync[12] | ADC L事件 |
+| 166 | int_fpga_in | input | 320 | 188 | adc0_cpld_evtl_esync[11] | ADC L事件 |
+| 167 | int_fpga_in | input | 320 | 187 | adc0_cpld_evtl_esync[10] | ADC L事件 |
+| 168 | int_fpga_in | input | 320 | 186 | adc0_cpld_evtl_esync[9] | ADC L事件 |
+| 169 | int_fpga_in | input | 320 | 185 | adc0_cpld_evtl_esync[8] | ADC L事件 |
+| 170 | int_fpga_in | input | 320 | 184 | adc0_cpld_evtl_esync[7] | ADC L事件 |
+| 171 | int_fpga_in | input | 320 | 183 | adc0_cpld_evtl_esync[6] | ADC L事件 |
+| 172 | int_fpga_in | input | 320 | 182 | adc0_cpld_evtl_esync[5] | ADC L事件 |
+| 173 | int_fpga_in | input | 320 | 181 | adc0_cpld_evtl_esync[4] | ADC L事件 |
+| 174 | int_fpga_in | input | 320 | 180 | adc0_cpld_evtl_esync[3] | ADC L事件 |
+| 175 | int_fpga_in | input | 320 | 179 | adc0_cpld_evtl_esync[2] | ADC L事件 |
+| 176 | int_fpga_in | input | 320 | 178 | adc0_cpld_evtl_esync[1] | ADC L事件 |
+| 177 | int_fpga_in | input | 320 | 177 | adc0_cpld_evtl_esync[0] | ADC L事件 |
+| 178 | int_fpga_in | input | 320 | 176 | adc0_cpld_evth_esync[15] | ADC H事件 |
+| 179 | int_fpga_in | input | 320 | 175 | adc0_cpld_evth_esync[14] | ADC H事件 |
+| 180 | int_fpga_in | input | 320 | 174 | adc0_cpld_evth_esync[13] | ADC H事件 |
+| 181 | int_fpga_in | input | 320 | 173 | adc0_cpld_evth_esync[12] | ADC H事件 |
+| 182 | int_fpga_in | input | 320 | 172 | adc0_cpld_evth_esync[11] | ADC H事件 |
+| 183 | int_fpga_in | input | 320 | 171 | adc0_cpld_evth_esync[10] | ADC H事件 |
+| 184 | int_fpga_in | input | 320 | 170 | adc0_cpld_evth_esync[9] | ADC H事件 |
+| 185 | int_fpga_in | input | 320 | 169 | adc0_cpld_evth_esync[8] | ADC H事件 |
+| 186 | int_fpga_in | input | 320 | 168 | adc0_cpld_evth_esync[7] | ADC H事件 |
+| 187 | int_fpga_in | input | 320 | 167 | adc0_cpld_evth_esync[6] | ADC H事件 |
+| 188 | int_fpga_in | input | 320 | 166 | adc0_cpld_evth_esync[5] | ADC H事件 |
+| 189 | int_fpga_in | input | 320 | 165 | adc0_cpld_evth_esync[4] | ADC H事件 |
+| 190 | int_fpga_in | input | 320 | 164 | adc0_cpld_evth_esync[3] | ADC H事件 |
+| 191 | int_fpga_in | input | 320 | 163 | adc0_cpld_evth_esync[2] | ADC H事件 |
+| 192 | int_fpga_in | input | 320 | 162 | adc0_cpld_evth_esync[1] | ADC H事件 |
+| 193 | int_fpga_in | input | 320 | 161 | adc0_cpld_evth_esync[0] | ADC H事件 |
+| 194 | int_fpga_in | input | 320 | 160 | adc1_cpld_evtl_esync[15] | ADC L事件 |
+| 195 | int_fpga_in | input | 320 | 159 | adc1_cpld_evtl_esync[14] | ADC L事件 |
+| 196 | int_fpga_in | input | 320 | 158 | adc1_cpld_evtl_esync[13] | ADC L事件 |
+| 197 | int_fpga_in | input | 320 | 157 | adc1_cpld_evtl_esync[12] | ADC L事件 |
+| 198 | int_fpga_in | input | 320 | 156 | adc1_cpld_evtl_esync[11] | ADC L事件 |
+| 199 | int_fpga_in | input | 320 | 155 | adc1_cpld_evtl_esync[10] | ADC L事件 |
+| 200 | int_fpga_in | input | 320 | 154 | adc1_cpld_evtl_esync[9] | ADC L事件 |
+| 201 | int_fpga_in | input | 320 | 153 | adc1_cpld_evtl_esync[8] | ADC L事件 |
+| 202 | int_fpga_in | input | 320 | 152 | adc1_cpld_evtl_esync[7] | ADC L事件 |
+| 203 | int_fpga_in | input | 320 | 151 | adc1_cpld_evtl_esync[6] | ADC L事件 |
+| 204 | int_fpga_in | input | 320 | 150 | adc1_cpld_evtl_esync[5] | ADC L事件 |
+| 205 | int_fpga_in | input | 320 | 149 | adc1_cpld_evtl_esync[4] | ADC L事件 |
+| 206 | int_fpga_in | input | 320 | 148 | adc1_cpld_evtl_esync[3] | ADC L事件 |
+| 207 | int_fpga_in | input | 320 | 147 | adc1_cpld_evtl_esync[2] | ADC L事件 |
+| 208 | int_fpga_in | input | 320 | 146 | adc1_cpld_evtl_esync[1] | ADC L事件 |
+| 209 | int_fpga_in | input | 320 | 145 | adc1_cpld_evtl_esync[0] | ADC L事件 |
+| 210 | int_fpga_in | input | 320 | 144 | adc1_cpld_evth_esync[15] | ADC H事件 |
+| 211 | int_fpga_in | input | 320 | 143 | adc1_cpld_evth_esync[14] | ADC H事件 |
+| 212 | int_fpga_in | input | 320 | 142 | adc1_cpld_evth_esync[13] | ADC H事件 |
+| 213 | int_fpga_in | input | 320 | 141 | adc1_cpld_evth_esync[12] | ADC H事件 |
+| 214 | int_fpga_in | input | 320 | 140 | adc1_cpld_evth_esync[11] | ADC H事件 |
+| 215 | int_fpga_in | input | 320 | 139 | adc1_cpld_evth_esync[10] | ADC H事件 |
+| 216 | int_fpga_in | input | 320 | 138 | adc1_cpld_evth_esync[9] | ADC H事件 |
+| 217 | int_fpga_in | input | 320 | 137 | adc1_cpld_evth_esync[8] | ADC H事件 |
+| 218 | int_fpga_in | input | 320 | 136 | adc1_cpld_evth_esync[7] | ADC H事件 |
+| 219 | int_fpga_in | input | 320 | 135 | adc1_cpld_evth_esync[6] | ADC H事件 |
+| 220 | int_fpga_in | input | 320 | 134 | adc1_cpld_evth_esync[5] | ADC H事件 |
+| 221 | int_fpga_in | input | 320 | 133 | adc1_cpld_evth_esync[4] | ADC H事件 |
+| 222 | int_fpga_in | input | 320 | 132 | adc1_cpld_evth_esync[3] | ADC H事件 |
+| 223 | int_fpga_in | input | 320 | 131 | adc1_cpld_evth_esync[2] | ADC H事件 |
+| 224 | int_fpga_in | input | 320 | 130 | adc1_cpld_evth_esync[1] | ADC H事件 |
+| 225 | int_fpga_in | input | 320 | 129 | adc1_cpld_evth_esync[0] | ADC H事件 |
+| 226 | int_fpga_in | input | 320 | 128 | cpu0_lockup_esync | CPU挂死 |
+| 227 | int_fpga_in | input | 320 | 127 | cpu1_lockup_esync | CPU挂死 |
+| 228 | int_fpga_in | input | 320 | 126 | bus_timeout_esync | 总线超时 |
+| 229 | int_fpga_in | input | 320 | 125 | temp_warn_esync | 过温告警 |
+| 230 | int_fpga_in | input | 320 | 124 | power_err_esync | 过流 |
+| 231 | int_fpga_in | input | 320 | 123 | por_uv_warn_esync | 欠压 |
+| 232 | int_fpga_in | input | 320 | 122 | por_ov_warn_esync | 过压 |
+| 233 | int_fpga_in | input | 320 | 121 | cfg_efpga1_esync[31] | eFPGA保留配置接口，与总线交互 |
+| 234 | int_fpga_in | input | 320 | 120 | cfg_efpga1_esync[30] | eFPGA保留配置接口，与总线交互 |
+| 235 | int_fpga_in | input | 320 | 119 | cfg_efpga1_esync[29] | eFPGA保留配置接口，与总线交互 |
+| 236 | int_fpga_in | input | 320 | 118 | cfg_efpga1_esync[28] | eFPGA保留配置接口，与总线交互 |
+| 237 | int_fpga_in | input | 320 | 117 | cfg_efpga1_esync[27] | eFPGA保留配置接口，与总线交互 |
+| 238 | int_fpga_in | input | 320 | 116 | cfg_efpga1_esync[26] | eFPGA保留配置接口，与总线交互 |
+| 239 | int_fpga_in | input | 320 | 115 | cfg_efpga1_esync[25] | eFPGA保留配置接口，与总线交互 |
+| 240 | int_fpga_in | input | 320 | 114 | cfg_efpga1_esync[24] | eFPGA保留配置接口，与总线交互 |
+| 241 | int_fpga_in | input | 320 | 113 | cfg_efpga1_esync[23] | eFPGA保留配置接口，与总线交互 |
+| 242 | int_fpga_in | input | 320 | 112 | cfg_efpga1_esync[22] | eFPGA保留配置接口，与总线交互 |
+| 243 | int_fpga_in | input | 320 | 111 | cfg_efpga1_esync[21] | eFPGA保留配置接口，与总线交互 |
+| 244 | int_fpga_in | input | 320 | 110 | cfg_efpga1_esync[20] | eFPGA保留配置接口，与总线交互 |
+| 245 | int_fpga_in | input | 320 | 109 | cfg_efpga1_esync[19] | eFPGA保留配置接口，与总线交互 |
+| 246 | int_fpga_in | input | 320 | 108 | cfg_efpga1_esync[18] | eFPGA保留配置接口，与总线交互 |
+| 247 | int_fpga_in | input | 320 | 107 | cfg_efpga1_esync[17] | eFPGA保留配置接口，与总线交互 |
+| 248 | int_fpga_in | input | 320 | 106 | cfg_efpga1_esync[16] | eFPGA保留配置接口，与总线交互 |
+| 249 | int_fpga_in | input | 320 | 105 | cfg_efpga1_esync[15] | eFPGA保留配置接口，与总线交互 |
+| 250 | int_fpga_in | input | 320 | 104 | cfg_efpga1_esync[14] | eFPGA保留配置接口，与总线交互 |
+| 251 | int_fpga_in | input | 320 | 103 | cfg_efpga1_esync[13] | eFPGA保留配置接口，与总线交互 |
+| 252 | int_fpga_in | input | 320 | 102 | cfg_efpga1_esync[12] | eFPGA保留配置接口，与总线交互 |
+| 253 | int_fpga_in | input | 320 | 101 | cfg_efpga1_esync[11] | eFPGA保留配置接口，与总线交互 |
+| 254 | int_fpga_in | input | 320 | 100 | cfg_efpga1_esync[10] | eFPGA保留配置接口，与总线交互 |
+| 255 | int_fpga_in | input | 320 | 99 | cfg_efpga1_esync[9] | eFPGA保留配置接口，与总线交互 |
+| 256 | int_fpga_in | input | 320 | 98 | cfg_efpga1_esync[8] | eFPGA保留配置接口，与总线交互 |
+| 257 | int_fpga_in | input | 320 | 97 | cfg_efpga1_esync[7] | eFPGA保留配置接口，与总线交互 |
+| 258 | int_fpga_in | input | 320 | 96 | cfg_efpga1_esync[6] | eFPGA保留配置接口，与总线交互 |
+| 259 | int_fpga_in | input | 320 | 95 | cfg_efpga1_esync[5] | eFPGA保留配置接口，与总线交互 |
+| 260 | int_fpga_in | input | 320 | 94 | cfg_efpga1_esync[4] | eFPGA保留配置接口，与总线交互 |
+| 261 | int_fpga_in | input | 320 | 93 | cfg_efpga1_esync[3] | eFPGA保留配置接口，与总线交互 |
+| 262 | int_fpga_in | input | 320 | 92 | cfg_efpga1_esync[2] | eFPGA保留配置接口，与总线交互 |
+| 263 | int_fpga_in | input | 320 | 91 | cfg_efpga1_esync[1] | eFPGA保留配置接口，与总线交互 |
+| 264 | int_fpga_in | input | 320 | 90 | cfg_efpga1_esync[0] | eFPGA保留配置接口，与总线交互 |
+| 265 | int_fpga_in | input | 320 | 89 | cfg_efpga0_esync[31] | eFPGA保留配置接口，与总线交互 |
+| 266 | int_fpga_in | input | 320 | 88 | cfg_efpga0_esync[30] | eFPGA保留配置接口，与总线交互 |
+| 267 | int_fpga_in | input | 320 | 87 | cfg_efpga0_esync[29] | eFPGA保留配置接口，与总线交互 |
+| 268 | int_fpga_in | input | 320 | 86 | cfg_efpga0_esync[28] | eFPGA保留配置接口，与总线交互 |
+| 269 | int_fpga_in | input | 320 | 85 | cfg_efpga0_esync[27] | eFPGA保留配置接口，与总线交互 |
+| 270 | int_fpga_in | input | 320 | 84 | cfg_efpga0_esync[26] | eFPGA保留配置接口，与总线交互 |
+| 271 | int_fpga_in | input | 320 | 83 | cfg_efpga0_esync[25] | eFPGA保留配置接口，与总线交互 |
+| 272 | int_fpga_in | input | 320 | 82 | cfg_efpga0_esync[24] | eFPGA保留配置接口，与总线交互 |
+| 273 | int_fpga_in | input | 320 | 81 | cfg_efpga0_esync[23] | eFPGA保留配置接口，与总线交互 |
+| 274 | int_fpga_in | input | 320 | 80 | cfg_efpga0_esync[22] | eFPGA保留配置接口，与总线交互 |
+| 275 | int_fpga_in | input | 320 | 79 | cfg_efpga0_esync[21] | eFPGA保留配置接口，与总线交互 |
+| 276 | int_fpga_in | input | 320 | 78 | cfg_efpga0_esync[20] | eFPGA保留配置接口，与总线交互 |
+| 277 | int_fpga_in | input | 320 | 77 | cfg_efpga0_esync[19] | eFPGA保留配置接口，与总线交互 |
+| 278 | int_fpga_in | input | 320 | 76 | cfg_efpga0_esync[18] | eFPGA保留配置接口，与总线交互 |
+| 279 | int_fpga_in | input | 320 | 75 | cfg_efpga0_esync[17] | eFPGA保留配置接口，与总线交互 |
+| 280 | int_fpga_in | input | 320 | 74 | cfg_efpga0_esync[16] | eFPGA保留配置接口，与总线交互 |
+| 281 | int_fpga_in | input | 320 | 73 | cfg_efpga0_esync[15] | eFPGA保留配置接口，与总线交互 |
+| 282 | int_fpga_in | input | 320 | 72 | cfg_efpga0_esync[14] | eFPGA保留配置接口，与总线交互 |
+| 283 | int_fpga_in | input | 320 | 71 | cfg_efpga0_esync[13] | eFPGA保留配置接口，与总线交互 |
+| 284 | int_fpga_in | input | 320 | 70 | cfg_efpga0_esync[12] | eFPGA保留配置接口，与总线交互 |
+| 285 | int_fpga_in | input | 320 | 69 | cfg_efpga0_esync[11] | eFPGA保留配置接口，与总线交互 |
+| 286 | int_fpga_in | input | 320 | 68 | cfg_efpga0_esync[10] | eFPGA保留配置接口，与总线交互 |
+| 287 | int_fpga_in | input | 320 | 67 | cfg_efpga0_esync[9] | eFPGA保留配置接口，与总线交互 |
+| 288 | int_fpga_in | input | 320 | 66 | cfg_efpga0_esync[8] | eFPGA保留配置接口，与总线交互 |
+| 289 | int_fpga_in | input | 320 | 65 | cfg_efpga0_esync[7] | eFPGA保留配置接口，与总线交互 |
+| 290 | int_fpga_in | input | 320 | 64 | cfg_efpga0_esync[6] | eFPGA保留配置接口，与总线交互 |
+| 291 | int_fpga_in | input | 320 | 63 | cfg_efpga0_esync[5] | eFPGA保留配置接口，与总线交互 |
+| 292 | int_fpga_in | input | 320 | 62 | cfg_efpga0_esync[4] | eFPGA保留配置接口，与总线交互 |
+| 293 | int_fpga_in | input | 320 | 61 | cfg_efpga0_esync[3] | eFPGA保留配置接口，与总线交互 |
+| 294 | int_fpga_in | input | 320 | 60 | cfg_efpga0_esync[2] | eFPGA保留配置接口，与总线交互 |
+| 295 | int_fpga_in | input | 320 | 59 | cfg_efpga0_esync[1] | eFPGA保留配置接口，与总线交互 |
+| 296 | int_fpga_in | input | 320 | 58 | cfg_efpga0_esync[0] | eFPGA保留配置接口，与总线交互 |
+| 297 | int_fpga_in | input | 320 | 57 | etim_cpld_pwm_esync[9] | ETIM PWM |
+| 298 | int_fpga_in | input | 320 | 56 | etim_cpld_pwm_esync[8] | ETIM PWM |
+| 299 | int_fpga_in | input | 320 | 55 | etim_cpld_pwm_esync[7] | ETIM PWM |
+| 300 | int_fpga_in | input | 320 | 54 | etim_cpld_pwm_esync[6] | ETIM PWM |
+| 301 | int_fpga_in | input | 320 | 53 | etim_cpld_pwm_esync[5] | ETIM PWM |
+| 302 | int_fpga_in | input | 320 | 52 | etim_cpld_pwm_esync[4] | ETIM PWM |
+| 303 | int_fpga_in | input | 320 | 51 | etim_cpld_pwm_esync[3] | ETIM PWM |
+| 304 | int_fpga_in | input | 320 | 50 | etim_cpld_pwm_esync[2] | ETIM PWM |
+| 305 | int_fpga_in | input | 320 | 49 | etim_cpld_pwm_esync[1] | ETIM PWM |
+| 306 | int_fpga_in | input | 320 | 48 | etim_cpld_pwm_esync[0] | ETIM PWM |
+| 307 | int_fpga_in | input | 320 | 47 | srpwm_cpld_pwmb_oen_esync[11] | SRPWM PWM_OEN |
+| 308 | int_fpga_in | input | 320 | 46 | srpwm_cpld_pwma_oen_esync[11] | SRPWM PWM_OEN |
+| 309 | int_fpga_in | input | 320 | 45 | srpwm_cpld_pwm_b_esync[11] | SRPWM PWM |
+| 310 | int_fpga_in | input | 320 | 44 | srpwm_cpld_pwm_a_esync[11] | SRPWM PWM |
+| 311 | int_fpga_in | input | 320 | 43 | srpwm_cpld_pwmb_oen_esync[10] | SRPWM PWM_OEN |
+| 312 | int_fpga_in | input | 320 | 42 | srpwm_cpld_pwma_oen_esync[10] | SRPWM PWM_OEN |
+| 313 | int_fpga_in | input | 320 | 41 | srpwm_cpld_pwm_b_esync[10] | SRPWM PWM |
+| 314 | int_fpga_in | input | 320 | 40 | srpwm_cpld_pwm_a_esync[10] | SRPWM PWM |
+| 315 | int_fpga_in | input | 320 | 39 | srpwm_cpld_pwmb_oen_esync[9] | SRPWM PWM_OEN |
+| 316 | int_fpga_in | input | 320 | 38 | srpwm_cpld_pwma_oen_esync[9] | SRPWM PWM_OEN |
+| 317 | int_fpga_in | input | 320 | 37 | srpwm_cpld_pwm_b_esync[9] | SRPWM PWM |
+| 318 | int_fpga_in | input | 320 | 36 | srpwm_cpld_pwm_a_esync[9] | SRPWM PWM |
+| 319 | int_fpga_in | input | 320 | 35 | srpwm_cpld_pwmb_oen_esync[8] | SRPWM PWM_OEN |
+| 320 | int_fpga_in | input | 320 | 34 | srpwm_cpld_pwma_oen_esync[8] | SRPWM PWM_OEN |
+| 321 | int_fpga_in | input | 320 | 33 | srpwm_cpld_pwm_b_esync[8] | SRPWM PWM |
+| 322 | int_fpga_in | input | 320 | 32 | srpwm_cpld_pwm_a_esync[8] | SRPWM PWM |
+| 323 | int_fpga_in | input | 320 | 31 | srpwm_cpld_pwmb_oen_esync[7] | SRPWM PWM_OEN |
+| 324 | int_fpga_in | input | 320 | 30 | srpwm_cpld_pwma_oen_esync[7] | SRPWM PWM_OEN |
+| 325 | int_fpga_in | input | 320 | 29 | srpwm_cpld_pwm_b_esync[7] | SRPWM PWM |
+| 326 | int_fpga_in | input | 320 | 28 | srpwm_cpld_pwm_a_esync[7] | SRPWM PWM |
+| 327 | int_fpga_in | input | 320 | 27 | srpwm_cpld_pwmb_oen_esync[6] | SRPWM PWM_OEN |
+| 328 | int_fpga_in | input | 320 | 26 | srpwm_cpld_pwma_oen_esync[6] | SRPWM PWM_OEN |
+| 329 | int_fpga_in | input | 320 | 25 | srpwm_cpld_pwm_b_esync[6] | SRPWM PWM |
+| 330 | int_fpga_in | input | 320 | 24 | srpwm_cpld_pwm_a_esync[6] | SRPWM PWM |
+| 331 | int_fpga_in | input | 320 | 23 | srpwm_cpld_pwmb_oen_esync[5] | SRPWM PWM_OEN |
+| 332 | int_fpga_in | input | 320 | 22 | srpwm_cpld_pwma_oen_esync[5] | SRPWM PWM_OEN |
+| 333 | int_fpga_in | input | 320 | 21 | srpwm_cpld_pwm_b_esync[5] | SRPWM PWM |
+| 334 | int_fpga_in | input | 320 | 20 | srpwm_cpld_pwm_a_esync[5] | SRPWM PWM |
+| 335 | int_fpga_in | input | 320 | 19 | srpwm_cpld_pwmb_oen_esync[4] | SRPWM PWM_OEN |
+| 336 | int_fpga_in | input | 320 | 18 | srpwm_cpld_pwma_oen_esync[4] | SRPWM PWM_OEN |
+| 337 | int_fpga_in | input | 320 | 17 | srpwm_cpld_pwm_b_esync[4] | SRPWM PWM |
+| 338 | int_fpga_in | input | 320 | 16 | srpwm_cpld_pwm_a_esync[4] | SRPWM PWM |
+| 339 | int_fpga_in | input | 320 | 15 | srpwm_cpld_pwmb_oen_esync[3] | SRPWM PWM_OEN |
+| 340 | int_fpga_in | input | 320 | 14 | srpwm_cpld_pwma_oen_esync[3] | SRPWM PWM_OEN |
+| 341 | int_fpga_in | input | 320 | 13 | srpwm_cpld_pwm_b_esync[3] | SRPWM PWM |
+| 342 | int_fpga_in | input | 320 | 12 | srpwm_cpld_pwm_a_esync[3] | SRPWM PWM |
+| 343 | int_fpga_in | input | 320 | 11 | srpwm_cpld_pwmb_oen_esync[2] | SRPWM PWM_OEN |
+| 344 | int_fpga_in | input | 320 | 10 | srpwm_cpld_pwma_oen_esync[2] | SRPWM PWM_OEN |
+| 345 | int_fpga_in | input | 320 | 9 | srpwm_cpld_pwm_b_esync[2] | SRPWM PWM |
+| 346 | int_fpga_in | input | 320 | 8 | srpwm_cpld_pwm_a_esync[2] | SRPWM PWM |
+| 347 | int_fpga_in | input | 320 | 7 | srpwm_cpld_pwmb_oen_esync[1] | SRPWM PWM_OEN |
+| 348 | int_fpga_in | input | 320 | 6 | srpwm_cpld_pwma_oen_esync[1] | SRPWM PWM_OEN |
+| 349 | int_fpga_in | input | 320 | 5 | srpwm_cpld_pwm_b_esync[1] | SRPWM PWM |
+| 350 | int_fpga_in | input | 320 | 4 | srpwm_cpld_pwm_a_esync[1] | SRPWM PWM |
+| 351 | int_fpga_in | input | 320 | 3 | srpwm_cpld_pwmb_oen_esync[0] | SRPWM PWM_OEN |
+| 352 | int_fpga_in | input | 320 | 2 | srpwm_cpld_pwma_oen_esync[0] | SRPWM PWM_OEN |
+| 353 | int_fpga_in | input | 320 | 1 | srpwm_cpld_pwm_b_esync[0] | SRPWM PWM |
+| 354 | int_fpga_in | input | 320 | 0 | srpwm_cpld_pwm_a_esync[0] | SRPWM PWM |
+| 355 | int_fpga_out | output | 200 | 199 | ppi_data_out[11] | PPI |
+| 356 | int_fpga_out | output | 200 | 198 | ppi_data_out[10] | PPI |
+| 357 | int_fpga_out | output | 200 | 197 | ppi_data_out[9] | PPI |
+| 358 | int_fpga_out | output | 200 | 196 | ppi_data_out[8] | PPI |
+| 359 | int_fpga_out | output | 200 | 195 | ppi_data_out[7] | PPI |
+| 360 | int_fpga_out | output | 200 | 194 | ppi_data_out[6] | PPI |
+| 361 | int_fpga_out | output | 200 | 193 | ppi_data_out[5] | PPI |
+| 362 | int_fpga_out | output | 200 | 192 | ppi_data_out[4] | PPI |
+| 363 | int_fpga_out | output | 200 | 191 | ppi_data_out[3] | PPI |
+| 364 | int_fpga_out | output | 200 | 190 | ppi_data_out[2] | PPI |
+| 365 | int_fpga_out | output | 200 | 189 | ppi_data_out[1] | PPI |
+| 366 | int_fpga_out | output | 200 | 188 | ppi_data_out[0] | PPI |
+| 367 | int_fpga_out | output | 200 | 187 | c2s_rpt[14] | eFPGA到SYSC的保留上报 |
+| 368 | int_fpga_out | output | 200 | 186 | c2s_rpt[13] | eFPGA到SYSC的保留上报 |
+| 369 | int_fpga_out | output | 200 | 185 | c2s_rpt[12] | eFPGA到SYSC的保留上报 |
+| 370 | int_fpga_out | output | 200 | 184 | c2s_rpt[11] | eFPGA到SYSC的保留上报 |
+| 371 | int_fpga_out | output | 200 | 183 | c2s_rpt[10] | eFPGA到SYSC的保留上报 |
+| 372 | int_fpga_out | output | 200 | 182 | c2s_rpt[9] | eFPGA到SYSC的保留上报 |
+| 373 | int_fpga_out | output | 200 | 181 | c2s_rpt[8] | eFPGA到SYSC的保留上报 |
+| 374 | int_fpga_out | output | 200 | 180 | c2s_rpt[7] | eFPGA到SYSC的保留上报 |
+| 375 | int_fpga_out | output | 200 | 179 | c2s_rpt[6] | eFPGA到SYSC的保留上报 |
+| 376 | int_fpga_out | output | 200 | 178 | c2s_rpt[5] | eFPGA到SYSC的保留上报 |
+| 377 | int_fpga_out | output | 200 | 177 | c2s_rpt[4] | eFPGA到SYSC的保留上报 |
+| 378 | int_fpga_out | output | 200 | 176 | c2s_rpt[3] | eFPGA到SYSC的保留上报 |
+| 379 | int_fpga_out | output | 200 | 175 | c2s_rpt[2] | eFPGA到SYSC的保留上报 |
+| 380 | int_fpga_out | output | 200 | 174 | c2s_rpt[1] | eFPGA到SYSC的保留上报 |
+| 381 | int_fpga_out | output | 200 | 173 | c2s_rpt[0] | eFPGA到SYSC的保留上报 |
+| 382 | int_fpga_out | output | 200 | 172 | efpga_dma_req0 | 用户自定义DMA触发源 |
+| 383 | int_fpga_out | output | 200 | 171 | efpga_dma_req1 | 用户自定义DMA触发源 |
+| 384 | int_fpga_out | output | 200 | 170 | efpga_c2s_rst_n | 用户自定义复位源 |
+| 385 | int_fpga_out | output | 200 | 169 | efpga0_rpt[31] | eFPGA保留上报接口，与总线交互 |
+| 386 | int_fpga_out | output | 200 | 168 | efpga0_rpt[30] | eFPGA保留上报接口，与总线交互 |
+| 387 | int_fpga_out | output | 200 | 167 | efpga0_rpt[29] | eFPGA保留上报接口，与总线交互 |
+| 388 | int_fpga_out | output | 200 | 166 | efpga0_rpt[28] | eFPGA保留上报接口，与总线交互 |
+| 389 | int_fpga_out | output | 200 | 165 | efpga0_rpt[27] | eFPGA保留上报接口，与总线交互 |
+| 390 | int_fpga_out | output | 200 | 164 | efpga0_rpt[26] | eFPGA保留上报接口，与总线交互 |
+| 391 | int_fpga_out | output | 200 | 163 | efpga0_rpt[25] | eFPGA保留上报接口，与总线交互 |
+| 392 | int_fpga_out | output | 200 | 162 | efpga0_rpt[24] | eFPGA保留上报接口，与总线交互 |
+| 393 | int_fpga_out | output | 200 | 161 | efpga0_rpt[23] | eFPGA保留上报接口，与总线交互 |
+| 394 | int_fpga_out | output | 200 | 160 | efpga0_rpt[22] | eFPGA保留上报接口，与总线交互 |
+| 395 | int_fpga_out | output | 200 | 159 | efpga0_rpt[21] | eFPGA保留上报接口，与总线交互 |
+| 396 | int_fpga_out | output | 200 | 158 | efpga0_rpt[20] | eFPGA保留上报接口，与总线交互 |
+| 397 | int_fpga_out | output | 200 | 157 | efpga0_rpt[19] | eFPGA保留上报接口，与总线交互 |
+| 398 | int_fpga_out | output | 200 | 156 | efpga0_rpt[18] | eFPGA保留上报接口，与总线交互 |
+| 399 | int_fpga_out | output | 200 | 155 | efpga0_rpt[17] | eFPGA保留上报接口，与总线交互 |
+| 400 | int_fpga_out | output | 200 | 154 | efpga0_rpt[16] | eFPGA保留上报接口，与总线交互 |
+| 401 | int_fpga_out | output | 200 | 153 | efpga0_rpt[15] | eFPGA保留上报接口，与总线交互 |
+| 402 | int_fpga_out | output | 200 | 152 | efpga0_rpt[14] | eFPGA保留上报接口，与总线交互 |
+| 403 | int_fpga_out | output | 200 | 151 | efpga0_rpt[13] | eFPGA保留上报接口，与总线交互 |
+| 404 | int_fpga_out | output | 200 | 150 | efpga0_rpt[12] | eFPGA保留上报接口，与总线交互 |
+| 405 | int_fpga_out | output | 200 | 149 | efpga0_rpt[11] | eFPGA保留上报接口，与总线交互 |
+| 406 | int_fpga_out | output | 200 | 148 | efpga0_rpt[10] | eFPGA保留上报接口，与总线交互 |
+| 407 | int_fpga_out | output | 200 | 147 | efpga0_rpt[9] | eFPGA保留上报接口，与总线交互 |
+| 408 | int_fpga_out | output | 200 | 146 | efpga0_rpt[8] | eFPGA保留上报接口，与总线交互 |
+| 409 | int_fpga_out | output | 200 | 145 | efpga0_rpt[7] | eFPGA保留上报接口，与总线交互 |
+| 410 | int_fpga_out | output | 200 | 144 | efpga0_rpt[6] | eFPGA保留上报接口，与总线交互 |
+| 411 | int_fpga_out | output | 200 | 143 | efpga0_rpt[5] | eFPGA保留上报接口，与总线交互 |
+| 412 | int_fpga_out | output | 200 | 142 | efpga0_rpt[4] | eFPGA保留上报接口，与总线交互 |
+| 413 | int_fpga_out | output | 200 | 141 | efpga0_rpt[3] | eFPGA保留上报接口，与总线交互 |
+| 414 | int_fpga_out | output | 200 | 140 | efpga0_rpt[2] | eFPGA保留上报接口，与总线交互 |
+| 415 | int_fpga_out | output | 200 | 139 | efpga0_rpt[1] | eFPGA保留上报接口，与总线交互 |
+| 416 | int_fpga_out | output | 200 | 138 | efpga0_rpt[0] | eFPGA保留上报接口，与总线交互 |
+| 417 | int_fpga_out | output | 200 | 137 | efpga1_rpt[31] | eFPGA保留上报接口，与总线交互 |
+| 418 | int_fpga_out | output | 200 | 136 | efpga1_rpt[30] | eFPGA保留上报接口，与总线交互 |
+| 419 | int_fpga_out | output | 200 | 135 | efpga1_rpt[29] | eFPGA保留上报接口，与总线交互 |
+| 420 | int_fpga_out | output | 200 | 134 | efpga1_rpt[28] | eFPGA保留上报接口，与总线交互 |
+| 421 | int_fpga_out | output | 200 | 133 | efpga1_rpt[27] | eFPGA保留上报接口，与总线交互 |
+| 422 | int_fpga_out | output | 200 | 132 | efpga1_rpt[26] | eFPGA保留上报接口，与总线交互 |
+| 423 | int_fpga_out | output | 200 | 131 | efpga1_rpt[25] | eFPGA保留上报接口，与总线交互 |
+| 424 | int_fpga_out | output | 200 | 130 | efpga1_rpt[24] | eFPGA保留上报接口，与总线交互 |
+| 425 | int_fpga_out | output | 200 | 129 | efpga1_rpt[23] | eFPGA保留上报接口，与总线交互 |
+| 426 | int_fpga_out | output | 200 | 128 | efpga1_rpt[22] | eFPGA保留上报接口，与总线交互 |
+| 427 | int_fpga_out | output | 200 | 127 | efpga1_rpt[21] | eFPGA保留上报接口，与总线交互 |
+| 428 | int_fpga_out | output | 200 | 126 | efpga1_rpt[20] | eFPGA保留上报接口，与总线交互 |
+| 429 | int_fpga_out | output | 200 | 125 | efpga1_rpt[19] | eFPGA保留上报接口，与总线交互 |
+| 430 | int_fpga_out | output | 200 | 124 | efpga1_rpt[18] | eFPGA保留上报接口，与总线交互 |
+| 431 | int_fpga_out | output | 200 | 123 | efpga1_rpt[17] | eFPGA保留上报接口，与总线交互 |
+| 432 | int_fpga_out | output | 200 | 122 | efpga1_rpt[16] | eFPGA保留上报接口，与总线交互 |
+| 433 | int_fpga_out | output | 200 | 121 | efpga1_rpt[15] | eFPGA保留上报接口，与总线交互 |
+| 434 | int_fpga_out | output | 200 | 120 | efpga1_rpt[14] | eFPGA保留上报接口，与总线交互 |
+| 435 | int_fpga_out | output | 200 | 119 | efpga1_rpt[13] | eFPGA保留上报接口，与总线交互 |
+| 436 | int_fpga_out | output | 200 | 118 | efpga1_rpt[12] | eFPGA保留上报接口，与总线交互 |
+| 437 | int_fpga_out | output | 200 | 117 | efpga1_rpt[11] | eFPGA保留上报接口，与总线交互 |
+| 438 | int_fpga_out | output | 200 | 116 | efpga1_rpt[10] | eFPGA保留上报接口，与总线交互 |
+| 439 | int_fpga_out | output | 200 | 115 | efpga1_rpt[9] | eFPGA保留上报接口，与总线交互 |
+| 440 | int_fpga_out | output | 200 | 114 | efpga1_rpt[8] | eFPGA保留上报接口，与总线交互 |
+| 441 | int_fpga_out | output | 200 | 113 | efpga1_rpt[7] | eFPGA保留上报接口，与总线交互 |
+| 442 | int_fpga_out | output | 200 | 112 | efpga1_rpt[6] | eFPGA保留上报接口，与总线交互 |
+| 443 | int_fpga_out | output | 200 | 111 | efpga1_rpt[5] | eFPGA保留上报接口，与总线交互 |
+| 444 | int_fpga_out | output | 200 | 110 | efpga1_rpt[4] | eFPGA保留上报接口，与总线交互 |
+| 445 | int_fpga_out | output | 200 | 109 | efpga1_rpt[3] | eFPGA保留上报接口，与总线交互 |
+| 446 | int_fpga_out | output | 200 | 108 | efpga1_rpt[2] | eFPGA保留上报接口，与总线交互 |
+| 447 | int_fpga_out | output | 200 | 107 | efpga1_rpt[1] | eFPGA保留上报接口，与总线交互 |
+| 448 | int_fpga_out | output | 200 | 106 | efpga1_rpt[0] | eFPGA保留上报接口，与总线交互 |
+| 449 | int_fpga_out | output | 200 | 105 | cpld_opxb_data[9] | eFPGA 输出到OUTPUTXBAR |
+| 450 | int_fpga_out | output | 200 | 104 | cpld_opxb_data[8] | eFPGA 输出到OUTPUTXBAR |
+| 451 | int_fpga_out | output | 200 | 103 | cpld_opxb_data[7] | eFPGA 输出到OUTPUTXBAR |
+| 452 | int_fpga_out | output | 200 | 102 | cpld_opxb_data[6] | eFPGA 输出到OUTPUTXBAR |
+| 453 | int_fpga_out | output | 200 | 101 | cpld_opxb_data[5] | eFPGA 输出到OUTPUTXBAR |
+| 454 | int_fpga_out | output | 200 | 100 | cpld_opxb_data[4] | eFPGA 输出到OUTPUTXBAR |
+| 455 | int_fpga_out | output | 200 | 99 | cpld_opxb_data[3] | eFPGA 输出到OUTPUTXBAR |
+| 456 | int_fpga_out | output | 200 | 98 | cpld_opxb_data[2] | eFPGA 输出到OUTPUTXBAR |
+| 457 | int_fpga_out | output | 200 | 97 | cpld_opxb_data[1] | eFPGA 输出到OUTPUTXBAR |
+| 458 | int_fpga_out | output | 200 | 96 | cpld_opxb_data[0] | eFPGA 输出到OUTPUTXBAR |
+| 459 | int_fpga_out | output | 200 | 95 | cpld_pad_oen[35] | eFPGA 输出到PAD_OEN |
+| 460 | int_fpga_out | output | 200 | 94 | cpld_pad_oen[34] | eFPGA 输出到PAD_OEN |
+| 461 | int_fpga_out | output | 200 | 93 | cpld_pad_oen[33] | eFPGA 输出到PAD_OEN |
+| 462 | int_fpga_out | output | 200 | 92 | cpld_pad_oen[32] | eFPGA 输出到PAD_OEN |
+| 463 | int_fpga_out | output | 200 | 91 | cpld_pad_oen[31] | eFPGA 输出到PAD_OEN |
+| 464 | int_fpga_out | output | 200 | 90 | cpld_pad_oen[30] | eFPGA 输出到PAD_OEN |
+| 465 | int_fpga_out | output | 200 | 89 | cpld_pad_oen[29] | eFPGA 输出到PAD_OEN |
+| 466 | int_fpga_out | output | 200 | 88 | cpld_pad_oen[28] | eFPGA 输出到PAD_OEN |
+| 467 | int_fpga_out | output | 200 | 87 | cpld_pad_oen[27] | eFPGA 输出到PAD_OEN |
+| 468 | int_fpga_out | output | 200 | 86 | cpld_pad_oen[26] | eFPGA 输出到PAD_OEN |
+| 469 | int_fpga_out | output | 200 | 85 | cpld_pad_oen[25] | eFPGA 输出到PAD_OEN |
+| 470 | int_fpga_out | output | 200 | 84 | cpld_pad_oen[24] | eFPGA 输出到PAD_OEN |
+| 471 | int_fpga_out | output | 200 | 83 | cpld_pad_oen[23] | eFPGA 输出到PAD_OEN |
+| 472 | int_fpga_out | output | 200 | 82 | cpld_pad_oen[22] | eFPGA 输出到PAD_OEN |
+| 473 | int_fpga_out | output | 200 | 81 | cpld_pad_oen[21] | eFPGA 输出到PAD_OEN |
+| 474 | int_fpga_out | output | 200 | 80 | cpld_pad_oen[20] | eFPGA 输出到PAD_OEN |
+| 475 | int_fpga_out | output | 200 | 79 | cpld_pad_oen[19] | eFPGA 输出到PAD_OEN |
+| 476 | int_fpga_out | output | 200 | 78 | cpld_pad_oen[18] | eFPGA 输出到PAD_OEN |
+| 477 | int_fpga_out | output | 200 | 77 | cpld_pad_oen[17] | eFPGA 输出到PAD_OEN |
+| 478 | int_fpga_out | output | 200 | 76 | cpld_pad_oen[16] | eFPGA 输出到PAD_OEN |
+| 479 | int_fpga_out | output | 200 | 75 | cpld_pad_oen[15] | eFPGA 输出到PAD_OEN |
+| 480 | int_fpga_out | output | 200 | 74 | cpld_pad_oen[14] | eFPGA 输出到PAD_OEN |
+| 481 | int_fpga_out | output | 200 | 73 | cpld_pad_oen[13] | eFPGA 输出到PAD_OEN |
+| 482 | int_fpga_out | output | 200 | 72 | cpld_pad_oen[12] | eFPGA 输出到PAD_OEN |
+| 483 | int_fpga_out | output | 200 | 71 | cpld_pad_oen[11] | eFPGA 输出到PAD_OEN |
+| 484 | int_fpga_out | output | 200 | 70 | cpld_pad_oen[10] | eFPGA 输出到PAD_OEN |
+| 485 | int_fpga_out | output | 200 | 69 | cpld_pad_oen[9] | eFPGA 输出到PAD_OEN |
+| 486 | int_fpga_out | output | 200 | 68 | cpld_pad_oen[8] | eFPGA 输出到PAD_OEN |
+| 487 | int_fpga_out | output | 200 | 67 | cpld_pad_oen[7] | eFPGA 输出到PAD_OEN |
+| 488 | int_fpga_out | output | 200 | 66 | cpld_pad_oen[6] | eFPGA 输出到PAD_OEN |
+| 489 | int_fpga_out | output | 200 | 65 | cpld_pad_oen[5] | eFPGA 输出到PAD_OEN |
+| 490 | int_fpga_out | output | 200 | 64 | cpld_pad_oen[4] | eFPGA 输出到PAD_OEN |
+| 491 | int_fpga_out | output | 200 | 63 | cpld_pad_oen[3] | eFPGA 输出到PAD_OEN |
+| 492 | int_fpga_out | output | 200 | 62 | cpld_pad_oen[2] | eFPGA 输出到PAD_OEN |
+| 493 | int_fpga_out | output | 200 | 61 | cpld_pad_oen[1] | eFPGA 输出到PAD_OEN |
+| 494 | int_fpga_out | output | 200 | 60 | cpld_pad_oen[0] | eFPGA 输出到PAD_OEN |
+| 495 | int_fpga_out | output | 200 | 59 | cpld_pad_out[35] | eFPGA 输出到PAD |
+| 496 | int_fpga_out | output | 200 | 58 | cpld_pad_out[34] | eFPGA 输出到PAD |
+| 497 | int_fpga_out | output | 200 | 57 | cpld_pad_out[33] | eFPGA 输出到PAD |
+| 498 | int_fpga_out | output | 200 | 56 | cpld_pad_out[32] | eFPGA 输出到PAD |
+| 499 | int_fpga_out | output | 200 | 55 | cpld_pad_out[31] | eFPGA 输出到PAD |
+| 500 | int_fpga_out | output | 200 | 54 | cpld_pad_out[30] | eFPGA 输出到PAD |
+| 501 | int_fpga_out | output | 200 | 53 | cpld_pad_out[29] | eFPGA 输出到PAD |
+| 502 | int_fpga_out | output | 200 | 52 | cpld_pad_out[28] | eFPGA 输出到PAD |
+| 503 | int_fpga_out | output | 200 | 51 | cpld_pad_out[27] | eFPGA 输出到PAD |
+| 504 | int_fpga_out | output | 200 | 50 | cpld_pad_out[26] | eFPGA 输出到PAD |
+| 505 | int_fpga_out | output | 200 | 49 | cpld_pad_out[25] | eFPGA 输出到PAD |
+| 506 | int_fpga_out | output | 200 | 48 | cpld_pad_out[24] | eFPGA 输出到PAD |
+| 507 | int_fpga_out | output | 200 | 47 | cpld_pad_out[23] | eFPGA 输出到PAD |
+| 508 | int_fpga_out | output | 200 | 46 | cpld_pad_out[22] | eFPGA 输出到PAD |
+| 509 | int_fpga_out | output | 200 | 45 | cpld_pad_out[21] | eFPGA 输出到PAD |
+| 510 | int_fpga_out | output | 200 | 44 | cpld_pad_out[20] | eFPGA 输出到PAD |
+| 511 | int_fpga_out | output | 200 | 43 | cpld_pad_out[19] | eFPGA 输出到PAD |
+| 512 | int_fpga_out | output | 200 | 42 | cpld_pad_out[18] | eFPGA 输出到PAD |
+| 513 | int_fpga_out | output | 200 | 41 | cpld_pad_out[17] | eFPGA 输出到PAD |
+| 514 | int_fpga_out | output | 200 | 40 | cpld_pad_out[16] | eFPGA 输出到PAD |
+| 515 | int_fpga_out | output | 200 | 39 | cpld_pad_out[15] | eFPGA 输出到PAD |
+| 516 | int_fpga_out | output | 200 | 38 | cpld_pad_out[14] | eFPGA 输出到PAD |
+| 517 | int_fpga_out | output | 200 | 37 | cpld_pad_out[13] | eFPGA 输出到PAD |
+| 518 | int_fpga_out | output | 200 | 36 | cpld_pad_out[12] | eFPGA 输出到PAD |
+| 519 | int_fpga_out | output | 200 | 35 | cpld_pad_out[11] | eFPGA 输出到PAD |
+| 520 | int_fpga_out | output | 200 | 34 | cpld_pad_out[10] | eFPGA 输出到PAD |
+| 521 | int_fpga_out | output | 200 | 33 | cpld_pad_out[9] | eFPGA 输出到PAD |
+| 522 | int_fpga_out | output | 200 | 32 | cpld_pad_out[8] | eFPGA 输出到PAD |
+| 523 | int_fpga_out | output | 200 | 31 | cpld_pad_out[7] | eFPGA 输出到PAD |
+| 524 | int_fpga_out | output | 200 | 30 | cpld_pad_out[6] | eFPGA 输出到PAD |
+| 525 | int_fpga_out | output | 200 | 29 | cpld_pad_out[5] | eFPGA 输出到PAD |
+| 526 | int_fpga_out | output | 200 | 28 | cpld_pad_out[4] | eFPGA 输出到PAD |
+| 527 | int_fpga_out | output | 200 | 27 | cpld_pad_out[3] | eFPGA 输出到PAD |
+| 528 | int_fpga_out | output | 200 | 26 | cpld_pad_out[2] | eFPGA 输出到PAD |
+| 529 | int_fpga_out | output | 200 | 25 | cpld_pad_out[1] | eFPGA 输出到PAD |
+| 530 | int_fpga_out | output | 200 | 24 | cpld_pad_out[0] | eFPGA 输出到PAD |
+| 531 | int_fpga_out | output | 200 | 23 | cpld_srpwm_fault[23] | eFPGA 输出到SRPWM用于封波 |
+| 532 | int_fpga_out | output | 200 | 22 | cpld_srpwm_fault[22] | eFPGA 输出到SRPWM用于封波 |
+| 533 | int_fpga_out | output | 200 | 21 | cpld_srpwm_fault[21] | eFPGA 输出到SRPWM用于封波 |
+| 534 | int_fpga_out | output | 200 | 20 | cpld_srpwm_fault[20] | eFPGA 输出到SRPWM用于封波 |
+| 535 | int_fpga_out | output | 200 | 19 | cpld_srpwm_fault[19] | eFPGA 输出到SRPWM用于封波 |
+| 536 | int_fpga_out | output | 200 | 18 | cpld_srpwm_fault[18] | eFPGA 输出到SRPWM用于封波 |
+| 537 | int_fpga_out | output | 200 | 17 | cpld_srpwm_fault[17] | eFPGA 输出到SRPWM用于封波 |
+| 538 | int_fpga_out | output | 200 | 16 | cpld_srpwm_fault[16] | eFPGA 输出到SRPWM用于封波 |
+| 539 | int_fpga_out | output | 200 | 15 | cpld_srpwm_fault[15] | eFPGA 输出到SRPWM用于封波 |
+| 540 | int_fpga_out | output | 200 | 14 | cpld_srpwm_fault[14] | eFPGA 输出到SRPWM用于封波 |
+| 541 | int_fpga_out | output | 200 | 13 | cpld_srpwm_fault[13] | eFPGA 输出到SRPWM用于封波 |
+| 542 | int_fpga_out | output | 200 | 12 | cpld_srpwm_fault[12] | eFPGA 输出到SRPWM用于封波 |
+| 543 | int_fpga_out | output | 200 | 11 | cpld_srpwm_fault[11] | eFPGA 输出到SRPWM用于封波 |
+| 544 | int_fpga_out | output | 200 | 10 | cpld_srpwm_fault[10] | eFPGA 输出到SRPWM用于封波 |
+| 545 | int_fpga_out | output | 200 | 9 | cpld_srpwm_fault[9] | eFPGA 输出到SRPWM用于封波 |
+| 546 | int_fpga_out | output | 200 | 8 | cpld_srpwm_fault[8] | eFPGA 输出到SRPWM用于封波 |
+| 547 | int_fpga_out | output | 200 | 7 | cpld_srpwm_fault[7] | eFPGA 输出到SRPWM用于封波 |
+| 548 | int_fpga_out | output | 200 | 6 | cpld_srpwm_fault[6] | eFPGA 输出到SRPWM用于封波 |
+| 549 | int_fpga_out | output | 200 | 5 | cpld_srpwm_fault[5] | eFPGA 输出到SRPWM用于封波 |
+| 550 | int_fpga_out | output | 200 | 4 | cpld_srpwm_fault[4] | eFPGA 输出到SRPWM用于封波 |
+| 551 | int_fpga_out | output | 200 | 3 | cpld_srpwm_fault[3] | eFPGA 输出到SRPWM用于封波 |
+| 552 | int_fpga_out | output | 200 | 2 | cpld_srpwm_fault[2] | eFPGA 输出到SRPWM用于封波 |
+| 553 | int_fpga_out | output | 200 | 1 | cpld_srpwm_fault[1] | eFPGA 输出到SRPWM用于封波 |
+| 554 | int_fpga_out | output | 200 | 0 | cpld_srpwm_fault[0] | eFPGA 输出到SRPWM用于封波 |
 
 ---
 

@@ -940,74 +940,34 @@ ERASE/PROGRAM都认为READMODE发生过变化;
 
 
 ---
-## 图像编号 14 (原图: `GameViewer_ix7GnZKXn3.png`)
+## 原图：`GameViewer_ix7GnZKXn3.png`
 
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图1-3FlashPowerSwitch的连接关系图`，完整结构与时序请查看原图 `GameViewer_ix7GnZKXn3.png`。
+### 1.1.3 Flash Power Switch 的连接关系
 
+**图1-3 Flash Power Switch的连接关系图**
 
-#### 1.1.3FlashPowerSwitch的连接关系
-
-芯片硬复位
-ETMO huan, 1i
-Flash_Power&POR
-PORE
-CRG
-3sJ Jod
-EFC
-or_rst
-Por_rst_n
-EFC_GFB
-BTCU h10 ZY Q026-20-02-21:37
-por_r
-ZTMCItmuan.11
-VOD
-VDD11
-S40_FCTRL
-FLASH
-
-**图1-3FlashPowerSwitch的连接关系图**
-
-/han.li
-ETMOU huan,1i
-
+> 图内可确认标签：Flash_Power & POR、CRG、EFC、EFC_GFB、S40_FCTRL、FLASH、VDD、VDD11、por_rst_n。  
+> 原图：`../images/GameViewer_ix7GnZKXn3.png`
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图1-4FLASHEFC模块内时钟域说明图`，完整结构与时序请查看原图 `GameViewer_ix7GnZKXn3.png`。
+### 1.1.4 时钟域说明
 
+**图1-4 FLASH_EFC模块内时钟域说明图**
 
-#### 1.1.4 时钟域说明
+> 图内可确认模块：AXI_MASTER、APB_MASTER、EFC_CFG、EFC_GFB、AXIM_IF、EFC_CFG_MAN、EFC_GFB_MAN、EFC_FCTRL、FLASH。  
+> 原图：`../images/GameViewer_ix7GnZKXn3.png`
 
-AX_MASTER
-EFC
-EFCCFG
-EFCGFB
-AXIM_IF
-EFC_CFG_MAN
-huam11
-EFC_GFB_MAN
-EFC_FCTR.
-DOMAIN
-43010DX
-DOMAIN
-FUASH
-an.1i2026-10-02-21
+整个 EFC 模块使用了 5 个时钟，apb 时钟、axi 时钟、EFC 内部 core 时钟、EFSUE 时钟以及 Flash 时钟；
 
-**图1-4FLASHEFC模块内时钟域说明图**
+3 个时钟（apb 时钟、axi 时钟、EFC 内部 core 时钟）在系统上都是给的同一个时钟（如果有异步处理，也是在 NOC 总线上实现）；
 
-整个EFC模块使用了5个时钟，apb时钟、axi时钟、EFC内
-部core时钟、EFSUE时钟以及Flash时钟；
-3个时钟（apb 时钟、axi 时钟、EFC 内部core 时钟）在系统
-上都是给的同一个时钟（如果有异步处理，也是在NOC总线上
-实现）；
-Flash时钟与EFC内部core时钟同源，时钟频率比为1:1、1:2
-080F
-
-
+Flash 时钟与 EFC 内部 core 时钟同源，时钟频率比为 1:1、1:2
 
 ---
+
 ## 图像编号 15 (原图: `GameViewer_Jv14xpHsSC.png`)
 
 ### 【左页】
@@ -1731,69 +1691,38 @@ FTNCU han. 3 3026-10-02-71:40
 
 
 ---
-## 图像编号 22 (原图: `GameViewer_oiTQxKdn2v.png`)
+## 原图：`GameViewer_oiTQxKdn2v.png`
 
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图1-1EFC模块框图`，完整结构与时序请查看原图 `GameViewer_oiTQxKdn2v.png`。
+## 第1章 概要设计
 
+### 1.1 功能框图
 
-### 第1章
+**图1-1 EFC模块框图**
 
-概要设计
-BTMcu
-ETMOII Truan, 11
-
-#### 1.1功能框图
-
-EFC
-EFC_CFG
-APB_MASTER
-BTHCU h1027 Z1 2026-20-02
-ETMCItmuan.11
-CRG
-EFC_GFB
-AXI_MASTER
-EFC_FCTR.
-FLASH POWER
-FUAST
-8IMCU Huan, 1i
-
-**图1-1EFC模块框图**
+> 图内可确认模块：CRG、EFC_CFG、EFC_GFB、EFC_FCTRL、FLASH、FLASH_POWER、APB_MASTER、AXI_MASTER。  
+> 原图：`../images/GameViewer_oiTQxKdn2v.png`
 
 该模块功能框图，主要功能模块概述；
-EFC.CFG模块：通过APB总线，接收APBMaster来的配
-置；
-EFCGFB模块：接收外部CRG信号，对Flash进行开关控
-制（电源打开时，需要对Flash进行读NVRCFG，再写Flash
 
+EFC_CFG 模块：通过 APB 总线，接收 APB Master 来的配置；
+
+EFC_GFB 模块：接收外部 CRG 信号，对 Flash 进行开关控制（电源打开时，需要对 Flash 进行读 NVR_CFG，再写 Flash CFG 的动作；然后才能进行正常工作）；通过 AXI 总线，接收 AXI Master 来的数据传输；
+
+EFC_FCTRL 模块：接收来自 EFC_GFB、EFC_CFG 的数据和配置，产生 Flash 操作对应的时序处理，以达到控制 Flash 的目的；
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图1-2S40FLASH结构框图`，完整结构与时序请查看原图 `GameViewer_oiTQxKdn2v.png`。
+### 1.1.2 Flash 结构框图
 
-CFG的动作；然后才能进行正常工作）；通过AXI总线，接收
-AXI Master 来的数据传输;
-EFC_FCTRL 模块：接收来自 EFC_GFB、EFC_CFG 的数据
-和配置，产生Flash操作对应的时序处理，以达到控制Flash的
-目的;
+**图1-2 S40 FLASH结构框图**
 
-#### 1.1.2 Flash 结构框图
-
-em.11 Q026-10-02-21:3
-SMIC
-CantatLegk
-EJNCU
-
-**图1-2S40FLASH结构框图**
-
-ETHCU huanz. 11
-ETHCUhan.1:
-2080F
-
-
+> 原图中为 S40 FLASH 内部结构框图；复杂图不自行重画。  
+> 原图：`../images/GameViewer_oiTQxKdn2v.png`
 
 ---
+
 ## 图像编号 23 (原图: `GameViewer_Pi2p76SFY0.png`)
 
 ### 【左页】

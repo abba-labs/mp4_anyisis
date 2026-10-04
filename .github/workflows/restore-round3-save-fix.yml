@@ -1,0 +1,67 @@
+name: restore-round3-save-fix
+on:
+  push:
+    branches: [docs/restore-6601-screenshots]
+    paths: ['.github/workflows/restore-round3-save-fix.yml']
+permissions:
+  contents: write
+jobs:
+  fix-one-save-difference:
+    if: github.ref == 'refs/heads/docs/restore-6601-screenshots'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Apply the exact saved-byte correction
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          p = Path('6601芯片截图/efc/efc_lld/docs/EFC详细设计文档.md')
+          data = p.read_bytes()
+          def blob(b):
+              return hashlib.sha1(b'blob ' + str(len(b)).encode() + b'\0' + b).hexdigest()
+          if blob(data) != '2cb74ca30145f403eeb7a91ba6143da212d2462e':
+              raise SystemExit('Unexpected current file; refuse to overwrite')
+          old = '12.复位AXI总线保护错误：\n当EFC的复位产生时，APB总线上还有数据交互未完成或来'.encode()
+          new = '12.复位AXI总线保护错误：\n当EFC的复位产生时，AXI总线上还有数据交互未完成或来'.encode()
+          if data.count(old) != 1:
+              raise SystemExit('Expected one exact occurrence')
+          data = data.replace(old, new, 1)
+          if blob(data) != 'f1d78519289d23f9b8833ba9f02de1cf07fdc20f':
+              raise SystemExit('Output differs from reviewed local file')
+          p.write_bytes(data)
+          PY
+      - name: Save only the corrected document and remove this one-off workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- '6601芯片截图/efc/efc_lld/docs/EFC详细设计文档.md'
+          git rm -- '.github/workflows/restore-round3-save-fix.yml'
+          git commit -m 'docs(efc): preserve unreviewed tail bytes exactly'
+          git push origin HEAD:docs/restore-6601-screenshots
+      - name: Prepare private readback evidence
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, shutil, subprocess
+          from pathlib import Path
+          p = Path('6601芯片截图/efc/efc_lld/docs/EFC详细设计文档.md')
+          data = p.read_bytes()
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          remote = subprocess.check_output(['git', 'ls-remote', 'origin', 'refs/heads/docs/restore-6601-screenshots'], text=True).split()[0]
+          if head != remote:
+              raise SystemExit('Remote changed; read back latest branch before acceptance')
+          out = Path('.restore_output')
+          out.mkdir()
+          shutil.copyfile(p, out / 'EFC详细设计文档.md')
+          result = {'commit': head, 'remote_head': remote, 'path': str(p), 'bytes': len(data), 'blob': hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest(), 'sha256': hashlib.sha256(data).hexdigest(), 'note': 'Byte-level save verification only; not visual accuracy acceptance.'}
+          (out / 'READBACK.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: efc-lld-round3-save-verify
+          path: .restore_output/
+          retention-days: 3
+          if-no-files-found: error

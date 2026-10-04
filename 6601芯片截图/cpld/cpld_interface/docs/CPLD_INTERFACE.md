@@ -103,13 +103,13 @@
 
 ## INTERFACE_CPLD_CFG
 
-> 原图（按表格行号连续）：
-> - `../../interface_cpld_cfg/images/GameViewer_DeXJCeTp8c.png`：1–32
-> - `../../interface_cpld_cfg/images/GameViewer_DjmYAqFskT.png`：33–62
-> - `../../interface_cpld_cfg/images/GameViewer_1AL3gcTZwO.png`：63–92
-> - `../../interface_cpld_cfg/images/GameViewer_zJTLoUFpvE.png`：93–124
-> - `../../interface_cpld_cfg/images/GameViewer_XN1mwSbZGj.png`：125–156
-> - `../../interface_cpld_cfg/images/GameViewer_sB1DKm1Cn1.png`：157
+> 原图（按表格行号连续顺序）：
+> - `../../interface_cpld_cfg/images/GameViewer_DeXJCeTp8c.png`
+> - `../../interface_cpld_cfg/images/GameViewer_DjmYAqFskT.png`
+> - `../../interface_cpld_cfg/images/GameViewer_1AL3gcTZwO.png`
+> - `../../interface_cpld_cfg/images/GameViewer_zJTLoUFpvE.png`
+> - `../../interface_cpld_cfg/images/GameViewer_XN1mwSbZGj.png`
+> - `../../interface_cpld_cfg/images/GameViewer_sB1DKm1Cn1.png`
 
 | signal | inout | width | connect_sig |
 |---|---|---:|---|

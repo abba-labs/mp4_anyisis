@@ -1,0 +1,57 @@
+name: SARC round4 readback export
+on:
+  push:
+    branches: [docs/restore-6601-screenshots]
+    paths: [.github/workflows/sarc-round4-readback.yml]
+permissions:
+  contents: write
+jobs:
+  export:
+    if: github.ref == 'refs/heads/docs/restore-6601-screenshots'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/restore-6601-screenshots
+          fetch-depth: 0
+      - name: Export current bytes without changing documents
+        shell: python
+        run: |
+          import pathlib,hashlib,json,subprocess,zipfile
+          commit='987ab71db39fb49882c475bb8924155349bf7592'
+          expected={
+            '6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md':'33bed8b0c1348ba02e616557fbbd3785661ed393',
+            '6601芯片截图/reviews/SARC_LLD_ROUND4_IMAGE_LEDGER_20261005.json':'043279f4fc78979978ccdb823b913f282de63626',
+            '6601芯片截图/sarc/SARC_6601修改点总览.md':'de54b5fb1eb255dc50ca11a08c0f5f58e85aede0',
+            '6601芯片截图/sarc/SARC_提取与验收报告.md':'a29a6067a205cd4ca7603f2aa9f4c76d08a88302',
+            '6601芯片截图/RESTORE_PROGRESS.md':'a4cedd1d796465b7473847c383fb9fa6311970b6',
+            '6601芯片截图/reviews/SARC_LLD_ROUND4_REVIEW_20261005.md':'db92f6774ba0a7aec6b40a766b1b09733c45bf91',
+            'NEXT_CHAT_HANDOFF.md':'a03f7f7d5760a2f1f833c44602e0d856d05a3cb1',
+            '6601芯片截图/reviews/SARC_LLD_ROUND4_VERIFY_20261005.json':'77db9f18064e419952e02f50e8020e67202c485e'
+          }
+          rows=[]
+          head=subprocess.check_output(['git','rev-parse','HEAD']).decode().strip()
+          with zipfile.ZipFile('sarc-round4-readback.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for path,h in expected.items():
+                  b=pathlib.Path(path).read_bytes()
+                  got=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
+                  assert got==h,path
+                  assert b==subprocess.check_output(['git','show',commit+':'+path]),path
+                  z.writestr(path,b)
+                  rows.append({'path':path,'bytes':len(b),'git_blob':got,'sha256':hashlib.sha256(b).hexdigest()})
+              z.writestr('READBACK.json',json.dumps({'commit':commit,'read_head':head,'files':rows,'read_only_document_export':True},ensure_ascii=False,indent=2)+'\n')
+          print('Exported',len(rows),'verified files from',commit)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sarc-round4-full-readback
+          path: sarc-round4-readback.zip
+          retention-days: 3
+          if-no-files-found: error
+      - name: Remove temporary export workflow only
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -- .github/workflows/sarc-round4-readback.yml
+          git commit -m 'chore: remove completed SARC round4 readback workflow'
+          git push origin HEAD:refs/heads/docs/restore-6601-screenshots

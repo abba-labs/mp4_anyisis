@@ -1,0 +1,59 @@
+{
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "463dc1b54d736fa31812f5b7fd0c900ee8267349",
+  "images": [
+    {
+      "gap": "U01",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_v6tUVs7H0k.png",
+      "bytes": 1025365,
+      "git_blob": "3a2e68a1449211c69a65a39e9d5ca046e11ef52e",
+      "sha256": "7b867c7a51b80c8d07d71a9dfc2e475a0f8fa7dadd2128620cd33adcc5ef9af3",
+      "status": "targeted_recheck_done_gap_remains"
+    },
+    {
+      "gap": "U02",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_LWEUsHJgSN.png",
+      "bytes": 1380016,
+      "git_blob": "afa799b4502979f42140f885caf96bee242d31f2",
+      "sha256": "5b8272bec2a11e61c5e37759aac87dda2c4195c62eacfb56870f8d582ad22fd1",
+      "status": "targeted_recheck_done_gap_remains"
+    },
+    {
+      "gap": "U03",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_BMYV2LGXFN.png",
+      "bytes": 999391,
+      "git_blob": "3a9fe070d85363496f2bb740c3daf74e60447f0d",
+      "sha256": "dd2bc6de19f91fea66056b70aee8078cda9dd8399fe99ddee2566bf50766c626",
+      "status": "targeted_recheck_done_gap_remains"
+    },
+    {
+      "gap": "U04",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_Wwj0z78cha.png",
+      "bytes": 1171487,
+      "git_blob": "6fa223705ef8441376912fe7904f671d260be077",
+      "sha256": "2b91808ce092cf1bcf4b4849e5ac8d87c489dc5352e71cfa5067d1a2b98c0238",
+      "status": "targeted_recheck_done_gap_remains"
+    },
+    {
+      "gap": "U05",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_bG98ufwLis.png",
+      "bytes": 1557829,
+      "git_blob": "314eb5f3b97cd2b6b5d6293157913ed0f5c31401",
+      "sha256": "68e4e8cc894258dbeb93ae238624e5d96a58c2eb58d44df51468e06984c35d01",
+      "status": "targeted_recheck_done_gap_remains"
+    },
+    {
+      "gap": "U06",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_3VjshoX5So.png",
+      "bytes": 1436185,
+      "git_blob": "2a7dd8f0990c911bb32b9542cc271d2fdfba785b",
+      "sha256": "6ec9cab48a2ed91b9e4051ab73e6f49a6ce1ab335f315faf2008090ba51728c5",
+      "status": "targeted_recheck_done_gap_remains"
+    }
+  ],
+  "closed_groups": [],
+  "sarc_first_pass": 64,
+  "repository_first_pass": 124,
+  "next_gap": "U07",
+  "final_acceptance": false
+}

@@ -1,12 +1,12 @@
 # ET6601 截图还原接续入口
 
-2026-10-05，第七轮。仓库`abba-labs/mp4_anyisis`；唯一分支`docs/restore-6601-screenshots`。
+2026-10-05，第八轮。仓库`abba-labs/mp4_anyisis`；唯一分支`docs/restore-6601-screenshots`。
 
 ## 当前断点
 
 SARC辅助11/11整图首轮已完成；先第六轮5张实际保存回读，再第七轮6张。旧稿缺少的c74、qNBg、Wb2三张已补正文。不要再从辅助首图、方案32/37或封面重做。
 
-下一任务是定点缺口回查：从`6601芯片截图/sarc/sarc_lld/images/GameViewer_v6tUVs7H0k.png`右页表1（LLD-U01）开始。逐项处理LLD U01～U19、LRS U01～U03、辅助U01/U02及来源连续性S01；看不到就保留具体缺口。每4～6张完成实际正文修订/缺口记录/入口保存回读，不只写管理文件。
+U01～U06的6张原PNG已完成本轮定点回查并有正文补录，6组仍有剩余缺口。最新记录为reviews/SARC_GAP_ROUND8_REVIEW_20261005.md、IMAGE_LEDGER和REMOTE_SAVE。下一任务从`6601芯片截图/sarc/sarc_lld/images/GameViewer_UUhaiE4moy.png`图5-4（LLD-U07）开始。逐项处理LLD U01～U19、LRS U01～U03、辅助U01/U02及来源连续性S01；看不到就保留具体缺口。每4～6张完成实际正文修订/缺口记录/入口保存回读，不只写管理文件。
 
 当前SARC64/64首轮，全仓124/200；余76＝XBAR27＋CPLD48＋HAC_WRAP1。LLD19组＋S01、LRS3组、辅助2组未闭合；EFC5组暂缓。78条确定来源位置，辅助标记另列；不是功能数或最终验收率。
 
@@ -16,7 +16,7 @@ SARC辅助11/11整图首轮已完成；先第六轮5张实际保存回读，再�
 
 LLD缺口详细位置：U01～U07看ROUND2、U08～U12看ROUND3、U13～U15与S01看ROUND4、U16～U19看ROUND5。辅助U01：qNBg左中系数红色限定字；U02：Wb2下中“同时作为滤波…输入yBUF”中段。三组LRS缺口看报告第一轮。
 
-辅助完整载体仍`6601芯片截图/sarc/sarc_diagrams/docs/SARC功能框图说明.md`。A01～A11仅来源索引，不是原文页序。不能将四幅重叠预滤波图推定整个源文件同版；15bit/5bit、cal_os/cal_offset、抢占ready路径差异均保留。本批未动主LRS/LLD技术正文或PNG。
+辅助完整载体仍`6601芯片截图/sarc/sarc_diagrams/docs/SARC功能框图说明.md`。A01～A11仅来源索引，不是原文页序。不能将四幅重叠预滤波图推定整个源文件同版；15bit/5bit、cal_os/cal_offset、抢占ready路径差异均保留。第七轮未动主LRS/LLD；第八轮已定点更新LLD正文，LRS和全部PNG未改。
 
 ## 4. 固定规则
 

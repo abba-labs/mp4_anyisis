@@ -1,0 +1,154 @@
+name: sarc-round2-apply
+
+on:
+  push:
+    branches: [docs/restore-6601-screenshots]
+    paths: ['.github/workflows/sarc-round2-apply.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sarc-round2-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'abba-labs/mp4_anyisis' && github.ref == 'refs/heads/docs/restore-6601-screenshots'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Validate and publish reviewed document bytes
+        run: |
+          python3 - <<'PY'
+          import base64
+          import hashlib
+          import json
+          import lzma
+          import os
+          from pathlib import Path
+          import subprocess
+          import zipfile
+
+          branch = 'docs/restore-6601-screenshots'
+          base = 'cdcad24ed8882a824962c9df56479c018295c0ab'
+          staged_parent = '5900c1a43a896eeaab023d3cc9f7a14dd1194819'
+          transport_dir = Path('.restore_sarc_round2')
+          workflow = '.github/workflows/sarc-round2-apply.yml'
+          allowed = {
+              '6601芯片截图/RESTORE_PROGRESS.md',
+              '6601芯片截图/reviews/SARC_LLD_ROUND2_IMAGE_LEDGER_20261005.json',
+              '6601芯片截图/reviews/SARC_LLD_ROUND2_REVIEW_20261005.md',
+              '6601芯片截图/reviews/SARC_LLD_ROUND2_VERIFY_20261005.json',
+              '6601芯片截图/sarc/SARC_6601修改点总览.md',
+              '6601芯片截图/sarc/SARC_提取与验收报告.md',
+              '6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md',
+              'NEXT_CHAT_HANDOFF.md',
+          }
+          temporary = [str(transport_dir / ('part%02d.txt' % i)) for i in range(3)] + [workflow]
+
+          def git(*args):
+              return subprocess.check_output(['git', *args]).decode('utf-8').strip()
+
+          def blob(data):
+              return hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
+
+          def remote_head():
+              return git('ls-remote', 'origin', 'refs/heads/' + branch).split()[0]
+
+          if git('rev-parse', 'HEAD') != os.environ['GITHUB_SHA'] or remote_head() != os.environ['GITHUB_SHA']:
+              raise SystemExit('Branch advanced; refuse stale publication')
+          parents = git('show', '--no-patch', '--format=%P', 'HEAD').split()
+          if parents and parents != [staged_parent]:
+              raise SystemExit('Unexpected staging history')
+          encoded = ''.join(Path(p).read_text(encoding='ascii').strip() for p in temporary[:3])
+          data = lzma.decompress(base64.b64decode(encoded, validate=True))
+          if len(data) != 82462 or hashlib.sha256(data).hexdigest() != 'b89e6898dbff66618765d39caaea79fb3cb803f9b6441d4af2c9d8432fe69244':
+              raise SystemExit('Transport checksum mismatch')
+          request = json.loads(data)
+          if request['branch'] != branch or request['baseline_head'] != base:
+              raise SystemExit('Unexpected publication target')
+          targets = [item['path'] for item in request['files']]
+          if len(targets) != 8 or set(targets) != allowed:
+              raise SystemExit('Publication must contain exactly eight whitelisted documents')
+          source_text = []
+          for item in request['inputs']:
+              p = Path(item['path'])
+              if p.is_absolute() or '..' in p.parts or p.is_symlink():
+                  raise SystemExit('Unsafe source path')
+              original = p.read_bytes()
+              if blob(original) != item['blob']:
+                  raise SystemExit('Source changed: ' + str(p))
+              source_text.append(original.decode('utf-8'))
+          source_text = ''.join(source_text)
+          prepared = {}
+          for item in request['files']:
+              path = item['path']
+              p = Path(path)
+              expected = item['expected_old_blob']
+              if p.is_symlink() or (expected is None and p.exists()):
+                  raise SystemExit('Refuse existing new target or symlink: ' + path)
+              if expected is not None and (not p.is_file() or blob(p.read_bytes()) != expected):
+                  raise SystemExit('Target changed: ' + path)
+              parts = []
+              for part in item['pieces']:
+                  if isinstance(part, list):
+                      if len(part) != 2 or not 0 <= part[0] <= part[1] <= len(source_text):
+                          raise SystemExit('Invalid source range')
+                      parts.append(source_text[part[0]:part[1]])
+                  elif isinstance(part, str):
+                      parts.append(part)
+                  else:
+                      raise SystemExit('Invalid reconstruction record')
+              output = ''.join(parts).encode('utf-8')
+              if len(output) != item['bytes'] or blob(output) != item['git_blob'] or hashlib.sha256(output).hexdigest() != item['sha256']:
+                  raise SystemExit('Reviewed output checksum mismatch: ' + path)
+              prepared[path] = output
+          if remote_head() != os.environ['GITHUB_SHA']:
+              raise SystemExit('Concurrent branch change; nothing published')
+          for path, output in prepared.items():
+              p = Path(path)
+              p.parent.mkdir(parents=True, exist_ok=True)
+              p.write_bytes(output)
+          for path in temporary:
+              Path(path).unlink()
+          subprocess.run(['git', 'add', '--', *sorted(allowed), *temporary], check=True)
+          changed = set(subprocess.check_output(['git', 'diff', '--cached', '--name-only', '-z']).decode().strip('\0').split('\0'))
+          if changed != allowed.union(temporary):
+              raise SystemExit('Unexpected changed paths: ' + repr(changed))
+          subprocess.run(['git', 'config', 'user.name', 'github-actions[bot]'], check=True)
+          subprocess.run(['git', 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'], check=True)
+          subprocess.run(['git', 'commit', '-m', 'docs(sarc): restore LLD first fourteen source images'], check=True)
+          subprocess.run(['git', 'push', 'origin', 'HEAD:' + branch], check=True)
+          head = git('rev-parse', 'HEAD')
+          if remote_head() != head:
+              raise SystemExit('Remote head differs after publication')
+          out = Path('sarc_round2_readback')
+          out.mkdir()
+          records = []
+          with zipfile.ZipFile(out / 'published.zip', 'w', zipfile.ZIP_DEFLATED) as z:
+              for item in request['files']:
+                  path = item['path']
+                  actual = subprocess.check_output(['git', 'show', head + ':' + path])
+                  if actual != prepared[path]:
+                      raise SystemExit('Saved bytes differ: ' + path)
+                  z.writestr(path, actual)
+                  records.append({k: item[k] for k in ('path', 'bytes', 'git_blob', 'sha256')})
+              result = {'commit': head, 'remote_head': head, 'branch': branch, 'input_head': base,
+                        'file_count': 8, 'files': records, 'temporary_transport_removed': True,
+                        'lld_first_pass': 14, 'lld_total_images': 40, 'unresolved_reviewed_groups': 7,
+                        'final_text_acceptance': False,
+                        'note': 'Exact-byte publication only; no character accuracy or hardware-test claim.'}
+              z.writestr('READBACK.json', json.dumps(result, ensure_ascii=False, indent=2))
+          print('Published and byte-verified:', head)
+          print('Visual scope: 14 of 40 LLD source images; seven source groups remain unresolved.')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sarc-round2-readback
+          path: sarc_round2_readback/published.zip
+          retention-days: 3
+          if-no-files-found: error

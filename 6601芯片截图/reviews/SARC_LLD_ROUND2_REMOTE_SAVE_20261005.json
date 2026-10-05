@@ -1,0 +1,83 @@
+{
+  "commit": "922a2316272cb9c3cfea6aa8932614605cf63c35",
+  "remote_head": "922a2316272cb9c3cfea6aa8932614605cf63c35",
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "cdcad24ed8882a824962c9df56479c018295c0ab",
+  "file_count": 8,
+  "files": [
+    {
+      "path": "6601芯片截图/RESTORE_PROGRESS.md",
+      "bytes": 10659,
+      "git_blob": "c6bb106cdcf128a33490764e0ec9a5464f493626",
+      "sha256": "0287b472bc2e67de65f1da7140ac9a8390808de80165c6683c4615c696bb6fff"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_LLD_ROUND2_IMAGE_LEDGER_20261005.json",
+      "bytes": 16928,
+      "git_blob": "b0709a5801ed9698b0ead9a6ef346fbe0f770655",
+      "sha256": "1659b03ca6ff8f81c0ef7d28b32ee0608f8cb8914962e70f21f47f2cc3a1de1b"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_LLD_ROUND2_REVIEW_20261005.md",
+      "bytes": 6612,
+      "git_blob": "dc1f553e3d7b342f8f16a7d51b006eed343b1833",
+      "sha256": "2c9e1dac47380d00dfaf77d967a134bb92e92f485c0b41eaf7427c7ac818212f"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_LLD_ROUND2_VERIFY_20261005.json",
+      "bytes": 10115,
+      "git_blob": "78691bab2426ce708bdbc9d1673c8066b64ad9b1",
+      "sha256": "3aa6f39959bab584073a0febbdf1dadefa8eae1517cd9fc49362075915f33e79"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_6601修改点总览.md",
+      "bytes": 14165,
+      "git_blob": "61ac948db372ca3e32773fcad8a0d91f7c386935",
+      "sha256": "54b011f7175f1171891a49ba275b1451da95ce15e09f2646d7be477cce4c1373"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_提取与验收报告.md",
+      "bytes": 10292,
+      "git_blob": "a7f0ad6ace0ec538a547bd53d08bbfd9375bc0df",
+      "sha256": "c890ad81c391653b8f890464507c76f05b514aa903f352aea410349260ccd49e"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md",
+      "bytes": 88334,
+      "git_blob": "064e09e52bfdb767785d2be156619fec1463628a",
+      "sha256": "a2f0a08d25eba242f79e88257efd8665f9bf18757a17d6390ba80221a8006b36"
+    },
+    {
+      "path": "NEXT_CHAT_HANDOFF.md",
+      "bytes": 3879,
+      "git_blob": "89231954f968d1f5293b00c473cb8698a9e1e423",
+      "sha256": "134c9ffdc52923eb5b78c2d90cac29f4e5fd31340b6487d1eb3ac5e7541b1f63"
+    }
+  ],
+  "temporary_transport_removed": true,
+  "lld_first_pass": 14,
+  "lld_total_images": 40,
+  "unresolved_reviewed_groups": 7,
+  "final_text_acceptance": false,
+  "note": "Exact-byte publication only; no character accuracy or hardware-test claim.",
+  "review_date": "2026-10-05",
+  "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
+  "workflow_run_id": 37266710386,
+  "workflow_job_conclusion": "success",
+  "readback_artifact_id": 11327025744,
+  "artifact_downloaded_and_compared": true,
+  "all_8_remote_files_byte_equal_local": true,
+  "sarc_lrs_first_pass_unchanged": 13,
+  "lld_change_location_records": 15,
+  "partly_obscured_change_record": "C11",
+  "other_mark_records": 7,
+  "global_first_pass": 87,
+  "global_total_images": 200,
+  "publication_status": "remote_saved_and_verified",
+  "compare_base": "cdcad24ed8882a824962c9df56479c018295c0ab",
+  "compare_head": "922a2316272cb9c3cfea6aa8932614605cf63c35",
+  "only_expected_8_files_changed": true,
+  "efc_and_sarc_lrs_unchanged": true,
+  "all_original_images_unchanged": true,
+  "xbar_and_auxiliary_document_text_unchanged": true
+}

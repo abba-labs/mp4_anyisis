@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-05",
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "13d34f81b54cb26e3f89933dcb811b8cd8e2b34b",
+  "whole_images_new": 5,
+  "whole_images_total": 5,
+  "aux_sources_hashed": 11,
+  "all_three_unreviewed_old_blocks_byte_preserved": true,
+  "new_source_blocks": 5,
+  "lld_lrs_efc_xbar_and_png_untouched": true,
+  "change_location_count_unchanged": 78,
+  "repository_first_pass": 118,
+  "sarc_first_pass": 58,
+  "final_text_acceptance": false,
+  "status": "prepublication; real commit/readback in ROUND6_REMOTE_SAVE"
+}

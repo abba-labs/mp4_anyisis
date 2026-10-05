@@ -1,0 +1,88 @@
+{
+  "round": 12,
+  "input_head": "b7f0a8655fc86622133ae9d0afbb74ed81f75a76",
+  "closed": [
+    "SARC-AUX-U02"
+  ],
+  "remaining": {
+    "lld": 19,
+    "lrs": 3,
+    "aux": 1,
+    "source": [
+      "S01"
+    ]
+  },
+  "next_gap": "await_same_version_clear_sources_then_targeted_acceptance",
+  "next_image": null,
+  "branch": "docs/restore-6601-screenshots",
+  "content_commit": "2062ef9b1f6bb4be264b5b004ef567efc0efed86",
+  "remote_head_at_readback": "2062ef9b1f6bb4be264b5b004ef567efc0efed86",
+  "run_id": 37321828895,
+  "publication_status": "remote_saved_and_git_fetch_byte_verified",
+  "all_target_bytes_match": true,
+  "temporary_files_removed": true,
+  "final_acceptance": false,
+  "lrs_round11_preserved": true,
+  "files": [
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md",
+      "git_blob": "1513685a7eb638e71f49f14d919839b429b794cd",
+      "bytes": 121876,
+      "sha256": "6a29a32b6b2adf6776832591dbc60be4ff31c9ac5c92adb21eeef35492973a7a"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/docs/SARC功能框图说明.md",
+      "git_blob": "ed91db985603c24d773cf604d6ba56cac2bac447",
+      "bytes": 20239,
+      "sha256": "b2a4d2af749242bcaca2aa9b691f8986811b4ee27cf15c2c84c0519a982c9aa8"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_6601修改点总览.md",
+      "git_blob": "36ada567c235bf4c609d5510919dc1ff581f1f88",
+      "bytes": 25313,
+      "sha256": "32e50035bfdf1e03c315b7ef899a09753e238d86cb018f8704d2d31c856a5eca"
+    },
+    {
+      "path": "6601芯片截图/RESTORE_PROGRESS.md",
+      "git_blob": "3e45bbf1b7d046df2713d308bc0b1d55718ec1a2",
+      "bytes": 13775,
+      "sha256": "fb91688fca7fec05b74e86cb40621349ad390815525b59afd1501b2a9da91c0e"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_提取与验收报告.md",
+      "git_blob": "bec470af97b62dda5e9539aa939553aaa7d61414",
+      "bytes": 20357,
+      "sha256": "a6e7aba34962f98f740b94b65d3c5cbb7d8c3c1804744615bc51a3660b3ec1c1"
+    },
+    {
+      "path": "NEXT_CHAT_HANDOFF.md",
+      "git_blob": "9031cd3bf84bce694223ebaea759e81e13e9a00c",
+      "bytes": 4303,
+      "sha256": "13ca1a67ac7804579aa6aebb5d30b978a6664672a2b5cbd01dba10a12ca172a6"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_待补原始资料清单.md",
+      "git_blob": "56cae0df930a4a2ac53af62c79696f61ed0dfcd7",
+      "bytes": 6547,
+      "sha256": "203ea4f3c417ed83cb4deb899699cd7d037b877d769909dfdf3195b1090e5b11"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_GAP_ROUND12_REVIEW_20261005.md",
+      "git_blob": "28585d9e90990d135eeee09dd23e27187d606eb5",
+      "bytes": 1896,
+      "sha256": "a3a7610c6c137f7b37f63be82724540714d69ec4ee832e29ef116f7c2af1e4cd"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_GAP_ROUND12_VERIFY_20261005.json",
+      "git_blob": "489901a92fc39f40462317fbeab4ac7ed11a50ad",
+      "bytes": 1023,
+      "sha256": "d76a964034689018a29b29b7b970c91fded4a1063c4538fa3007a8bb7a466e63"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_GAP_ROUND12_IMAGE_LEDGER_20261005.json",
+      "git_blob": "f9d1e3ef4b853f9fc8fd4d54ea90051d5af8fcc3",
+      "bytes": 1625,
+      "sha256": "9cfa626ba3870f3fa7bed682a9dad103b8236a277f77b18b25d6aac67bef5886"
+    }
+  ]
+}

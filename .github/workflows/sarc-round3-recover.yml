@@ -17,7 +17,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import base64, gzip, hashlib, json, zlib
+          import base64, gzip, hashlib, json, lzma, zlib
           source = Path('.restore_transport/sarc_round3')
           out = Path('recovery_output')
           out.mkdir()
@@ -30,7 +30,10 @@ jobs:
           encoded = b''.join(p.read_bytes().strip() for p in parts)
           data = base64.b64decode(encoded, validate=True)
           (out / 'decoded_payload.bin').write_bytes(data)
-          if data.startswith(b'\x1f\x8b'):
+          if data.startswith(b'\xfd7zXZ\x00'):
+              plain = lzma.decompress(data)
+              fmt = 'xz'
+          elif data.startswith(b'\x1f\x8b'):
               plain = gzip.decompress(data)
               fmt = 'gzip'
           elif data.startswith(b'x'):
@@ -41,13 +44,14 @@ jobs:
               fmt = 'uncompressed'
           if len(plain) > 5000000:
               raise SystemExit('Unexpected payload size')
-          obj = json.loads(plain)
           (out / 'payload.json').write_bytes(plain)
+          obj = json.loads(plain)
           report = {'parts': manifest, 'compression': fmt, 'decoded_bytes': len(data), 'json_bytes': len(plain), 'json_sha256': hashlib.sha256(plain).hexdigest(), 'top_level_type': type(obj).__name__, 'top_level_keys': list(obj) if isinstance(obj, dict) else None, 'applied_to_documents': False}
           (out / 'RECOVERY.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
           print(json.dumps(report, ensure_ascii=False))
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: sarc-round3-recovered-payload
           path: recovery_output/

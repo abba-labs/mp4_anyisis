@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-05",
+  "check_scope": "source anchors, PNG links, Markdown table shape, change location identifiers and bounded edits; not character accuracy",
+  "source_anchors": {
+    "6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md": 40,
+    "6601芯片截图/sarc/sarc_lrs/docs/SARC_LRS设计文档.md": 13,
+    "6601芯片截图/sarc/sarc_diagrams/docs/SARC功能框图说明.md": 11
+  },
+  "png_links": 199,
+  "distinct_original_images_linked": 64,
+  "table_column_issues": [],
+  "lld_change_locations": 46,
+  "lrs_change_locations": 32,
+  "source_location_count_not_function_count": 78,
+  "first_pass_sarc": 64,
+  "first_pass_repository": 124,
+  "gap_groups_rechecked_this_session": 24,
+  "source_continuity_questions_rechecked": 1,
+  "gap_groups_closed": [
+    "SARC-AUX-U02"
+  ],
+  "remaining_gap_groups": 23,
+  "remaining_detail": {
+    "lld": 19,
+    "lrs": 3,
+    "aux": 1
+  },
+  "source_continuity_open": [
+    "S01"
+  ],
+  "final_text_acceptance": false,
+  "hardware_test_performed": false
+}

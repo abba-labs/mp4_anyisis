@@ -1,0 +1,70 @@
+{
+  "commit": "e1b4c55efd59e48ec2d2271dda50a02b59c264e5",
+  "remote_head": "e1b4c55efd59e48ec2d2271dda50a02b59c264e5",
+  "branch": "docs/restore-6601-screenshots",
+  "file_count": 7,
+  "files": [
+    {
+      "path": "6601芯片截图/RESTORE_PROGRESS.md",
+      "bytes": 10740,
+      "git_blob": "594801ec7a061e259fb50fc69efedfb9756c2641",
+      "sha256": "7f5f30f06c592b53470fabccf91a6226b7beba99b50ce7b796d8582fa945f5b9"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_LRS_ROUND1_VERIFY_20261005.json",
+      "bytes": 3414,
+      "git_blob": "d0abb8f6198c052a55b28ff09e3dfbc178373b80",
+      "sha256": "049c09e93a14555dfa7aaaf47c2d583f201b7f469b8aa18a492a88418aaffef4"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_ROUND1_IMAGE_LEDGER_20261005.json",
+      "bytes": 39887,
+      "git_blob": "b138b06286fa4eb7a6217f8810a62244521bf1eb",
+      "sha256": "9d5e33940a266fd7d8c2ad064c61939be9b04517b8ef7ee17c17271d7175a0ed"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_6601修改点总览.md",
+      "bytes": 10116,
+      "git_blob": "fbd1ff8382b20b59edf98c5c3d90e80472a221a2",
+      "sha256": "749157cb98c890330c628b0ee324bdbfa02b989003fc2a76073cd464ceb93f73"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_提取与验收报告.md",
+      "bytes": 8129,
+      "git_blob": "53b6b2c218dff4b4f38408b6e7ab14d9fad28c83",
+      "sha256": "969fa7dfc076194d3276b6c87a5f20607f8860b6f365c0bf3c4bf933257fd7f2"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/docs/SARC_LRS设计文档.md",
+      "bytes": 40710,
+      "git_blob": "8be5907f70ba32412ffff63d752b60c1af583089",
+      "sha256": "06f1310c32d760817c1e6fe9dc66717456216a71367d893b4d83ebfb3e501b9c"
+    },
+    {
+      "path": "NEXT_CHAT_HANDOFF.md",
+      "bytes": 4264,
+      "git_blob": "822bd4ca4ed70d975cde919e7692d9d19dad8fee",
+      "sha256": "bfec026c8cd8f95eb90dbe10e67fa0afd669d8359e633f60b1c976e11c6ce440"
+    }
+  ],
+  "efc_unchanged": true,
+  "lrs_first_pass": 13,
+  "source_change_records": 32,
+  "source_unresolved_groups": 3,
+  "final_text_acceptance": false,
+  "note": "Byte-level publication verification, not character accuracy acceptance.",
+  "date": "2026-10-05",
+  "workflow_run_id": 37257300737,
+  "workflow_job_conclusion": "success",
+  "readback_artifact_id": 11323181752,
+  "readback_downloaded_and_compared": true,
+  "all_7_remote_files_byte_equal_local": true,
+  "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
+  "source_sarc_directory_images": 91,
+  "sarc_lrs_reviewed": 13,
+  "sarc_lld_reviewed": 0,
+  "sarc_diagrams_reviewed": 0,
+  "xbar_reviewed": 0,
+  "publication_status": "remote_saved_and_verified",
+  "temporary_transport_removed": true
+}

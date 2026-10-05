@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-05",
+  "scope": "EFC source transcription; no hardware tests",
+  "branch": "docs/restore-6601-screenshots",
+  "base_head": "bdbaf2b4ac7e82aac7a5ef21a4cd1e912d38e190",
+  "original_source_commit": "db9422fd7345fb0b600c7ac6c9db25a3140344ed",
+  "original_PNG_count": 60,
+  "original_PNG_size_blob_sha256_checks": "PASS",
+  "new_first_pass_images": 12,
+  "cumulative_EFC_first_pass_images": 60,
+  "cumulative_repository_first_pass_images": 60,
+  "repository_total_images": 200,
+  "old_issue_groups_rechecked": 10,
+  "old_issue_groups_closed": 7,
+  "current_unresolved": [
+    "LLD-U01",
+    "LLD-U06",
+    "LLD-U09",
+    "LLD-U10",
+    "LLD-U11"
+  ],
+  "checks": {
+    "LLD": {
+      "unique_source_anchor_count": 36,
+      "source_anchor_unique": true,
+      "table_count": 34,
+      "table_column_consistency": true,
+      "all_tables_have_header_separator": true,
+      "code_fences_paired": true
+    },
+    "LRS": {
+      "unique_source_anchor_count": 24,
+      "source_anchor_unique": true,
+      "table_count": 9,
+      "table_column_consistency": true,
+      "all_tables_have_header_separator": true,
+      "code_fences_paired": true
+    },
+    "tables": {
+      "DFLASH_signal_rows": 84,
+      "PFLASH_signal_rows": 72,
+      "FCTRL_signal_rows": 34,
+      "mode_table_rows": 10,
+      "mode_table_columns": 15,
+      "ECC_injection_rows": 4,
+      "external_requirement_rows": 11,
+      "test_matrix_rows": 4
+    },
+    "change_records": {
+      "LLD": 52,
+      "LRS": 25,
+      "total": 77,
+      "LLD_blue": 16,
+      "LRS_blue": 4,
+      "LLD_IDs_continuous": true,
+      "LRS_IDs_continuous": true
+    },
+    "untouched_previous_sections_byte_equal": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      15,
+      16,
+      19,
+      20
+    ]
+  },
+  "expected_files": {
+    "6601芯片截图/efc/efc_lld/docs/EFC详细设计文档.md": {
+      "bytes": 104431,
+      "git_blob": "1d8a31f2411d177c628d002e3af842a0456857a7",
+      "sha256": "dda623ff41d0b467d4ccb4e6b5769d45d47c29eda2c66d3ea73ffd16fa1f7347"
+    },
+    "6601芯片截图/efc/efc_lrs/docs/EFC模块LRS设计文档.md": {
+      "bytes": 53472,
+      "git_blob": "2d83890325cfcb5b262f51ce52434ba90aa2f72b",
+      "sha256": "b723ed573516cb5430a14ef17acd5ec2bb3893936fe55a656b043da50cf6b725"
+    },
+    "6601芯片截图/efc/EFC_6601修改点总览.md": {
+      "bytes": 18467,
+      "git_blob": "89ea905421e1d6034e5ec3331525e9a42f7ffc51",
+      "sha256": "0c2fa823d2bc8117c48e2d5049f28065dfe99f7685ca059a433dbd0b856ed6ca"
+    },
+    "6601芯片截图/efc/EFC_提取与验收报告.md": {
+      "bytes": 9003,
+      "git_blob": "7fdea9ead3c46b940222d0d207ee555696357d75",
+      "sha256": "a5a35338f28057cee26458b73a104d8b6810ce22504da5cbe88df9b461c16fe6"
+    },
+    "6601芯片截图/reviews/EFC_ROUND4_IMAGE_LEDGER_20261005.json": {
+      "bytes": 29522,
+      "git_blob": "1ec6b8a4b4fc92739f267c2a17541af8770019e4",
+      "sha256": "55b43c5b6d18793c1c569747e97dc9d4083939d3602d8678463de977abfdbd35"
+    },
+    "6601芯片截图/RESTORE_PROGRESS.md": {
+      "bytes": 10542,
+      "git_blob": "311d31db2527a7db129ab5a17546cddb12388123",
+      "sha256": "62a87fb79dc814616abae5b46560af319d385dab285f36a9d4a5cba6cbf6283a"
+    },
+    "NEXT_CHAT_HANDOFF.md": {
+      "bytes": 3033,
+      "git_blob": "77cea5e5bdb9d2bf2edd2c8c7f9ee7250b573881",
+      "sha256": "ec55cd2b286c6cd891b2150573c76e9ae843ed7319d29501105db63995e3dd2a"
+    }
+  },
+  "write_policy": "Abort if input blob differs; apply all text changes atomically; no force push; verify expected output blobs before commit and read back via GitHub.",
+  "remote_save_record": "The publishing run creates READBACK.json outside the repository, containing actual commit and hashes. This committed check file defines expected bytes; it does not self-certify that a future remote write has succeeded.",
+  "final_text_acceptance": false,
+  "hardware_tests_performed": false,
+  "limitations": "60 source anchors and hashes are coverage/save checks, not a character accuracy percentage. Five source-pixel groups remain; no independent full second pass is claimed."
+}

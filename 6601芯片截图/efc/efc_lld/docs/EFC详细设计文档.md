@@ -1,10 +1,10 @@
 # EFC 模块详细设计文档
 
 > 来源：本仓库36张原始PNG截图；只依据截图转录，不用其他芯片资料补缺。
-> 本轮进度：累计前24/36张完成首轮原图核对；本批新核对第13～24张。LLD-U01～U09共9组局部小字/条件/时序参数仍待复核；其余12张保留已有转录，整份文档尚未最终验收。
+> 提取范围：36/36张原始截图均已完成首轮逐图核对；本轮补完第25～36张，并回查既有9组疑点。LLD-U02/U03/U04/U05/U07/U08已核实补入；仍有U01/U06/U09/U10/U11共5组局部字形待更清晰同源资料确认。可读内容已转录，未辨明区域保留原图和明确定位；不将源图覆盖等同于全文逐字符验收。
 > 本文件保持一份原始文档边界。按左右页、原文顺序保存；“转录注”和“图中文字转录”用于区分复核说明与原作者正文。
 > 删除线以`~~删除内容~~`保留；颜色/下划线的证据另列，不将普通目录链接、签名横线视为6601修改。复杂图仍保留原图，不凭空重画。
-> 原始图片来源commit：`db9422fd7345fb0b600c7ac6c9db25a3140344ed`；第三轮承接的第二轮本地正文blob：`20e4ab07407afae8315a0e2ab3f8151a8b9cef08`；第三轮开始时远端正文blob：`876142aa0b8e3a1daf18b840751be16913181020`。
+> 原始图片来源commit：`db9422fd7345fb0b600c7ac6c9db25a3140344ed`；本轮基于第三轮已保存正文精校，原图未改写。统一入口：[EFC提取与验收报告](../../EFC_提取与验收报告.md)；两份文档的修改点见[EFC_6601修改点总览](../../EFC_6601修改点总览.md)。
 
 ## 第一部分：原始文档精准还原
 
@@ -171,6 +171,7 @@ EFC_FCTRL模块：接收来自EFC_GFB、EFC_CFG的数据和配置，产生Flash�
 > 左右控制端可确认文字：RDEN、RECALL、CONFEN、WEB、TMEN、PORB、CEB、DPD、NVR、NVR_CFG、VREF、PROG、PROG2、ERASE、CHIP、CLOCK；可确认输出/数据前缀TMO、DIN、DOUT。
 > 完整图形、连线和全部原始小字：[查看原图右页](../images/GameViewer_oiTQxKdn2v.png)。
 
+> 第四轮局部补录（图1-2两组Control Logic周围可确认的无下标标签）：RDEN、RECALL、CONFEN、WEb、TMEN、PORb、CEb、DPD、NVR、NVR_CFG、LCK_CFG、VREF、PROG、PROG2、ERASE、CHIP、CLOCK、VREAD1、PREPG、TDO。两组分别照原图布置；未确认的容量和总线下标不从另一组类推。
 > ⚠️ 原图待复核（LLD-U01）：图1-2的NVR/NVR_CFG/RDN分区容量小字，以及部分控制引脚名和总线下标，当前1920×1080截图无法逐字符确认。已保留可辨文字和完整原图，不依据后文或其他芯片规格反推这些字符。
 
 ---
@@ -566,8 +567,8 @@ GFB_MPROC_MERGE：将写命令按Flash Row进行拆分(Flash编程可以在同�
 
 在复位阶段需要执行：
 
-> 图中文字转录（下方黄色框）：首行前半句待复核；可确认后半句为“Flash需要做：”；1）读取NVR；2）更新到Option寄存器。
-> ⚠️ 原图待复核（LLD-U02）：下方黄色框首行“如果需要……”中的复位修饰文字无法逐字确认，不用软件/硬件复位常识补齐。
+> 图中文字转录（下方黄色框）：如果需要做复位，Flash需要做：1）读取NVR；2）更新到Option寄存器。
+> 转录注：第四轮按原图局部重新核对，首行“如果需要做复位”已确认；不改写成软复位或硬复位。
 > 原图：[GameViewer_9TPJx3syGF.png右页下方黄色框](../images/GameViewer_9TPJx3syGF.png)。
 
 因此将动作拆分为两个子过程：
@@ -595,8 +596,8 @@ GFB_MPROC_MERGE：将写命令按Flash Row进行拆分(Flash编程可以在同�
 | GFB_SETC | set config register |
 | GFB_PWR_WORKING | 原图无附加框内说明 |
 
-> 图中条件文字：`[前缀待复核]_fctrl_state==GFB_PWR_WORKING`；`read_done`；`write_done`；`hard_arst_n=1'b0`；`hard_arst_n=1'b1`。
-> ⚠️ 原图待复核（LLD-U03）：POWER_OFF到RD_NVRC连线上，`_fctrl_state`前缀的第二个字符无法区分小写l与数字1；只保留可辨部分，不确定写成sl2或s12。
+> 图中条件文字：`s12_fctrl_state==GFB_PWR_WORKING`；`read_done`；`write_done`；`hard_arst_n=1'b0`；`hard_arst_n=1'b1`。
+> 转录注：第四轮局部核实前缀为`s12`，按图保留数字1；图中的GFB_PWR_WORKING与其他位置的状态名不做统一。
 > 图形、箭头及原字形：[查看原图左页](../images/GameViewer_Fio2eDanFe.png)。
 
 ### 【右页】
@@ -739,13 +740,13 @@ rom的读访问，受寄存器rom_rd_en控制；
 |---|---|
 | GFB_CTRL_WAITING | waiting power & reset done |
 | GFB_CTRL_IDLE | 得到当前cmd_len_m1，下一拍寄存；当前状态才可接受cmd，并把cmd发送到下级模块 |
-| GFB_CTRL_WR | 所有数据已[局部待复核]锁存后的cmd_len_m1发送完成 |
+| GFB_CTRL_WR | 所有数据已根据锁存后的cmd_len_m1发送完成 |
 | GFB_CTRL_RD | 下一拍返回GFB_CTRL_IDLE |
 | GFB_CTRL_BRESP | 等待Flash的resp返回并握手，确认已完全擦除Flash或者VREAD命令已下发 |
 | GFB_CTRL_WRESP | 等待Flash的resp返回并握手，确认已完全写入Flash |
 
-> 图中条件文字：`[前缀待复核]_working==1'b1`；`gfb_cmd_write==1'b1`；`gfb_cmd_read==1'b1`；`gfb_cmd_erase==1'b1 || gfb_cmd_vread==1'b1`；`resp_done_p==1'b1`；`wdata_vld_last==1'b1`；`write_done_p==1'b1`；`other`（多条自环）。
-> ⚠️ 原图待复核（LLD-U04）：WAITING到IDLE条件的完整信号名前缀，以及WR框中“已”与“锁存后”之间的小字无法逐字符确认；其余可辨文字按上表保留。
+> 图中条件文字：`rst_curst_working==1'b1`；`gfb_cmd_write==1'b1`；`gfb_cmd_read==1'b1`；`gfb_cmd_erase==1'b1 || gfb_cmd_vread==1'b1`；`resp_done_p==1'b1`；`wdata_vld_last==1'b1`；`write_done_p==1'b1`；`other`（多条自环）。
+> 转录注：第四轮核实WAITING到IDLE条件为`rst_curst_working==1'b1`，WR框的“根据”已补回。
 > 图形及连线：[查看原图左页](../images/GameViewer_QiBBFQjMG4.png)。
 
 ### 【右页】
@@ -786,10 +787,10 @@ CACHE接收AXIM_PROC的读命令，并返回数据；
 | ST_MPROC_JUDGE | 1. when currd_in_cache==1'b0 && cache_cnt!=0：update cache first, then read, then get data from cache；2. when currd_in_cache==1'b0 && cache_cnt==0：read first, then get data from cache；3. when currd_in_cache==1'b1 && currd_in_cache_first==1'b1：get data from cache；4. when currd_in_cache==1'b1 && currd_in_cache_first==1'b0：update cache first, then get data from cache |
 | ST_CACHE_BACK | read data out, then cache_cnt minus 1；this read proc is over, mproc_rd_flag = 1'b0 |
 | ST_WAIT_RD | read data from flash (neighbor module is CORR)；then cache_cnt add 1 |
-| ST_UPT_STS | from ST_WAIT_RD, add 1；from ST_CACHE_BACK, minus 1；from ST_MPROC_JUDGE, currd_in_cache==1'b0 && cache_cnt!=0, minus cache_cnt；from ST_MPROC_JUDGE, currd_in_cache==1'b1 && currd_in_cache_first==1'b0, [末尾小字待复核] |
+| ST_UPT_STS | from ST_WAIT_RD, add 1；from ST_CACHE_BACK, minus 1；from ST_MPROC_JUDGE, currd_in_cache==1'b0 && cache_cnt!=0, minus cache_cnt；from ST_MPROC_JUDGE, currd_in_cache==1'b1 && currd_in_cache_first==1'b0, minus first to valid cnt |
 
 > 图中条件文字：`mproc2ctrl_cmd_hs==1'b1 || mproc_rd_vld==1'b1`；`first_mproc_rdflg==1'b0 && cache_full==1'b0`；`currd_in_cache==1'b1 && currd_in_cache_first==1'b1`；`currd_in_cache==1'b0 && cache_cnt==0`；`currd_in_cache==1'b0 && cache_cnt!=0`；`currd_in_cache==1'b1 && currd_in_cache_first==1'b0`；`corr2cache_data_vld==1'b1`；`mproc_rd_flag==1'b1`；`next cycle`；`other`。
-> ⚠️ 原图待复核（LLD-U05）：ST_UPT_STS框最后一行逗号后的英文小字无法逐字确认；该框未被标记为完整转录。IDLE框中的1b1/1b0按可见字形保留，不据其他连线补引号。
+> 转录注：第四轮核实ST_UPT_STS末行英文为“minus first to valid cnt”，照录原英文，不润色。IDLE框中的1b1/1b0仍按可见字形保留。
 > 图形及连线：[查看原图左页](../images/GameViewer_Pi2p76SFY0.png)。
 
 CMD_MUX将命令和数据都发送到ECC_GEN_W中，如果是写操作则添加ECC信息后送往下级模块；如果是读、擦除等操作，则直接送往下级模块，无延迟；
@@ -969,11 +970,11 @@ FCTRL_GFB_FLASH_IF：根据GFB_CMD_IF接收的状态，适配FLASH时序进行FL
 > 图中文字转录：五个蓝色状态的可辨后缀分别为ST_IDLE、ST_WRITE、ST_SETCFG、ST_ERASE、ST_READ；状态名前缀仍待逐字符复核。
 > 可辨命令/条件片段：`Cmd&cmd_type`、`WRITE`、`SETCFG`、`SECERASE`、`RETRY`、`CHIPERASE`、`READ`、`RECALL`、`VREAD`；`WRITE结束`、`SETCFG结束`；`ERASE结束`、`retry_erase_flag=0`；`Erase_done`、`retry_erase_flag=1`；`Nrmlrd || DPD_R`。
 > 可辨框内条目：
-> 1. retry_read结束时，vread_pass [连接符待复核] retry_cnt [操作符待复核] cfg_efc_retry_main_r；
+> 1. retry_read结束时，vread_pass且retry_cnt>=cfg_efc_retry_main_r；
 > 2. retry_read结束时retry_cnt超过最大值19；
 > 3. recall正常读结束。
 > 另一框：1、Retry_read结束时vread_pass=0；2、retry_read结束时虽然vread_pass了，但是retry_cnt小于配置的值。
-> ⚠️ 原图待复核（LLD-U06）：蓝色状态的完整前缀、读状态自环小字，以及中央retry判断框中的精确操作符/换行连接关系不能逐字符确认。上述可辨片段不作为完整可执行条件，不能以逻辑推理拼接。
+> ⚠️ 原图待复核（LLD-U06，范围已缩小）：中央判断框的“且”和“>=”及自环“读操作未结束”已重新辨明；蓝色状态名完整前缀和底部retry条件框部分细字仍不能逐字符确认，不能用常见命名习惯补为某个前缀；可辨片段照留，准确字形仍以原图为准。
 > 图形及连线：[查看原图右页](../images/GameViewer_ceValKI1oj.png)。
 
 ---
@@ -996,14 +997,14 @@ FCTRL_GFB_FLASH_IF：根据GFB_CMD_IF接收的状态，适配FLASH时序进行FL
 |---|---|
 | WR_ST_IDLE | 原图框内无附加说明 |
 | WR_ST_RCVWD | receive len_m1 wdata；these data for preprog & prog |
-| WR_ST_PROG0 | CEb=0, PREPG=1, A=Ax；NVR_CFG, NVR, ARRDN[1:0]；get mass_write_flag；do counter until；cnt==maxprg0（括号内时序名待复核） |
-| WR_ST_PROG1 | do counter until；cnt==maxprg1（括号内时序名待复核） |
+| WR_ST_PROG0 | CEb=0, PREPG=1, A=Ax；NVR_CFG, NVR, ARRDN[1:0]；get mass_write_flag；do counter until；cnt==maxprg0(tWS) |
+| WR_ST_PROG1 | do counter until；cnt==maxprg1(tNVS) |
 | WR_ST_WEB | WEb=0, A=Ay, DIN=DIN；do counter until；cnt==maxwe(tADS,tPDS) |
 | WR_ST_PRE0 | PROG2=1；do counter until；cnt==maxpre0(tPREPROG) |
-| WR_ST_PRE1 | PROG2=0；do counter until；cnt==maxpre1（括号内时序名待复核） |
+| WR_ST_PRE1 | PROG2=0；do counter until；cnt==maxpre1(tADH,tPREPGH) |
 | WR_ST_PRE2 | PREPG=0, Ay=Ay, DIN=DIN；do counter until；cnt==maxpre2(tPREPGS) |
 | WR_ST_PROG2 | PROG2=1；do counter until；cnt==maxprg2(tPROG) |
-| WR_ST_PROG3 | PROG2=0；do counter until；cnt==maxprg3（括号内时序名待复核） |
+| WR_ST_PROG3 | PROG2=0；do counter until；cnt==maxprg3(tPGH) |
 | WR_ST_RLS0 | WEb=1；do counter until；cnt==maxrls0(tRCV) |
 | WR_ST_RLS1 | PROG=0；do counter until；cnt==maxrls1(tMH) |
 | WR_ST_RLS2 | CEb=1；do counter until；cnt==maxrls2(tRW) |
@@ -1018,7 +1019,7 @@ cnt==maxprg2 & mass_write_flag==1'b1 & mass_cnt<mass_max
 (cnt==maxprg2 & mass_write_flag==1'b1 & mass_cnt==mass_max)
 ```
 
-> ⚠️ 原图待复核（LLD-U07）：PROG0、PROG1、PRE1、PROG3括号中的细小时序参数名仍需更清晰同源图逐字确认。已提取13个状态及可辨控制条件，不据Flash时序常识补齐参数。
+> 转录注：第四轮重新核实四个括号内时序名：tWS、tNVS、tADH/tPREPGH、tPGH，已补入原状态表。
 > 图形及连线：[查看原图右页](../images/GameViewer_l6EdkNy5JN.png)。原图中的PROG/PROG2和A/Ay各处写法分别保留。
 
 ---
@@ -1034,11 +1035,11 @@ Flash Write根据SMIC要求，最多只能一次翻转36bit，因此将写入的
 | 图中状态 | 可辨框内文字 |
 |---|---|
 | SETC_ST_IDLE | 原图框内无附加说明 |
-| SETC_ST_START | A=AIN, DIN=DIN, CEb=0, WEb=0；get cfg_len_m1；do counter until；cnt==maxs（括号内参数待复核） |
+| SETC_ST_START | A=AIN, DIN=DIN, CEb=0, WEb=0；get cfg_len_m1；do counter until；cnt==maxs(tCFS,tWFS) |
 | SETC_ST_CONF | do counter until；cnt==maxcfg(tCONFEN) |
-| SETC_ST_RLS0 | do counter until；cnt==maxwh（括号内参数待复核）, when cfg_len_m1==0；另一cnt==maxwh条件对应when cfg_len_m1>0，括号内参数待复核 |
+| SETC_ST_RLS0 | do counter until；cnt==maxwh(tWFH,tCFH), when cfg_len_m1==0；cnt==maxwh(tWFH), when cfg_len_m1>0 |
 | SETC_ST_WAIT | WEb=1 |
-| SETC_ST_RLS1 | do counter until；cnt==maxcf（括号内参数待复核） |
+| SETC_ST_RLS1 | do counter until；cnt==maxcf(tCFL) |
 
 > 图中条件：`flash_set_cfg`；`cnt==maxs`；`cnt==maxcfg`；`cnt==maxcf`；`cfg_len_m1>0 & cnt==maxwh & mass_cnt<cfg_len_m1`；`(cfg_len_m1>0 & cnt==maxwh & mass_cnt==cfg_len_m1) | (cfg_len_m1==0)`。
 > 图形及连线：[查看原图左页](../images/GameViewer_Apm6lwGGlA.png)。
@@ -1050,15 +1051,15 @@ Flash Write根据SMIC要求，最多只能一次翻转36bit，因此将写入的
 | 图中状态 | 可辨框内文字 |
 |---|---|
 | ERS_ST_IDLE | 原图框内无附加说明 |
-| ERS_ST_START | get chip_erase_flag；A=Ax, CEb=0, CHIP=chip_erase_flag；NVR_CFG, NVR, ARRDN[1:0]；do counter until；cnt==maxs（括号内参数待复核） |
-| ERS_ST_GETCMD | ERAERS=1；do counter until；cnt==maxe（括号内参数待复核） |
+| ERS_ST_START | get chip_erase_flag；A=Ax, CEb=0, CHIP=chip_erase_flag；NVR_CFG, NVR, ARRDN[1:0]；do counter until；cnt==maxs(tWS) |
+| ERS_ST_GETCMD | ERAERS=1；do counter until；cnt==maxe(tNVS) |
 | ERS_ST_WEB | WEb=0；do counter until；cnt==maxse(tERAERS) when chip_erase_flag==1'b0；cnt==maxse(tSCE) when chip_erase_flag==1'b1 |
 | ERS_ST_RLS0 | WEb=1；do counter until；cnt==maxrcv(tRCV) |
 | ERS_ST_RLS1 | ERAERS=0, others keep；do counter until；cnt==maxwh(tMH) |
 | ERS_ST_RLS2 | CEb=1, CHIP=0；do counter until；cnt==maxrw(tRW) |
 
 > 图中条件：`flash_erase`；`cnt==maxs`；`cnt==maxe`；`cnt==maxse`；`cnt==maxrcv`；`cnt==maxwh`；`cnt==maxrw`。
-> ⚠️ 原图待复核（LLD-U08）：图2-12 START/RLS0/RLS1及图2-13 START/GETCMD中标出的细小时序参数尚不能逐字符确认；不按外部手册补字。两图各自的可辨状态、寄存器/信号和值仍保留。
+> 转录注：第四轮重新核实SETC的tCFS/tWFS、tWFH/tCFH、tCFL及ERS的tWS/tNVS，已补入；ERAERS等原图拼写照留。
 > 图形及连线：[查看原图右页](../images/GameViewer_Apm6lwGGlA.png)。原图“ERAERS”保留原拼写，不自动改成ERASE。
 
 ---
@@ -1076,11 +1077,11 @@ Flash Write根据SMIC要求，最多只能一次翻转36bit，因此将写入的
 | RD_ST_GETCMD | do counter until；cnt==maxh(tAH)；when mass_read_flag & tck_le_trc_flag；when cnt==maxh, change next Ax/Ay；when jump to RD_ST_IDLE：RDEN=0, others keep |
 | RD_ST_WAIT | RDEN=0, others keep；do counter until；cnt==maxrc(tRC) |
 
-> 图中可辨条件文字：`flash_read==1'b1 && read_cmd_last!=read_cmd`；`flash_read==1'b1 && read_cmd_last==read_cmd`；`cnt==maxs && tmh_reached==1'b1`；`cnt==maxrc`；`other`。
-> 涉及mass_read_flag、tck_le_trc_flag、mass_cnt、mass_max的三组复合条件仍需逐字符核对，不能把可辨变量自行组合成完整条件。
-> 黄色注释框可辨文字：tmh counter；when RD_ST_GETCMD jump to RD_ST_IDLE；do counter until；`tmh_cnt==maxmh(tMH)`；until cnt==maxmh, tmh_reached=1'b1；other tmh_reached=1'b0；when RD_ST_IDLE or RD_ST_CHANGED jump to RD_ST_GETCMD, then mh_cnt clear；RD_ST_IDLE jump to other state, get read_cmd_last<=read_cmd。
-> 转录注：黄色框中的RD_ST_CHANGED与状态框RD_ST_CHANGE、tmh_cnt与mh_cnt分别保留；这些文字按框内可辨片段分隔，未将未辨明的复合条件补全。
-> ⚠️ 原图待复核（LLD-U09）：图2-14三组复合条件，以及下方两幅波形截图的部分细小字段/数据值和右页参数表小字仍不能完整逐字符确认；这些区域保留原图，不标为完整转录。
+> 图中可辨条件文字：`flash_read==1'b1 && read_cmd_lat!=read_cmd`；`flash_read==1'b1 && read_cmd_lat==read_cmd`；`cnt==maxs && tmh_reached==1'b1`；`cnt==maxrc`；`other`。
+> 复合条件补录（按原图分组，不简化运算符）：GETCMD回到IDLE：`(cnt==maxh & mass_read_flag==1'b0) | (cnt==maxh && mass_read_flag==1'b1 && mass_cnt==mass_max)`；GETCMD自环：`cnt==maxh && mass_read_flag==1'b1 && tck_le_trc_flag==1'b0 && mass_cnt!=mass_max`；GETCMD进入WAIT：`cnt==maxh && mass_read_flag==1'b1 && tck_le_trc_flag==1'b1`。
+> 黄色注释框可辨文字：tmh counter；when RD_ST_GETCMD jump to RD_ST_IDLE；do counter until；`tmh_cnt==maxmh(tMH)`；until cnt==maxmh, tmh_reached=1'b1；other tmh_reached=1'b0；when RD_ST_IDLE or RD_ST_CHANGED jump to RD_ST_GETCMD, then mh_cnt clear；RD_ST_IDLE jump to other state, get read_cmd_lat<=read_cmd。
+> 转录注：黄色框中的RD_ST_CHANGED与状态框RD_ST_CHANGE、tmh_cnt与mh_cnt分别保留；这些文字按框内可辨片段分隔，复合条件在第四轮按原图补录。
+> ⚠️ 原图待复核（LLD-U09，范围已缩小）：图2-14复合条件和tMS/tMH五列表格已回查；下方两幅波形中的部分微小数值、最后一路信号名及右页波形左下参数名称仍无法逐字确认。保留原图，不将微小数值猜写成正文。
 > 图形及连线：[查看原图左页](../images/GameViewer_xS9sUaBAU3.png)。
 
 Flash Main Normal Read时序优化方案见：
@@ -1111,438 +1112,419 @@ ET6601方案中存在以下问题：
 
 1、ET6001、ET6601为了满足READMODE的RDEN使能后的HOLD时序tMH，三种读模式在每次进行最后一个读操作之后都进行了等待，降低了连续读的性能；
 
-> 转录注：本页优化标题、三种读模式说明及ET6601问题段为原图红字。“MARCO”和Vread1按原文保留；下一张为问题单与后续说明，本轮不提前声称已核对。
+> 转录注：本页优化标题、三种读模式说明及ET6601问题段为原图红字。“MARCO”和Vread1按原文保留；问题单、代码和完整优化方案已在后续三张原页中核对衔接。
 
 ---
 
-> **当前核对断点：以下第25～36张为历史已有转录，尚未完成本轮逐图核对；未处理正文原样保留。下一批从GameViewer_Jv14xpHsSC.png继续，先核对问题单、READ MODE CHANGE等待tMH批注及代码截图。**
 
-## 原图：`GameViewer_Jv14xpHsSC.png`
+## 原图：[GameViewer_Jv14xpHsSC.png](../images/GameViewer_Jv14xpHsSC.png)
 
 ### 【左页】
 
-> 原页嵌入问题单截图，标题可确认：  
-> **[EFC-BT] APB与AXI同时对NVR和MAIN进行访问时功能出错**  
-> 其余问题单字段、附件与人员信息不作为正文猜测性转录。  
-> 原图：`../images/GameViewer_Jv14xpHsSC.png`
+**原页嵌入问题单：[EFC-BT] APB与AXI同时对NVR和MAIN进行访问时功能出错**
+
+> 转录注：以下为原文内嵌问题单，不是本轮新建的问题单。可辨的字段逐项保留；缩小在原页内的文字不作猜补。
+
+| 原字段 | 可辨原文 |
+|---|---|
+| 标题 | [EFC-BT] APB与AXI同时对NVR和MAIN进行访问时功能出错 |
+| 添加/更新时间 | 将近2年之前添加；更新于将近2年之前 |
+| 状态 | 可辨片段“设计经理”“已解决”；完整状态文字待复核，见LLD-U10 |
+| 优先级 | 严重 |
+| 指派给 | 姓名字形待复核，见LLD-U10 |
+| 问题模块 | 数字HAC |
+| 验证阶段 | BT |
+| 计划完成日期 | 原截图留空 |
+| 模块 | 原截图留空 |
+| 描述 | 可辨片段：APB接口、AXI接口、NVR和MAIN地址空间、基本读写功能出错、请设计修改代码、谢谢～；完整逐字文本见LLD-U10 |
+| 文件 | 两个PNG附件；大小分别为97.6 KB、155 KB；时间分别为2022-08-08 12:31、2022-08-08 12:45；完整文件名后缀待复核 |
+| 抄送人员 | 原截图有姓名列表，当前像素不足以逐个确认 |
+| 子任务 | 原截图未显示条目 |
+| 相关的问题 | 原截图未显示条目 |
+
+> ⚠️ 原图待复核（LLD-U10）：本页问题单的部分姓名、状态末字、完整描述、附件完整文件名，以及右页代码图上方的缩小文字无法逐字符确认。以上“可辨片段”不是完整原文句子，不能拼接成确定正文。保留[完整原页](../images/GameViewer_Jv14xpHsSC.png)，本轮不再用“不是正文”为理由丢弃整个问题单。
 
 ### 【右页】
 
-> 原页包含 Synchronous Read Cycle Timing Diagram、配置代码截图及红色批注；复杂图和代码截图按原图保留。  
-> 原图：`../images/GameViewer_Jv14xpHsSC.png`
+**Figure 2: Synchronous Read Cycle Timing Diagram**
 
-红色批注：
+Notes: (1) READ MODE is a group signals to enable read modes, including RECALL, VREAD1.
 
-**并且进入 READ MODE CHANGE 阶段本身应该等待 tMH 时间逻辑也未生效，实际在等待之前 READ MODE 就切换了；**
+> 图中文字转录：DOUT、READMODE；D0、D1、D2、D3；tACC、tOH、tMS、tMH。图中tMH区域有红圈。波形边沿和红圈位置以[原图](../images/GameViewer_Jv14xpHsSC.png)为准。
+
+> 转录注：下列为代码截图中可辨的diff片段；保留删除/增加行，不补齐截图外代码，不作为可编译源文件。页面中的代码行号18～38仅用于定位。
+
+```diff
+-assign cfg_efc_tol     = 2'd2;
++//modify bug #434, start
++//assign cfg_efc_tol   = 2'd2;
++assign cfg_efc_tol     = cfg_efc_tmh[4:0];
++//modify bug #434, end
+ assign cfg_efc_tcrc    = 2'd1;
+ assign cfg_efc_tas     = 2'd0;
+ assign cfg_efc_tah     = 2'd0;
+@@ -878,11 +881,11 @@
+ always @(*) begin
+     if (recall_flag==1'b1 || vread_flag==1'b1) begin
+         maxrc  =    {    cfg_efc_trc_1};
+-        maxacc =    {1'b0,cfg_efc_tacc_1} + {4'd0,cfg_efc_tol};
++        maxacc =    {1'b0,cfg_efc_tacc_1} + {1'd0,cfg_efc_tol};
+     end
+     else begin
+         maxrc  =    {2'd0,cfg_efc_trc_0};
+-        maxacc =    {2'd0,cfg_efc_tacc_0} + {4'd0,cfg_efc_tol};
++        maxacc =    {2'd0,cfg_efc_tacc_0} + {1'd0,cfg_efc_tol};
+     end
+ end
+```
+
+并且进入READ MODE CHANGE阶段本身应该等待tMH时间逻辑也未生效，实际在等待之前READ MODE就切换了；
+
+> 转录注：上一段为原图红色批注。代码diff记录的是原文中已有问题处理，不自动等同于新增的6601功能。
 
 ---
 
-## 原图：`GameViewer_SnGFBV0cqH.png`
+## 原图：[GameViewer_SnGFBV0cqH.png](../images/GameViewer_SnGFBV0cqH.png)
 
 ### 【左页】
 
-begin
-if
-((nrmrd_cmdfifo_empty==1'be&&efc_gclken==l"b1&&read_cmd_latl=read_cmd)
-(ctrl_is_rd_p==1'bl
-&& efc_gclken==1"b1&&read_cmd_lat!=read_cmd)
-begin
-read_nxtst
-RD_ST_CHANGE;
-elseif ((nrmrd_cmdfifo_empty)be &&efc_gclkenl"bl&&read_cmd_latread_cmd)
-end
-(ctrl_is_rd_p--1"bl
-&& efc_gclken==1'bl&&read_cmd_lat==read_cmd)
-begin
-RD_ST_GETCMD;
-read_nxtst
-end
-else begin
-read_nxtst
-RD_ST_IDLE;
-end
-RDST_CHANGE
-begin
-if
-(cnt>=(12'de,maxs)
-&&tmh_reached--1'b&& efc_gclken=1'b1)begin
-read_nxtst
-RD_ST_GETCMD;
-end
-else begin
-read_nxtst
-RD_ST_CHANGE;
-if
-VREADI
-begin
-1'be;
-end
-else begin
-lifixbug #25sbegin,makevreadpuli upwhen firstretry erase operation
-//1r(readcurstamRD_ST_IDLE&&readnxtst/-RD_ST_IDLE)begin
-if((cnd2flash_1f_a_Load-1"bl
-l /apb access,axiwrite,axi read
-(read_curst--RD_ST_IDLE6&read_nxtst!=RD_ST_IDLE)
-begin
-//fixbug
-258end
-VREADI
-cnd2ftash_1f_vread;
-else
-end
-end
-end
-RINCU
-2、READMODE寄存分命令（包含写和擦除）：
-assignefc_tck_gt_trc
-ef9_efctcle_trcas
-efc_ctk ernegedge ef_rst_n)begin
-etc rst n
-Tead cd Lan
-elsebegin
-reao_chd
-但根据DATASHEET，只需要保证写和擦除时，Recall信号拉
-低即可，NormalRead、VREAD1和写擦除交叉操作并不需要发
+> 代码截图转录（一）：红框圈出`tmh_reached==1'b1`。缩进只为阅读，不修改可辨的变量、条件和常量。
 
+```verilog
+RD_ST_IDLE : begin
+    if ((nrmrd_cmdfifo_empty==1'b0 && efc_gclken==1'b1 && read_cmd_lat!=read_cmd) ||
+        (ctrl_is_rd_p==1'b1       && efc_gclken==1'b1 && read_cmd_lat!=read_cmd)) begin
+        read_nxtst = RD_ST_CHANGE;
+    end
+    else if ((nrmrd_cmdfifo_empty==1'b0 && efc_gclken==1'b1 && read_cmd_lat==read_cmd) ||
+             (ctrl_is_rd_p==1'b1       && efc_gclken==1'b1 && read_cmd_lat==read_cmd)) begin
+        read_nxtst = RD_ST_GETCMD;
+    end
+    else begin
+        read_nxtst = RD_ST_IDLE;
+    end
+end
+RD_ST_CHANGE : begin
+    if (cnt>={12'd0,maxs} && tmh_reached==1'b1 && efc_gclken==1'b1) begin
+        read_nxtst = RD_ST_GETCMD;
+    end
+    else begin
+        read_nxtst = RD_ST_CHANGE;
+    end
+end
+```
+
+> 代码截图转录（二）：对应原代码行381～395；高亮`VREAD1`。
+
+```verilog
+always @(posedge efc_clk or negedge por_rst_n) begin
+    if (por_rst_n==1'b0) begin
+        VREAD1 <= 1'b0;
+    end
+    else begin
+        //fix bug #258 begin, make vread pull up when first retry erase operation
+        //if (read_curst==RD_ST_IDLE && read_nxtst!=RD_ST_IDLE) begin
+        if ((cmd2flash_if_a_load==1'b1              ) || //apb access, axi write, axi read
+            (read_curst==RD_ST_IDLE && read_nxtst!=RD_ST_IDLE)) begin
+            //fix bug #258 end
+            VREAD1 <= cmd2flash_if_vread;
+        end
+        else ;
+    end
+end
+```
+
+**2、READ MODE寄存分命令（包含写和擦除）：**
+
+> 代码截图转录（三）：红框和高亮位置包括`fctrl_cmd[CMD_TYPE]`、`read_cmd_lat`及寄存条件。
+
+```verilog
+assign read_cmd = (nrmrd_cmdfifo_empty==1'b0) ? (cfg_efc_vread_debug_en ? TYPE_VREAD : nrmrd_cmdfifo_pop_dout[CMD_TYPE]) :
+                  fctrl_cmd[CMD_TYPE];
+assign efc_tck_gt_trc = (cfg_efc_tck_le_trc==1'b0 && read_cmd_lat==IND_CMD_READ);
+
+always @(posedge efc_clk or negedge efc_rst_n) begin
+    if (efc_rst_n==1'b0) begin
+        read_cmd_lat <= 4'd0;
+    end
+    else begin
+        if ((ctrl_is_rd_p==1'b1 || ctrl_is_wr_p==1'b1 ||
+             ctrl_is_ers_p==1'b1 || nrmrd_cmdfifo_pop==1'b1) && efc_gclken==1'b1) begin
+            read_cmd_lat <= read_cmd;
+        end
+        else ;
+    end
+end
+```
+
+但根据DATASHEET，只需要保证写和擦除时，Recall信号拉低即可，Normal Read、VREAD1和写擦除交叉操作并不需要发生Read Mode切换：
+
+> 转录注：上句为原图红字，末尾“生Read Mode切换：”跨到右页顶部，已连续衔接。
 
 ### 【右页】
 
-生ReadMode切换：
-PROG/PROG2
-CONFEN
-VREADI
-RECALL
-MODE
-ERASE
-ADDR
-RETRY1
-CHIP
-PORb
-DIN
-CEb
-DPD
-Read
-DOUT
-AIN
-DIN
-AIN
-Program
-Sector Erase
-AIN
-Note
-Chip Erase
-Standby
-All
-Zero
-Set Config
-CBD
-CBA
-Deep Power Down
-All
-Zero
-Power On Reset
-All
-Zero
-Recall Read
-AIN
-DOUT
-DOUT
-AIN
-Verify Read 1
+> 转录注：以下为原页内嵌数据手册表，10个模式行、15列全部转录。红框位于Program/Sector Erase/Chip Erase的RECALL与VREAD1两列；未根据表格推断原文以外的设计。
+
+| MODE | CEb | WEb | DIN | PROG/PROG2 | ERASE | CHIP | DOUT | PORb | CONFEN | ADDR | DPD | RECALL | VREAD1 | RETRY[1:0] |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Read | 0 | 1 | X | 0 | 0 | 0 | DOUT | 1 | 0 | AIN | 0 | 0 | 0 | X |
+| Program | 0 | 0 | DIN | 1 | 0 | 0 | X | 1 | 0 | AIN | 0 | 0 | X | X |
+| Sector Erase | 0 | 0 | X | 0 | 1 | 0 | X | 1 | 0 | AIN | 0 | 0 | X | Note 5 |
+| Chip Erase | 0 | 0 | X | 0 | 1 | 1 | X | 1 | 0 | X | 0 | 0 | X | 11 |
+| Standby | 1 | 1 | X | 0 | 0 | X | All Zero | 1 | 0 | X | 0 | 0 | X | X |
+| Set Config. | 0 | 0 | CBD | 0 | 0 | X | X | 1 | 1 | CBA | 0 | X | X | X |
+| Deep Power Down | 1 | 1 | X | 0 | 0 | X | All Zero | 1 | 0 | X | 1 | X | X | X |
+| Power On Reset | X | X | X | X | X | X | All Zero | 0 | X | X | X | X | X | X |
+| Recall Read | 0 | 1 | X | 0 | 0 | 0 | DOUT | 1 | 0 | AIN | 0 | 1 | 0 | X |
+| Verify Read 1 | 0 | 1 | X | 0 | 0 | 0 | DOUT | 1 | 0 | AIN | 0 | 0 | 1 | X |
+
 Notes:
-(1) X means either *oor'1', not other value.
-(2) TMEN-I to enable test modes, In other cases, it should be 0.
-(3) CBAisthe word numberofconfiguration data, usingAeo, CBD is the configuration data correspondingto the
-CBA.
-(4) ADDR column includes Address, NVR and NVR_CFG, and ARRDN pins.
-(5) RETRYμsoj are '11' for single pulse sector erase, or changed regarding to retry order.
-ET6601优化方案为：
 
+(1) X means either '0' or '1', not other value.  
+(2) TMEN=1 to enable test modes. In other cases, it should be 0.  
+(3) CBA is the word number of configuration data, using `A<2:0>`, CBD is the configuration data corresponding to the CBA.  
+(4) ADDR column includes Address, NVR and NVR_CFG, and ARRDN pins.  
+(5) RETRY[1:0] are '11' for single pulse sector erase, or changed regarding to retry order.
 
+**ET6601优化方案为：**
+
+> 转录注：优化方案标题为红字，正文续于下一张；表内X照录，不自行补0或1。
 
 ---
-## 原图：`GameViewer_isM3FELYfq.png`
+
+## 原图：[GameViewer_isM3FELYfq.png](../images/GameViewer_isM3FELYfq.png)
 
 ### 【左页】
 
-Program Or
-not retry Erase
-RD MODE
-VREAD1==1' b0
-No Change
-RD MODE
-Change
-RDIODE
-Change
-Normal
-Recall
-Read
-Read
-RD MODE
-Vreadl
-RD MODE
-Change
-Change
-Only to
-ARD MODE
-Only to
-Retry
-No Change
-Retry
-Program Or
-Erase(inc retry)
-VREAD1==1' b1
-1、ET6601中优化为只有RecallRead需要等待tMH，Normal
-Read、Vreadl不等待，提升NormalRead、、Vreadl效率；
-2、VREAD1在RETRYERASE操作中提前拉高，在非RETRY
-ERASE和PROGRAM中保持不变，按照之前代码可能会出现
-NormalRead的tMH等待时间不够的违例，因此将VREADl
-拉高时间修改为tNVS之后：
-INVS
-PROG/ERASE/CEb/ARRDN/NVR/NVR_CFG/CHIP/Ato WEb setup
-time
+> 图中文字转录（本图原页未编号）：`Normal Read`、`Recall Read`、`Vread1`、`Program Or not retry Erase / VREAD1==1'b0`、`Program Or Erase(inc retry) / VREAD1==1'b1`。连线旁有`RD MODE Change`、`RD MODE No Change`、`RD MODE Change Only to Retry`，分别按原图红色/绿色保留含义，不另作版本推断。完整连线见[原图](../images/GameViewer_isM3FELYfq.png)。
 
+1、ET6601中优化为只有Recall Read需要等待tMH，Normal Read、Vread1不等待，提升Normal Read、、Vread1效率；
+
+2、VREAD1在RETRY ERASE操作中提前拉高，在非RETRY ERASE和PROGRAM中保持不变，按照之前代码可能会出现Normal Read的tMH等待时间不够的违例，因此将VREAD1拉高时间修改为tNVS之后：
+
+> 转录注：以下为原图单行参数表；未出现表头，转录列名仅用来定位，不臆定min/max。`A²⁾`中上标是原图脚注，不是位宽。
+
+| 转录列1 | 转录列2 | 转录列3 | 转录列4 | 转录列5 |
+|---|---|---|---|---|
+| tNVS | PROG/ERASE/CEb/ARRDN/NVR/NVR_CFG/CHIP/A²⁾ to WEb setup time | 4 |  | us |
 
 ### 【右页】
 
-Ax
-ERAS
-wEb
-NEXT ERASE
-ERASE
-CEb
-NVR/ARRDN
-/NVR_CFG
-CHIP
-RDEN
-CLOCK
-PROG
-Figure 4: Sector Erase Timing Diagram
-Notes: (1) Ax is X address, means Au-7)
-3、进入Program、ERASE时都将Recall拉低；（与ET6601方
-案保持一致)
-4、进入READ模式时，只根据VREAD1和Recall信号的变化
-记录的READ MODE来决定是否要等待tMS，而不是每次
-ERASE/PROGRAM都认为READMODE发生过变化;
+**Figure 4: Sector Erase Timing Diagram**
 
-#### 2.3.5 FCTRL GFB FLASH IF
+Notes: (1) Ax is X address, means `A<14:7>`.
+
+> 图中文字转录：Ax、WEb、ERASE、CEb、NVR/ARRDN/NVR_CFG、CHIP、RDEN、CLOCK、PROG；tWS、tNVS、tERASE、tRCV、tRW、tWH、tAS；NEXT ERASE、NEXT READ、NEXT PROGRAM。原图红框圈出tNVS；波形边沿和间隔按原图保留，不换算成推断时序。
+
+3、进入Program、ERASE时都将Recall拉低；（与ET6601方案保持一致）
+
+4、进入READ模式时，只根据VREAD1和Recall信号的变化记录的READ MODE来决定是否要等待tMS，而不是每次ERASE/PROGRAM都认为READ MODE发生过变化；
+
+> 转录注：本图四项方案正文均为红字，“Normal Read、、Vread1”的重复顿号以及第3项“与ET6601方案保持一致”均按原文保留。
+
+#### 2.3.5 FCTRL_GFB_FLASH_IF
 
 根据状态机信息进行具体接口信号的生成；
 
-
-
 ---
-## 原图：`GameViewer_98qp0YcXAk.png`
+
+## 原图：[GameViewer_98qp0YcXAk.png](../images/GameViewer_98qp0YcXAk.png)
 
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图2-15`，完整结构与时序请查看原图 `GameViewer_98qp0YcXAk.png`。
+开启ECC和ECC_WR_RVS时，对于写入的ECC 8bit内容的第0、1、4-7bit进行取反，保证写数据为全1时，ECC计算结果8’hC进行处理后也为8’hFF（全1），此时不会对FLASH内容进行改写；
 
-> 📌 **【图表提示】**: 此处包含图表 `图2-16 `，完整结构与时序请查看原图 `GameViewer_98qp0YcXAk.png`。
+开启ECC和ECC_RD_RVS时，对于读出的ECC 8bit内容的第0、1、4-7bit进行取反，保证ECC校验时ECC数据为写入前未取反的数据。
 
-开启ECC和ECCWRRVS时，对于写入的ECC8bit内容的
-第0、1、4-7bit进行取反，保证写数据为全1时，ECC计算结果
-8’hC进行处理后也为8’hFF（全1），此时不会对FLASH内
-容进行改写；
-开启ECC和ECCRDRVS时，对于读出的ECC8bit内容的
-第0、1、4-7bit进行取反，保证ECC校验时ECC数据为写入前
-未取反的数据。
+> 转录注：以上两段为红字；正文`RVS`与图中`rsv`的次序差异照录，不自动统一。
 
-**图2-15**
+**图2-15 ECC域段翻转写入图**
 
-ECC域段翻转写入图
-f1ash_out[71: 68], f1ash_out [65:64]
-DFF
-DFT_RAP
-72bit
-FLASH
-VREADI
+> 图中文字转录：DFF / 72bit；DIN[71:68],DIN[65:64]；DFT_WRAP；FLASH；PROG；NVR；NVR_CFG；cfg_efc_ecc_wr_rsv；NOT、AND、OR、XOR。左侧另有写分拆/全1判定与ECC使能控制信号，完整字形待LLD-U11复核，不按其他段落补名。
+> 图形及连线：[原图左页上图](../images/GameViewer_98qp0YcXAk.png)。
 
-**图2-16**
+**图2-16 ECC域段翻转写入图**
 
-ECC域段翻转写入图
-
+> 图中文字转录：FLASH；DFT_WRAP；DFF / 72bit；flash_out[71:68],flash_out[65:64]；VREAD1；cfg_efc_ecc_rd_rsv；NOT、AND、XOR。
+> 转录注：图2-16图名也写“写入图”，没有因图内读出路径而擅自改为“读出图”。
+> ⚠️ 原图待复核（LLD-U11）：图2-15左侧若干控制信号完整拼写在原1920×1080截图中太小；可辨末尾包含`split`、`full`及`ecc_en_r`。只记录这些片段，不将未辨明的字符补成完整信号名。图2-16已按可辨原字形补充，不与正文RVS统一。
 
 ### 【右页】
 
+## 第3章 DFX说明
 
-### 第3章DFX说明
+### 3.1 错误说明
 
+1. 写保护错误(wrperr)：
 
-#### 3.1错误说明
+当配置接口/数据接口尝试对受保护区域进行写/擦除操作时，该信号置1．当信号置1后，写/擦除动作终止，不会对数据产生任何改变；
 
-1. 写保护错误(wrperr):
-当配置接口/数据接口尝试对受保护区域进行写/擦除操作时，
-该信号置1．当信号置1后，写/擦除动作终止，不会对数据产
-生任何改变；
 该状态受对应的清零标志清零；
-该状态必须清零才能执行新的写/擦除操作，否则会产生编
-程顺序错误，下一次写/擦除操作也会被终止；（配置接口和数
-据接口相同）
-2.编程顺序错误(pgserr):
-当编程顺序不正确时，该信号置1．满足以下条件时，即表示
-编程顺序不正确：
-A)
-数据总线发出了写请求，但cfg_efc_write_en 并没有置
-B）
-写保护错误标记还未清零，又发出了新的写/擦除操
-作;
 
+该状态必须清零才能执行新的写/擦除操作，否则会产生编程顺序错误，下一次写/擦除操作也会被终止；（配置接口和数据接口相同）
 
+2. 编程顺序错误(pgserr)：
+
+当编程顺序不正确时，该信号置1．满足以下条件时，即表示编程顺序不正确：
+
+A）数据总线发出了写请求，但cfg_efc_write_en并没有置1．
+
+B）写保护错误标记还未清零，又发出了新的写/擦除操作；
 
 ---
-## 原图：`GameViewer_bJ7d9eVqlF.png`
+
+## 原图：[GameViewer_bJ7d9eVqlF.png](../images/GameViewer_bJ7d9eVqlF.png)
 
 ### 【左页】
 
-C）不一致错误标记还未清零，又发出了新的写/擦除操
-作；
-D)
-配置ECC2bit错误标记还未清零，又发出了新的写/擦
-除操作;
-E）数据ECC 2bit错误标记还未清零，又发出了新的写/擦
-除操作；
+C）不一致错误标记还未清零，又发出了新的写/擦除操作；
+
+D）配置ECC 2bit错误标记还未清零，又发出了新的写/擦除操作；
+
+E）数据ECC 2bit错误标记还未清零，又发出了新的写/擦除操作；
+
 该状态受对应的清零标志清零；
-该状态必须清零才能执行新的写/擦除操作，否则会产生编
-程顺序错误，下一次写/擦除操作也会被终止，读操作会返回总
-线ERROR；0°（配置接口和数据接口相同）
-3.选通错误(strberr)：
-TC当数据接口连续2次以上向同一个地址写同一字节时，该信
-号置1．当信号置1后，写动作不会终止，应用程序可忽略该错
-误，继续执行当前写操作，并可以继续执行新的写/擦除操作；
+
+该状态必须清零才能执行新的写/擦除操作，否则会产生编程顺序错误，下一次写/擦除操作也会被终止，读操作会返回总线ERROR；（配置接口和数据接口相同）
+
+3. 选通错误(strberr)：
+
+当数据接口连续2次以上向同一个地址写同一字节时，该信号置1．当信号置1后，写动作不会终止，应用程序可忽略该错误，继续执行当前写操作，并可以继续执行新的写/擦除操作；
+
 该状态受对应的清零标志清零；
+
 该状态不须清零也可以执行新的写/擦除操作；
-4.不一致错误(incerr)：
-当配置接口上一笔命令还未执行完成，配置接口再次发出新的
 
+4. 不一致错误(incerr)：
+
+当配置接口上一笔命令还未执行完成，配置接口再次发出新的命令，就发生不一致错误，并且新的命令不会被执行；
+
+> 转录注：上一句跨左右页连续。选通错误段中的“不会终止”及“不须清零”句为青蓝字，另列蓝字记录，不冒充6601新增要求。
 
 ### 【右页】
 
-命令，就发生不一致错误，并且新的命令不会被执行；
 该状态受对应的清零标志清零；
-对于配置接口，该状态必须清零才能执行新的写/擦除操作，
-否则会产生编程顺序错误，下一次写/擦除操作也会被终止；
+
+对于配置接口，该状态必须清零才能执行新的写/擦除操作，否则会产生编程顺序错误，下一次写/擦除操作也会被终止；
+
 数据接口不受该错误影响；
-5.配置ECC1bit错误：
-配置接口读取NVR／NVRCFG时，发生ECC1bit错误，并
-纠错，该信号置1．当信号置1后，读取返回数据正确，应用程
-序可忽略该错误，继续执行当前读操作，以及下一步操作（不需
-要对当前地址进行retry处理）；
+
+5. 配置ECC1bit错误：
+
+配置接口读取NVR / NVR_CFG时，发生ECC1bit错误，并纠错，该信号置1．当信号置1后，读取返回数据正确，应用程序可忽略该错误，继续执行当前读操作，以及下一步操作（不需要对当前地址进行retry处理）；
+
 该状态受对应的清零标志清零；
+
 该状态不须清零也可以执行新的读/写/擦除操作；
-6.配置ECC2bit错误：
-配置接口读取NVR／NVRCFG时，发生ECC2bit错误，该
-信号置1．当信号置1后，读取返回数据不正确，应用程序无法
-忽略该错误，需要对当前地址进行retry处理或其他动作；
+
+6. 配置ECC2bit错误：
+
+配置接口读取NVR / NVR_CFG时，发生ECC2bit错误，该信号置1．当信号置1后，读取返回数据不正确，应用程序无法忽略该错误，需要对当前地址进行retry处理或其他动作；
+
 该状态受对应的清零标志清零；
-对于配置接口，该状态必须清零才可以执行新的读/写/擦除
-1 fp
 
+对于配置接口，该状态必须清零才可以执行新的读/写/擦除操作；
 
-## 原图：`GameViewer_hoWrmQ3kyX.png`
+> 转录注：最后一句的“操作；”在下一张左页顶部，已衔接，下一张不重复。原图中的青蓝色清零要求与蓝色“不正确”另列来源标记。
+
+---
+
+## 原图：[GameViewer_hoWrmQ3kyX.png](../images/GameViewer_hoWrmQ3kyX.png)
 
 ### 【左页】
 
-操作；
 数据接口不受该错误影响；
-7.数据ECC1bit错误：
-数据接口读取Main/RDN时，发生ECC1bit错误，并纠错，
-该信号置1.当信号置1后，读取返回数据正确，应用程序可忽
-略该错误，继续执行当前读操作，以及下一步操作（不需要对当
-前操作进行retry处理）；
-该状态受对应的清零标志清零；
-该状态不须清零也可以执行新的读/写/擦除操作；
-8.数据ECC2bit错误：
-数据接口读取Main/RDN时，发生ECC2bit错误，该信号置
-1．当信号置1后，读取返回数据不正确，应用程序无法忽略该
-错误，需要对当前操作进行retry处理或其他动作；
-该状态受对应的清零标志清零；
-对于配置接口，该状态必须清零才能执行新的擦除操作，否
-则会产生编程顺序错误，下一次擦除操作也会被终止；
-对于数据接口，该状态必须清零才能执行新的写/擦除操作，
-否则会产生编程顺序错误，下一次写/擦除操作也会被终止；
 
+7. 数据ECC1bit错误：
+
+数据接口读取Main/RDN时，发生ECC1bit错误，并纠错，该信号置1．当信号置1后，读取返回数据正确，应用程序可忽略该错误，继续执行当前读操作，以及下一步操作（不需要对当前操作进行retry处理）；
+
+该状态受对应的清零标志清零；
+
+该状态不须清零也可以执行新的读/写/擦除操作；
+
+8. 数据ECC2bit错误：
+
+数据接口读取Main/RDN时，发生ECC2bit错误，该信号置1．当信号置1后，读取返回数据不正确，应用程序无法忽略该错误，需要对当前操作进行retry处理或其他动作；
+
+该状态受对应的清零标志清零；
+
+对于配置接口，该状态必须清零才能执行新的擦除操作，否则会产生编程顺序错误，下一次擦除操作也会被终止；
+
+对于数据接口，该状态必须清零才能执行新的写/擦除操作，否则会产生编程顺序错误，下一次写/擦除操作也会被终止；
 
 ### 【右页】
 
-在该错误未清零前，新的读操作也不再执行，总线数据返回
-O，RESP返回ERROR；
-9.门控APB总线访问错误：
-当EFC的gating产生时，APB总线上还有数据交互未完成或
-来了新的总线命令；
-该状态不须清零也可以执行新的读/写/擦除操作；
-n712026-10-02-21-4
-上报中断，总线数据返回O，RESP返回ERROR；
-10.复位APB总线访问错误：
-当EFC的复位产生时，APB总线上还有数据交互未完成或来
-了新的总线命令；
-该状态不须清零也可以执行新的读/写/擦除操作；
-上报中断，总线数据返回O，RESP返回ERROR;
-11.门控AXI总线保护错误：
-当EFC的gating产生时，AXI总线上还有数据交互未完成或
-来了新的总线命令，总线保护模块将总线未完成的交互模拟完
-成，避免总线挂死；
-该状态不须清零也可以执行新的读/写/擦除操作；
-上报中断，总线数据返回O，RESP返回ERROR；
+在该错误未清零前，新的读操作也不再执行，总线数据返回0，RESP返回ERROR；
 
+9. 门控APB总线访问错误：
 
+当EFC的gating产生时，APB总线上还有数据交互未完成或来了新的总线命令；
+
+该状态不须清零也可以执行新的读/写/擦除操作；
+
+上报中断，总线数据返回0，RESP返回ERROR；
+
+10. 复位APB总线访问错误：
+
+当EFC的复位产生时，APB总线上还有数据交互未完成或来了新的总线命令；
+
+该状态不须清零也可以执行新的读/写/擦除操作；
+
+上报中断，总线数据返回0，RESP返回ERROR；
+
+11. 门控AXI总线保护错误：
+
+当EFC的gating产生时，AXI总线上还有数据交互未完成或来了新的总线命令，总线保护模块将总线未完成的交互模拟完成，避免总线挂死；
+
+该状态不须清零也可以执行新的读/写/擦除操作；
+
+上报中断，总线数据返回0，RESP返回ERROR；
+
+> 转录注：第7项及第9～11项的“不须清零”句为青蓝色，第8项“不正确”为蓝色。全部分别照录，没有把数据接口与配置接口的要求统一。
 
 ---
-## 原图：`GameViewer_OCJBCUSbNK.png`
+
+## 原图：[GameViewer_OCJBCUSbNK.png](../images/GameViewer_OCJBCUSbNK.png)
 
 ### 【左页】
 
-12.复位AXI总线保护错误：
-当EFC的复位产生时，AXI总线上还有数据交互未完成或来
-了新的总线命令，总线保护模块将总线未完成的交互模拟完成，
-避免总线挂死；
+12. 复位AXI总线保护错误：
+
+当EFC的复位产生时，AXI总线上还有数据交互未完成或来了新的总线命令，总线保护模块将总线未完成的交互模拟完成，避免总线挂死；
+
 该状态不须清零也可以执行新的读/写/擦除操作；
-上报中断，总线数据返回O，RESP返回ERROR;
-13.FLASH配置总线发生读写保护记录：
-当FLASH通过apb通路读写flash颗粒时发生违反读写保护
-时，分别记录违反的第一个地址。
 
-#### 3.2 DFX 设计
+上报中断，总线数据返回0，RESP返回ERROR；
 
-Truan.11
-1.ECC错误注入（模拟ECC错误产生）：
-由于Flash的特殊性（写入数据后无法直接更新，需要擦除后
-再写入，并且Flash本身有擦除寿命），因此尽量减少对Flash的
-写入动作，ECC错误注入在读取时进行模拟；因此，该功能在
-EFCGFB/GFBIF模块内实现；
+13. FLASH配置总线发生读写保护记录：
 
+当FLASH通过apb通路读写flash颗粒时发生违反读写保护时，分别记录违反的第一个地址。
+
+### 3.2 DFX设计
+
+1. ECC错误注入（模拟ECC错误产生）：
+
+由于Flash的特殊性（写入数据后无法直接更新，需要擦除后再写入，并且Flash本身有擦除寿命），因此尽量减少对Flash的写入动作，ECC错误注入在读取时进行模拟；因此，该功能在EFC_GFB/GFB_IF模块内实现；
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图3-1ECC错误注入对应寄存器配置`，完整结构与时序请查看原图 `GameViewer_OCJBCUSbNK.png`。
+**图3-1 ECC错误注入对应寄存器配置**
 
-序号
-说明
-Tueuofuo"oo"6p
-ECC错说注入使能
-160：不打开ECC错误注入：
-1b1：打开ECC错误注入；
-2d0
-ECC错误注入类型：
-1：2bt滑润：
-other：更多biti措读：
-16do
-ECC错误注入对度地址
-clg_efc_ecc_ergen_sec_r
-地址sector范图：
-0: NVR_CFG;
-1: NVR;
-2 RDN;
+| 序号 | 配置 | 默认值 | 说明 |
+|---:|---|---|---|
+| 1 | cfg_efc_ecc_errgen_en_r | 1'b0 | ECC错误注入使能&lt;br&gt;<br>1'b0：不打开ECC错误注入；&lt;br&gt;<br>1'b1：打开ECC错误注入； |
+| 2 | cfg_efc_ecc_errgen_type_r | 2'd0 | ECC错误注入类型：&lt;br&gt;<br>0：单bit错误；&lt;br&gt;<br>1：2bit错误；&lt;br&gt;<br>other：更多bit错误； |
+| 3 | cfg_efc_ecc_errgen_addr_r | 16'd0 | ECC错误注入对应地址 |
+| 4 | cfg_efc_ecc_errgen_sec_r |  | 地址对应sector范围：&lt;br/&gt;<br>0: NVR_CFG；&lt;br/&gt;<br>1: NVR；&lt;br/&gt;<br>2: RDN；&lt;br/&gt;<br>3: Main； |
 
-**图3-1ECC错误注入对应寄存器配置**
-
-TMCLFHuTan.11
-FTNCU han. 3 3026-10-02-71:40
-
-
+> 转录注：第4项默认值在图中留空，不按位宽或枚举推断。图内说明显示的`<br>`/`<br/>`作为原始标记保留；表格真正的换行仅用于阅读。原图图号仍是图3-1，未擅改为表3-1。
 
 ---
-## 原图：`GameViewer_x2k55BuYBA.png`
+
+## 原图：[GameViewer_x2k55BuYBA.png](../images/GameViewer_x2k55BuYBA.png)
+
+### 【左页】
 
 ## 第4章 系统评估
 
@@ -1550,74 +1532,66 @@ FTNCU han. 3 3026-10-02-71:40
 
 **图4-1 读数datapath示意图**
 
-> 原图：`../images/GameViewer_x2k55BuYBA.png`
+> 图中文字转录：EFC；EFC_pipe1；EFC_GFB1；ECC_CORR (1D)；CMD_MUX (0D)；GFB_IF (0D)；RD_MUX (0D)；S40_FCTRL (2D)；FLASH (3*Len+1)；EFC_pipe0；EFC_GFB0；AXIM_PROC (1D)；CACHE (7+Len)；AXI_MASTER；1pluse per 7 ck。
+> 连线及层级保留[原图](../images/GameViewer_x2k55BuYBA.png)。`1pluse`按图中拼写照录，不自动修正为pulse。
 
-Cache 处为两级 pipeline 交互的点；
+Cache处为两级pipeline交互的点；
 
-pipeline0，总线读取 Cache：
+pipeline0，总线读取Cache：
 
-当数据连续访问时，latency=1 拍，且两次数据读取之间间隔 1cycle 的控制时间；
-
-当数据不是连续时，根据不同的情况花费的时间会有区别。
-
-pipeline1，Cache 到 Flash 读取数据，最少 1 拍发出一个读取申请，latency=2+3*Len+1+1=4+3*Len；
-
-因此最终瓶颈体现在 Flash，正常情况下，可以得到 Flash 的满带宽性能（数据跳着访问的除外，可能还会因为 Flash 多读取数据，导致整体效率变差。当然，平均的 latency 会变小）；
-
----
-
-## 原图：`GameViewer_b5AJYTEhY1.png`
-
-### 【左页】
-
-> 📌 **【图表提示】**: 此处包含图表 `图4-2写数datapath示意图`，完整结构与时序请查看原图 `GameViewer_b5AJYTEhY1.png`。
-
-
-#### 4.2 写性能评估
-
-EFC
-AXLMASTER
-AXIM_PROC (1D)
-CACHE (1D)
-ECC_GEN(1D)
-GFB_CTRL(OD)
-GFB_IF(1D)
-S40_FCTRL (2D)
-FLASH(XMS)
-
-**图4-2写数datapath示意图**
-
-写数据时，性能瓶颈在FLASH处，可以提升的地方就只在连
-续编程上;
-单次（72bit）编程大概39us-约
-分两次36bit编程大概78us一约
-
+当数据连续访问时，latency=1拍，且两次数据读取之间间隔1cycle的控制时间；
 
 ### 【右页】
 
-连续编程，那么72bit在Burst16下可以缩到31us左右=~约
-连续编程，那么72bit分两次写入在Burst16下可以缩到60us
-左右 -- 约
-与 SMIC交流后，不能实现更长的Burst编程--有预编程和编
-程两个阶段，都需要对应的地址和数据，也就意味着需要数据
-缓存，这一版确定缓存16个数据；
+当数据不是连续时，根据不同的情况花费的时间会有区别。
 
-#### 4.3擦除性能评估
+pipeline1，Cache到Flash读取数据，最少1拍发出一个读取申请，latency=2+3*Len+1+1=4+3*Len；
 
-数据擦除时，datasheet中给出的典型擦除时间是8~，根
-据SMIC回复，可以直接使用:
-1）sector擦除性能=1KB/=125KBps;
-2）
-整片擦除性能=512KB/=
-块擦除时，使用RETRY模式可能会有一定的时间节省，单
-次　sector RETRY²擦除是　0.~lms ＋VREAD2读 取
-200ns*128=26us，需要RETRY擦除多少次不确定；如果只擦除
-一次，那么 sector擦除性能可以提升到：1KB/=
-
-
+因此最终瓶颈体现在Flash，正常情况下，可以得到Flash的满带宽性能（数据跳着访问的除外，可能还会因为Flash多读取数据，导致整体效率变差。当然，平均的latency会变小）；
 
 ---
-## 原图：`GameViewer_f9t1x50Gvk.png`
+
+## 原图：[GameViewer_b5AJYTEhY1.png](../images/GameViewer_b5AJYTEhY1.png)
+
+### 【左页】
+
+### 4.2 写性能评估
+
+**图4-2 写数datapath示意图**
+
+> 图中文字转录：EFC；EFC_GFB；AXI_MASTER；AXIM_PROC (1D)；CACHE (1D)；CMD_MUX (0D)；ECC_GEN (1D)；GFB_CTRL (0D)；GFB_IF (1D)；S40_FCTRL (2D)；FLASH (xMS)。图形及连线保留[原图](../images/GameViewer_b5AJYTEhY1.png)。
+
+写数据时，性能瓶颈在FLASH处，可以提升的地方就只在连续编程上；
+
+单次（72bit）编程大概39us -- 约1.85Mbps；
+
+分两次36bit编程大概78us—约0.925Mbps；
+
+### 【右页】
+
+连续编程，那么72bit在Burst16下可以缩到31us左右 -- 约2.32Mbps；
+
+连续编程，那么72bit分两次写入在Burst16下可以缩到60us左右 -- 约1.21Mbps；
+
+与SMIC交流后，不能实现更长的Burst编程--有预编程和编程两个阶段，都需要对应的地址和数据，也就意味着需要数据缓存，这一版确定缓存16个数据；
+
+> 转录注：上一段为原图青蓝色文字；性能数值均为原文评估，不是本轮实测。
+
+### 4.3 擦除性能评估
+
+数据擦除时，datasheet中给出的典型擦除时间是8~20ms，根据SMIC回复，可以直接使用8ms：
+
+1）sector擦除性能=1KB/8ms=125KBps；
+
+2）整片擦除性能=512KB/8ms=64MBps；
+
+块擦除时，使用RETRY模式可能会有一定的时间节省，单次sector RETRY擦除是0.8ms~1ms + VREAD读取200ns*128=26us，需要RETRY擦除多少次不确定；如果只擦除一次，那么sector擦除性能可以提升到：1KB/1ms=1MBps；
+
+> 转录注：原图此处为VREAD，没有末尾数字2；KB、MB、Mbps和近似计算分别照录，不按计算结果或其他芯片参数改写。
+
+---
+
+## 原图：[GameViewer_f9t1x50Gvk.png](../images/GameViewer_f9t1x50Gvk.png)
 
 ## 第5章 对外部模块需求
 
@@ -1632,47 +1606,48 @@ FLASH(XMS)
 | 7 | CRG | 对 EFC 内的 3 个时钟，分开进行时钟门控，避免总线挂死； |
 | 8 | CRG/软件 | EFC 工作频率的改变，必须保证 EFC 已有的操作处理完成，否则可能引起数据错误； |
 | 9 | 软件 | 对 Flash 的先写后读（特别是背靠背操作），需要软件保证写完成以后再发起读操作；否则，可能发生数据不正确问题； |
-| ~~10~~ | ~~BOOTROM~~ | ~~NVR_CFG 的 PRO、PR1 信息，需要 bootrom 中进行读取，并配置这个替换内容到 efc 对应寄存器上，保证程序功能的正确性；~~ |
+| ~~10~~ | ~~BOOTROM~~ | ~~NVR_CFG 的 PR0、PR1 信息，需要 bootrom 中进行读取，并配置这个替换内容到 efc 对应寄存器上，保证程序功能的正确性；~~ |
 | 11 | 软件 | OTA 切换时，cpu cache 需要被 disable，保证进行 OTA 切换时软件不会访问 Flash； |
 
 **注：要求确认后，添加到钉钉共享文档，做为系统待办，便于统一跟踪。**
 
+> 转录注：该表横跨左右页，第5行的复位撤销顺序已连续衔接；第10行整行删除线按原图保留，其中为`PR0`（数字0），不是`PRO`（字母O）。底部注为蓝字；本轮没有执行其提及的钉钉操作。
+
 ---
 
-## 原图：`GameViewer_vC7gPIngZA.png`
+## 原图：[GameViewer_vC7gPIngZA.png](../images/GameViewer_vC7gPIngZA.png)
 
 ### 【左页】
 
 **图5-1 efc_clk和flash_clk时钟关系示意图**
 
-> 图中可确认信号：efc_clk、flash_clk、efc_gclken、por_rst_n、efc_rst_n。复杂时序波形不自行重画。  
-> 原图：`../images/GameViewer_vC7gPIngZA.png`
+> 图中文字转录：三组时钟关系波形，每组均为efc_clk、flash_clk、efc_gclken、por_rst_n、efc_rst_n；两复位撤销之间标注T>0。原始边沿、阴影区和三组相位分别保留[原图](../images/GameViewer_vC7gPIngZA.png)，不据时钟常识重画。
 
 ## 第6章 测试相关
+
+> 转录注：原表“内部接口／内部FIFO”是一个单元格内的两行字，SVA列为一个勾；“性能／BOOT”也是一个单元格内的两行字，FPGA列为一个勾。下面保持这两组单元格，不能拆成六个独立测试行再将勾分配给某个子项。续表在右页顶部。
 
 | 测试点 | UT | SVA | IT | FPGA |
 |---|---|---|---|---|
 | 正常功能 | √ |  |  |  |
-| 内部接口 |  |  |  |  |
-| 内部 FIFO |  | √ |  |  |
+| 内部接口<br>内部FIFO |  | √ |  |  |
 | 连接关系 |  |  | √ |  |
-| 性能 |  |  |  |  |
-| BOOT |  |  |  | √ |
+| 性能<br>BOOT |  |  |  | √ |
 
 ### 【右页】
 
-为 FPGA 测试，编写 verilog 代码 eflash_fpga.v 用于模拟 eFlash 的功能行为（可综合）；那么 EFC 的整个功能都可得到测试，也可测试到 EFC 在系统中的行为（不可测试 eFlash 的时序，因为时序需要在 UT 测试保证）；
+为FPGA测试，编写verilog代码eflash_fpga.v用于模拟eFlash的功能行为（可综合）；那么EFC的整个功能都可得到测试，也可测试到EFC在系统中的行为（不可测试eFlash的时序，因为时序需要在UT测试保证）；
 
 ---
 
-## 原图：`GameViewer_V6W79lgJB6.png`
+## 原图：[GameViewer_V6W79lgJB6.png](../images/GameViewer_V6W79lgJB6.png)
 
 ### 【左页】
 
 # 参考文献
 
-[1] 《ET6001 EFC 模块需求规格书》  
-[2] 《Pegasus EFC 模块修改方案》  
+[1] 《ET6001 EFC模块需求规格书》  
+[2] 《Pegasus EFC模块修改方案》  
 [3] S40NEF64KX72_S0_Application_Notes.pdf  
 [4] S40NEF64KX72_S0_Datasheet.pdf  
 [5] ST_AN2606.pdf  
@@ -1681,7 +1656,7 @@ FLASH(XMS)
 
 ### 【右页】
 
-（原图右页无正文内容。）
+> 转录注：原图右页无文档正文。以上仅转录原作者列出的文献，不代表本轮读取或以这些文献补充正文。
 
 ---
 
@@ -1689,7 +1664,7 @@ FLASH(XMS)
 
 ### A. 已对原图核对的修订与标记证据
 
-累计范围为前24张原图。C01～C15继承第二轮已核对记录；第三轮新增C16～C41共26条来源出现位置记录。**41条是证据记录数，不是41个独立功能修改**：同一文字在不同页面/左右页重复出现仍分别定位，修订基线、标题和来源路径也明确注明其性质。没有旧值依据时，不推断“旧值→新值”；不能把普通彩色模块名作为版本差异。
+覆盖36张原图。C01～C41保留既有核对记录；本轮新增C42～C52共11条原图出现位置记录。**52条是来源记录数，不是52项独立功能新增**。C01为修订基线，C02为明确ET6601修订；红字、删除线、标题与路径的性质逐条区分。旧值未写明时不编造“旧值→新值”；第25张代码中的历史bug编号不能自动归属于ET6601新增功能。
 
 | 编号 | 原图文字 | 原文位置 | 原图标记／可确定的修改性质 | 原图 |
 |---|---|---|---|---|
@@ -1733,7 +1708,18 @@ FLASH(XMS)
 | C38 | 将读采样修改为efc_clk，提高读效率 | 图2-14后 Flash Main Normal Read优化说明 | 红字明确写出读采样修改 | [GameViewer_xS9sUaBAU3.png](../images/GameViewer_xS9sUaBAU3.png) |
 | C39 | FLASH读模式切换tMH/tMS时间优化： | 右页优化说明标题 | 红字标题；不等于独立功能修改 | [GameViewer_xS9sUaBAU3.png](../images/GameViewer_xS9sUaBAU3.png) |
 | C40 | 工规FLASH MARCO一共三种读模式Normal Read、Recall Read、Vread1。 | 右页tMH/tMS说明 | 红字；MARCO原拼写照录 | [GameViewer_xS9sUaBAU3.png](../images/GameViewer_xS9sUaBAU3.png) |
-| C41 | ET6601方案中存在以下问题：<br>1、ET6001、ET6601为了满足READMODE的RDEN使能后的HOLD时序tMH，三种读模式在每次进行最后一个读操作之后都进行了等待，降低了连续读的性能； | 右页tMH/tMS优化问题 | 红字明确点名ET6601问题；未提前拼接第25～27张的待复核解决方案 | [GameViewer_xS9sUaBAU3.png](../images/GameViewer_xS9sUaBAU3.png) |
+| C41 | ET6601方案中存在以下问题：<br>1、ET6001、ET6601为了满足READMODE的RDEN使能后的HOLD时序tMH，三种读模式在每次进行最后一个读操作之后都进行了等待，降低了连续读的性能； | 右页tMH/tMS优化问题 | 红字明确点名ET6601问题；后续方案见C42～C49 | [GameViewer_xS9sUaBAU3.png](../images/GameViewer_xS9sUaBAU3.png) |
+| C42 | 并且进入READ MODE CHANGE阶段本身应该等待tMH时间逻辑也未生效，实际在等待之前READ MODE就切换了； | READ MODE CHANGE批注 | 红字明确指出时序逻辑问题 | [GameViewer_Jv14xpHsSC.png](../images/GameViewer_Jv14xpHsSC.png) |
+| C43 | 2、READ MODE寄存分命令（包含写和擦除）： | 代码截图（三）标题 | 红字标题，具体寄存代码保持原图 | [GameViewer_SnGFBV0cqH.png](../images/GameViewer_SnGFBV0cqH.png) |
+| C44 | 但根据DATASHEET，只需要保证写和擦除时，Recall信号拉低即可，Normal Read、VREAD1和写擦除交叉操作并不需要发生Read Mode切换： | 跨左右页批注 | 红字作者说明；没有外查DATASHEET | [GameViewer_SnGFBV0cqH.png](../images/GameViewer_SnGFBV0cqH.png) |
+| C45 | ET6601优化方案为： | 右页模式表后 | 明确点名ET6601的红字引导标题 | [GameViewer_SnGFBV0cqH.png](../images/GameViewer_SnGFBV0cqH.png) |
+| C46 | 1、ET6601中优化为只有Recall Read需要等待tMH，Normal Read、Vread1不等待，提升Normal Read、、Vread1效率； | 优化方案第1项 | 红字明确给出优化；重复顿号保留 | [GameViewer_isM3FELYfq.png](../images/GameViewer_isM3FELYfq.png) |
+| C47 | 2、VREAD1在RETRY ERASE操作中提前拉高，在非RETRY ERASE和PROGRAM中保持不变，按照之前代码可能会出现Normal Read的tMH等待时间不够的违例，因此将VREAD1拉高时间修改为tNVS之后： | 优化方案第2项 | 红字明确给出VREAD1拉高时刻修改 | [GameViewer_isM3FELYfq.png](../images/GameViewer_isM3FELYfq.png) |
+| C48 | 3、进入Program、ERASE时都将Recall拉低；（与ET6601方案保持一致） | 优化方案第3项 | 红字；原文注明保持一致，不包装成新增 | [GameViewer_isM3FELYfq.png](../images/GameViewer_isM3FELYfq.png) |
+| C49 | 4、进入READ模式时，只根据VREAD1和Recall信号的变化记录的READ MODE来决定是否要等待tMS，而不是每次ERASE/PROGRAM都认为READ MODE发生过变化； | 优化方案第4项 | 红字明确给出模式判定方式 | [GameViewer_isM3FELYfq.png](../images/GameViewer_isM3FELYfq.png) |
+| C50 | 开启ECC和ECC_WR_RVS时，对于写入的ECC 8bit内容的第0、1、4-7bit进行取反，保证写数据为全1时，ECC计算结果8’hC进行处理后也为8’hFF（全1），此时不会对FLASH内容进行改写； | 2.3.5 FCTRL_GFB_FLASH_IF后 | 红字；保留8’hC原字面，不做ECC推导 | [GameViewer_98qp0YcXAk.png](../images/GameViewer_98qp0YcXAk.png) |
+| C51 | 开启ECC和ECC_RD_RVS时，对于读出的ECC 8bit内容的第0、1、4-7bit进行取反，保证ECC校验时ECC数据为写入前未取反的数据。 | 图2-15之前 | 红字；不推断旧实现 | [GameViewer_98qp0YcXAk.png](../images/GameViewer_98qp0YcXAk.png) |
+| C52 | ~~10~~；~~BOOTROM~~；~~NVR_CFG的PR0、PR1信息，需要bootrom中进行读取，并配置这个替换内容到efc对应寄存器上，保证程序功能的正确性；~~ | 第5章 对外要求表第10行 | 原图整行删除线；删除内容仍保留定位 | [GameViewer_f9t1x50Gvk.png](../images/GameViewer_f9t1x50Gvk.png) |
 
 ### B. 原图蓝字说明，单列不冒充确定修改
 
@@ -1744,33 +1730,22 @@ FLASH(XMS)
 | B03 | READ、RECALL操作，会经过ECC_CORR，进行ECC检测和纠错； | ECC/RD_DMUX说明；原图青蓝色，不推断新增性质 | [GameViewer_Pi2p76SFY0.png](../images/GameViewer_Pi2p76SFY0.png) |
 | B04 | VREAD_CHK（含Retry的VREAD_CHK）操作，直接检测GFB_IF进来的数据是否全1，不经过ECC_CORR，目的是检查擦除操作是否擦干净，ECC域段和DATA域段都必须为全1,； | ECC/RD_DMUX说明；原图青蓝色；重复标点照留 | [GameViewer_Pi2p76SFY0.png](../images/GameViewer_Pi2p76SFY0.png) |
 | B05 | 注意：在power_off状态下，需要将Flash所有的输入接0； | 2.3.3 FCTRL_POWER_PROC，原图蓝字；仅恢复作者说明，不外查引用PDF | [GameViewer_ceValKI1oj.png](../images/GameViewer_ceValKI1oj.png) |
+| B06 | 当信号置1后，写动作不会终止，应用程序可忽略该错误，继续执行当前写操作，并可以继续执行新的写/擦除操作；<br>该状态不须清零也可以执行新的写/擦除操作； | 3.1 选通错误，青蓝字片段；两处分别引用 | [GameViewer_bJ7d9eVqlF.png](../images/GameViewer_bJ7d9eVqlF.png) |
+| B07 | 该状态不须清零也可以执行新的读/写/擦除操作； | 3.1 配置ECC1bit错误，青蓝字 | [GameViewer_bJ7d9eVqlF.png](../images/GameViewer_bJ7d9eVqlF.png) |
+| B08 | 不正确<br>对于配置接口，该状态必须清零才可以执行新的读/写/擦除操作； | 3.1 配置ECC2bit错误；蓝色词及青蓝色句，非连续文字，末句跨到下一张 | [GameViewer_bJ7d9eVqlF.png](../images/GameViewer_bJ7d9eVqlF.png) |
+| B09 | 该状态不须清零也可以执行新的读/写/擦除操作； | 3.1 数据ECC1bit错误，青蓝字 | [GameViewer_hoWrmQ3kyX.png](../images/GameViewer_hoWrmQ3kyX.png) |
+| B10 | 不正确 | 3.1 数据ECC2bit错误，原词蓝色 | [GameViewer_hoWrmQ3kyX.png](../images/GameViewer_hoWrmQ3kyX.png) |
+| B11 | 该状态不须清零也可以执行新的读/写/擦除操作； | 3.1 门控APB总线访问错误，青蓝字 | [GameViewer_hoWrmQ3kyX.png](../images/GameViewer_hoWrmQ3kyX.png) |
+| B12 | 该状态不须清零也可以执行新的读/写/擦除操作； | 3.1 复位APB总线访问错误，青蓝字 | [GameViewer_hoWrmQ3kyX.png](../images/GameViewer_hoWrmQ3kyX.png) |
+| B13 | 该状态不须清零也可以执行新的读/写/擦除操作； | 3.1 门控AXI总线保护错误，青蓝字 | [GameViewer_hoWrmQ3kyX.png](../images/GameViewer_hoWrmQ3kyX.png) |
+| B14 | 该状态不须清零也可以执行新的读/写/擦除操作； | 3.1 复位AXI总线保护错误，青蓝字 | [GameViewer_OCJBCUSbNK.png](../images/GameViewer_OCJBCUSbNK.png) |
+| B15 | 与SMIC交流后，不能实现更长的Burst编程--有预编程和编程两个阶段，都需要对应的地址和数据，也就意味着需要数据缓存，这一版确定缓存16个数据； | 4.2 写性能评估，青蓝色作者说明；不作为本轮测试结果 | [GameViewer_b5AJYTEhY1.png](../images/GameViewer_b5AJYTEhY1.png) |
+| B16 | 要求确认后，添加到钉钉共享文档，做为系统待办，便于统一跟踪。 | 第5章表格下，蓝字；只转录原文，不执行钉钉操作 | [GameViewer_f9t1x50Gvk.png](../images/GameViewer_f9t1x50Gvk.png) |
 
-> 普通目录链接的蓝色下划线、签名栏横线、图中用于区分时钟域或模块名称的颜色均不计作6601版本修改。蓝字说明共5条，单列不混入C编号数量。
+> 普通目录链接的蓝色下划线、签名栏横线、图中用于区分时钟域或模块名称的颜色均不计作6601版本修改。蓝字按出现位置单列，不混入C编号数量。
 
-### C. 历史已提取记录：对应原图尚待本轮核对
+### C. 来源适用边界
 
-以下来自历史正文，仍保留，但第25～36张未完成本轮逐图核对，不计入上述41条。第24张的读采样优化及tMH/tMS问题已逐图核对并归入C37～C41，不再重复列项。以下“修改性质”是历史记录，不能据此提前宣布方案已核对完成。
+第25～36张已完成首轮原图核对，旧“历史记录待核对”区已由C42～C52取代，不再保留两套相互竞争的修改清单。第25张问题单/代码为原文引用的历史材料，不因出现在本文件中就认定为6601新增。模式表中的X、代码diff的增加/删除行、原图色块和删除线均按来源保存。
 
-#### READ MODE CHANGE 等待 tMH 逻辑问题
-
-- **原始文字**：并且进入 READ MODE CHANGE 阶段本身应该等待 tMH 时间逻辑也未生效，实际在等待之前 READ MODE 就切换了；
-- **所在位置**：Synchronous Read Cycle Timing Diagram / 配置代码截图下方红色批注
-- **原图**：`../images/GameViewer_Jv14xpHsSC.png`
-- **修改性质**：原图红字明确指出的 READ MODE CHANGE 时序问题
-
-#### ET6601 READ MODE 优化方案
-
-> 该组修改从“ET6601优化方案为：”开始，内容跨连续页面。
-
-1. **原始文字**：ET6601中优化为只有Recall Read需要等待tMH，Normal Read、Vread1不等待，提升Normal Read、Vread1效率；
-   - **原图**：`../images/GameViewer_isM3FELYfq.png`
-2. **原始文字**：VREAD1在RETRY ERASE操作中提前拉高，在非RETRY ERASE和PROGRAM中保持不变，按照之前代码可能会出现Normal Read的tMH等待时间不够的违例，因此将VREAD1拉高时间修改为tNVS之后；
-   - **原图**：`../images/GameViewer_isM3FELYfq.png`
-3. **原始文字**：进入Program、ERASE时都将Recall拉低；（与ET6601方案保持一致）
-   - **原图**：`../images/GameViewer_isM3FELYfq.png`
-4. **原始文字**：进入READ模式时，只根据VREAD1和Recall信号的变化记录的READ MODE来决定是否要等待tMS，而不是每次ERASE/PROGRAM都认为READ MODE发生过变化；
-   - **原图**：`../images/GameViewer_isM3FELYfq.png`
-
-- **所在位置**：FCTRL_GFB_FLASH_IF 前的 READ MODE 优化说明；前一页以“ET6601优化方案为：”引出
-- **关联原图**：`../images/GameViewer_SnGFBV0cqH.png`、`../images/GameViewer_isM3FELYfq.png`
-- **修改性质**：截图红字明确给出的 ET6601 优化方案
+原图未给出的旧值、需求动机和实现细节不补写。原文相互矛盾的容量、位宽、模块名或时钟范围不在此处强行裁定；统一待确认位置见[EFC提取与验收报告](../../EFC_提取与验收报告.md)。

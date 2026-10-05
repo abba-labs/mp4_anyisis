@@ -1,0 +1,61 @@
+{
+  "round": 10,
+  "input_head": "7818ec4b5501391747ea3bfb52a68f1010825fc0",
+  "closed": [],
+  "remaining": {
+    "lld": 19,
+    "lrs": 3,
+    "aux": 2,
+    "source": [
+      "S01"
+    ]
+  },
+  "next_gap": "LLD-U19",
+  "next_image": "6601芯片截图/sarc/sarc_lld/images/GameViewer_YbkCdqx6qz.png",
+  "branch": "docs/restore-6601-screenshots",
+  "content_commit": "ff79a75288282354ab810c4206b555ed190d4252",
+  "remote_head_at_readback": "ff79a75288282354ab810c4206b555ed190d4252",
+  "run_id": 37318685514,
+  "publication_status": "remote_saved_and_git_fetch_byte_verified",
+  "all_target_bytes_match": true,
+  "temporary_files_removed": true,
+  "final_acceptance": false,
+  "files": [
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md",
+      "git_blob": "193b9be010868fe02a31d5a3b71c61a1e8be1b86",
+      "bytes": 121589,
+      "sha256": "67e1b1b4c707a1d162869d151d81e69ec41a7ed27fe580f089dd63d286f4ce67"
+    },
+    {
+      "path": "6601芯片截图/RESTORE_PROGRESS.md",
+      "git_blob": "24d5e4ab372cdd561be4c36a5ade4f072a2257dc",
+      "bytes": 12134,
+      "sha256": "61fd17f64ceb26840356261391b990586c9afb015bd141926e89c5bd61431ccf"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_提取与验收报告.md",
+      "git_blob": "80c3a96d980c109c0ab42107d1ec88aaa8a524bf",
+      "bytes": 18716,
+      "sha256": "5ba4bf269a602954d4455ef0cfb499d91ab2b3c6ad2b5640b59cd6b0b79b03e0"
+    },
+    {
+      "path": "NEXT_CHAT_HANDOFF.md",
+      "git_blob": "1a0623ff6b1686accc1e81f4a8151945dad58fa7",
+      "bytes": 6046,
+      "sha256": "fead244da4b661230d8275f2d627c1bead17a7a8888052c93c0a05d646755231"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_GAP_ROUND10_REVIEW_20261005.md",
+      "git_blob": "02568aee33b67315b2bd58d2cb01f8cb8658142a",
+      "bytes": 2202,
+      "sha256": "2f8193aaa012df28bab36d24a17452b2e7ed2f7655b220b0523153aea413012c"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_GAP_ROUND10_IMAGE_LEDGER_20261005.json",
+      "git_blob": "ee6c08de17b04ae971f4392b860893498b92fc08",
+      "bytes": 2220,
+      "sha256": "564578aa161e0ca14b872bb8ba2dc8d8ed226240fbcecba709cc3ea4c4509bb0"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "round": 9,
+  "input_head": "b73297b24dfca85f4031d7bc79935013301946bf",
+  "images": [
+    {
+      "gap": "U07",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_UUhaiE4moy.png",
+      "blob": "a313dbefafac2e033dc20bc8edd6450b31694494",
+      "bytes": 1117302,
+      "sha256": "0276aa88c63a138878c4b7d3aaaa1fa96d1c6f86900d22b5543ea62c915ec686",
+      "status": "targeted_rechecked"
+    },
+    {
+      "gap": "U08",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_ba6sdetThH.png",
+      "blob": "3d894f4d5f2a909a7f00ef48e91bd1620277aaab",
+      "bytes": 736311,
+      "sha256": "488e1ac00686bf4e8d30cba980e1e4c4d0bb0d63a25a011c8167e8741c63e58d",
+      "status": "targeted_rechecked"
+    },
+    {
+      "gap": "U09",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_LoWatHzLVG.png",
+      "blob": "d19ad15816857dc070519fb8d8bccebfc0d62788",
+      "bytes": 1408438,
+      "sha256": "08c6b5aa76af8f70b8f3dd7d07edc75e84124128e96ee9c746bce2936fb8ce7e",
+      "status": "targeted_rechecked"
+    },
+    {
+      "gap": "U10",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_mjeYzTB3j7.png",
+      "blob": "001b40389322ab4e7f03e882ed9fb9095f1a7d0e",
+      "bytes": 1365943,
+      "sha256": "3c87d0fd0026948880dd859b5e424903e752b848a606aec15253237cdb1facaa",
+      "status": "targeted_rechecked"
+    },
+    {
+      "gap": "U11",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_PecSuT1xBB.png",
+      "blob": "25d27cb832d4ebe7aac85d40533d3ab468c18bd3",
+      "bytes": 1182638,
+      "sha256": "7ca8cf0cd21f114a162f5efbc1f322df577a149e750a8bdf0f6b448c17068379",
+      "status": "targeted_rechecked"
+    },
+    {
+      "gap": "U12",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_SeEx4da40l.png",
+      "blob": "ea1bf1aa4de62e2b0f419e707b100b7a43fa56eb",
+      "bytes": 890703,
+      "sha256": "0b56bbb889bee6ebd08c30fe1a890fc37d66af2a9e65bb7d1e522b2819d4fb0e",
+      "status": "targeted_rechecked"
+    }
+  ],
+  "closed": [],
+  "remaining": {
+    "lld": 19,
+    "lrs": 3,
+    "aux": 2,
+    "source": [
+      "S01"
+    ]
+  },
+  "next_gap": "U13",
+  "next_image": "6601芯片截图/sarc/sarc_lld/images/GameViewer_ZwgMgCyaeL.png"
+}

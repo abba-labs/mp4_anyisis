@@ -1,5 +1,12 @@
 # ET6601 截图还原接续入口
 
+## 第九轮最新断点
+
+第九轮已回查LLD-U07～U12六张原PNG，补入sample/conversion、signed下方两行说明、缓存j-1/j+1索引和计数输入拼接。全部仍有局部缺口，无整组关闭；已完成U01～U12定点回查，不重复首轮。SARC64/64、全仓124/200不变，LLD19＋S01、LRS3、辅助2继续开放；78条来源位置不变。下一项LLD-U13：GameViewer_ZwgMgCyaeL.png左右时序图。
+
+记录：`6601芯片截图/reviews/SARC_GAP_ROUND9_REVIEW_20261005.md`；正式保存及回读见同轮REMOTE_SAVE。下方旧断点仅为历史快照。
+
+
 2026-10-05，第八轮。仓库`abba-labs/mp4_anyisis`；唯一分支`docs/restore-6601-screenshots`。
 
 ## 当前断点

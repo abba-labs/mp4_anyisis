@@ -994,11 +994,11 @@ VC1、VC2、VC3对应位置1，即该4个虚拟通道被软件强制触发，然
 
 **图5-17 数模接口信号时序示意**
 
-图中文字转录：`clk`、`counter`、`start`、`spltime_en`、`trigger_mode`、`saradc_mode`、`mux_se[3:0]`、`mux_df[3:0]`、`ready`、`data`。采样和转换区间的两个小框在原图中保留。
+图中文字转录：`clk`、`counter`、`start`、`spltime_en`、`trigger_mode`、`saradc_mode`、`mux_se[3:0]`、`mux_df[3:0]`、`ready`、`data`。采样和转换区间的两个小框分别为`sample`、`conversion`（第九轮按原图字形补录）。
 
 可辨值及区间标记：`saradc_mode`为`se`、`df`两段；`mux_se[3:0]`标`n`、`n+1`、`n+2`；`mux_df[3:0]`中间段为`m`；采样延长段为`X+1`；数据段标`data n`、`data n+1`。`counter`可辨的前段为15、0、1，后续含14、15、0、1、2；省略点和波形边界仍见原图。
 
-> ⚠️ 原图待复核（SARC-LLD-U08）：`spltime_en`上方两行极小注释、采样/转换小框的完整字形及部分区间数值无法从当前截图逐字符确认。可辨片段包含`spltime_en`、`X+1`，没有补成确定的完整说明句。
+> ⚠️ 原图待复核（SARC-LLD-U08）：`sample`、`conversion`已在第九轮补录；`spltime_en`上方两行极小注释及部分区间数值仍无法从当前截图逐字符确认。可辨片段包含`spltime_en`、`X+1`，没有补成确定的完整说明句。
 > 原图：[GameViewer_ba6sdetThH.png](../images/GameViewer_ba6sdetThH.png)，左页图5-17。
 
 ### 【右页】
@@ -1110,7 +1110,9 @@ VC1、VC2、VC3对应位置1，即该4个虚拟通道被软件强制触发，然
 
 可辨控制与格式：`cal_offset`、`cal_gain/4096`、`5bit signed`、`14bit unsigned`；输入`u(12,0)`，signed后和加法后均为`s(16,2)`，偏置`s(5,0)`，增益`u(14,12)`，乘法后`s(30,14)`，round后`s(18,2)`，输出`s(16,2)`。
 
-> ⚠️ 原图待复核（SARC-LLD-U10）：图5-19采样结果校准图中`signed`下方两行细小中文及顶端范围值尚不能全部逐字符确认；可辨`2bit`、`s(16,2)`。已保留完整路径和可辨格式，不借其他数据通路图补齐未知句子。
+图中`signed`下方两行说明补录：整数小数位各扩展2bit为s(16,2)，以此作为后续计算基础，得到结果定点s(16,2)。增益顶部范围为`0~4`。
+
+> ⚠️ 原图待复核（SARC-LLD-U10）：第九轮已补两行中文及增益范围；5bit signed下方偏置范围的前导符号仍不够清晰，范围数值不以位宽推导填写。辅助图的15bit版本未用于替换此处5bit版本，U10暂不整组关闭。
 > 原图：[GameViewer_mjeYzTB3j7.png](../images/GameViewer_mjeYzTB3j7.png)，右页底部。
 
 > 原文差异：本张两幅图都标为5-19，且前面的软件触发图也为5-19；按原文分别保留，不重编号。
@@ -1283,7 +1285,7 @@ IIR滤波器（直接1型）的结构如下图所示。
 
 **图5-x 输入数据和运算结果的缓存**
 
-图中文字转录：分为`j==0`、`j>0`两组；可辨标签包括`flt_cal_dat_pre[j][15:0]`、`flt_dat_in[15:0]`、`16'd0`、`flt_cal_dat_o[15:0]`、`flt_dat_in_vld==1`、`flt_cal_en`、`flt_ch_num`、`flt_ch_vld`、`flt_buf_clr`。寄存器、MUX、反馈和清除连线仍见原始PNG。
+图中文字转录：分为`j==0`、`j>0`两组；可辨标签包括`flt_cal_dat_pre[j][15:0]`、`flt_dat_in[15:0]`、`16'd0`、`flt_cal_dat_o[15:0]`、`flt_dat_in_vld==1`、`flt_cal_en`、`flt_ch_num`、`flt_ch_vld`、`flt_buf_clr`。补录下组的两个相邻输入标签：`flt_cal_dat_pre[j-1][15:0]`、`flt_cal_dat_pre[j+1][15:0]`。寄存器、MUX、反馈和清除连线仍见原始PNG；未清楚的选择条件保持U11。
 
 > ⚠️ 原图待复核（SARC-LLD-U11）：两组buffer图顶部清除逻辑的完整布尔表达式、部分MUX选择条件及细小数组下标，不能从当前截图逐字符确认。已保留可辨标签，不按buffer工作原理补全逻辑。
 > 原图：[GameViewer_PecSuT1xBB.png](../images/GameViewer_PecSuT1xBB.png)，右页两组buffer图。
@@ -1312,7 +1314,7 @@ IIR滤波器（直接1型）的结构如下图所示。
 
 **图5-x 滤波器运算的数据流图**
 
-上部计数/控制图的可辨标签：`p_arg[3:0]`、`q_arg[3:0]`、`flt_type`、`flt_cnt[3:0]`、`flt_en`、`flt_buf_clr`、`flt_cal_en`、`4'd0`、`4'd1`。具体连线、反馈和多路选择见原图。
+上部计数/控制图的可辨标签：`p_arg[3:0]`、`q_arg[3:0]`、`flt_type`、`flt_cnt[3:0]`、`flt_en`、`flt_buf_clr`、`flt_cal_en`、`4'd0`、`4'd1`。左侧`flt_type`控制的MUX输入0为`p_arg[3:0]`，输入1为`p_arg[3:0]+q_arg[3:0]`；其输出全名仍待确认。具体连线、反馈和其他多路选择条件见原图。
 
 > ⚠️ 原图待复核（SARC-LLD-U12）：计算数据流图上部计数器周围的复合条件、部分比较/选择标签和细小下标，尚不能逐字符确认；下方可确认的乘加与缩放部分已分别转录，不能把整幅图标成完整文字化。
 > 原图：[GameViewer_SeEx4da40l.png](../images/GameViewer_SeEx4da40l.png)，右页上部计数/控制图。

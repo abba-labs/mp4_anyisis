@@ -1,0 +1,969 @@
+{
+  "date": "2026-10-05",
+  "branch": "docs/restore-6601-screenshots",
+  "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
+  "start_head": "8074c01f2bcc5e042a5647cab105f04676540264",
+  "source_run_id": 37255121805,
+  "source_artifact_id": 11321169896,
+  "directory_image_count": 91,
+  "directory_image_bytes": 93807289,
+  "scope_note": "目录sarc含27张独立XBAR文档截图；不能把91张统称为SARC正文。LRS13、方案设计40、辅助框图11暂为SARC相关64张；辅助框图原始文档边界尚待确认。",
+  "group_counts": {
+    "sarc_lrs": 13,
+    "sarc_lld": 40,
+    "sarc_diagrams": 11,
+    "sarc_xbar": 27
+  },
+  "lrs_reading_order": [
+    "GameViewer_1h9LEjdFpy.png",
+    "GameViewer_aAOwVv2FCQ.png",
+    "GameViewer_abFYmuKlpf.png",
+    "GameViewer_WtOrHaAqvH.png",
+    "GameViewer_nGNAOmfeWa.png",
+    "GameViewer_Kd7bk57Vx3.png",
+    "GameViewer_CeKX8gRMOe.png",
+    "GameViewer_hTRpPSKxgI.png",
+    "GameViewer_TxOL7pU1gm.png",
+    "GameViewer_PJZbqwPIEg.png",
+    "GameViewer_eyXbfnO5PJ.png",
+    "GameViewer_XDCKpTnaH0.png",
+    "GameViewer_Dt52xixULd.png"
+  ],
+  "lrs_first_pass_count": 13,
+  "other_groups_first_pass_count": 0,
+  "boundary_only_images": [
+    "6601芯片截图/sarc/sarc_lld/images/GameViewer_be9VqBBdbM.png",
+    "6601芯片截图/sarc/sarc_xbar/images/GameViewer_yUpAyoEWMN.png"
+  ],
+  "boundary_inspection_not_full_content_review": true,
+  "lrs_unresolved_groups": [
+    "SARC-LRS-U01",
+    "SARC-LRS-U02",
+    "SARC-LRS-U03"
+  ],
+  "images": [
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_323Uh2DKeH.png",
+      "type": "blob",
+      "blob_sha": "7bb858dbabb03267fb993b38674d76ef466f8d02",
+      "bytes": 942837,
+      "sha256": "6ccf180878ae3f25b6bf4ed0558bb0cca417594b1231bbcf9957e0c8bfad4043",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_7ULdHnhXju.png",
+      "type": "blob",
+      "blob_sha": "c392646fca5169c0f1d6dc7a0fbf272cb41cac51",
+      "bytes": 855670,
+      "sha256": "eabab68095debda8ddf53234b9763126a305217e3b767cee27647f2e5d1d7703",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_9akceoHcVF.png",
+      "type": "blob",
+      "blob_sha": "d9a27fc7ee9fe4f11f37aaf03b21b51c5efa8cf6",
+      "bytes": 785182,
+      "sha256": "15bf050d243b11e75226a206c0538dc94e854480333b613156f427af555e6a85",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_T5Wi63Rflj.png",
+      "type": "blob",
+      "blob_sha": "8b83510f353c8055d4829f59a32a1c7d4c0538c4",
+      "bytes": 707097,
+      "sha256": "d5cb7ab77af6d2855510bba66dc5d67122aa2271e9c1c2d4ae420ba45e92c704",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_Wb2pLAEGMa.png",
+      "type": "blob",
+      "blob_sha": "cdd4edf449e36f9d3c5351e98f847d77fd836cfb",
+      "bytes": 434314,
+      "sha256": "c1de2c3d34ca7ce4790341f7421ec7cb85761b4af719064ac4ce41ce1d7b53bf",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_c74Kardt0X.png",
+      "type": "blob",
+      "blob_sha": "05ec163969f83d744fb9502f0f76daad3bd30eaa",
+      "bytes": 351459,
+      "sha256": "cda74bf8401f2caeb3c16ca9ec8a5c3588973a523c8f951cf9516d3698d846e4",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_lHuv0AHt75.png",
+      "type": "blob",
+      "blob_sha": "ef294593149bfd24672292deb3ada81745c9b00f",
+      "bytes": 1137506,
+      "sha256": "7157e899d37d3627819056381f5a08a7e7ecf3a649709f58ce64fe8f973604f3",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_q40E10cbND.png",
+      "type": "blob",
+      "blob_sha": "91e740f4394f768c9454fdf8c8d118698a9ed511",
+      "bytes": 648125,
+      "sha256": "cdbe72e025b3881edd881e8a7ca6918b3660bac25e247717839e7eef91c9dde0",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_qNBgXqkj5C.png",
+      "type": "blob",
+      "blob_sha": "0cffa07796e6b26420ecbe673761df3624fece87",
+      "bytes": 351751,
+      "sha256": "0684291a2bc951b312152c5d31e5873564c645a2f850b95ef3042e055a833dae",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/抢占功能.png",
+      "type": "blob",
+      "blob_sha": "a94fb5c32f9b045100539f89fa66b100422ef0a2",
+      "bytes": 262835,
+      "sha256": "52d7091f697998e42d994968996f7234666b7fbf7c0fe578c10c7d4b4d9168f8",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/images/过采求和功能.png",
+      "type": "blob",
+      "blob_sha": "e099c67e9e0259f001cd6cce5561a0eb532c010a",
+      "bytes": 521954,
+      "sha256": "9b71b204a8df3577eef6971449a578d9cf45f9cb7e0e4a56e7bb215bfd4dbe0a",
+      "document_group": "sarc_diagrams",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_1EC7JuTBH6.png",
+      "type": "blob",
+      "blob_sha": "c95ac46b55b49a0c23fcafcb1d01268b6e296bbe",
+      "bytes": 1302013,
+      "sha256": "53685086b46b5fe72ab089ab9d605ea9fdd1027287ed408ff27ba1c86605575c",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_3VjshoX5So.png",
+      "type": "blob",
+      "blob_sha": "2a7dd8f0990c911bb32b9542cc271d2fdfba785b",
+      "bytes": 1436185,
+      "sha256": "6ec9cab48a2ed91b9e4051ab73e6f49a6ce1ab335f315faf2008090ba51728c5",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_3ZWo3TthG6.png",
+      "type": "blob",
+      "blob_sha": "a2da1637699e698aa449bc0dad353a55084a88e0",
+      "bytes": 966759,
+      "sha256": "e6bbfa7f36b91293ccd15186c119d146130b2040364e900eb20be04617b92b9b",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_40i6eF4ZKV.png",
+      "type": "blob",
+      "blob_sha": "b944fb5707aabc4d49241047b079839d3b1727c6",
+      "bytes": 1334152,
+      "sha256": "099336c9dbd8ea82ae0f615367a551b2ce6ad15424cf586c075bc5a19f630f02",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_BMYV2LGXFN.png",
+      "type": "blob",
+      "blob_sha": "3a9fe070d85363496f2bb740c3daf74e60447f0d",
+      "bytes": 999391,
+      "sha256": "dd2bc6de19f91fea66056b70aee8078cda9dd8399fe99ddee2566bf50766c626",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_CCQu4ftpmA.png",
+      "type": "blob",
+      "blob_sha": "44e54a849ba1d77109e27547fdeec073507f69d4",
+      "bytes": 1305700,
+      "sha256": "85e69819e98508c5ce3420b594cd201a7cd007d209135487f6ba40ab2131080b",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_Ef2CwLAmR0.png",
+      "type": "blob",
+      "blob_sha": "a5ca1556e0efc974f4b0274d50c9f3db57dcd55e",
+      "bytes": 984213,
+      "sha256": "6f0d5fc746cdfdac85d7234830548eee6c724104fe6b9be9edbf41595300727e",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_HFc4FYW2ed.png",
+      "type": "blob",
+      "blob_sha": "a611d0135657065cda53f27910bbe81d7a1977e1",
+      "bytes": 861383,
+      "sha256": "57d8a695131a32a79c638a27f3d4ba459879c454a67af13dea6aedcc658c9f15",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_LWEUsHJgSN.png",
+      "type": "blob",
+      "blob_sha": "afa799b4502979f42140f885caf96bee242d31f2",
+      "bytes": 1380016,
+      "sha256": "5b8272bec2a11e61c5e37759aac87dda2c4195c62eacfb56870f8d582ad22fd1",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_LoWatHzLVG.png",
+      "type": "blob",
+      "blob_sha": "d19ad15816857dc070519fb8d8bccebfc0d62788",
+      "bytes": 1408438,
+      "sha256": "08c6b5aa76af8f70b8f3dd7d07edc75e84124128e96ee9c746bce2936fb8ce7e",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_NaDPGTeO6W.png",
+      "type": "blob",
+      "blob_sha": "ed46297af085f1b3fc0759163bf0bfa441a753b6",
+      "bytes": 1104891,
+      "sha256": "49d033ed7641124bc169ac02786fe57f2ec0ddff1faff57d47c59cfa72154fa5",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_NaOtfAzWwn.png",
+      "type": "blob",
+      "blob_sha": "54f0ecffb5b1746a0f2f6ca768b4e3a90c224f36",
+      "bytes": 1061709,
+      "sha256": "b51118f6cb303d256cd45ea1cc0f70d013cc6e3b3b217a00f755267b78f601b3",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_NwJydpcqGX.png",
+      "type": "blob",
+      "blob_sha": "24490af56ea714bfe2bf73cf8bcdf363471f16e6",
+      "bytes": 763313,
+      "sha256": "f3cd3dc41c9428c3bceb07ca2e70a8486f7eabdf6d6a6185a1b42f0b6fea8847",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_O2LOSI5xZO.png",
+      "type": "blob",
+      "blob_sha": "3f8a38b893c4034c6a606cde8851c17284a13c55",
+      "bytes": 828887,
+      "sha256": "dc71af592c1d25a65e054974624cd264bafe4a687526420207f9f245c181426c",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_PecSuT1xBB.png",
+      "type": "blob",
+      "blob_sha": "25d27cb832d4ebe7aac85d40533d3ab468c18bd3",
+      "bytes": 1182638,
+      "sha256": "7ca8cf0cd21f114a162f5efbc1f322df577a149e750a8bdf0f6b448c17068379",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_Pv1TFSu3Dw.png",
+      "type": "blob",
+      "blob_sha": "600cbce4280f90063fccfd273c474817b60e1fb2",
+      "bytes": 1356639,
+      "sha256": "39056781f5e6b8f8c4f35c4301d4eb7eb90ac5bcf65665b7b0fa2fd2a37a01da",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_QZWwXnmnv1.png",
+      "type": "blob",
+      "blob_sha": "b0d889c2e271724563ecf6fe9c1e4b893ee11381",
+      "bytes": 1143647,
+      "sha256": "1ef296b35d81857ab14043749af19f5b261ff7dfe1f0bcea89eaf4fc75fe5ed8",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_SeEx4da40l.png",
+      "type": "blob",
+      "blob_sha": "ea1bf1aa4de62e2b0f419e707b100b7a43fa56eb",
+      "bytes": 890703,
+      "sha256": "0b56bbb889bee6ebd08c30fe1a890fc37d66af2a9e65bb7d1e522b2819d4fb0e",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_UFTfaW6Wm8.png",
+      "type": "blob",
+      "blob_sha": "5efe45e2761a3e41d123988d7279df15e8c840cb",
+      "bytes": 1173083,
+      "sha256": "9d46837e3520026e302797a95ab43ccb8e5482fc23d944e106715a85684f739a",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_UUhaiE4moy.png",
+      "type": "blob",
+      "blob_sha": "a313dbefafac2e033dc20bc8edd6450b31694494",
+      "bytes": 1117302,
+      "sha256": "0276aa88c63a138878c4b7d3aaaa1fa96d1c6f86900d22b5543ea62c915ec686",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_Wwj0z78cha.png",
+      "type": "blob",
+      "blob_sha": "6fa223705ef8441376912fe7904f671d260be077",
+      "bytes": 1171487,
+      "sha256": "2b91808ce092cf1bcf4b4849e5ac8d87c489dc5352e71cfa5067d1a2b98c0238",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_XEDw3yfNAf.png",
+      "type": "blob",
+      "blob_sha": "bc29d61e3f7438ead15ca35e368fcac90cd6cff7",
+      "bytes": 1178382,
+      "sha256": "1b1a1abf6e4132097894f1270d5fe1c1990dc62f17d7ffc6b3d7cb0129230caf",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_YbkCdqx6qz.png",
+      "type": "blob",
+      "blob_sha": "749af22e66ed1f8096ca17d544f23c92e995ae1e",
+      "bytes": 747919,
+      "sha256": "1c3f3f13ba9ef99f0cf1edc4c07f6674243874210c803446ae8871a5e37b6d27",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_ZQLidR9zmC.png",
+      "type": "blob",
+      "blob_sha": "d84990b92bd37f9a876af3230e443c370ac43a0b",
+      "bytes": 1125418,
+      "sha256": "80ff8e7296f38e6672b0fc4ec9d426857945755a894f05e33788f0d65c62c1d2",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_ZwgMgCyaeL.png",
+      "type": "blob",
+      "blob_sha": "fd8a3e189efc6e185bbee11dff8bb66b1fc1d1d8",
+      "bytes": 855881,
+      "sha256": "4b6f6c89a4cf40940e2c9d84d32bcd8a1b80d2740c34d9d3d15f505aa6d5b455",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_a0rP8s7Oan.png",
+      "type": "blob",
+      "blob_sha": "11af4d6b3c3a994db7643b967b47b9b4a0180684",
+      "bytes": 966724,
+      "sha256": "ca2edc37f6a42f7df747763a6e29abc8324d44780573d12c3895ec15a37d7673",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_aPDFQVxWhA.png",
+      "type": "blob",
+      "blob_sha": "6ea3378c304ef79474f6cb47b8964f72a65d0ea0",
+      "bytes": 754940,
+      "sha256": "61b15c1800895c5b56ebadde437fb32b35d1838e04ec8fdd6f61bc8ddb531c6e",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_bG98ufwLis.png",
+      "type": "blob",
+      "blob_sha": "314eb5f3b97cd2b6b5d6293157913ed0f5c31401",
+      "bytes": 1557829,
+      "sha256": "68e4e8cc894258dbeb93ae238624e5d96a58c2eb58d44df51468e06984c35d01",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_ba6sdetThH.png",
+      "type": "blob",
+      "blob_sha": "3d894f4d5f2a909a7f00ef48e91bd1620277aaab",
+      "bytes": 736311,
+      "sha256": "488e1ac00686bf4e8d30cba980e1e4c4d0bb0d63a25a011c8167e8741c63e58d",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_be9VqBBdbM.png",
+      "type": "blob",
+      "blob_sha": "6d72e9e01512c402bf9a4eaad10a38c335e9e339",
+      "bytes": 666093,
+      "sha256": "a06d56ae17c2b269190a645564ef93d2f4b5a2a5d7b2f2a5b3eb80b75029b5e0",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_cTDH1vvDLo.png",
+      "type": "blob",
+      "blob_sha": "18e667e5bf6c9a4c4f68a02d90cf285c159ddbca",
+      "bytes": 1241578,
+      "sha256": "4c327d00f6bda1e28e2e1f1e0324e4caa497976c5ed99b6147fdcf22c74a8986",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_e8XPWSdAMt.png",
+      "type": "blob",
+      "blob_sha": "c4d67082d6c9deb55cbc6bfe4e9a25e605517e0e",
+      "bytes": 1038376,
+      "sha256": "b8f1fc02e18971a394d694c9409c655b54190ff2a684676159a5290446af6afe",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_iSOJmCn28m.png",
+      "type": "blob",
+      "blob_sha": "2ff16e788e116c35ca5e00df10351c4032c0da02",
+      "bytes": 990577,
+      "sha256": "ddfb90b6b94e9333a79a932c2dc56b07618413c4b84fd8757dfe63de6ae7f2f2",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_m4qMLaqKqw.png",
+      "type": "blob",
+      "blob_sha": "5cf06c1e543d8dc1b546434280acf80ba695e24c",
+      "bytes": 1174358,
+      "sha256": "9fa591805c51a355a9fe15ea77f4aa8ade1ba4af0cd775ec83b4e2e085447f22",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_mjeYzTB3j7.png",
+      "type": "blob",
+      "blob_sha": "001b40389322ab4e7f03e882ed9fb9095f1a7d0e",
+      "bytes": 1365943,
+      "sha256": "3c87d0fd0026948880dd859b5e424903e752b848a606aec15253237cdb1facaa",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_pVe1evLu6f.png",
+      "type": "blob",
+      "blob_sha": "4542e169742208680956da36f6c3ca5647be1889",
+      "bytes": 1355216,
+      "sha256": "3b356ff2b81d44620a1643704818d82793f96d38ecc35b572b6c0217a0bfd91c",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_sKXvcDs2Yn.png",
+      "type": "blob",
+      "blob_sha": "a726524b50e50450de10e07b573c9934042d50a0",
+      "bytes": 687154,
+      "sha256": "34bad37ec4568a49417bfe8986215f50209e62e100ad9b6639ca1cf687a6cb8f",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_u5JeUrg4ga.png",
+      "type": "blob",
+      "blob_sha": "8962f2e36ee8a8cf27e92de28af9aa0bb0ee98b4",
+      "bytes": 1174840,
+      "sha256": "773ed56e774387fbe6ff5a6b2609f156c25420cb79a3185c18d98f95f86675ad",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_v6tUVs7H0k.png",
+      "type": "blob",
+      "blob_sha": "3a2e68a1449211c69a65a39e9d5ca046e11ef52e",
+      "bytes": 1025365,
+      "sha256": "7b867c7a51b80c8d07d71a9dfc2e475a0f8fa7dadd2128620cd33adcc5ef9af3",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_vZO2NlUXdv.png",
+      "type": "blob",
+      "blob_sha": "77950c727493bcdf84767f0eaa3b23e0ebb77ccf",
+      "bytes": 1217330,
+      "sha256": "30d74fb469c043b8ddd456e37ec00916a3f760481954069ebca5e5c8a958b94a",
+      "document_group": "sarc_lld",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_1h9LEjdFpy.png",
+      "type": "blob",
+      "blob_sha": "1d439dcbbfe666befc8c53be5e616550cd36fa17",
+      "bytes": 617380,
+      "sha256": "668692e02a8667669211ce4d52d8c3a69c85be7062a5db756b3a80302a3e7796",
+      "document_group": "sarc_lrs",
+      "reading_order": 1,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "封面：ET6601 SARC模块LRS设计文档；设计、评审、批准栏。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_CeKX8gRMOe.png",
+      "type": "blob",
+      "blob_sha": "a6016c0c0cb5bcbac5749a69d65fd579f3a531b3",
+      "bytes": 1311155,
+      "sha256": "7c3363156ef92286c3d6ebee6ac7c0ab35d8bf42c1aac2225492c530d6cfdf4e",
+      "document_group": "sarc_lrs",
+      "reading_order": 7,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "阈值逻辑/波形可辨标签、FUNC23～26，跨页FIR续句和8*20bit结果。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_Dt52xixULd.png",
+      "type": "blob",
+      "blob_sha": "fb9a372d8bc5ef1cf574e7d0f84ceae00a49f361",
+      "bytes": 757498,
+      "sha256": "76ed38b7845f7a7a17cd77227f771408f926a3449d2a2cd61abdb26700ee1721",
+      "document_group": "sarc_lrs",
+      "reading_order": 13,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "TRIG01剩余9行与TRIG02的3行；CMPC22项、STM6项；表中重叠位域和tm5照录；文档末尾。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_Kd7bk57Vx3.png",
+      "type": "blob",
+      "blob_sha": "617946e71115fda72aac52bd3855201476a120f4",
+      "bytes": 1329387,
+      "sha256": "e8e91606748a78d29b78c86a71fec55ab442849a008077677f7cc9da07e5a2e3",
+      "document_group": "sarc_lrs",
+      "reading_order": 6,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "FUNC15～22；软件触发、Blanking图、偏置/增益与超门限。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_PJZbqwPIEg.png",
+      "type": "blob",
+      "blob_sha": "f8e70987dbb7b82e8e7aa413e692bc8848273e55",
+      "bytes": 1402962,
+      "sha256": "d09fbe0da918f7f99283079f48763a0f0780886333cc53ed9743accb0847ce81",
+      "document_group": "sarc_lrs",
+      "reading_order": 10,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "FUNC44第1）～5）及两张16列嵌入表；36/27删除线；45～47e。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_TxOL7pU1gm.png",
+      "type": "blob",
+      "blob_sha": "fa71cc3fc1de35775b3d124a8456bb12da58f14f",
+      "bytes": 1404583,
+      "sha256": "ae261b5fa7675ba0893fcd3aeb6d7425c1209252e3c6ce38a6fcd0b78a3a2f39",
+      "document_group": "sarc_lrs",
+      "reading_order": 9,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "FUNC34续句、35～44；FIFO配置约束与重复结构图，U01重复位置。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_WtOrHaAqvH.png",
+      "type": "blob",
+      "blob_sha": "03e87315130952dd3a0acf39650e5d2e228af26f",
+      "bytes": 1238675,
+      "sha256": "3b5ea4da702fd46eb7474d5942740efbf679507cc943aac1e22659c787348b68",
+      "document_group": "sarc_lrs",
+      "reading_order": 4,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "模块简介、结构图可辨标签、FUNC01～07首段；3/2内核差异和Power-gating删除线；U01。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_XDCKpTnaH0.png",
+      "type": "blob",
+      "blob_sha": "cf03747274fe7716982a3ec92e5616578413a55f",
+      "bytes": 1267303,
+      "sha256": "71d59fdf84e77a2f6efe0881f7315ba877b7a66681d404f97f395e1029d1b6f5",
+      "document_group": "sarc_lrs",
+      "reading_order": 12,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "EVT01、LIMIT01～08、TRIG01的前3行；ETIM事件整条补回。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_aAOwVv2FCQ.png",
+      "type": "blob",
+      "blob_sha": "9ad7c81e6f5877d8fac03376a733a94dc52a22ea",
+      "bytes": 918630,
+      "sha256": "20c89041c8e8af47b4d567f0e701fd09cb8ba2730a23a55f68b95048fa38e7bc",
+      "document_group": "sarc_lrs",
+      "reading_order": 2,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "修订表6条非空记录、11个空白续行；历史删除线；v1.0与2026/10/1修改及颜色说明；目录前半。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_abFYmuKlpf.png",
+      "type": "blob",
+      "blob_sha": "302a2908ce93e4449cbc3ad58dd6acce6015d8ec",
+      "bytes": 665530,
+      "sha256": "7429fa5e808a3affea1b2b63757ffa9ff6d0bbdbeaa4ea3418bb00f8d1d30f6c",
+      "document_group": "sarc_lrs",
+      "reading_order": 3,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "目录2.1～2.5；图目录原文“未找到图形项目表”；表目录表1-1。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_eyXbfnO5PJ.png",
+      "type": "blob",
+      "blob_sha": "0ddd1c8519071ebc9df61aa83d65784682b19792",
+      "bytes": 1432136,
+      "sha256": "4d5f05cf993768930549f487d244d613b8916c8d96adb144744e69f828115c92",
+      "document_group": "sarc_lrs",
+      "reading_order": 11,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "FUNC47f/g、48；INTR01～05及EOC波形，U03的vc下标。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_hTRpPSKxgI.png",
+      "type": "blob",
+      "blob_sha": "e3c76d630b8473e2f754eadbc28b19eed0ee97f0",
+      "bytes": 1327487,
+      "sha256": "968c303e3963bee28386418950bd33fad62122df85930afd25463a3a42ecd2d8",
+      "document_group": "sarc_lrs",
+      "reading_order": 8,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "FUNC27～34，数据流图、DMA与状态；U02图内细字。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_nGNAOmfeWa.png",
+      "type": "blob",
+      "blob_sha": "cb820686aafda9802aa394da1da5c326aa64f19d",
+      "bytes": 1569889,
+      "sha256": "14c0bdc095431c6b3d55aab2d7ebf6676783cd0217e6ba9b7f14d87ab4e205cc",
+      "document_group": "sarc_lrs",
+      "reading_order": 5,
+      "status": "first_pass_reviewed_not_final_acceptance",
+      "review_note": "FUNC07续句、08～14，p0抢占及Trigger-to-sample时机。"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_064VlD8fJy.png",
+      "type": "blob",
+      "blob_sha": "35114f3e39b4c73145ed739827bdafb1ac649d72",
+      "bytes": 1292834,
+      "sha256": "5db02c7a061b5946ee6cec269fde921eb16ce825720455d5818b6af99a43803e",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_3njiF8SofL.png",
+      "type": "blob",
+      "blob_sha": "eb18ef4017621149be61cd4c222f4d06bd986929",
+      "bytes": 625173,
+      "sha256": "1f1e8061dee2fe93675c016549fab1fa3d72705ecd7988db6338d934502bdfe7",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_7jsvVSVHdw.png",
+      "type": "blob",
+      "blob_sha": "ebf14defa99bb2172d62490f8b878c409fcf9e94",
+      "bytes": 751096,
+      "sha256": "3d436fe959f3b13807bec9200382e1b4a1ff4636ef86b8505981d01e09243967",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_7vrsONkjgD.png",
+      "type": "blob",
+      "blob_sha": "2f77f9fc6099da87ccb6f8a8aef0e64f57d0a966",
+      "bytes": 1160005,
+      "sha256": "a2a19a74044972d1a84bb0dce0c5fcdf3f65eb814eb8dbbb79e4da8e53023e53",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_BJDG1Zjxti.png",
+      "type": "blob",
+      "blob_sha": "94cd292ceddbf9b8690696760c97c7bb76555555",
+      "bytes": 1163104,
+      "sha256": "22c7d287eda9f0b2d61f385314d019f80ce05d07972564d71533d36308d808f1",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_CpOsnywQhu.png",
+      "type": "blob",
+      "blob_sha": "97e89a6fdb919ad96716f5cd8e27f51f31313240",
+      "bytes": 806536,
+      "sha256": "184e122070f9c0221d41307500fba4b169daf80184bfcfc3894a8c3dc7208362",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_CqeT5pUL1x.png",
+      "type": "blob",
+      "blob_sha": "d4bb6caf88b51872580dfc8e5a1029ce40306b56",
+      "bytes": 1234796,
+      "sha256": "50512863b8bc884f8031b70ae2f566d0590c021043f55005d0d980fa80ffe944",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_DjSL3rXWx4.png",
+      "type": "blob",
+      "blob_sha": "a40f90b34df2dc5e041b1d3b0ee5e18dfe3d79a6",
+      "bytes": 713607,
+      "sha256": "d7090f5646a7775d590c5bc9d4853c1f21c11dd54bee01c1aa985bd1705060e0",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_FilEyIUnoO.png",
+      "type": "blob",
+      "blob_sha": "da28cf08b410dd8d635c836c32865bbc5978e584",
+      "bytes": 1090051,
+      "sha256": "7079032eefdb0f029b0b6630083ccb50d8b1eca66cb4e345f2d7c33c2b625161",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_Gg0PKIieqf.png",
+      "type": "blob",
+      "blob_sha": "2b3da61bb4b912eb1accd3baa49bd9c1bb74f048",
+      "bytes": 1235953,
+      "sha256": "7fac8f219010a7edb7adeb1254b191055fb6ac20410346c7aecfc8776ae1020d",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_K9wJHSnqdx.png",
+      "type": "blob",
+      "blob_sha": "c55c4dfec2a38cb1510263bb14de400914989227",
+      "bytes": 685927,
+      "sha256": "86684bd6eff442a5183ad49c8c0880ffaed81d9bf3eeb5ab2f2d77949e26c244",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_LS0PAMbqAJ.png",
+      "type": "blob",
+      "blob_sha": "c562a21fc29c62db3717821e47bbb13e9015f842",
+      "bytes": 1133661,
+      "sha256": "9473d9efc1ec85cfaf986630244bda0672df101822b9a1df117cbd98f0f08a37",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_NY8OuaK0XB.png",
+      "type": "blob",
+      "blob_sha": "2eebf6929fd36eca83ba1ca5a1ca0bbde9a6d25e",
+      "bytes": 1162120,
+      "sha256": "7a6efe13d9a9e17c62b9eba7e46f6f436f6ba1bf551c865f0892467afb4cdc58",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_SMcbqY9aCU.png",
+      "type": "blob",
+      "blob_sha": "d3cf9e4cfeafc715e3df49f19ff042e661a72ec1",
+      "bytes": 1264293,
+      "sha256": "2bfbaa29a321029543d0aafe625ca3766098a548b8dc91a6710663dcd41f2144",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_V3t3Z6WQYi.png",
+      "type": "blob",
+      "blob_sha": "00bf098512b55c5f9696febdc61b1f2cb876af35",
+      "bytes": 866664,
+      "sha256": "62771057a6a5a16d0736d5a961bd2ee2a1b2fdf8b27d4b7fc2f87cd13592a208",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_XqmNqCU6Lw.png",
+      "type": "blob",
+      "blob_sha": "2a982f04420742fe19a999b2d3a43b341286c6c1",
+      "bytes": 1055693,
+      "sha256": "bc1daa37241fb5bbb7f6c47c92cf404303f8f0c0f4d2ec42dee0bc5cc877b89b",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_Z7r3yKz86a.png",
+      "type": "blob",
+      "blob_sha": "c0a37724f7e9a0e60caf1124a06aa1c91fb4473c",
+      "bytes": 1148036,
+      "sha256": "dbf60b4aa682e5c7302138215ef420d38698e06cd05404419c211f7aeec5ba9c",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_b4H5jcq6ED.png",
+      "type": "blob",
+      "blob_sha": "a435289c03a306f6cb78ccd4c0ef3656e53db32b",
+      "bytes": 999818,
+      "sha256": "0cf0302daac7ce5cfecf37960204ad2528c2a0f5d6963a2d08c20c03ac4f8712",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_m38yfM9SyS.png",
+      "type": "blob",
+      "blob_sha": "c977ecb6be7dcfdc0cc5baa1d59e158ff51a4a89",
+      "bytes": 1276670,
+      "sha256": "426102d48e35bbe025b9e6262d0a9bfb474766b919916d5add1374b97b71b416",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_nYxX2xZgHL.png",
+      "type": "blob",
+      "blob_sha": "de22b13d5e5047973d52ed26fdd99014e6810ba0",
+      "bytes": 895185,
+      "sha256": "c25e1d688867a1c2e75707036d79a029c752a625b76e3253af00218457302bc1",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_nneQMiNCGh.png",
+      "type": "blob",
+      "blob_sha": "687ab84d9e02799049852f58c91a5949488d4561",
+      "bytes": 1158382,
+      "sha256": "a225c6e4107122f7b80883ede9bc26ff2f4a2c9b419e06f38b591dd88527429e",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_qPba5rmgGl.png",
+      "type": "blob",
+      "blob_sha": "c20ffe85efb5f30796fe61c837549e6bd157c6a0",
+      "bytes": 982827,
+      "sha256": "96cc01ac4b2abc95b3f33f159e820f27bd4764cd97fa14444ac181a7a54a6bd1",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_qZ6VVLkkSM.png",
+      "type": "blob",
+      "blob_sha": "552e71ad1d93a5d002b9009e36aafe74e0258959",
+      "bytes": 1193464,
+      "sha256": "1baefc57983d60750bffb8e069fbb9c83fddbfbcef21861e14f47f3eb28e0323",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_tikzmykACG.png",
+      "type": "blob",
+      "blob_sha": "55a0d89891842ecf4017918e7e34bbdddd61a91f",
+      "bytes": 823703,
+      "sha256": "ee61d89f84edf69bf230338c3570c1faba3b89b7736d439e50211f22c64bd272",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_x1UNjKA5fU.png",
+      "type": "blob",
+      "blob_sha": "8628bdd1ee7ab07acdba4b3ce1c9b75d60c270f7",
+      "bytes": 1284963,
+      "sha256": "1b73ae0df9acf4459b1ed1e1f026b4c12245fbaf696e673e6a3a4dea74115a8a",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_yUpAyoEWMN.png",
+      "type": "blob",
+      "blob_sha": "138ad5eb08a6785e18c94aae682d9be34d1ffe3f",
+      "bytes": 636291,
+      "sha256": "b6e0794d3c8a26c779b11e1f45631fa53006961f02cc217f84a7b859fb7e3011",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_yl5bEptpgs.png",
+      "type": "blob",
+      "blob_sha": "32ece83af86c180ee337e0a2020eee12c95123f9",
+      "bytes": 1292309,
+      "sha256": "b0a57a98b5dabeb9dd7c1764674c37e9e29d20e899e74508b551750b722b9a26",
+      "document_group": "sarc_xbar",
+      "reading_order": null,
+      "status": "inventoried_not_first_pass_reviewed"
+    }
+  ]
+}

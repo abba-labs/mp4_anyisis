@@ -2,19 +2,17 @@
 
 更新日期：2026-10-05。工作分支：`docs/restore-6601-screenshots`。
 
-## 1. 当前状态（第四轮）
+## 1. 当前状态（SARC第一批）
 
-**EFC全部60张已完成首轮逐图核对：LRS24、LLD36；没有未处理整页。本轮新处理LLD第25～36张，并回查旧疑点。7组旧项已核实补入；当前LLD还剩U01/U06/U09/U10/U11共5组局部源图字形待确认，不能宣布全文最终验收。**
+用户已同意EFC暂保持现状，当前转入SARC。EFC60张首轮成果、77条原图记录和5组LLD源图缺口不改动，不视为最终验收通过。
 
-当前完整正文：[EFC LRS](efc/efc_lrs/docs/EFC模块LRS设计文档.md)、[EFC LLD](efc/efc_lld/docs/EFC详细设计文档.md)。
-统一入口：[提取与验收报告](efc/EFC_提取与验收报告.md)、[6601修改点总览](efc/EFC_6601修改点总览.md)。
-来源与校验：[60张图清单](reviews/EFC_ROUND4_IMAGE_LEDGER_20261005.json)、[第四轮检查](reviews/EFC_ROUND4_VERIFY_20261005.json)。
+**SARC LRS的13张原图完成本批首轮核对，正文和32条修改位置记录已整理。** 3组图内细字仍待确认；方案设计40张、辅助图11张尚未逐图核对。当前sarc目录还包含独立XBAR文档27张，不应混入SARC正文。
 
-LRS原U01“拉低芯片复位”已核实，原文差异保留。LLD已核实U02/U03/U04/U05/U07/U08；其他3组旧项缩小范围，另2组是尾段新发现的小字问题。具体内容见报告，不把“5组”说成“5个字”。
+正文：[SARC LRS](sarc/sarc_lrs/docs/SARC_LRS设计文档.md)。入口：[提取与验收报告](sarc/SARC_提取与验收报告.md)、[6601修改点总览](sarc/SARC_6601修改点总览.md)、[91张来源清单](reviews/SARC_ROUND1_IMAGE_LEDGER_20261005.json)、[本批检查](reviews/SARC_LRS_ROUND1_VERIFY_20261005.json)。
 
-全仓累计首轮核对60/200张，尚有140张非EFC资料未开展本轮逐图核对。EFC来源记录为LRS25＋LLD52＝77条，蓝字另列LRS4＋LLD16；不是独立功能修改数、正确率或硬件通过率。
+全仓首轮核对累计73/200张：EFC60＋SARC LRS13；其余127张尚未首轮核对。阅读封面/来源预览不计成整页逐字完成。32条是原图出现位置，不是32项独立功能新增；73不是正确率、验收率或硬件通过数。
 
-下一次EFC接续只处理报告第4节5处同源字形，不从封面重做、不用旧芯片材料填字。本次不转去其他IP。历史各轮记录的“下一张”“未解决”是当轮状态，以本节和第四轮报告为准。
+下一入口：`sarc/sarc_lld/docs/SARC_LLD设计文档.md`，封面`GameViewer_be9VqBBdbM.png`、修订表`GameViewer_aPDFQVxWhA.png`。按章节确认原始页序再恢复，不能把字母排序当页序。LRS只回查报告列出的U01～U03，不从封面重做。旧EFC各轮断点仅作为历史保留。
 
 ## 2. 原始截图清点
 
@@ -27,14 +25,14 @@ LRS原U01“拉低芯片复位”已核实，原文差异保留。LLD已核实U0
 | CPLD PPI说明文档 | 7 | 本轮待复核 | 保持原始独立文档 |
 | EFC LRS | 24 | 全部首轮核对，U01已核实；原文差异保留 | 不重复处理已解决的图1-6小字 |
 | EFC LLD | 36 | 全部首轮核对；仅5组源图细字待确认 | 只按第四轮报告定位回查，不再留未处理整页 |
-| SARC功能框图资料组 | 11 | 本轮待复核，原始文档边界待确认 | 不以截图分组自动认定文档边界 |
-| SARC LLD | 40 | 本轮待复核 | 正文精校及明确修改标记 |
-| SARC LRS | 13 | 本轮待复核 | 正文精校及明确修改标记 |
-| SARC XBAR资料组 | 27 | 本轮待复核，原始文档边界待确认 | 先确认来源和阅读顺序 |
+| SARC辅助框图资料组 | 11 | 已清点/预览，未首轮逐图核对，原始文档边界待确认 | 不以截图分组自动认定文档边界 |
+| SARC方案设计（旧sarc_lld） | 40 | 封面已确认，正文未首轮核对 | 下一批按真实页序开展 |
+| SARC LRS | 13 | 首轮逐图核对；3组图内小字待确认 | 保持一份完整文档，后续定点复核 |
+| 独立XBAR文档（旧sarc_xbar） | 27 | 封面已确认，正文未首轮核对 | 独立处理，不混入SARC修改点 |
 | HAC_WRAP架构资料 | 1 | 本轮待复核 | 核对全部文字及明确修改标记 |
 | **合计** | **200** | **未最终验收** | **不能将旧文档的完成声明视为本轮验收证据** |
 
-模块合计：CPLD48，EFC60，SARC91，HAC_WRAP1。CPLD_INTERFACE来源分布：interface_cpld3、interface_cpld_cfg6、interface_cpld_crg1、interface_cpld_tcu1、interface_dma1、interface_efpga16、interface_efpga_cfg1、interface_int1、interface_ppi1、interface_test_pin1。
+原目录合计：CPLD48，EFC60，sarc目录91，HAC_WRAP1。sarc目录91中含SARC相关64（LRS13、方案40、辅助图11）及独立XBAR27；目录合计不能等同原始文档边界。CPLD_INTERFACE来源分布：interface_cpld3、interface_cpld_cfg6、interface_cpld_crg1、interface_cpld_tcu1、interface_dma1、interface_efpga16、interface_efpga_cfg1、interface_int1、interface_ppi1、interface_test_pin1。
 
 ## 3. EFC LRS逐图记录（第一轮保留）
 

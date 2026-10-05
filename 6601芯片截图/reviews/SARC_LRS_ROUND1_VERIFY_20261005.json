@@ -1,0 +1,114 @@
+{
+  "date": "2026-10-05",
+  "branch": "docs/restore-6601-screenshots",
+  "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
+  "source_run_id": 37255121805,
+  "source_artifact_id": 11321169896,
+  "export_file_checks": {
+    "count": 127,
+    "sha256": "PASS",
+    "git_blob": "PASS",
+    "bytes": "PASS"
+  },
+  "original_sarc_directory_image_count": 91,
+  "original_sarc_directory_bytes": 93807289,
+  "original_image_comparison_to_db9422f": "91 matching Git blobs",
+  "lrs_original_screenshot_count": 13,
+  "lrs_first_pass_count": 13,
+  "requirements": {
+    "FUNC": 48,
+    "INTR": 5,
+    "EVT": 1,
+    "LIMIT": 8,
+    "TRIG": 2
+  },
+  "body_tables": [
+    {
+      "columns": 4,
+      "data_rows": 17
+    },
+    {
+      "columns": 16,
+      "data_rows": 1
+    },
+    {
+      "columns": 16,
+      "data_rows": 1
+    },
+    {
+      "columns": 3,
+      "data_rows": 12
+    },
+    {
+      "columns": 3,
+      "data_rows": 3
+    }
+  ],
+  "raw_source_anchors": 13,
+  "source_anchor_reading_order_check": "PASS",
+  "relative_source_links": "PASS",
+  "table_column_consistency": "PASS",
+  "unexpected_markdown_emphasis": 0,
+  "change_position_records": 32,
+  "change_record_sequence": "C01-C32",
+  "restored_strikeouts": [
+    "Power-gating",
+    "27",
+    "historical row20250909 item2",
+    "historical row20250909 item5"
+  ],
+  "remaining_source_groups": [
+    "SARC-LRS-U01",
+    "SARC-LRS-U02",
+    "SARC-LRS-U03"
+  ],
+  "directory_vs_document_boundary_checked": true,
+  "xbar_original_title": "ET6601 XBAR模块需求规格与设计方案",
+  "lld_original_title": "SARC模块方案设计",
+  "efc_documents_changed": false,
+  "unreviewed_lld_diagram_xbar_text_changed": false,
+  "global_first_pass": 73,
+  "global_original_images": 200,
+  "first_pass_is_not_acceptance_or_accuracy": true,
+  "final_text_acceptance": false,
+  "hardware_tests_performed": false,
+  "publication_status": "local_validated_pending_remote_save",
+  "files": [
+    {
+      "path": "6601芯片截图/RESTORE_PROGRESS.md",
+      "bytes": 10740,
+      "git_blob": "594801ec7a061e259fb50fc69efedfb9756c2641",
+      "sha256": "7f5f30f06c592b53470fabccf91a6226b7beba99b50ce7b796d8582fa945f5b9"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_ROUND1_IMAGE_LEDGER_20261005.json",
+      "bytes": 39887,
+      "git_blob": "b138b06286fa4eb7a6217f8810a62244521bf1eb",
+      "sha256": "9d5e33940a266fd7d8c2ad064c61939be9b04517b8ef7ee17c17271d7175a0ed"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_6601修改点总览.md",
+      "bytes": 10116,
+      "git_blob": "fbd1ff8382b20b59edf98c5c3d90e80472a221a2",
+      "sha256": "749157cb98c890330c628b0ee324bdbfa02b989003fc2a76073cd464ceb93f73"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_提取与验收报告.md",
+      "bytes": 8129,
+      "git_blob": "53b6b2c218dff4b4f38408b6e7ab14d9fad28c83",
+      "sha256": "969fa7dfc076194d3276b6c87a5f20607f8860b6f365c0bf3c4bf933257fd7f2"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_lrs/docs/SARC_LRS设计文档.md",
+      "bytes": 40710,
+      "git_blob": "8be5907f70ba32412ffff63d752b60c1af583089",
+      "sha256": "06f1310c32d760817c1e6fe9dc66717456216a71367d893b4d83ebfb3e501b9c"
+    },
+    {
+      "path": "NEXT_CHAT_HANDOFF.md",
+      "bytes": 4264,
+      "git_blob": "822bd4ca4ed70d975cde919e7692d9d19dad8fee",
+      "sha256": "bfec026c8cd8f95eb90dbe10e67fa0afd669d8359e633f60b1c976e11c6ce440"
+    }
+  ]
+}

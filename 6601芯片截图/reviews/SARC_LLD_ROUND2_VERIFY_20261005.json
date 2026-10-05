@@ -1,0 +1,241 @@
+{
+  "date": "2026-10-05",
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "cdcad24ed8882a824962c9df56479c018295c0ab",
+  "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
+  "source_export_files_hash_verified": 127,
+  "lld_original_files_verified": 40,
+  "document": "6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md",
+  "new_first_pass_images": 14,
+  "lld_first_pass_images": 14,
+  "lld_total_images": 40,
+  "lrs_first_pass_images_unchanged": 13,
+  "sarc_related_total_images": 64,
+  "sarc_first_pass_total": 27,
+  "global_first_pass_images": 87,
+  "global_total_images": 200,
+  "unreviewed_lld_images": 26,
+  "source_gaps_in_reviewed_range": 7,
+  "lld_change_location_records": 15,
+  "incomplete_change_record_ids": [
+    "C11"
+  ],
+  "other_mark_records": 7,
+  "interface_signal_rows": 65,
+  "interface_signal_names": [
+    "clk_adc",
+    "adc_rst_n",
+    "sarc_hclk",
+    "sarc_hresetn",
+    "sarc_haddr[11:0]",
+    "sarc_hburst[2:0]",
+    "sarc_hprot[3:0]",
+    "sarc_hsize[2:0]",
+    "sarc_htrans[1:0]",
+    "sarc_hwdata[31:0]",
+    "sarc_hwrite",
+    "sarc_hrdata[31:0]",
+    "sarc_hready",
+    "sarc_hreadyout",
+    "sarc_hresp",
+    "sarc_hsel",
+    "sarc_d2a_adc_en",
+    "sarc_d2a_adc_start",
+    "sarc_d2a_adc_spltime_en",
+    "sarc_d2a_adc_trig_mode",
+    "sarc_d2a_adc_mux_se<4:0>",
+    "~~sarc_d2a_adc_mux_df<3:0>~~",
+    "sarc_a2d_adc_data<11:0>",
+    "sarc_a2d_adc_ready",
+    "sarc_a2d_outrd_hold",
+    "sarc_d2a_adc_gain_att",
+    "d2a_saradc_cmp_com_sel<2:0>",
+    "sarc_d2a_adc_os_se_tune<3:0>",
+    "sarc_d2a_adc_os_df_tune<3:0>",
+    "sarc_d2a_adc_cal_se_refp_inj",
+    "sarc_d2a_adc_cal_se_refn_inj",
+    "~~sarc_d2a_adc_cal_df_refp_inj~~",
+    "~~sarc_d2a_adc_cal_df_refn_inj~~",
+    "sarc_d2a_adc_test_sel",
+    "sarc_d2a_adc_ibias_sel[1:0]",
+    "sarc_d2a_adc_ref_mode",
+    "sarc_d2a_adc_ready_sel",
+    "sarc_ate_data_val",
+    "sarc_ate_data_out[11:0]",
+    "sarc_trig_in<127:0>",
+    "sarc_blk_trig_in<63:0>",
+    "sarc_intr",
+    "sarc_eoc0_intr",
+    "sarc_eoc1_intr",
+    "sarc_eoc2_intr",
+    "sarc_eoc3_intr",
+    "sarc_eoc2spl_trig<1:0>",
+    "sarc2etim_evt_out<3:0>",
+    "sarc2xbar_evt_out<3:0>",
+    "sarc_dma_req[3:0]",
+    "sarc_dma_single[3:0]",
+    "sarc_adcevt_dma_req",
+    "sarc_adcevt_dma_single",
+    "sarc_dma_ack[3:0]",
+    "sarc_wdt_dma_src_is_dly",
+    "sysc_sarc_1rw_ctrl_bus[63:0]",
+    "sysc_sarc_1r1w_ctrl_bus[63:0]",
+    "sarc_testpin0_sel[7:0]",
+    "sarc_testpin1_sel[7:0]",
+    "sarc_testpin2_sel[7:0]",
+    "sarc_testpin3_sel[7:0]",
+    "sarc_testpin[3:0]",
+    "sarc2cpu_data_vld",
+    "sarc2cpu_data[15:0]",
+    "sarc2cpu_vc_num[3:0]"
+  ],
+  "table_column_consistency": "PASS",
+  "image_link_check": "PASS",
+  "unique_image_anchors": 40,
+  "unreviewed_body_comparison": "PASS (26 blocks, only boundary whitespace normalized)",
+  "unreviewed_bodies": [
+    {
+      "image": "GameViewer_CCQu4ftpmA.png",
+      "body_sha256": "8eedabb1a202ebcc8f83878db47b476b537953f578901d49f425fb033089a42f",
+      "body_sha256_boundary_normalized": "f783404bffcd52205c2ee478aa3f9f8b8d6547b83ff4afd1091a93a3fd6b58ab"
+    },
+    {
+      "image": "GameViewer_NaOtfAzWwn.png",
+      "body_sha256": "c387b285541762bdb7c3917fadb2e334a4f2968774755759536c134738e0f76d",
+      "body_sha256_boundary_normalized": "31c1e9789a25ea82347c5d045e56773272cf70f924ee45a5c3afbe3fb30333cf"
+    },
+    {
+      "image": "GameViewer_a0rP8s7Oan.png",
+      "body_sha256": "70b9158eb59b49bca1db5f0dc37114d1784eef6d7be49157dec3b52c4ba8ca62",
+      "body_sha256_boundary_normalized": "2e2a7b92bb33bab0708f41547abbb1aa184365877927306516c97768d0b2a492"
+    },
+    {
+      "image": "GameViewer_40i6eF4ZKV.png",
+      "body_sha256": "aec91b5657c5a6899f265eeebd912b2dcc724ee533c5aee8bb5d2e30cdb49ea3",
+      "body_sha256_boundary_normalized": "7060990eae69b90a251e2622bd5841e165cd863419a074842b8288d69b7d45ea"
+    },
+    {
+      "image": "GameViewer_NwJydpcqGX.png",
+      "body_sha256": "402a49efb616abea44f98f26d27d43792e3b89e76b2b1135eaa15e7666fe7f21",
+      "body_sha256_boundary_normalized": "3ce1c4cfb4ba0b31da67dc5ad8f33adccf9680e9d445ee21f81e732c34e16a0d"
+    },
+    {
+      "image": "GameViewer_Pv1TFSu3Dw.png",
+      "body_sha256": "3fe339c71e5bead5d111eedc33239e3362a2e41209a199146f22456f106c3e71",
+      "body_sha256_boundary_normalized": "4a74c749ac6461e8e1caae3fae23299a6b22a4511362c923125668a49b0a3285"
+    },
+    {
+      "image": "GameViewer_sKXvcDs2Yn.png",
+      "body_sha256": "bb426639eb496388ce4e9d4310bb8b83675431eaffd37f9aa0492792ae8446bc",
+      "body_sha256_boundary_normalized": "66909e2f5edc3865990451ae32b5b43fb82dc0111fe85dafcf3f310663e70ba7"
+    },
+    {
+      "image": "GameViewer_ba6sdetThH.png",
+      "body_sha256": "fa217c9566c9196ee16fb9edd0d1eda895dda88217806e19010fdc2feea7571a",
+      "body_sha256_boundary_normalized": "96268f3f7a79bbb1e01d326606b1e371b28dd6363ecd2fe673324e85cfa2c471"
+    },
+    {
+      "image": "GameViewer_LoWatHzLVG.png",
+      "body_sha256": "42565172459196fb31405b6542460c5b7d0378fa86b0a05dc56d3768e24ba5b3",
+      "body_sha256_boundary_normalized": "58c5316be75ba2125f9e78c4c032038635ce6504c19c3823b06b7d0ba6a6e670"
+    },
+    {
+      "image": "GameViewer_mjeYzTB3j7.png",
+      "body_sha256": "b1a293255b645822b5dafca35c35be6ba4183a41fde522274f0dd13580a8f4d7",
+      "body_sha256_boundary_normalized": "cc748f5ed3ccefd709eb3a57879fc8439921f7a2bb1808db35e995a481d330c1"
+    },
+    {
+      "image": "GameViewer_UFTfaW6Wm8.png",
+      "body_sha256": "6b9043d793ddf88a3b4feb8b0b895bf249520d4f91889a93db823c7720e541c4",
+      "body_sha256_boundary_normalized": "07b901da7ce169bac88463ed7f38da99ec03f2d24d35fe22de87f6efc8e4dcf9"
+    },
+    {
+      "image": "GameViewer_NaDPGTeO6W.png",
+      "body_sha256": "f8401328179ee8f3fb9c31490d8916bf6b4935a0ab547728404fb019df3899d7",
+      "body_sha256_boundary_normalized": "4c197f675197701b8dda5179df0d6fc8f1e3c969b056b4681a0e33d32a16146f"
+    },
+    {
+      "image": "GameViewer_Ef2CwLAmR0.png",
+      "body_sha256": "1d9e42c2b8084e0a25ad6344f78b80a4ea7e42f60ffcc5e93881ee9fe68f47f8",
+      "body_sha256_boundary_normalized": "1882ed07756c1b03616f3da84956600cf73b587832ae8d1504996bf8908aa9c5"
+    },
+    {
+      "image": "GameViewer_vZO2NlUXdv.png",
+      "body_sha256": "fa4bee499e908126d6fa2fb5c0ea844c3ca7efef1bff3221f31466efcca46dbf",
+      "body_sha256_boundary_normalized": "b6083f3e7bbda1ab7227993fc81a23dcf43553acc05ab14dba3b5de5533cf98a"
+    },
+    {
+      "image": "GameViewer_SeEx4da40l.png",
+      "body_sha256": "0d2a9344228f4ece7488c1cfbadb3cdf203b63f8695ea93719f2dda0f706e29f",
+      "body_sha256_boundary_normalized": "2ef442cb572dad32af7ef8e8b31f1f71f4f5a591ef0e5120bb2c60b80ce18f6b"
+    },
+    {
+      "image": "GameViewer_PecSuT1xBB.png",
+      "body_sha256": "72bd8c533a56a2a55a35d7120e5fd125ab9c1e761f55eeb05d8c10bdd4626a8b",
+      "body_sha256_boundary_normalized": "c4c615ff0a94e41818a50316d8e79c411d84524746647852a32d942fe2d8dd29"
+    },
+    {
+      "image": "GameViewer_pVe1evLu6f.png",
+      "body_sha256": "9b9904edb2eb17844a3677b5a1573960aad42561d100e9ec614dce6433c14cb4",
+      "body_sha256_boundary_normalized": "2a35c0e91fe1c46567840adfad9ace950c681b0de5a8f5a771e1492dd609015c"
+    },
+    {
+      "image": "GameViewer_iSOJmCn28m.png",
+      "body_sha256": "0e987113a4e8928df432182642d9f6020c16025eee5c7919c2948c98d3906c36",
+      "body_sha256_boundary_normalized": "304ed735e50af1fd46d05b7095d7a908355ed0f70dded6b5cef92cb7ac3333ca"
+    },
+    {
+      "image": "GameViewer_HFc4FYW2ed.png",
+      "body_sha256": "29bc35da0cbc1929652f7cff8afef0610877ae29a2f5a1229d08ce23eeecf5e2",
+      "body_sha256_boundary_normalized": "4a2e3438ddbfb9bf9c9057d37f57fd4e9727cd1538d934aaaaa93bc0114d38f4"
+    },
+    {
+      "image": "GameViewer_ZwgMgCyaeL.png",
+      "body_sha256": "c181bfd9c88c4bbf4f0bd8a28a944f2a8dfd2257dcc606b8c1ea8151253571d0",
+      "body_sha256_boundary_normalized": "b0f57ecb7f16383c916aa5dc2d53ef538d43b24c42e688a27ce21ac81095b26c"
+    },
+    {
+      "image": "GameViewer_e8XPWSdAMt.png",
+      "body_sha256": "e18e0518fdce787f50111e02db24a65e100a1de4f0da103c1504056ae1791a31",
+      "body_sha256_boundary_normalized": "be944a23c43772f80292fcd4dbbddd95702e8e237b5fdd0d561b28107abdaae7"
+    },
+    {
+      "image": "GameViewer_1EC7JuTBH6.png",
+      "body_sha256": "101940456fad9b92ee1364b03dcc5a57c3537acbd9f543a2187f062c4550e57e",
+      "body_sha256_boundary_normalized": "932105af26841497a88489e5f2bde6b3e9ccc793e06899758e8d05cf26917574"
+    },
+    {
+      "image": "GameViewer_cTDH1vvDLo.png",
+      "body_sha256": "7f0d970f906d30515eaa231134242e0afcac292be20eaf2d61f083f4670d64fa",
+      "body_sha256_boundary_normalized": "a6fb00303f3b8efe822abf8a4e19a93c1dc2a9f6c6c0ef02c70742009c90cd2b"
+    },
+    {
+      "image": "GameViewer_m4qMLaqKqw.png",
+      "body_sha256": "134171c095a21a89da902794c858d50423a72811543562b29362c850480b62a1",
+      "body_sha256_boundary_normalized": "3efdf7f6a2191faeedf37d3cf507efdeea5038f122f0698ba7ccb0add2697190"
+    },
+    {
+      "image": "GameViewer_u5JeUrg4ga.png",
+      "body_sha256": "2e30ddbd5ad3f61ebb165d6903d02a59585ce2cabf67bfcaafe15343ce120e26",
+      "body_sha256_boundary_normalized": "bbbc087eefc26093e4fbc66570af763fd7474cba0fd9a4ba3bf7dde5d57cdc7b"
+    },
+    {
+      "image": "GameViewer_YbkCdqx6qz.png",
+      "body_sha256": "15f030a84d6b429c477607c4c62424d43f16c1d8b6e9f139b83d0e7032d507f5",
+      "body_sha256_boundary_normalized": "aaa47da52f0f01846b1dc6bff1ce3023bc1ba53e9f679bf2494074e60ea7f3c7"
+    }
+  ],
+  "reviewed_region_noise_check": "PASS",
+  "original_images_modified": false,
+  "efc_documents_modified": false,
+  "sarc_lrs_document_modified": false,
+  "hardware_tests_performed": false,
+  "final_text_acceptance": false,
+  "save_state": "local_validated; remote confirmation in separate REMOTE_SAVE receipt",
+  "output": {
+    "bytes": 88334,
+    "git_blob": "064e09e52bfdb767785d2be156619fec1463628a",
+    "sha256": "a2f0a08d25eba242f79e88257efd8665f9bf18757a17d6390ba80221a8006b36"
+  },
+  "limits": "Structural/source/save checks do not establish character accuracy. Fourteen images reviewed; remaining 26 historical blocks are not visually reviewed."
+}

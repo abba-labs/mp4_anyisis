@@ -1827,7 +1827,7 @@ adc_spltime_en为高时（有扩展采样）选择adc_spltime_en_1d的下降沿�
 adcreg_receive需根据时钟方案调整交互方式，所有逻辑在200M下；
 
 > 图中文字转录（本图未见独立图号/图名）：左侧堆叠标签分别为~~sarc2.adc_result~~、`sarc1.adc_result`、`sarc0.sarc_result`；左下两框“预处理运算结果”“滤波运算结果”，选择信号`cfg_outd_sel`及`0`、`1`。右侧接收框标题`sarc_adcresult_receive`；内部“SARC0通道”“SARC1通道”和浅蓝“SARC2通道”。右下寄存器块可辨`ids_result_reg0`、`ids_result_reg1`；浅蓝顶块、时钟图例、位宽/数组及右侧配置输入见U19。原文`adc_result`/`sarc_result`差异照录，不自行统一。
-> ⚠️ 原图待复核（SARC-LLD-U19）：上部sarc/cpu_wrap时钟括号、双色图例小字、总线标识及下方位宽说明、四个右侧浅蓝配置输入、浅蓝寄存器块完整名字/标线范围、结果组宽度和部分data/valid/vc_num下标不能全部逐字符确认。可辨片段为`data`、`valid`、`vc_num`及`8*16`；传输标签疑似`data[15:0]/valid/vc_num[3:0]`，仅记为候选。浅蓝SARC2通道行的横线性质/范围需保留原图回查。不得把正文“200M”“两组”反向填入图中字形或推断全部删除范围。
+> ⚠️ 原图待复核（SARC-LLD-U19）：上部sarc/cpu_wrap时钟括号、双色图例小字、总线标识及下方位宽说明、四个右侧浅蓝配置输入、浅蓝寄存器块完整名字/标线范围、结果组宽度和部分data/valid/vc_num下标不能全部逐字符确认。第十一轮已确认两个黑色寄存器块`ids_result_reg0`、`ids_result_reg1`内的宽度均为`8*(16+16)bit`。其余可辨片段为`data`、`valid`、`vc_num`；传输标签疑似`data[15:0]/valid/vc_num[3:0]`，仅记为候选。浅蓝SARC2通道行的横线性质/范围需保留原图回查。不得把正文“200M”“两组”反向填入图中字形或推断全部删除范围。
 > 原图：[GameViewer_YbkCdqx6qz.png](../images/GameViewer_YbkCdqx6qz.png)，左页上半部CPU_WRAP交互图。
 
 ### 6. 约束

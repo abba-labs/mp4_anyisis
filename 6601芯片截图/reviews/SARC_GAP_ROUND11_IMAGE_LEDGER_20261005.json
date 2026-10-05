@@ -1,0 +1,57 @@
+{
+  "round": 11,
+  "input_head": "5cc72353fe7b475d675b265c214ec32f6f70dd2b",
+  "images": [
+    {
+      "gap": "LLD-U19",
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_YbkCdqx6qz.png",
+      "blob": "749af22e66ed1f8096ca17d544f23c92e995ae1e",
+      "bytes": 747919,
+      "sha256": "1c3f3f13ba9ef99f0cf1edc4c07f6674243874210c803446ae8871a5e37b6d27",
+      "status": "targeted_rechecked"
+    },
+    {
+      "gap": "LRS-U01a",
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_WtOrHaAqvH.png",
+      "blob": "03e87315130952dd3a0acf39650e5d2e228af26f",
+      "bytes": 1238675,
+      "sha256": "3b5ea4da702fd46eb7474d5942740efbf679507cc943aac1e22659c787348b68",
+      "status": "targeted_rechecked"
+    },
+    {
+      "gap": "LRS-U01b",
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_TxOL7pU1gm.png",
+      "blob": "fa71cc3fc1de35775b3d124a8456bb12da58f14f",
+      "bytes": 1404583,
+      "sha256": "ae261b5fa7675ba0893fcd3aeb6d7425c1209252e3c6ce38a6fcd0b78a3a2f39",
+      "status": "targeted_rechecked"
+    },
+    {
+      "gap": "LRS-U02",
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_hTRpPSKxgI.png",
+      "blob": "e3c76d630b8473e2f754eadbc28b19eed0ee97f0",
+      "bytes": 1327487,
+      "sha256": "968c303e3963bee28386418950bd33fad62122df85930afd25463a3a42ecd2d8",
+      "status": "targeted_rechecked"
+    },
+    {
+      "gap": "LRS-U03",
+      "path": "6601芯片截图/sarc/sarc_lrs/images/GameViewer_eyXbfnO5PJ.png",
+      "blob": "0ddd1c8519071ebc9df61aa83d65784682b19792",
+      "bytes": 1432136,
+      "sha256": "4d5f05cf993768930549f487d244d613b8916c8d96adb144744e69f828115c92",
+      "status": "targeted_rechecked"
+    }
+  ],
+  "closed": [],
+  "remaining": {
+    "lld": 19,
+    "lrs": 3,
+    "aux": 2,
+    "source": [
+      "S01"
+    ]
+  },
+  "next_gap": "AUX-U01/U02 and S01",
+  "next_image": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_qNBgXqkj5C.png"
+}

@@ -1,0 +1,89 @@
+name: SARC gap8 bounded save
+on:
+  push:
+    branches: [docs/restore-6601-screenshots]
+    paths: [.github/workflows/sarc-gap8-save.yml]
+permissions:
+  contents: write
+concurrency:
+  group: sarc-restore-save
+  cancel-in-progress: false
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/restore-6601-screenshots
+          fetch-depth: 0
+      - name: Check bounded text and source blobs, save, fetch and verify
+        shell: python
+        run: |
+          import pathlib,json,hashlib,subprocess,zipfile,os
+          def git(*a): return subprocess.check_output(['git',*a])
+          def blob(b): return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
+          def dump(x): return (json.dumps(x,ensure_ascii=False,indent=2)+'\n').encode()
+          branch='docs/restore-6601-screenshots'
+          assert os.environ['GITHUB_REF']=='refs/heads/'+branch
+          payload='6601芯片截图/reviews/.sarc_gap_round8.json'
+          workflow='.github/workflows/sarc-gap8-save.yml'
+          spec=json.loads(pathlib.Path(payload).read_bytes())
+          assert spec['branch']==branch
+          subprocess.run(['git','merge-base','--is-ancestor',spec['input_head'],'HEAD'],check=True)
+          prepared={}
+          for name,expected in spec['old_blobs'].items():
+              p=pathlib.Path(name)
+              assert not p.is_absolute() and '..' not in p.parts
+              old=p.read_bytes()
+              assert blob(old)==expected,'stale input '+name
+              text=old.decode()
+              for a,b in spec['patches'][name]:
+                  assert text.count(a)==1,'nonunique edit '+name
+                  text=text.replace(a,b)
+              prepared[name]=text.encode()
+          prefix='6601芯片截图/reviews/SARC_GAP_ROUND8_'
+          review=prefix+'REVIEW_20261005.md'
+          assert not pathlib.Path(review).exists()
+          prepared[review]=spec['review'].encode()
+          for name,expected in spec['expected_outputs'].items():
+              assert blob(prepared[name])==expected,'output mismatch '+name
+          sources=[('v6tUVs7H0k','3a2e68a1449211c69a65a39e9d5ca046e11ef52e'),('LWEUsHJgSN','afa799b4502979f42140f885caf96bee242d31f2'),('BMYV2LGXFN','3a9fe070d85363496f2bb740c3daf74e60447f0d'),('Wwj0z78cha','6fa223705ef8441376912fe7904f671d260be077'),('bG98ufwLis','314eb5f3b97cd2b6b5d6293157913ed0f5c31401'),('3VjshoX5So','2a7dd8f0990c911bb32b9542cc271d2fdfba785b')]
+          images=[]
+          for i,(short,expected) in enumerate(sources,1):
+              name='6601芯片截图/sarc/sarc_lld/images/GameViewer_'+short+'.png'
+              b=pathlib.Path(name).read_bytes()
+              assert blob(b)==expected,'source mismatch '+name
+              images.append({'gap':'U%02d'%i,'path':name,'bytes':len(b),'git_blob':expected,'sha256':hashlib.sha256(b).hexdigest(),'status':'targeted_recheck_done_gap_remains'})
+          ledger=prefix+'IMAGE_LEDGER_20261005.json'
+          prepared[ledger]=dump({'branch':branch,'input_head':spec['input_head'],'images':images,'closed_groups':[],'sarc_first_pass':64,'repository_first_pass':124,'next_gap':'U07','final_acceptance':False})
+          for name,b in prepared.items():
+              p=pathlib.Path(name);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(b)
+          for name in [payload,workflow]: pathlib.Path(name).unlink()
+          subprocess.run(['git','config','user.name','github-actions[bot]'],check=True)
+          subprocess.run(['git','config','user.email','41898282+github-actions[bot]@users.noreply.github.com'],check=True)
+          subprocess.run(['git','add','--',*prepared,payload,workflow],check=True)
+          subprocess.run(['git','commit','-m','docs(sarc): recheck U01-U06 and restore readable labels'],check=True)
+          commit=git('rev-parse','HEAD').decode().strip()
+          subprocess.run(['git','push','origin','HEAD:refs/heads/'+branch],check=True)
+          subprocess.run(['git','fetch','origin','refs/heads/'+branch],check=True)
+          remote=git('rev-parse','FETCH_HEAD').decode().strip()
+          for name,b in prepared.items(): assert git('show',remote+':'+name)==b,'readback mismatch '+name
+          receipt={'branch':branch,'input_head':spec['input_head'],'content_commit':commit,'remote_head_at_readback':remote,'run_id':int(os.environ['GITHUB_RUN_ID']),'publication_status':'remote_saved_and_git_fetch_byte_verified','all_target_bytes_match':True,'temporary_files_removed':True,'closed_gap_groups':[],'gaps_rechecked':['U01','U02','U03','U04','U05','U06'],'next_image':'6601芯片截图/sarc/sarc_lld/images/GameViewer_UUhaiE4moy.png','next_gap':'U07','lld_remaining_gap_groups':19,'lrs_remaining_gap_groups':3,'aux_remaining_gap_groups':2,'source_questions':['S01'],'final_acceptance':False,'files':[{'path':n,'bytes':len(b),'git_blob':blob(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in prepared.items()]}
+          receipt_name=prefix+'REMOTE_SAVE_20261005.json'
+          pathlib.Path(receipt_name).write_bytes(dump(receipt))
+          subprocess.run(['git','add','--',receipt_name],check=True)
+          subprocess.run(['git','commit','-m','docs(sarc): record gap8 remote checkpoint'],check=True)
+          subprocess.run(['git','push','origin','HEAD:refs/heads/'+branch],check=True)
+          subprocess.run(['git','fetch','origin','refs/heads/'+branch],check=True)
+          assert git('show','FETCH_HEAD:'+receipt_name)==pathlib.Path(receipt_name).read_bytes()
+          prepared[receipt_name]=pathlib.Path(receipt_name).read_bytes()
+          with zipfile.ZipFile('sarc-gap8-readback.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for name,b in prepared.items(): z.writestr(name,b)
+          print('CONTENT_COMMIT',commit,'RECEIPT_COMMIT',git('rev-parse','HEAD').decode().strip())
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sarc-gap8-full-readback
+          path: sarc-gap8-readback.zip
+          retention-days: 3
+          if-no-files-found: error

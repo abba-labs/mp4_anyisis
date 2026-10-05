@@ -1,11 +1,11 @@
 # SARC 模块方案设计
 
-> 来源：本仓库sarc_lld目录40张原始PNG；原文封面标题为《SARC模块方案设计》，不是根据目录名改为“详细设计”。
-> 本轮范围：前14张已按真实页序完成首轮原图核对，覆盖封面至5.3校正状态机；后26张保留历史转录且未进行本轮逐图核对，不能视为已精校。
-> 本文保持一份原始文档；前14张按左页后右页保存。后26张暂按历史转录章节衔接排列，顺序仍待原图确认；不是文件名顺序。
-> 已核对范围仍有SARC-LLD-U01～U07共7组局部细字/遮挡缺口，整份文档未最终验收。原文矛盾和明确删除线分别保留，不猜字、不替作者改规格。
-> 浅蓝色/清绿色变更按本文件原文颜色说明判断；红色强调、历史版本修改和没有版本归属的删除线另列。转录注与图中文字转录是复核说明，不是作者新增正文。
-> 来源commit：`d80a74e83e4bf942905844e61efd5d169e37c815`；本轮正文输入blob：`b043bfa6771a9d266807232b616b092652e1cfe0`。逐图状态及输入输出校验见`../../../reviews/SARC_LLD_ROUND2_IMAGE_LEDGER_20261005.json`。
+> 来源：本仓库sarc_lld目录40张原始PNG；原文封面标题《SARC模块方案设计》，保持一份原始文档。
+> 第三轮范围：新核对第15～31张，共17张；累计前31/40张首轮原图核对，覆盖至5.17滤波通道开篇。末9张保留历史转录、未首轮核对。
+> 前31张按原文页序、左页后右页保存；已纠正旧候选顺序中超门限续页与FIR、输入缓存与计算数据流的错接。末9张顺序仍是待核实候选。
+> 已核对区有SARC-LLD-U01～U12共12组局部细字/遮挡缺口；整份文档未最终验收。删除线、原编号和原文参数/拼写差异照录，不用其它芯片规格填字。
+> 浅蓝色/清绿色变更按原文颜色声明；红色强调、6001/6002等历史版本记录另列。转录注和图中文字转录与原作者正文分开。
+> 来源commit：`d80a74e83e4bf942905844e61efd5d169e37c815`；本轮输入head：`3d8da927cc13d4f8b6edd4d48001f2769f8365b7`，输入LLD blob：`064e09e52bfdb767785d2be156619fec1463628a`。逐图状态见`../../../reviews/SARC_LLD_ROUND3_IMAGE_LEDGER_20261005.json`。
 
 ## 第一部分：原始文档逐图还原
 
@@ -703,61 +703,54 @@ ADC校准的软件流程如下：
 
 [查看原始PNG](../images/GameViewer_CCQu4ftpmA.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-7外部触发源处理`，完整结构与时序请查看原图 `GameViewer_CCQu4ftpmA.png`。
+#### 5.4 外部触发源
 
+外部共有128个采样触发源和64个blanking触发源（含reserved位域），每个ADC控制器支持16个虚拟通道VC0-VC15。
 
-#### 5.4外部触发源
-
-112026-10~02-21:42
-外部共有128个采样触发源和64个blanking触发源（含
-reserved位域），每个ADC控制器支持16个虚拟通道VCo-VC15。
 SARC的采样触发源如下：
+
 见SARC模块LRS文档触发源说明
-个 SARC 的 blanking触发源如下：
+
+个SARC的blanking触发源如下：
+
 见SARC模块LRS文档触发源说明
-对外部输入触发源，先在sarc_wrap进行取上升沿操作处理后
-送入对应的sarc_core，再根据16个VC的使能配置、触发源选
-择配置及触发模式配置，屏蔽无效触发源，产生16个VC对应
-的16bit有效触发源。
+
+对外部输入触发源，先在sarc_wrap进行取上升沿操作处理后送入对应的sarc_core，再根据16个VC的使能配置、触发源选择配置及触发模式配置，屏蔽无效触发源，产生16个VC对应的16bit有效触发源。
+
 blanking触发源的处理类似采样触发源。
-tigin[127:0,capture
-trig mask
-trig_masked[15:0],
-posedge
-ADC_VC_CTL,TRIG_MOD
-RTMCV plan 2i 2026-
 
-**图5-7外部触发源处理**
+**图5-7 外部触发源处理**
 
-ETMCU mian. 1i
+图中文字转录：输入`trig_in[127:0]`，依次经`Capture posedge`、`trig mask`，输出`trig_masked[15:0]`。`trig mask`框内三行：`ADC_VCx_CTL.VC_EN`、`ADC_VCx_CTL.TRIG_SEL`、`ADC_VCx_CTL.TRIG_MODE`。
 
+> 转录注：“个SARC的blanking触发源如下”开头的“个”为原图正文，未当作水印删除；本页64个blanking触发源与LRS触发表的数量不在此擅自统一。
 
 ### 【右页】
 
+#### 5.5 触发模式
 
-#### 5.5触发模式
+| 模式 | 说明 |
+|---|---|
+| 单次触发模式 | VC一次配置只触发一次转换，VC_EN打开一次只响应一次触发 |
+| 连续触发模式 | VC一次配置可多次触发转换，VC_EN打开时，可连续响应多次触发 |
 
-单次触发模式VC一次配置只触发一次转换，VCEN打开一次只响应一次触发
-连续触发模式VC一次配置可多次触发转换，VC_EN打开时，可连续响应多次触发
-单次触发模式
-：18-20-07-980
+> 转录注：以上为原图两行无独立表头的对照表；“模式／说明”为转录列名。
+
+##### 单次触发模式
+
 单次触发模式：虚拟通道每次配置生效后，只响应一次触发。
-要求软件每次配置通道前将对应的虚拟通道使能vcen 关闭，
-待配置完成后再打开，硬件通过vcen的上升沿动作来产生虚
-拟通道重新配置参数的标志。
-检测到该虚拟通道配置且VC EN有效，ONE SHOTEN置
-1，等待该虚拟通道的触发。
-检测到触发TRIG且ONESHOTEN为高，将VCFLAG置
-1，同时将ONESHOTEN置0。1:4
+
+要求软件每次配置通道前将对应的虚拟通道使能vc_en关闭，待配置完成后再打开，硬件通过vc_en的上升沿动作来产生虚拟通道重新配置参数的标志。
+
+检测到该虚拟通道配置且VC_EN有效，ONE_SHOT_EN置1，等待该虚拟通道的触发。
+
+检测到触发TRIG且ONE_SHOT_EN为高，将VC_FLAG置1，同时将ONE_SHOT_EN置0。
+
 待该虚拟通道获得优先级后，开始启动转换操作。
-注意：在单次触发模式下，当VC的触发产生时，如果对应
-的ONE_SHOT_EN信号为低，此时不能将对应的VCFLAG置
-1，即该VC不响应本次触发。
-1080F
+
+注意：在单次触发模式下，当VC的触发产生时，如果对应的ONE_SHOT_EN信号为低，此时不能将对应的VC_FLAG置1，即该VC不响应本次触发。
 
 ---
 
@@ -765,61 +758,35 @@ ETMCU mian. 1i
 
 [查看原始PNG](../images/GameViewer_NaOtfAzWwn.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-8单次触发模式时序示意`，完整结构与时序请查看原图 `GameViewer_NaOtfAzWwn.png`。
+**图5-8 单次触发模式时序示意**
 
-VC_EN
-CONFIG
-BTMCU han.Ti
-BTMGU hoan.Ji
-TRIG
-ONE_SHOT_EN
-VEFUAG
-SARC_START
+图中文字转录：`VC_EN`、`CONFIG`、`TRIG`、`ONE_SHOT_EN`、`VC_FLAG`、`SARC_START`；配置标记`config A`、`config B`；两段标记`1`、`2`；第三次触发旁标注`not conversion`。波形边沿及间隔见原图。
 
-**图5-8单次触发模式时序示意**
+##### 连续触发模式
 
-BTMCU han.J3
-连续触发模式
-连续触发模式：虚拟通道配置完成且使能打开后，可以重复
-生效等待触发事件来临，直至软件配置虚拟通道使能关闭。
-在连续触发模式下，只要VCEN有效，在检测到该虚拟通
-道的触发TRIG时，就将该VC_FLAG置1。1:4
+连续触发模式：虚拟通道配置完成且使能打开后，可以重复生效等待触发事件来临，直至软件配置虚拟通道使能关闭。
+
+在连续触发模式下，只要VC_EN有效，在检测到该虚拟通道的触发TRIG时，就将该VC_FLAG置1。
+
 待该虚拟通道获得优先级后，开始启动转换操作。
-ETMCU huar.
-ETMCU hian.li
-
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-9连续触发模式时序示意`，完整结构与时序请查看原图 `GameViewer_NaOtfAzWwn.png`。
+**图5-9 连续触发模式时序示意**
 
-VC_EN
-CONFIG
-TRIG
-VC_FLAG
-START
-
-**图5-9连续触发模式时序示意**
-
+图中文字转录：`VC_EN`、`CONFIG`、`TRIG`、`VC_FLAG`、`START`；配置标记`config A`；两段标记`1`、`2`。本图末路信号原名为`START`，不与图5-8的`SARC_START`自动改成同名。
 
 #### 5.6 blanking机制
 
-BTNCU ) 49
-每个SARADC控制器中包含，Blanking管理模块，支持一个
-Blanking事件，可以对非VCo的采样触发信号进行延迟Blank-
-ing操作，该功能可屏蔽。仅虚拟通道0支持Blanking管理。实
-现VCO的周期性等间隔采样功能。
+每个SARADC控制器中包含Blanking管理模块，支持一个Blanking事件，可以对非VC0的采样触发信号进行延迟Blanking操作，该功能可屏蔽。仅虚拟通道0支持Blanking管理。实现VC0的周期性等间隔采样功能。
+
 Blanking支持2类触发源：eTimer/SuperPWM。
-blanking 的触发延迟时间可配置，且对所有blanking 触发源
-统一配置，为16bit，SYSCLK计数器。
-对所有blanking触发源，blanking窗口长度相同且可配置，
-为 16bit，SYSCLK计数器。
-2026-10-02-21;43
-1080F
+
+blanking的触发延迟时间可配置，且对所有blanking触发源统一配置，为16bit，SYSCLK计数器。
+
+对所有blanking触发源，blanking窗口长度相同且可配置，为16bit，SYSCLK计数器。
 
 ---
 
@@ -827,71 +794,47 @@ blanking 的触发延迟时间可配置，且对所有blanking 触发源
 
 [查看原始PNG](../images/GameViewer_a0rP8s7Oan.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-10blanking机制原理示意`，完整结构与时序请查看原图 `GameViewer_a0rP8s7Oan.png`。
+blanking窗口内虚拟通道0的触发（专用周期触发源）可以正常响应，窗口内若出现其他虚拟通道的触发信号，记录该虚拟通道被触发的行为但不响应，待blanking窗口结束后，再按各自优先级进行排队响应。
 
-blanking窗口内虚拟通道0的触发（专用周期触发源）可以
-正常响应，窗口内若出现其他虚拟通道的触发信号，记录该虚
-拟通道被触发的行为但不响应，待blanking窗口结束后，T再按
-各自优先级进行排队响应。
-若Blanking窗口未结束，其他触发信号（非专用周期触发）
-出现重复触发，上报告警，并忽略该重复触发（blanking窗口
-内非VCO的触发信号只记录一次）。
+若Blanking窗口未结束，其他触发信号（非专用周期触发）出现重复触发，上报告警，并忽略该重复触发（blanking窗口内非VC0的触发信号只记录一次）。
+
 blanking机制的基本原理如下图：
-vaD柱发源
-Blanking延近远触发
-Bianking 家口
-ttg.
-★banking腐口细束胆，根据价先级，明应O口△各一次，
-biankagm口内O口出现量复技发，产生专善，
-ETHCU hnan.li
 
-**图5-10blanking机制原理示意**
+**图5-10 blanking机制原理示意**
 
-RTMCV hlan 2i 2026-10-02-21:4
-RTMCU huar 1i 9026-1
-ETMCU miam.11
+图中文字转录：`Blanking trig`、`Blanking延迟触发`、`Blanking窗口`、`vc0触发源`、`其他vc触发源`。图中☆表示vc0触发源，○、□、△分三行标记其他触发源。
 
+图右两条说明：
+
+- blanking窗口结束后，根据优先级，响应○□△各一次。
+- blanking窗口内○□△出现重复触发，产生告警。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-11blanking机制`，完整结构与时序请查看原图 `GameViewer_a0rP8s7Oan.png`。
-
-> 📌 **【图表提示】**: 此处包含图表 `图5-12blanking模块状态转移`，完整结构与时序请查看原图 `GameViewer_a0rP8s7Oan.png`。
-
-banking_en
-blanking_trig
-bianking
-ETNOU/
-blanking_fiag
-delay
-alaniing window len
-
-**图5-11blanking机制**
+**图5-11 blanking机制**
 
 时序示意图
-BTMCU huan.J1 0
-ETNCU huan Ji 2026-10-02-2) 49
-BLANK_IDLE
-wait for en &&trig
-blank_en_r==1 &&
-blank_trig==1
-BLANK_DELAY
-win_cnt==blank_len_r
-n11
-trig delay
-delay_cnt==blank_delay_r
-BLANK_WORK
-generate blank valid window
 
-**图5-12blanking模块状态转移**
+图中文字转录：`clk`、`blanking_en`、`blanking_trig`、`blanking_flag`、`blanking delay`、`blanking window len`。周期编号、波形边沿与双向区间箭头保留在原图。
 
-RTNOV
-304 I
-12080F
+**图5-12 blanking模块状态转移**
+
+| 状态 | 框内原文 |
+|---|---|
+| BLANK_IDLE | wait for en && trig |
+| BLANK_DELAY | trig delay |
+| BLANK_WORK | generate blank valid window |
+
+| 转移 | 原图条件 |
+|---|---|
+| 起始节点→BLANK_IDLE | 起始箭头未附文字 |
+| BLANK_IDLE→BLANK_DELAY | `blank_en_r==1 && blank_trig==1` |
+| BLANK_DELAY→BLANK_WORK | `delay_cnt==blank_delay_r` |
+| BLANK_WORK→BLANK_IDLE | `win_cnt==blank_len_r` |
+
+> 转录注：以上两个表为原图状态和箭头文字的转录；未补原图未写出的异常路径或计数规则。
 
 ---
 
@@ -899,55 +842,45 @@ RTNOV
 
 [查看原始PNG](../images/GameViewer_40i6eF4ZKV.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-
-#### 5.7优先级队列管理
+#### 5.7 优先级队列管理
 
 队列管理模块实现16个虚拟通道VC的转换序列调度管理。
-vc_flag_in[15:0]为vc_flag_ctrl 模块输出，指示虚拟通道
-（vc15-vc0）的转换请求标志，1表示对应虚拟通道有转换请求，
-0表示无请求。
-vc_priority[31:0]为虚拟通道（vc15-vco）的优先级指示，每
-个虚拟通道2bit表示。
-vc_num[3:0]为优先级队列管理模块输出，指示下一个启动转
-换的虚拟通道VC编号，即输出当前优先级最高的虚拟通道编
-号。
-vc_num_val为优先级队列管理模块输出有效指示，指示输出
-的vc_num[3:0]虚拟通道编号有效。
-none_flag指示当前没有需要转换的队列，所有触发转换完成。
-该信号高电平有效，为0表示还有队列需要转换。
-preemtive_md：po优先级抢占模式指示，1为po可抢占模式,
-0为不可抢占模式；
 
+vc_flag_in[15:0]为vc_flag_ctrl模块输出，指示虚拟通道（vc15-vc0）的转换请求标志，1表示对应虚拟通道有转换请求，0表示无请求。
+
+vc_priority[31:0]为虚拟通道（vc15-vc0）的优先级指示，每个虚拟通道2bit表示。
+
+vc_num[3:0]为优先级队列管理模块输出，指示下一个启动转换的虚拟通道VC编号，即输出当前优先级最高的虚拟通道编号。
+
+vc_num_val为优先级队列管理模块输出有效指示，指示输出的vc_num[3:0]虚拟通道编号有效。
+
+none_flag指示当前没有需要转换的队列，所有触发转换完成。该信号高电平有效，为0表示还有队列需要转换。
+
+preemtive_md：p0优先级抢占模式指示，1为p0可抢占模式，0为不可抢占模式；
+
+> 变更标记：最后一段为浅蓝色；`preemtive_md`照录原文拼写，不按英文常识补入字母。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-13优先级队列管理`，完整结构与时序请查看原图 `GameViewer_40i6eF4ZKV.png`。
+priority_conflict：抢占模式开启下的优先级指示，1指示优先级冲突，当前存在p0优先级请求，需由外部的请求处理模块重发vc_num_req完成处理后，才会拉低；未开启抢占功能时一直为0；
 
-priority_confilct:抢占模式开启下的优先级指示，1指示优先
-级冲突，当前存在pO优先级请求，需由外部的请求处理模块重
-发vc_numreq完成处理后，才会拉低；未开启抢占功能时一直
-为0;
-vc_queue
+> 变更标记：以上整段为浅蓝色。
 
-**图5-13优先级队列管理**
+**图5-13 优先级队列管理**
 
-BTNCU huan. Ji 2026-10-02-2) 49
+图中文字转录：中心`vc_queue`；左侧输入`vc_flag_in[15:0]`、`vc_priority[31:0]`、`vc_num_req`、`preemtive_md`；右侧输出`vc_num[3:0]`、`vc_num_val`、`none_flag`、`priority_conflict`。其中`preemtive_md`和`priority_conflict`为浅蓝/清绿文字，分别位于输入侧和输出侧。
 
-#### 5.8.ADC同步模式
+#### 5.8 ADC同步模式
 
 同步采样：多个ADCCORE同时采样不同信号源。
-几余采样：多个ADCCORE同时采样相同信号源。
-由于ADC的触发源选择独立，故在实现ADC同步模式时，
-需要软件保证将参与同步模式的ADC配置为相同的采样触发信
-号源。
-ADC同步并联模式下，软件在启动同步采样转换时，要确保
-当前参与同步采样的ADCCORE都处于IDLE状态。
-2026-10-02-21;43
-1080F
+
+冗余采样：多个ADCCORE同时采样相同信号源。
+
+由于ADC的触发源选择独立，故在实现ADC同步模式时，需要软件保证将参与同步模式的ADC配置为相同的采样触发信号源。
+
+ADC同步并联模式下，软件在启动同步采样转换时，要确保当前参与同步采样的ADC CORE都处于IDLE状态。
 
 ---
 
@@ -955,59 +888,25 @@ ADC同步并联模式下，软件在启动同步采样转换时，要确保
 
 [查看原始PNG](../images/GameViewer_NwJydpcqGX.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-ADC同步并联模式下，ADCCORE的采样保持时间、触发模
-式（单次或连续）需要保持一致。
-ETMO
-BTMGU hoan.
-同步采样
-ADCCLK
-ADCO.START
-8TICUh87.137026-10-02-21: 43
-ADCO.SPLTIME_EN
-8TMCU hpan. Ji
-ADCO.SH
-ADCO.CONVERSION
-ADCO,VC_CH
-ADCO.READY
-ADC1.START
-ADC1.SPLTIME_EN
-ADC1.SH
-ADC1.CONVERSION
-AOC1VC_CH
-chantel m
-ADC1.READY
-同步采样：多个CORE同时采样不同信号源
-KTMOI) pian.i 2026-10
-ETMCU man. 1i
+ADC同步并联模式下，ADC CORE的采样保持时间、触发模式（单次或连续）需要保持一致。
 
+**同步采样**
+
+图中文字转录：公共`ADCCLK`；上组`ADC0.START`、`ADC0.SPLTIME_EN`、`ADC0.SH`、`ADC0.CONVERSION`、`ADC0.VC_CH`、`ADC0.READY`；下组`ADC1.START`、`ADC1.SPLTIME_EN`、`ADC1.SH`、`ADC1.CONVERSION`、`ADC1.VC_CH`、`ADC1.READY`。两组通道值分别为`channel n`和`channel m`；顶部段标记`1`、`2`。
+
+同步采样：多个CORE同时采样不同信号源
 
 ### 【右页】
 
-穴余采样
-EMou
-ADCO.START
-ADC0.SPLTME_EN
-ADCO.SH
-an112026-10-02-2)49
-ADCO.CONVERSION
-ADCO.VC_CH
-channeln
-ADCO.READY
-ADC1.START
-ADC1.SPLTIME_EN
-ADC1.SH
-ADC1.CONVERSION
-ADC1VC_CH
-channeln
-ADC1.READY
-几余采样：多个CORE同时采样相同信号源
-2026-10-02-21;43
-ETMcy huan
-12080F
+**冗余采样**
+
+图中文字转录：公共`ADCCLK`；上组`ADC0.START`、`ADC0.SPLTIME_EN`、`ADC0.SH`、`ADC0.CONVERSION`、`ADC0.VC_CH`、`ADC0.READY`；下组`ADC1.START`、`ADC1.SPLTIME_EN`、`ADC1.SH`、`ADC1.CONVERSION`、`ADC1.VC_CH`、`ADC1.READY`。两组通道值均为`channel n`；顶部段标记`1`、`2`。
+
+冗余采样：多个CORE同时采样相同信号源
+
+> 转录注：本张两幅时序图未见独立图号，不根据相邻图号补造编号。全部边沿、周期对齐和采样区间以原图为准。
 
 ---
 
@@ -1015,59 +914,35 @@ ETMcy huan
 
 [查看原始PNG](../images/GameViewer_Pv1TFSu3Dw.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
+#### 5.9 软件直接触发采样
 
-#### 5.9软件直接触发采样
+在SARADC控制器使能打开的前提下，无论虚拟通道是否配置了相应的触发源，且无论相应的触发源是否产生，软件通过对相应寄存器置位，可以触发启动对应虚拟通道进行采样转换。软件向置位寄存器ADC VC Force Register(ADC_VC_FRC)写1来实现，该寄存器硬件自清零。
 
-在SARADC控制器使能打开的前提下，无论虚拟通道是否配
-置了相应的触发源，且无论相应的触发源是否产生，软件通过
-对相应寄存器置位，可以触发启动对应虚拟通道进行采样转换。
-软件向置位寄存器 ADC VC Force Register(ADC_VC_FRC)写 1
-来实现，该寄存器硬件自清零。
-该寄存器有16个有效bit位，分别对应16个虚拟通道，指示
-对应虚拟通道通过软件启动转换开始标志。该寄存器相应bit位
-写1会强制将ADCVCFLG寄存器的对应位置1，用于软件控
-制启动转换。该位写0无效，该位软件读操作返回0。
-在同一时钟cycle，如果软件set此位，同时硬件clear
-ADC_VCFLG寄存器的对应位，则软件set的优先级高，即
-ADC_VC_FLG寄存器对应位响应软件set，此时ADC_VC_OVF
-寄存器（虚拟通道启动转换溢出标志）的对应bit位不受影响。
-例如软件配置ADCVCFRC寄存器为OxO0OF，在SARAD
-控制器使能打开的前提下，则ADC_VCFLG寄存器中VCO、
-2026-10~02-21:43
+该寄存器有16个有效bit位，分别对应16个虚拟通道，指示对应虚拟通道通过软件启动转换开始标志。该寄存器相应bit位写1会强制将ADC_VC_FLG寄存器的对应位置1，用于软件控制启动转换。该位写0无效，该位软件读操作返回0。
 
+在同一时钟cycle，如果软件set此位，同时硬件clear ADC_VC_FLG寄存器的对应位，则软件set的优先级高，即ADC_VC_FLG寄存器对应位响应软件set，此时ADC_VC_OVF寄存器（虚拟通道启动转换溢出标志）的对应bit位不受影响。
+
+例如软件配置ADC_VC_FRC寄存器为0x000F，在SARADC控制器使能打开的前提下，则ADC_VC_FLG寄存器中VC0、
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-19软件直接触发采样`，完整结构与时序请查看原图 `GameViewer_Pv1TFSu3Dw.png`。
+VC1、VC2、VC3对应位置1，即该4个虚拟通道被软件强制触发，然后根据对应优先级进行排队转换。
 
-VC1、VC2、VC3对应位置1,°即该4个虚拟通道被软件强制触
-发，然后根据对应优先级进行排队转换。
-ADC_VC_FLG
-FTH
-ADC_VC_FRC
-ADC_VC_FRC
+> 转录注：以上两页为同一句连续举例；没有将“VC0、”后的VC1～VC3丢弃或单独改写。
 
-**图5-19软件直接触发采样**
+**图5-19 软件直接触发采样**
 
-还支持另一软件触发，软件通过配置
-an.112026-10-02-2149
-CFG_SARC_VC_SOFT_TRIGER.cfg_sarc_vc_soft_trigger[15:0],该触发脉
-冲在触发选择列表上，触发功能需经过触发选择，与其它硬件触发源的
-功能类似；
+图中文字转录：`软件配置`→`ADC_VC_FRC`→`硬件操作`；软件配置框由左至右为`… 1 1 1 1`，下标为`VC3 VC2 VC1 VC0`。右上`ADC_VC_FLG`框为`… 1 1 1 1`，下标`VC3 VC2 VC1 VC0`，右箭头`排队转换`；右下`ADC_VC_FRC`框为`… 0 0 0 0`，下标`VC3 VC2 VC1 VC0`。
 
-#### 5.10SARADC控制时序
+还支持另一软件触发，软件通过配置CFG_SARC_VC_SOFT_TRIGER.cfg_sarc_vc_soft_trigger[15:0]；该触发脉冲在触发选择列表上，触发功能需经过触发选择，与其它硬件触发源的功能类似；
 
-转换控制模块，根据时序和队列状态，向队列管理模块申请
-转换出队，然后根据出队虚拟通道号及相应的转换配置参数，1:
-产生相应的数模接口信号输出到模拟ADC控制采样转换。-1
-ETMOy huar.
-ETNOU huan.
-2026-10-02-21;43
-080F
+> 变更标记：以上“还支持另一软件触发”整段为浅蓝色。原寄存器名`SOFT_TRIGER`只有一个G，字段名`soft_trigger`有两个g，各自照录，不自动统一。图5-19中的普通色块另保留原图，不仅因着色便推断新增寄存器。
+
+#### 5.10 SARADC控制时序
+
+转换控制模块，根据时序和队列状态，向队列管理模块申请转换出队，然后根据出队虚拟通道号及相应的转换配置参数，产生相应的数模接口信号输出到模拟ADC控制采样转换。
 
 ---
 
@@ -1075,69 +950,38 @@ ETNOU huan.
 
 [查看原始PNG](../images/GameViewer_sKXvcDs2Yn.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-15采样转换控制状态机示意`，完整结构与时序请查看原图 `GameViewer_sKXvcDs2Yn.png`。
+**图5-15 采样转换控制状态机示意**
 
-SAMPLE_IDLE
-do nothing
-t=beg"ouou C
-8TMCu
-(none_fagi=0
-. Ji
-SAMPLE_PRE
-empty jump
-ad_cnt>=adc_sptime+13 &
-T--feeuou
-ad_ont>sadc_spltime+13 &&
-SAMPLE_START
-Onmbey"ouou
-[begin sample
-vc_num_vals=1
-8TMCU huan.J3
-SAMPLE_CONTI
-BTMCU hoan. Ji
-keep sample
+| 状态 | 原图框内说明 |
+|---|---|
+| SAMPLE_IDLE | do nothing |
+| SAMPLE_PRE | empty jump |
+| SAMPLE_START | begin sample |
+| SAMPLE_CONTI | keep sample |
 
-**图5-15采样转换控制状态机示意**
-
-BTNCV TR1a 11 2026-10-02-21
-ETMOU Thuan. T1 026-10-02-21:43
-TMCU huar 1i 2026-10~02-21:43
-
+| 转移 | 原图条件 |
+|---|---|
+| 起始节点→SAMPLE_IDLE | 起始箭头未附文字 |
+| SAMPLE_IDLE→SAMPLE_IDLE | `none_flag==1` |
+| SAMPLE_IDLE→SAMPLE_PRE | `none_flag==0` |
+| SAMPLE_PRE→SAMPLE_START | 箭头未附文字 |
+| SAMPLE_START→SAMPLE_IDLE | `vc_num_val==0` |
+| SAMPLE_START→SAMPLE_CONTI | `vc_num_val==1` |
+| SAMPLE_CONTI→SAMPLE_CONTI | `adc_cnt<adc_spltime+13` |
+| SAMPLE_CONTI→SAMPLE_PRE | `adc_cnt>=adc_spltime+13 && none_flag==0` |
+| SAMPLE_CONTI→SAMPLE_IDLE | `adc_cnt>=adc_spltime+13 && none_flag==1` |
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-16触发采样时序图`，完整结构与时序请查看原图 `GameViewer_sKXvcDs2Yn.png`。
+**图5-16 触发采样时序图**
 
-cik_sare |U.U 1
-_ng
-ve_fag
-gons_ag
-vc_num_reg
-vc_num_al
-vc_oum
-Xvc_rum
-ETNCU huan J1 2026-10-02-2) 48
-s_num
-X,num
-ad_stat
-aoc_start,1d
-adc_starl_2d
-p05_v_num
-vc_num
-ve_num
-a8c_ont
-XHXHXHXHXHXX
+图中文字转录，信号自上而下：`clk_sarc`、`clk_adc`、`trig_in`、`trig`、`vc_trig`、`vc_flag`、`none_flag`、`vc_num_req`、`vc_num_val`、`vc_num_o`、`vc_num_d`、`adc_start`、`adc_start_1d`、`adc_start_2d`、`pos_vc_num`、`adc_cnt`。
 
-**图5-16触发采样时序图**
+`vc_num_o`、`vc_num_d`、`pos_vc_num`的数据框标为`vc_num`；`adc_cnt`的数据依次显示`'H0`、`'H1`、`……`、`'HD`、`'HE`、`'HF`、`'H0`、`'H1`。各信号边沿及对齐关系保留在原图。
 
-ETMOU huar.Z)
-ETNOV ;43
-2026-10-02-21;43
-12080F
+> 原文差异：此前软件触发图编号为5-19，本张又为5-15/5-16。按正文阅读次序保存，不按图号重排或补造5-14。
 
 ---
 
@@ -1145,64 +989,26 @@ ETNOV ;43
 
 [查看原始PNG](../images/GameViewer_ba6sdetThH.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-17`，完整结构与时序请查看原图 `GameViewer_ba6sdetThH.png`。
+**图5-17 数模接口信号时序示意**
 
-X+1
-. Ji
-saradc_mode
-Xn
-X n+1
-mux se[3:0]
-Xn+2
-mux, d[3:0]。
-xm
-Xdatan
-X@ata n+1
+图中文字转录：`clk`、`counter`、`start`、`spltime_en`、`trigger_mode`、`saradc_mode`、`mux_se[3:0]`、`mux_df[3:0]`、`ready`、`data`。采样和转换区间的两个小框在原图中保留。
 
-**图5-17**
+可辨值及区间标记：`saradc_mode`为`se`、`df`两段；`mux_se[3:0]`标`n`、`n+1`、`n+2`；`mux_df[3:0]`中间段为`m`；采样延长段为`X+1`；数据段标`data n`、`data n+1`。`counter`可辨的前段为15、0、1，后续含14、15、0、1、2；省略点和波形边界仍见原图。
 
-BTMCU huan.j3 2026-10
-数模接口信号时序示意
-BTMCU hoan. Ji
-87MCV731873.13
-ETMCU Tnuan.Z1
-
+> ⚠️ 原图待复核（SARC-LLD-U08）：`spltime_en`上方两行极小注释、采样/转换小框的完整字形及部分区间数值无法从当前截图逐字符确认。可辨片段包含`spltime_en`、`X+1`，没有补成确定的完整说明句。
+> 原图：[GameViewer_ba6sdetThH.png](../images/GameViewer_ba6sdetThH.png)，左页图5-17。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-18一次采样转换控制时序示意`，完整结构与时序请查看原图 `GameViewer_ba6sdetThH.png`。
+**图5-18 一次采样转换控制时序示意**
 
-PD
-sarad_en
-saradc_start
-SH
-coversion
-ue"swgds~ape
-apow.aotg3e/es
-saradc_mode
-uan. 11 2026-10-02-2) 49
-sarac_mx_se3.0-Ho
-channeli n
-channel m
-sarad_mu_d3.0[
-H0
-saradc_ready
-oid data
-resutn
-saradc_data
-VCO.FLAG
-VC1.FLAG
+图中文字转录，自上而下：`ADCCLK`、`PD`、`saradc_en`、`saradc_start`、`S/H`、`coversion`、`adc_spltime_en`、`saradc_trigger_mode`、`saradc_mode`、`saradc_mux_se<3:0>`、`saradc_mux_df<3:0>`、`saradc_ready`、`saradc_data`、`trig`、`VC0.FLAG`、`VC1.FLAG`。
 
-**图5-18一次采样转换控制时序示意**
+顶部六段标记`1`～`6`。`saradc_mux_se<3:0>`依次标`'H0`、`channel n`、`channel m`；`saradc_mux_df<3:0>`标`'H0`；数据框标`old data`、`result n`、`result m`。
 
-ETMoyhuar.2)
-ETNOV;43
-2026-10-02-21;43
-12080F
+> 转录注：原图拼写`coversion`照录，不自动改成conversion。波形箭头、对齐和区间长度以原图为准，不自行解释六段所代表的额外阶段。
 
 ---
 
@@ -1210,63 +1016,52 @@ ETNOV;43
 
 [查看原始PNG](../images/GameViewer_LoWatHzLVG.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
+#### 1.1.1 抢占功能
 
-#### 1.1.1抢占功能
+图中文字转录：`vc_flag_ctrl`、`vc_queue`、`sarc_smaple_ctrl`、`模拟ADC`；信号`vc_flag[15:0]`、`none_flag`、`priority_cnflt`、`vc_num_req`、`vc_num/val`、`start/en`。图中浅蓝回接线由右侧返回`vc_flag_ctrl`，`priority_cnflt`箭头为浅蓝色；没有为未标名的回接线补造信号名。
 
-T22a.11
-BIMCU huan.
-ve_flag_ctrl
-ETMCU hUE
-ve_f1ag[15:0]
--none_f1ag→
-priority_enflt+
-sare_smaple_ctr1
-vc_queue
-start/er
-模拟ADC
-ua.j3
 抢占功能控制如下：
-rc_num/val-
-&TMCU hoan. J3
-1.由vc_queue模块完成识别vc_flag_ctrl输入的vc_flag[15:0]中的优先
-级冲突,包含blanking情况的冲突，判定当前队列优先级和当前输出
-的vc_num的优先级是否冲突，输出priority_cnflt信号；
-2.sarc_sample_ctrl模块识别到priority_cnflt信号，根据priority_cnflt的
-时机进行不同的时序控制：：
-ii.
-可直接进行抢占；
-需delay发起抢占(不区分队列是否存在其它请求，统一delay);
 
+1. 由vc_queue模块完成识别vc_flag_ctrl输入的vc_flag[15:0]中的优先级冲突，~~包含blanking情况的冲突，~~判定当前队列优先级和当前输出的vc_num的优先级是否冲突，输出priority_cnflt信号；
+2. sarc_sample_ctrl模块识别到priority_cnflt信号，根据priority_cnflt的时机进行不同的时序控制：：
+
+   ii. 可直接进行抢占；
+
+[本页左下抢占时序原图](../images/GameViewer_LoWatHzLVG.png)
+
+需delay发起抢占(不区分队列是否存在其它请求，统一delay)；
+
+> 变更标记：本页“抢占功能控制如下”至“统一delay”为浅蓝文字；“包含blanking情况的冲突”在浅蓝文字上带删除线，必须保留删除性质。图中模块名为`sarc_smaple_ctrl`，正文为`sarc_sample_ctrl`，各自照录。原编号`1.1.1`、`ii.`及连续两个冒号均保留。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `时序图原文件：ET6601-DOCI05.数字设计`，完整结构与时序请查看原图 `GameViewer_LoWatHzLVG.png`。
+[本页右上抢占时序原图](../images/GameViewer_LoWatHzLVG.png)
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-18采样抢占时序图`，完整结构与时序请查看原图 `GameViewer_LoWatHzLVG.png`。
+若抢占发生在连续两笔转换的交接区，需输出sarc_a2d_outrd_hold使模拟保证不影响第一次的ready&data的返回时序；
 
-TNCUhuarn.11
-若抢占发生在连续两笔转换的交接区，需输出sarca2doutrdhold
-使模拟保证不影响第一次的ready&data的返回时序；
-huan Ji 2026-10-02-2) 49
-时序图原文件：ET6601-DOCI05.数字设计
-103%20HACISARCIV100\01.需求分析\02.需求分析\抢占控制.xlsx
+[本页右中交接区抢占时序原图](../images/GameViewer_LoWatHzLVG.png)
 
-**图5-18采样抢占时序图**
+时序图原文件：ET6601-DOC\05.数字设计\03%20HAC\SARC\V100\01.需求分析\02.需求分析\抢占控制.xlsx
 
-1.模拟接收抢占控制，完成采样转换后返回高优先级对应的ready及
-data信息；
-2.vc_flag_ctrl接收该ready信号，priority_conflt，start信号；
-a)发出 start 后清除vc_flag;
-26-10-02-21;43
-b)若期间因抢占导致该对应的start无法返回ready，需重新将vc_flag
-拉起；
-c)使用对应返回的ready指示该vc_flag的完整结束；
-2026-10-02-21;43
-12080F
+**图5-18 采样抢占时序图**
+
+1. 模拟接收抢占控制，完成采样转换后返回高优先级对应的ready及data信息；
+2. vc_flag_ctrl接收该ready信号，priority_conflt，start信号；
+
+   a) 发出start后清除vc_flag；
+
+   b) 若期间因抢占导致该对应的start无法返回ready，需重新将vc_flag拉起；
+
+   c) 使用对应返回的ready指示该vc_flag的完整结束；
+
+> 变更标记：本页可辨正文、文件路径和后续条目均为浅蓝色。后半段原文`priority_conflt`与前半段`priority_cnflt`不同，不统一拼写。原图号5-18与前一张一次采样图重复，分别保留。
+
+> ⚠️ 原图待复核（SARC-LLD-U09）：本张共三处嵌入的电子表格时序片段；可辨`clk`、`start`、`ready`等标签和分组波形，但完整行名、细小注释、周期列数及色块精确起止仍不能逐项确认。它们没有被替换成推测的时序表，也未被省略为无来源的空白；全部保留在本张原图中。
+> 原图：[GameViewer_LoWatHzLVG.png](../images/GameViewer_LoWatHzLVG.png)，左下、右上和右中三处。
+
+> 同源范围核查：辅助目录`抢占功能.png`虽有同主题框图，但其回线明确标`ready`、输出为`start`，与本页的多条回接线及`start/en`不同，不能直接代替本页框图或用来补上时序片段的小字。
 
 ---
 
@@ -1274,70 +1069,50 @@ c)使用对应返回的ready指示该vc_flag的完整结束；
 
 [查看原始PNG](../images/GameViewer_mjeYzTB3j7.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
+#### 5.11 触发采样延时捕获
 
-#### 5.11角
-
-触发采样延时捕获
 该功能为6002新增。
-8TMCU huan. J1
-ETHCU huan.
-每个ADC控制器支持基于虚拟通道进行Trigger-to-sample 延
-迟计算，并上报延迟时间（SYSCLK周期计数);
-延迟时间为收到有效触发到采样开始的时间，每个虚拟通道
-独立上报。
-每个 ADC 控制器有一个基于 SYSCLK 的全局 12bit free-run
-计数器，最大可计4096个SYSCLK时钟周期，该计数器的值
-软件可实时读取。
-注意：当 Trigger-to-sample 的延迟时间超过4096 个周期时,
-会上报错误的延迟时间值。
-当收到采样触发时，锁存触发时刻计数值REQSTAMP上报，
-用该触发的采样开始时刻（adc_start 的上升沿）计数器值减去
-REQSTAMP，将得到的差值DLYSTAMP锁存上报。
-当由于pO优先级抢占发生时，低优先级会在第二次采样开始
-时更新DLYSTAMP值；
 
+每个ADC控制器支持基于虚拟通道进行Trigger-to-sample延迟计算，并上报延迟时间（SYSCLK周期计数）；
+
+延迟时间为收到有效触发到采样开始的时间，每个虚拟通道独立上报。
+
+每个ADC控制器有一个基于SYSCLK的全局12bit free-run计数器，最大可计4096个SYSCLK时钟周期，该计数器的值软件可实时读取。
+
+**注意：当Trigger-to-sample的延迟时间超过4096个周期时，会上报错误的延迟时间值。**
+
+当收到采样触发时，锁存触发时刻计数值REQSTAMP上报，用该触发的采样开始时刻（adc_start的上升沿）计数器值减去REQSTAMP，将得到的差值DLYSTAMP锁存上报。
+
+当由于p0优先级抢占发生时，低优先级会在第二次采样开始时更新DLYSTAMP值；
+
+> 变更标记：最后一段为浅蓝色；前文明确“6002新增”属于历史功能，不冒充ET6601新增。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图 5-19 Trigger-to-sample时序示意`，完整结构与时序请查看原图 `GameViewer_mjeYzTB3j7.png`。
+过采样启用时，该延时捕获仅在过采样的第一次开始时锁存延迟值；
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-19采样结果校准`，完整结构与时序请查看原图 `GameViewer_mjeYzTB3j7.png`。
+> 变更标记：以上整句为浅蓝色，接续左页抢占后的延时捕获说明。
 
-过采样启用时，该延时捕获仅在过采样的第一次开始时锁存
-延迟值；
-REOSTAMP
-ETMCU hian.1
-SPLSTAMP
-adc_trig
-adc_start
-DLYSTAMP
-free-run
-counter
+**图5-19 Trigger-to-sample时序示意**
 
-**图 5-19 Trigger-to-sample时序示意**
+图中文字转录：`adc_trig`、`adc_start`、`free-run counter`；时刻标记`REQSTAMP`、`SPLSTAMP`；区间标记`DLYSTAMP (SPLSTAMP-REQSTAMP)`。计数框依次可见`0 1 2 3 4 5 6 7 8`，折断线后为`4091 4092 4093 4094 4095 0 1`；不补出被折断的整段数列。
 
-采样结果校准补偿
-每个ADC采样结果统一校准补偿，不区分虚拟通道。（模拟
-ADC 偏置 s(5,0)和增益 u(14,12))。
-ADC校准参数处理
+#### 5.12 采样结果校准补偿
 
-#### 1.0%
+每个ADC采样结果统一校准补偿，不区分虚拟通道。（模拟ADC偏置s(5,0)和增益u(14,12)）。
 
-signed
-u(2,0)
-(14,12)
-(16,2)
-2d_data,out
-cal_data_out
-ETNCV huan:1i 2026-10-02-21;43
+**图5-19 采样结果校准**
 
-**图5-19采样结果校准**
+图中文字转录：`ADC校准参数处理`；主路径`a2d_data_out`→`signed`→加法节点→乘法节点→`round`→`sat`→`cal_data_out`。虚线框标签`dig_cal`。
 
-2080F
+可辨控制与格式：`cal_offset`、`cal_gain/4096`、`5bit signed`、`14bit unsigned`；输入`u(12,0)`，signed后和加法后均为`s(16,2)`，偏置`s(5,0)`，增益`u(14,12)`，乘法后`s(30,14)`，round后`s(18,2)`，输出`s(16,2)`。
+
+> ⚠️ 原图待复核（SARC-LLD-U10）：图5-19采样结果校准图中`signed`下方两行细小中文及顶端范围值尚不能全部逐字符确认；可辨`2bit`、`s(16,2)`。已保留完整路径和可辨格式，不借其他数据通路图补齐未知句子。
+> 原图：[GameViewer_mjeYzTB3j7.png](../images/GameViewer_mjeYzTB3j7.png)，右页底部。
+
+> 原文差异：本张两幅图都标为5-19，且前面的软件触发图也为5-19；按原文分别保留，不重编号。
 
 ---
 
@@ -1345,135 +1120,48 @@ ETNCV huan:1i 2026-10-02-21;43
 
 [查看原始PNG](../images/GameViewer_UFTfaW6Wm8.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-20用户预处理补偿`，完整结构与时序请查看原图 `GameViewer_UFTfaW6Wm8.png`。
+#### 5.13 用户预处理补偿
 
+用户预处理补偿有16个通道，与虚拟通道一一对应。（用户配置偏置s(16,2)和增益s(15,12)）。
 
-#### 5.13用户预处理补偿
+6002相对于6001修改点：pre_gain参数格式由u(14,12)修改为s(15,12)。
 
-. Ji
-用户预处理补偿有16个通道，与虚拟通道一一对应。（用户
-配置偏置s(16,2)和增益 s(15,12))。
-6002相对于6001修改点：pre_gain参数格式由u(14,12)修改
-为 s(15,12)。
-用户配置参数处理
-(16,2)]
-(16,2)
-cal_dsta_ou
-pre_dsta_out
+**图5-20 用户预处理补偿**
 
-**图5-20用户预处理补偿**
+图中文字转录：标题“用户配置参数处理”；虚线框`pre_process`。`cal_data_out`经加法、乘法、`round`、`sat`后输出`pre_data_out`。加法输入`pre_offset`，标注`16bit signed`、`s(16,2)`；乘法输入`pre_gain/4096`，标注`15bit signed`、`-4~4`、`s(15,12)`。
 
-ETMCV hvan, 11 2026-10-02-21;43
+| 位置 | 原图定标 |
+|---|---|
+| cal_data_out／加法输出 | s(16,2) |
+| 乘法输出 | s(31,14) |
+| round输出 | s(19,2) |
+| sat输出／pre_data_out | s(16,2) |
 
-#### 5.14预处理滤波通道
+#### 5.14 预处理滤波通道
 
-每个SARC包含有8个通道的预处理滤波通道，可以通过配
-置寄存器将16个预处理通道映射到这8个预处理滤波通道（映
-射方式与6002中滤波器通道的映射方式类似）。每个预处理滤
-波通道可以配置为1~4阶的ir滤波（直接1型）或者1~8阶的
-fir滤波器。
-
+每个SARC包含有8个通道的预处理滤波通道，可以通过配置寄存器将16个预处理通道映射到这8个预处理滤波通道（映射方式与6002中滤波器通道的映射方式类似）。每个预处理滤波通道可以配置为1~4阶的iir滤波（直接1型）或者1~8阶的fir滤波器。
 
 ### 【右页】
 
+##### 5.14.1 FIR滤波器
 
-#### 5.14.1 FIR滤波器
+\[
+Y=B*X \tag{5-1}
+\]
 
-Y-B*X
-y,=2R×Z-0bkXn-k
-(5-2)
-该功能执行长度为N+1的向量 B与不定长度的向量X的卷
-积。Y中每次增加的元素yn都是用点积来计算的：y,=B*Xn，其
-中Xn=n-N，"Xn由N+1个X中的元素组成。
-该功能对应于有限脉冲响应（FIR）滤波器，其中向量B包含
-滤波器系数，向量X包含输入数据，R为滤波器输出的缩放因
-子。
+\[
+y_n=2^R\times\sum_{k=0}^{N}b_kx_{n-k}\tag{5-2}
+\]
+
+该功能执行长度为N+1的向量B与不定长度的向量X的卷积。Y中每次增加的元素y_n都是用点积来计算的：y_n=B*X_n，其中X_n=[x_{n-N},...,x_n]由N+1个X中的元素组成。
+
+该功能对应于有限脉冲响应（FIR）滤波器，其中向量B包含滤波器系数，向量X包含输入数据，R为滤波器输出的缩放因子。
+
 FIR滤波器的结构如下图所示。
-KTNOU hian. 1
-ETKCV ;43
-2026-10-02-21;43
-2080F
 
----
-
-## 原图：`GameViewer_NaDPGTeO6W.png`
-
-[查看原始PNG](../images/GameViewer_NaDPGTeO6W.png)
-
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
-### 【左页】
-
-> 📌 **【图表提示】**: 此处包含图表 `图5-20超门限检测原理`，完整结构与时序请查看原图 `GameViewer_NaDPGTeO6W.png`。
-
-> 📌 **【图表提示】**: 此处包含图表 `图5-20超门限检测结果输出形式`，完整结构与时序请查看原图 `GameViewer_NaDPGTeO6W.png`。
-
-6002：上下门限检测输出使用CBC或者ONESHOT两种模式
-（软件配置选择）。CBC模式下，a根据每个新的采样结果是否
-超门限控制是否输出告警；ONESHOT模式下，一旦产生了超
-门限告警，需要软件进行清除。每个超门限检测通道输出1bit
-事件，上下门限告警通过mux-or的方式输出。同时单独上报超
-上下门限的实时状态。
-nl1202
-limit.hi
-ETMO
-edcevtsts.triphi
-clear
-adc_result
-ETMCU haan. J3
->EVT
-limit.lo
-dcevtsts.triplo
-evtsel.lo
-clear.hi
-clear.lo
-CBC clearlogic
-
-**图5-20超门限检测原理**
-
-ETMCV321a7. 1 7026-10-02-21: 4
-ETMCI
-sample2
-sample2
-超门限
-超门阀
-不超门限
-ONSHOT
-ETMCV han 1 2026-10-02-
-
-**图5-20超门限检测结果输出形式**
-
-ETMCIT
-
-
-### 【右页】
-
-> 📌 **【图表提示】**: 此处包含图表 `图5-20FIR滤波`，完整结构与时序请查看原图 `GameViewer_NaDPGTeO6W.png`。
-
-滤波通道
-an.1i
-滤波处理模块的数据输入为校准补偿后的采样结果。
-此处区别：6001是用户预处理补偿后结果，6002是校准补偿
-后结果。
-滤波类型：FIR、IIR、滑动平均（归入FIR，由软件配置系
-数)、非滑动平均。
-FIR滤波阶数要任意可配置，最高32阶。并且根据配置阶数
-对滤波结果实时输出。
-TNCl1
-滤波处理
-s(16,2) signed
-al_data_ou
-fiter_dats_out
-
-**图5-20FIR滤波**
-
-ETMCII
-ETNCI/ ;44
-2080F
+> 转录注：本页“6002相对于6001”是原作者写出的历史版本差异，不转称ET6601新增。
 
 ---
 
@@ -1481,62 +1169,33 @@ ETNCI/ ;44
 
 [查看原始PNG](../images/GameViewer_Ef2CwLAmR0.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-xFIR滤波器的结构`，完整结构与时序请查看原图 `GameViewer_Ef2CwLAmR0.png`。
+**图5-x FIR滤波器的结构**
 
-+yin]
-BIMCU
-b[1]
-BTNCU hua
-. Ji
-xin-1]
-b[2]
-X(n-2)
-b[3]
-BTMCUhua.7:3026-10-02-21:43
-[-ux
-STLU huan.Ji
-[Nq
-X(n-N]
-图5-xFIR滤波器的结构
-hiar. Ti 2026
-ETICU
-ETMCU han. li
+图中文字转录：输入`x[n]`，延迟链标签`x[n-1]`、`x[n-2]`、`x[n-3]`、`x[n-N]`；系数`b[0]`、`b[1]`、`b[2]`、`b[3]`、`b[N]`；延迟单元`z⁻¹`，乘法节点`×`、加法节点`+`，末端乘以`2^R`输出`y[n]`。图中省略号保留为原图中的省略号，未擅自展开中间级数。
 
-#### 5.14.1IIR滤波器（直接1型）
+##### 5.14.1 IIR滤波器（直接1型）
 
-Y=B*X+A*Y
-(5-3)
-ZK-o bXn-k+ZM akyn-k)
-(5-4)
+\[
+Y=B*X+A*Y\tag{5-3}
+\]
 
+\[
+y_n=2^R\left(\sum_{k=0}^{N}b_kx_{n-k}+\sum_{k=1}^{M}a_ky_{n-k}\right)\tag{5-4}
+\]
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-xIIR滤波器（直接1型）的结构`，完整结构与时序请查看原图 `GameViewer_Ef2CwLAmR0.png`。
+这个功能实现了一个无限脉冲响应(IIR)滤波器。滤波器输出向量Y是长度为N+1的系数向量B和不确定长度的向量X的卷积，加上延迟输出向量Y'与长度为M的第二个系数向量A的卷积。Y中每次新增的元素：y_n=B*X_n+A*Y_{n-1}，其中X_n=[x_{n-N},...,x_n]由N+1个X中的元素组成，Y_{n-1}=[y_{n-M},...,y_{n-1}]由M个Y中的元素组成。
 
-这个功能实现了一个无限脉冲响应(IIR)滤波器。滤波器输出
-向量Y是长度为N+1的系数向量B和不确定长度的向量X的
-卷积，加上延迟输出向量Yi与长度为M的第二个系数向量A的
-卷积。Y中每次新增的元素：n=B*Xn+A*Yn-1，其中
-M个Y中的元素组成。
 IIR滤波器（直接1型）的结构如下图所示。
-x[n]
-x[n-1]
-[n-1]
-ETNCU hian.li 2026-10-02-21:
-x[n-2]
-×[n-3]
-[n-3]
-[n-N]
-[n-M]
-ETNCU ;43
-图5-xIIR滤波器（直接1型）的结构
-2026-10-02-21;43
-1080F
+
+**图5-x IIR滤波器（直接1型）的结构**
+
+图中文字转录：输入`x[n]`，前向系数`b[0]`、`b[1]`、`b[2]`、`b[3]`、`b[N]`，前向延迟单元`z⁻¹`；输出`y[n]`，反馈系数`-a[1]`、`-a[2]`、`-a[3]`、`-a[M]`，反馈延迟单元`z⁻¹`；前向延迟标签`x[n-1]`、`x[n-2]`、`x[n-3]`、`x[n-N]`，反馈延迟标签`y[n-1]`、`y[n-2]`、`y[n-3]`、`y[n-M]`；图中有`×`、`+`、`2^R`以及中间级省略号。
+
+> 转录注：本页IIR标题确为重复的“5.14.1”，图号确为“5-x”。公式的加号与图内反馈系数的负号分别保留，不据公式知识改写任一处。本页承接上一张FIR末句；超门限检测续页不应插入此处。
 
 ---
 
@@ -1544,130 +1203,51 @@ ETNCU ;43
 
 [查看原始PNG](../images/GameViewer_vZO2NlUXdv.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
+##### 5.14.3 预处理滤波通道的实现结构
 
-#### 5.14.3预处理滤波通道的实现结构
+###### 5.14.3.1 滤波器通道的参数配置
 
+1、fir和iir的实现复用同一种结构，通过配置参数cfg_pflt_type来区分滤波器的类型（0：fir；1：iir）；
 
-#### 5.14.3.1滤波器通道的参数配置
+2、通过参数cfg_p_arg和参数cfg_q_arg来区分滤波器器的阶数；cfg_p_arg为滤波器前馈系数的个数，等于fir的阶数+1；cfg_q_arg为滤波器反馈系数的个数，等于iir的阶数，当滤波器配置为fir时，cfg_q_arg应该等于0；
 
-. J
-1、fir和iir的实现复用同一种结构，通过配置参数
-cfg_pflt_type来区分滤波器的类型（O:fir；l：iir);
-2、通过参数cfg_p_arg和参数cfg_q_arg来区分滤波器器的阶
-数；cfg_p_arg为滤波器前馈系数的个数，等于fir的阶数+1;
-cfg_q_arg为滤波器反馈系数的个数，等于ir 的阶数，当滤波器
-配置为fir时，"cfg_q_arg应该等于O;
-3、cfg_pflt_coeff[x)（x=0~8）为滤波器的系数，16bit有符号
-数，前面部分为前馈系数后面部分为反馈系数，，配合
-cfg_p_arg 和 cfg_q_arg 使用;
-4、cfg_pfltp_num为滤波器的通道编号，当通道编号与滤波
-器的通道对应时，并且cfg_pflt_rdy=元l(滤波器参数在影子寄存
-器种准备好时)，同时flt_cal_en==0（该通道的滤波器没有在运
-算时），可将影子寄存器中的参数刷新到对应滤波通道的活动寄
+3、cfg_pflt_coeff[x]（x=0~8）为滤波器的系数，16bit有符号数，前面部分为前馈系数，后面部分为反馈系数，配合cfg_p_arg和cfg_q_arg使用；
 
+4、cfg_pflt_p_num为滤波器的通道编号，当通道编号与滤波器的通道对应时，并且cfg_pflt_rdy==1（滤波器参数在影子寄存器种准备好时），同时flt_cal_en==0（该通道的滤波器没有在运算时），可将影子寄存器中的参数刷新到对应滤波通道的活动寄存器。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-x滤波器通道参数配置`，完整结构与时序请查看原图 `GameViewer_vZO2NlUXdv.png`。
+待滤波通道的参数切换完成后，内部硬件自动清除cfg_pflt_rdy寄存器。
 
-存器。待滤波通道的参数切换完成后，内部硬件自动清除
-cfg_pflt_rdy寄存器。
-当cfg_pflt_rdy==1&&
-(flt_cal_en==0),
-并且cfg_pflt_num等于预处
-理滤波器通道的编号时，ids
-dlg,p_coew[0]
-中滤波器的系数等参数会加
-dg,pt,coef[1]
-fn,coeffp)
-载到预处理滤波器的内部寄
-存器，实现滤波器参数切换
-fit,coeffm]
-[u]gs0 gd 6p
-cfg.pt.p.arg
-ftcoeffa]
-cfg.pt._q.arg
-p_arg
-clg.ptt_num
-q_arg
-fitype
-cfg.ptt_type
-BTNCU buan.T1
-cfg pft rdy
-滤波器参数切换完成后，
-硬件会自动拉低ids的
-cfg_pflt_rdy
-图5-x滤波器通道参数配置
+**图5-x 滤波器通道参数配置**
 
-#### 5.14.3.2滤波器的输入数据增益调整
+| 左侧配置寄存器列 | 右侧活动寄存器列 |
+|---|---|
+| cfg_pflt_coeff[0] | flt_coeff[0] |
+| cfg_pflt_coeff[1] | flt_coeff[1] |
+| …… | …… |
+| cfg_pflt_coeff[n] | flt_coeff[n] |
+| cfg_pflt_p_arg | p_arg |
+| cfg_pflt_q_arg | q_arg |
+| cfg_pflt_num | 原图此行无对应右侧行 |
+| cfg_pflt_type | flt_type |
+| cfg_pflt_rdy | 原图此行无对应右侧行 |
 
-ETNCU hian.1i 2028-10-02-21:
-为了适用不同的场景，需要对预处理滤波通道的输入数据进
-行缩放（通过左移或者右移实现），缩放的范围为：-1～2（负数
-表示左移，正数表示右移）。如下图所示。
-ETNCU huan.
-dan
-2026-10-02-21;43
-080F
+> 转录注：上表只是分别列出两列的标签；不表示两侧原本不存在的一一连线。
 
----
+图中两段原文：
 
-## 原图：`GameViewer_SeEx4da40l.png`
+当cfg_pflt_rdy==1&&(flt_cal_en==0)，并且cfg_pflt_num等于预处理滤波器通道的编号时，ids中滤波器的系数等参数会加载到预处理滤波器的内部寄存器，实现滤波器参数切换
 
-[查看原始PNG](../images/GameViewer_SeEx4da40l.png)
+滤波器参数切换完成后，硬件会自动拉低ids的cfg_pflt_rdy
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
+###### 5.14.3.2 滤波器的输入数据增益调整
 
-### 【左页】
+为了适用不同的场景，需要对预处理滤波通道的输入数据进行缩放（通过左移或者右移实现），缩放的范围为：-1~2（负数表示左移，正数表示右移）。如下图所示。
 
-16bit*16bit,0中间累加器的位宽为27bit~中间累加器溢出时可
-以选择wrap或者 saturate（通过寄存器cfg_pflt_clip选择），同
-时会上报溢出状态到上预处理滤波器通道的上报寄存器；
-2、滤波器的运算结果可以通过cfg_pflt_r_arg寄存器进行缩
-放，缩放之后的结果可以通过cfg_pflt_acc_out_wrap_sel寄存器
-进行saturate或者wrap到16bit数据输出；
-3、在实现时，数据流图中乘法器、加法器、累加结果寄存
-器等资源将与用户预处理补偿模块复用；
-ETHCU h1an. 73
-ETMC 7uan, 11
-ETMCI/
-ETMCI) 2 2026-10-02-21;44
-8TMCVmian.11
-ETMCII muan. 11
-
-
-### 【右页】
-
-> 📌 **【图表提示】**: 此处包含图表 `图5-x滤波器运算的数据流图`，完整结构与时序请查看原图 `GameViewer_SeEx4da40l.png`。
-
-：10-20-01-9208
-rlt dali
-ETNCU hian.Ti
-9.[3:0]
-.et [3.0
-(nt mt.nrcant/ni. t8)
-(26.22)
-IL,ot,a[rtM[i:e]
-buan.Ti 2026-10-02-21-44
--(26.28
-(t of[n t, ixJ[5.0]
-ns (2)
-(3 2
-( [2]a[22]]
-(26. (3)
-I3r_],at_0,[25] ], nL os1,dal. ua[25.3]
-an.li 2028-10-02-21
-Tp (i.oal 4u,[]],n _al sa. ue[2-]
-16 B)
-TMCIT
-efxpU es[2.0]
-图5-x滤波器运算的数据流图
-FTNOU
-13080F
+> 转录注：正文cfg_pflt_p_num和图中cfg_pflt_num、正文cfg_p_arg/cfg_q_arg与图中cfg_pflt_p_arg/cfg_pflt_q_arg的差别均按原文保留，不自动重命名。跨页“活动寄／存器”在此连续衔接。
 
 ---
 
@@ -1675,57 +1255,102 @@ FTNOU
 
 [查看原始PNG](../images/GameViewer_PecSuT1xBB.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-x输入数据增益调整`，完整结构与时序请查看原图 `GameViewer_PecSuT1xBB.png`。
+**图5-x 输入数据增益调整**
 
-(pre_datsa_in[15: 0], 3 d0)
-((1 (pre_data_in[15]], pre_data_in[15: 0],2 d0]
-f1t_at_in[15:0]
-([2 (rre_data_in[15]]], pre_data_in [15: 0], 1’ d0)-
-((3 (pre_dats_in[15]]), pre_data_in[15:0])
-ETHCU hans. Ji
-cfe_pf1t_idst_eain_adj[1:0]
-图5-x输入数据增益调整
+图中选择信号：`cfg_pflt_idat_gain_adj[1:0]`。四路输入原文如下。
 
-#### 5.14.3.3滤波器的输入数据和运算结果缓存
+| 选择值 | 输入拼接式 |
+|---|---|
+| 0 | `{pre_data_in[15:0],3'd0}` |
+| 1 | `{{1{pre_data_in[15]}},pre_data_in[15:0],2'd0}` |
+| 2 | `{{2{pre_data_in[15]}},pre_data_in[15:0],1'd0}` |
+| 3 | `{{3{pre_data_in[15]}},pre_data_in[15:0]}` |
 
-BTMOU huan.J
-1、当滤波器通道配置为fir滤波器时，滤波器的输入数据需
-要根据阶数进行缓存，待后面的滤波运算使用。当滤波器的
-flt_dat_vld==1时，将所有的输入数据（包含最近的cfg_p_arg个
-输入数据）向后移动一个寄存器，最旧的数据不再需要，所以
-被丢弃。
-2、当滤波器通道配置为iir滤波器时，滤波器的输入数据和
-输出结果都需要根据阶数进行缓存，前cfg_p_arg个寄存器缓存
-最新的 cfg_p_arg 个输入数据。后 cfg_q_arg 个寄存器缓存
-cfg_q_arg个最新的输出结果，c用于反馈支路的运算，最旧的数
-据不再需要，所以被丢弃。
+图中文字转录：多路选择输出`19bit`，经`round`得到`17bit`，经`sat`输出`flt_dat_in[15:0]`。选择值的蓝色仅在此记录为图中文字颜色，未按四项独立新增功能计数。
 
+###### 5.14.3.3 滤波器的输入数据和运算结果缓存
+
+1、当滤波器通道配置为fir滤波器时，滤波器的输入数据需要根据阶数进行缓存，待后面的滤波运算使用。当滤波器的flt_dat_vld==1时，将所有的输入数据（包含最近的cfg_p_arg个输入数据）向后移动一个寄存器，最旧的数据不再需要，所以被丢弃。
+
+2、当滤波器通道配置为iir滤波器时，滤波器的输入数据和输出结果都需要根据阶数进行缓存，前cfg_p_arg个寄存器缓存最新的cfg_p_arg个输入数据。后cfg_q_arg个寄存器缓存cfg_q_arg个最新的输出结果，用于反馈支路的运算，最旧的数据不再需要，所以被丢弃。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-x输入数据和运算结果的缓存`，完整结构与时序请查看原图 `GameViewer_PecSuT1xBB.png`。
+3、当配置cfg_pflt_buf_clr==1（软件写清信号）时，输入数据和运算结果缓存可以被清除；当加载新的滤波器参数时，可以通过配置cfg_pflt_rdy_buf_clr_sel寄存器来选择是否需要清除输入数据和运算结果缓存。
 
-3、当配置cfg_pflt buf clr==1(软件写清信号)时，输入数据
-和运算结果缓存可以被清除；当加载新的滤波器参数时，可以
-通过配置cfg_pflt_rdy_buf_clr_sel寄存器来选择是否需要清除输
-入数据和运算结果缓存。
-(*:1U
-_ d g~ [[15.0]
-BTKCUbuan.3 2026-10-02-21 48
-[.[015.0]
-ETNCU hian.1i 2026-10-02-21:
-图5-x输入数据和运算结果的缓存
+**图5-x 输入数据和运算结果的缓存**
 
-#### 5.14.3.4滤波器运算的数据流图
+图中文字转录：分为`j==0`、`j>0`两组；可辨标签包括`flt_cal_dat_pre[j][15:0]`、`flt_dat_in[15:0]`、`16'd0`、`flt_cal_dat_o[15:0]`、`flt_dat_in_vld==1`、`flt_cal_en`、`flt_ch_num`、`flt_ch_vld`、`flt_buf_clr`。寄存器、MUX、反馈和清除连线仍见原始PNG。
 
-Cu
-1、滤波器的本质为乘加运算，在实现过程中用内部计数器
-来控制输入数据和滤波器系数的乘加，乘法起的位宽为
-1080F
+> ⚠️ 原图待复核（SARC-LLD-U11）：两组buffer图顶部清除逻辑的完整布尔表达式、部分MUX选择条件及细小数组下标，不能从当前截图逐字符确认。已保留可辨标签，不按buffer工作原理补全逻辑。
+> 原图：[GameViewer_PecSuT1xBB.png](../images/GameViewer_PecSuT1xBB.png)，右页两组buffer图。
+
+###### 5.14.3.4 滤波器运算的数据流图
+
+1、滤波器的本质为乘加运算，在实现过程中用内部计数器来控制输入数据和滤波器参数的乘加，乘法起的位宽为
+
+> 转录注：本页“乘法起”为原图文字；该句直接续接下一张左页的“16bit*16bit”，不在中间插入其他章节。
+
+---
+
+## 原图：`GameViewer_SeEx4da40l.png`
+
+[查看原始PNG](../images/GameViewer_SeEx4da40l.png)
+
+### 【左页】
+
+16bit*16bit，中间累加器的位宽为27bit，中间累加器溢出时可以选择wrap或者saturate（通过寄存器cfg_pflt_clip选择），同时会上报溢出状态到上预处理滤波器通道的上报寄存器；
+
+2、滤波器的运算结果可以通过cfg_pflt_r_arg寄存器进行缩放，缩放之后的结果可以通过cfg_pflt_acc_out_wrap_sel寄存器进行saturate或者wrap到16bit数据输出；
+
+3、在实现时，数据流图中乘法器、加法器、累加结果寄存器等资源将与用户预处理补偿模块复用；
+
+### 【右页】
+
+**图5-x 滤波器运算的数据流图**
+
+上部计数/控制图的可辨标签：`p_arg[3:0]`、`q_arg[3:0]`、`flt_type`、`flt_cnt[3:0]`、`flt_en`、`flt_buf_clr`、`flt_cal_en`、`4'd0`、`4'd1`。具体连线、反馈和多路选择见原图。
+
+> ⚠️ 原图待复核（SARC-LLD-U12）：计算数据流图上部计数器周围的复合条件、部分比较/选择标签和细小下标，尚不能逐字符确认；下方可确认的乘加与缩放部分已分别转录，不能把整幅图标成完整文字化。
+> 原图：[GameViewer_SeEx4da40l.png](../images/GameViewer_SeEx4da40l.png)，右页上部计数/控制图。
+
+**乘加部分图中文字转录：**
+
+| 位置 | 原图文字／定标 |
+|---|---|
+| 两个乘法输入 | `flt_cal_dat[flt_idx][15:0]`、`flt_coeff[flt_idx][15:0]`，s(16,15) |
+| 乘法输出 | s(32,30) |
+| flr之后 | s(24,22) |
+| 红色处理注释 | 补两位符号位 |
+| 加法器输入 | s(26,22) |
+| 加法器结果 | `flt_acc`，s(27,22) |
+| wrap／sat选择 | `cfg_pflt_clip`；wrap分支0，sat分支1 |
+| 选择后结果 | s(26,22) |
+| 累加结果寄存器 | `flt_cal_dat_o_pre[25:0]`；使能`flt_cal_en` |
+| 累加起始选择 | `flt_cal_st`；一路`26'd0`，另一路为累加结果反馈 |
+| 溢出检测标签 | `flt_acc[26]`、`flt_acc[25]`、`flt_cal_en`、`flt_ovf`；异或及与门连接见原图 |
+
+**输出缩放部分图中文字转录：**
+
+图中以`cfg_pflt_r_arg[2:0]`选择8路移位拼接输入。
+
+| 选择值 | 输入拼接式 |
+|---|---|
+| 7 | `{flt_cal_dat_o_pre[25:0]}` |
+| 6 | `{{1{flt_cal_dat_o_pre[25]}},flt_cal_dat_o_pre[25:1]}` |
+| 5 | `{{2{flt_cal_dat_o_pre[25]}},flt_cal_dat_o_pre[25:2]}` |
+| 4 | `{{3{flt_cal_dat_o_pre[25]}},flt_cal_dat_o_pre[25:3]}` |
+| 3 | `{{4{flt_cal_dat_o_pre[25]}},flt_cal_dat_o_pre[25:4]}` |
+| 2 | `{{5{flt_cal_dat_o_pre[25]}},flt_cal_dat_o_pre[25:5]}` |
+| 1 | `{{6{flt_cal_dat_o_pre[25]}},flt_cal_dat_o_pre[25:6]}` |
+| 0 | `{{7{flt_cal_dat_o_pre[25]}},flt_cal_dat_o_pre[25:7]}` |
+
+右侧格式示意为`s(26,22)`→`<<R`→`s(26,22-R)`→`s(26,15)`，旁边红字“合并”。浅蓝/清绿部分包含`sat`、`wrap`及选择信号`cfg_pflt_acc_out_wrap_sel`，0选择sat、1选择wrap，输出`flt_cal_dat_o[15:0]`，定标`s(16,15)`。
+
+> 同源局部核对注：本页中央乘加区域与辅助原图[GameViewer_323Uh2DKeH.png](../../sarc_diagrams/images/GameViewer_323Uh2DKeH.png)中的对应区域，底部移位/输出区域与[GameViewer_T5Wi63Rflj.png](../../sarc_diagrams/images/GameViewer_T5Wi63Rflj.png)中的对应区域已按框、连线及标签逐项比对后用于辨字。辅助图外围额外红色解释没有并入本页作者正文；此局部对照不等于辅助图整页已完成核对。上部U12仍保留。
+> 原文差异：本节正文27bit、图中s(27,22)与下一节蓝字“扩展36bit加法器”分别保留；没有替作者推断一套最终位宽。红字“补两位符号位”不是“扩展36bit”。
 
 ---
 
@@ -1733,60 +1358,85 @@ Cu
 
 [查看原始PNG](../images/GameViewer_pVe1evLu6f.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-预处理过采求和通道
-ETMCU hrian.
-E7NCU hvan, 1 2026-10-02-21: 44
-. Ji
-1ntr/dma处理
-re_f lag_e tr1
-(ptc_cho"T)
--10-02-21;44
-vs_f.sg[15 ;0]
-prioritr_d1t
-ETNO
-BTMOy
-. J3
-ve_4ue ue
-sare_sample_ctrl
-携报ADC
-过采控制侧：
-增加8套采样间隔、过采样次数配置，作用于ovsctrl0~7；
-过采样通道连接在预处理滤波通道后，与虚拟通道的映射关系同预处
-理通道滤波一致；
-若虚拟通道映射到过采样通道，则vc_flag_ctrl的ovs_ctrl增加flag的
-自动拉起机制，未达到过采次数时自动按间隔设置拉高对应的vc_flag;
-*该虚拟通道的触发信号来临时完成影子加载，生效软件的配置；
-uan
-*，无论是否开启抢占功能，过采过程中如果出现其它高优先级的虚拟通
-道请求priority_cflt，或blanking窗口，进行resume、conti恢复；
+#### 5.15 预处理过采和通道
 
+本节原图无独立图号的结构图，可辨文字如下：`vc_flag_ctrl`内含浅蓝`ovs_ctrl 0~7`；`vc_flag[15:0]`送入`vc_queue`，其`vc_num`送入`sarc_sample_ctrl`，`start`送入“模拟ADC”，`data`送入`sarc_pflt (pfc_ch0~7)`，再送入浅蓝`sum_ctrl`中的`sum_ch0~7`。上方“寄存器菜单”中有`sum0~sum7`，右侧标注`intr/dma处理`。反馈信号标注`priority_cflt`；反馈分支及图中连线见原图。
+
+**过采控制侧：**（以下原文为浅蓝字）
+
+- 增加8套采样间隔、过采次数配置，作用于ovs_ctrl0~7；
+- 过采样通道连接在预处理滤波通道后，与虚拟通道的映射关系同预处理通道滤波一致；
+- 若虚拟通道映射到过采样通道，则vc_flag_ctrl的ovs_ctrl增加flag的自动拉起机制，未达到过采次数时自动按间隔设置拉高对应的vc_flag；
+- 该虚拟通道的触发信号来临时完成影子加载，生效软件的配置；
+- 无论是否开启抢占功能，过采过程中如果出现其它高优先级的虚拟通道请求priority_cflt，或blanking窗口，进行resume、conti恢复；
 
 ### 【右页】
 
-*若过采期间来临新触发，硬件上忽略该触发，但告警，软件可清除该
-告警；
-求和侧：
-ETNCU huan.Ti
-*对预处理滤波输出进行按过采次数进行求和功能；
-*优先级冲突的处理，resume的恢复模式下，需清零求和结果；
-其它：
-加法器单元可复用滤波逻辑中的扩展36bit加法器；
-*过采求和结果完成后可输出中断/dma请求；
-*该功能需有使能控制；
+（续上页浅蓝字）
 
-#### 5.16采样结果超门限检测
+- 若过采期间来临新触发，硬件上忽略该触发，但告警，软件可清除该告警；
+
+**求和侧：**（原文浅蓝字）
+
+- 对预处理滤波输出进行按过采次数进行求和功能；
+- 优先级冲突的处理，resume的恢复模式下，需清零求和结果；
+
+**其它：**（原文浅蓝字）
+
+- 加法器单元可复用滤波逻辑中的扩展36bit加法器；
+- 过采求和结果完成后可输出中断/dma请求；
+- 该功能需有使能控制；
+
+#### 5.16 采样结果超门限检测
 
 超门限检测的对象为用户预处理补偿后的采样结果。
-检测包括超上门限和超下门限检测，每个用户预处理通道的
-采样结果独立配置上下门限值、2独立检测、独立输出检测结果。
-此处修改:
-6001：对检测结果进行滤波处理，且超上下门限单独输出告
-警。
-080F
+
+检测包括超上门限和超下门限检测，每个用户预处理通道的采样结果独立配置上下门限值、独立检测、独立输出检测结果。
+
+此处修改：
+
+6001：对检测结果进行滤波处理，且超上下门限单独输出告警。
+
+> 转录注：原图标题确为“预处理过采和通道”，未自行补“求”字；priority_cflt与前文priority_conflict、priority_cnflt/priority_conflt按各处原图拼写保留。上页“过采控制侧”末项跨页续接。本页6001条目紧接下一张6002条目，不将下一张误放在FIR结构图之前。
+
+---
+
+## 原图：`GameViewer_NaDPGTeO6W.png`
+
+[查看原始PNG](../images/GameViewer_NaDPGTeO6W.png)
+
+### 【左页】
+
+6002：上下门限检测输出使用CBC或者ONESHOT两种模式（软件配置选择）。CBC模式下，根据每个新的采样结果是否超门限控制是否输出告警；ONESHOT模式下，一旦产生了超门限告警，需要软件进行清除。每个超门限检测通道输出1bit事件，上下门限告警通过mux-or的方式输出。同时单独上报超上下门限的实时状态。
+
+**图5-20 超门限检测原理**
+
+图中文字转录：`limit.hi`、`adc_result`、`limit.lo`；两路比较器，图内以`+`、`-`标记输入端；`pulse`、`set`、`clear`；上、下支路分别标注`adcevtsts.triphi`、`adcevtsts.triplo`、`evtsel.hi`、`evtsel.lo`、`clear.hi`、`clear.lo`、`CBC clearlogic`；事件汇合输出`EVT`。比较器、置位/清除支路和门连接保留在原图，不另加原图未写的比较公式。
+
+**图5-20 超门限检测结果输出形式**
+
+图中文字转录：`sample1 超门限`、`sample2 超门限`、`sample3 不超门限`、`sample4 超门限`；两路输出标注`CBC`、`ONESHOT`；红色标注`hw clear`指向CBC清除处，`soft clear`指向ONESHOT清除处。波形边沿位置以原图为准。
+
+### 【右页】
+
+#### 5.17 滤波通道
+
+滤波处理模块的数据输入为校准补偿后的采样结果。
+
+此处区别：6001是用户预处理补偿后结果，6002是校准补偿后结果。
+
+滤波类型：FIR、IIR、滑动平均（归入FIR，由软件配置系数）、非滑动平均。
+
+FIR滤波阶数要任意可配置，最高32阶。并且根据配置阶数对滤波结果实时输出。
+
+**图5-20 FIR滤波**
+
+图中文字转录：标题“滤波处理”，虚线框`filter`；输入`cal_data_out`；系数`filter_coeff`，`s(13,12) signed`；乘法节点`X`旁标注`32个X`，乘法输出`s(29,14)`；求和节点`Σ`输出`s(34,14)`，随后`round`输出`s(22,2)`，`sat`输出`s(16,2)`至`filter_data_out`，并标注`s(16,2) signed`。
+
+> 同源局部核对注：本页“滤波处理”局部与[GameViewer_9akceoHcVF.png](../../sarc_diagrams/images/GameViewer_9akceoHcVF.png)中对应滤波框的节点、定标和“32个X”标注进行了对照，仅该一致局部用于辨字。该辅助图左上ADC校正的offset位宽与本文件第24张不同，未将该版本差异覆盖到第24张，也未据此关闭U10。
+> 转录注：本页三幅图均标5-20，照留原图号。6001/6002的差异和图中红色hw/soft clear不是明示的ET6601新增；未混入本轮6601修改条目。本张正确位置为第31张，承接5.16并引入5.17。
 
 ---
 
@@ -2324,7 +1974,7 @@ ETMC/ huan.Ti
 FTNCU
 12080F
 
-## 第二部分：截图明确标注的ET6601修改点（已核对前14张）
+## 第二部分：截图明确标注的ET6601修改点（累计核对前31张）
 
 ### 原文颜色依据
 
@@ -2350,6 +2000,38 @@ FTNCU
 | C14 | 5.1，sum说明 | sum：求和结果输出； | 整行浅蓝色 | [GameViewer_bG98ufwLis.png](../images/GameViewer_bG98ufwLis.png) |
 | C15 | 图5-3，求和结果节点 | sum reg；8*20bit | 图内求和相关浅蓝色标记；系数及其他细字仍在U06 | [GameViewer_3VjshoX5So.png](../images/GameViewer_3VjshoX5So.png) |
 
+### 第三轮新增来源位置C16～C40
+
+本批17张新增25条来源位置记录，累计C01～C40。记录数不是独立功能数；C11的原遮挡仍未解决。
+
+| 编号 | 所在章节／表格 | 原始文字或可辨标签 | 原图标记及边界 | 原始截图 |
+|---|---|---|---|---|
+| C16 | 5.7左页末段 | preemtive_md：p0优先级抢占模式指示，1为p0可抢占模式，0为不可抢占模式； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_40i6eF4ZKV.png](../images/GameViewer_40i6eF4ZKV.png) |
+| C17 | 5.7右页首段 | priority_conflict：抢占模式开启下的优先级指示，1指示优先级冲突，当前存在p0优先级请求，需由外部的请求处理模块重发vc_num_req完成处理后，才会拉低；未开启抢占功能时一直为0； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_40i6eF4ZKV.png](../images/GameViewer_40i6eF4ZKV.png) |
+| C18 | 图5-13输入/输出 | preemtive_md；priority_conflict | 两个浅蓝/清绿信号标签；与正文同主题不同来源位置。 | [GameViewer_40i6eF4ZKV.png](../images/GameViewer_40i6eF4ZKV.png) |
+| C19 | 5.9软件触发末段 | 还支持另一软件触发，软件通过配置CFG_SARC_VC_SOFT_TRIGER.cfg_sarc_vc_soft_trigger[15:0]；该触发脉冲在触发选择列表上，触发功能需经过触发选择，与其它硬件触发源的功能类似； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_Pv1TFSu3Dw.png](../images/GameViewer_Pv1TFSu3Dw.png) |
+| C20 | 抢占功能无编号结构图 | priority_cnflt；start/en；vc_num/val；vc_flag_ctrl；sarc_smaple_ctrl | 图中浅蓝反馈线及priority_cnflt标记；其余为定位标签，不把所有黑字也归为新增。 | [GameViewer_LoWatHzLVG.png](../images/GameViewer_LoWatHzLVG.png) |
+| C21 | 1.1.1抢占功能控制第1条 | 1. 由vc_queue模块完成识别vc_flag_ctrl输入的vc_flag[15:0]中的优先级冲突，~~包含blanking情况的冲突，~~判定当前队列优先级和当前输出的vc_num的优先级是否冲突，输出priority_cnflt信号； | 浅蓝正文中“包含blanking情况的冲突”有删除线；原文删除性质保留。 | [GameViewer_LoWatHzLVG.png](../images/GameViewer_LoWatHzLVG.png) |
+| C22 | 1.1.1抢占功能控制第2条及两种时机 | 2. sarc_sample_ctrl模块识别到priority_cnflt信号，根据priority_cnflt的时机进行不同的时序控制：：<br>ii. 可直接进行抢占；<br>需delay发起抢占(不区分队列是否存在其它请求，统一delay)； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_LoWatHzLVG.png](../images/GameViewer_LoWatHzLVG.png) |
+| C23 | 图5-18交接区说明 | 若抢占发生在连续两笔转换的交接区，需输出sarc_a2d_outrd_hold使模拟保证不影响第一次的ready&data的返回时序； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_LoWatHzLVG.png](../images/GameViewer_LoWatHzLVG.png) |
+| C24 | 图5-18后的模拟返回说明 | 1. 模拟接收抢占控制，完成采样转换后返回高优先级对应的ready及data信息； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_LoWatHzLVG.png](../images/GameViewer_LoWatHzLVG.png) |
+| C25 | 图5-18后的vc_flag_ctrl处理 | 2. vc_flag_ctrl接收该ready信号，priority_conflt，start信号；<br>a) 发出start后清除vc_flag；<br>b) 若期间因抢占导致该对应的start无法返回ready，需重新将vc_flag拉起；<br>c) 使用对应返回的ready指示该vc_flag的完整结束； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_LoWatHzLVG.png](../images/GameViewer_LoWatHzLVG.png) |
+| C26 | 5.11左页末段 | 当由于p0优先级抢占发生时，低优先级会在第二次采样开始时更新DLYSTAMP值； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_mjeYzTB3j7.png](../images/GameViewer_mjeYzTB3j7.png) |
+| C27 | 5.11右页首段 | 过采样启用时，该延时捕获仅在过采样的第一次开始时锁存延迟值； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_mjeYzTB3j7.png](../images/GameViewer_mjeYzTB3j7.png) |
+| C28 | 5.14.3.4计算数据流图底部 | sat；wrap；cfg_pflt_acc_out_wrap_sel；flt_cal_dat_o[15:0]；s(16,15) | sat/wrap选择部分为浅蓝/清绿；最后两个为对应黑色输出标签，未推断旧版本选择。 | [GameViewer_SeEx4da40l.png](../images/GameViewer_SeEx4da40l.png) |
+| C29 | 5.15结构图 | ovs_ctrl 0~7；sum_ctrl；sum_ch0~7；sum0~sum7 | 浅蓝新增控制/求和节点；图内其它黑字仍完整列在正文。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C30 | 5.15过采控制侧第1条 | 增加8套采样间隔、过采次数配置，作用于ovs_ctrl0~7； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C31 | 5.15过采控制侧第2条 | 过采样通道连接在预处理滤波通道后，与虚拟通道的映射关系同预处理通道滤波一致； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C32 | 5.15过采控制侧第3条 | 若虚拟通道映射到过采样通道，则vc_flag_ctrl的ovs_ctrl增加flag的自动拉起机制，未达到过采次数时自动按间隔设置拉高对应的vc_flag； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C33 | 5.15过采控制侧第4条 | 该虚拟通道的触发信号来临时完成影子加载，生效软件的配置； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C34 | 5.15过采控制侧第5条 | 无论是否开启抢占功能，过采过程中如果出现其它高优先级的虚拟通道请求priority_cflt，或blanking窗口，进行resume、conti恢复； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C35 | 5.15过采控制侧第6条/跨页 | 若过采期间来临新触发，硬件上忽略该触发，但告警，软件可清除该告警； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C36 | 5.15求和侧第1条 | 对预处理滤波输出进行按过采次数进行求和功能； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C37 | 5.15求和侧第2条 | 优先级冲突的处理，resume的恢复模式下，需清零求和结果； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C38 | 5.15其它第1条 | 加法器单元可复用滤波逻辑中的扩展36bit加法器； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C39 | 5.15其它第2条 | 过采求和结果完成后可输出中断/dma请求； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| C40 | 5.15其它第3条 | 该功能需有使能控制； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+
 ### 其他原图记录（不混入明确6601修改数）
 
 | 编号 | 所在位置 | 原文／记录范围 | 边界 | 原图 |
@@ -2361,6 +2043,17 @@ FTNCU
 | B05 | 4.1差分vrefn注入行 | sarc_d2a_adc_cal_df_refn_inj；输出；控制ADC差分侧输入vrefn | 原图黑色删除线；未单独标明版本。 | [GameViewer_XEDw3yfNAf.png](../images/GameViewer_XEDw3yfNAf.png) |
 | B06 | 5.1数据格式说明 | 校准s(16,2)；ATE u(12,0)；用户预处理s(16,2)/s(16,0)；滤波s(16,2)/u(12,0) | 四组原文红色强调，未独立注明6601版本；全文在第一部分，不加入15条明确变更位置。 | [GameViewer_3VjshoX5So.png](../images/GameViewer_3VjshoX5So.png) |
 | B07 | 5.3校准软件流程第1步 | adc_pwdn=0、 | 原图黑色删除线；adc_en=0未划去；未独立注明删除所属版本。 | [GameViewer_QZWwXnmnv1.png](../images/GameViewer_QZWwXnmnv1.png) |
+
+### 第三轮其他原图记录B08～B13
+
+| 编号 | 所在章节／表格 | 原始文字或可辨标签 | 原图标记及边界 | 原始截图 |
+|---|---|---|---|---|
+| B08 | 5.11开头 | 该功能为6002新增。 | 明确6002历史功能；本页后两处浅蓝新增另外列C26/C27。 | [GameViewer_mjeYzTB3j7.png](../images/GameViewer_mjeYzTB3j7.png) |
+| B09 | 5.13 | 6002相对于6001修改点：pre_gain参数格式由u(14,12)修改为s(15,12)。 | 明确历史6001→6002，不改成6601新增。 | [GameViewer_UFTfaW6Wm8.png](../images/GameViewer_UFTfaW6Wm8.png) |
+| B10 | 5.14.3.4图内 | 补两位符号位；合并 | 红色图注；没有单独注明6601版本，已用对应辅助局部辨字。 | [GameViewer_SeEx4da40l.png](../images/GameViewer_SeEx4da40l.png) |
+| B11 | 5.16末段 | 6001：对检测结果进行滤波处理，且超上下门限单独输出告警。 | 与下一张6002形成历史对照，不是6601新增。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
+| B12 | 5.16跨页续段 | 6002：上下门限检测输出使用CBC或者ONESHOT两种模式（软件配置选择）。CBC模式下，根据每个新的采样结果是否超门限控制是否输出告警；ONESHOT模式下，一旦产生了超门限告警，需要软件进行清除。每个超门限检测通道输出1bit事件，上下门限告警通过mux-or的方式输出。同时单独上报超上下门限的实时状态。 | 明确6002的CBC/ONESHOT输出形式；红色hw clear/soft clear为对应时序标识。 | [GameViewer_NaDPGTeO6W.png](../images/GameViewer_NaDPGTeO6W.png) |
+| B13 | 5.17输入来源 | 此处区别：6001是用户预处理补偿后结果，6002是校准补偿后结果。 | 原文6001/6002输入位置差异，不改成6601新增。 | [GameViewer_NaDPGTeO6W.png](../images/GameViewer_NaDPGTeO6W.png) |
 
 ### 未解决来源缺口
 
@@ -2374,4 +2067,11 @@ FTNCU
 | SARC-LLD-U06 | 第11张，图5-3 | 系数全名、signed等式、位宽/定标及小框文字 |
 | SARC-LLD-U07 | 第12张，图5-4 | 控制输入全名、数字域小框、位宽与输出下标 |
 
-7组不是7个字；每组可能含多个词或数值。后26张尚未逐图核对，不能说成整份LLD仅剩上述7组问题。原始差分流程、重复目录编号、SRAC拼写及原作者DAC待补项分别照录，不作为本次要自行修正的设计。
+| SARC-LLD-U08 | 第22张，图5-17（GameViewer_ba6sdetThH.png） | spltime_en上方两处注释、部分时序小框名称和间隔小数值 |
+| SARC-LLD-U09 | 第23张，图5-18三处嵌入时序表（GameViewer_LoWatHzLVG.png） | 完整行名、细小注释、周期列数及波形色块起止；源表格链接未作为已取得文件 |
+| SARC-LLD-U10 | 第24张，图5-19采样校准（GameViewer_mjeYzTB3j7.png） | signed下方细字及顶部范围；辅助图offset为15bit而本页5bit，不互相覆盖 |
+| SARC-LLD-U11 | 第28张，输入数据和运算结果的缓存图（GameViewer_PecSuT1xBB.png） | 清除逻辑完整布尔式、MUX选择条件及细小数组下标 |
+| SARC-LLD-U12 | 第29张，计算数据流图上部（GameViewer_SeEx4da40l.png） | 计数器周围的复合条件、比较/选择标签和下标；中央/底部已用相同局部分图核对 |
+
+已核对前31张累计12组来源缺口：U01～U07原样保留，本轮增加U08～U12。每组可能含多个词或数值，不是仅剩12个字；末9张尚未本轮核对，不能称整份LLD只有这些缺口。原作者差异、重复编号和DAC待补项不自动修正。辅助图只在经过局部同源核实的范围用于辨字，没有把11张辅助图计作已完整审核。
+

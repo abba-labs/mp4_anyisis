@@ -1,0 +1,421 @@
+{
+  "date": "2026-10-05",
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "3d8da927cc13d4f8b6edd4d48001f2769f8365b7",
+  "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
+  "document": "6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md",
+  "total_images": 40,
+  "reviewed_images_first_pass": 31,
+  "new_reviewed_images": 17,
+  "new_review_range": [
+    15,
+    31
+  ],
+  "unreviewed_images": 9,
+  "order_scope": "前31张按原图章节和续句核实；32～40仍为候选",
+  "unresolved_groups_in_reviewed_range": 12,
+  "first_pass_not_final_acceptance": true,
+  "auxiliary_full_review_count": 0,
+  "images": [
+    {
+      "order": 1,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_be9VqBBdbM.png",
+      "bytes": 666093,
+      "blob_sha": "6d72e9e01512c402bf9a4eaad10a38c335e9e339",
+      "sha256": "a06d56ae17c2b269190a645564ef93d2f4b5a2a5d7b2f2a5b3eb80b75029b5e0",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "封面及署名；真实标题SARC模块方案设计",
+      "previous_candidate_order": 1
+    },
+    {
+      "order": 2,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_aPDFQVxWhA.png",
+      "bytes": 754940,
+      "blob_sha": "6ea3378c304ef79474f6cb47b8964f72a65d0ea0",
+      "sha256": "61b15c1800895c5b56ebadde437fb32b35d1838e04ec8fdd6f61bc8ddb531c6e",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "修订表3条非空记录、14空白行、明确颜色规则；历史ET6801记录不冒充6601",
+      "previous_candidate_order": 2
+    },
+    {
+      "order": 3,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_3ZWo3TthG6.png",
+      "bytes": 966759,
+      "blob_sha": "a2da1637699e698aa449bc0dad353a55084a88e0",
+      "sha256": "e6bbfa7f36b91293ccd15186c119d146130b2040364e900eb20be04617b92b9b",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "目录前两页、原重复5.1编号保留",
+      "previous_candidate_order": 3
+    },
+    {
+      "order": 4,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_v6tUVs7H0k.png",
+      "bytes": 1025365,
+      "blob_sha": "3a2e68a1449211c69a65a39e9d5ca046e11ef52e",
+      "sha256": "7b867c7a51b80c8d07d71a9dfc2e475a0f8fa7dadd2128620cd33adcc5ef9af3",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "目录末页、OR_DR说明及18行内嵌表可辨内容；U01",
+      "previous_candidate_order": 4
+    },
+    {
+      "order": 5,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_LWEUsHJgSN.png",
+      "bytes": 1380016,
+      "blob_sha": "afa799b4502979f42140f885caf96bee242d31f2",
+      "sha256": "5b8272bec2a11e61c5e37759aac87dda2c4195c62eacfb56870f8d582ad22fd1",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "概述、9项功能、图1标签和求和标记；U02",
+      "previous_candidate_order": 5
+    },
+    {
+      "order": 6,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_ZQLidR9zmC.png",
+      "bytes": 1125418,
+      "blob_sha": "d84990b92bd37f9a876af3230e443c370ac43a0b",
+      "sha256": "80ff8e7296f38e6672b0fc4ec9d426857945755a894f05e33788f0d65c62c1d2",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "4.1接口前半，32信号行；恢复clk_adc、spltime_en及删除线、outrd_hold",
+      "previous_candidate_order": 6
+    },
+    {
+      "order": 7,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_XEDw3yfNAf.png",
+      "bytes": 1178382,
+      "blob_sha": "bc29d61e3f7438ead15ca35e368fcac90cd6cff7",
+      "sha256": "1b1a1abf6e4132097894f1270d5fe1c1990dc62f17d7ffc6b3d7cb0129230caf",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "4.1接口后半，33信号行；DMA源打拍、ATE/中断/TESTPIN/CPU等完整行",
+      "previous_candidate_order": 7
+    },
+    {
+      "order": 8,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_BMYV2LGXFN.png",
+      "bytes": 999391,
+      "blob_sha": "3a9fe070d85363496f2bb740c3daf74e60447f0d",
+      "sha256": "dd2bc6de19f91fea66056b70aee8078cda9dd8399fe99ddee2566bf50766c626",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "4.2采样时长、图4-1可辨文字、右页5条说明；U03",
+      "previous_candidate_order": 8
+    },
+    {
+      "order": 9,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_Wwj0z78cha.png",
+      "bytes": 1171487,
+      "blob_sha": "6fa223705ef8441376912fe7904f671d260be077",
+      "sha256": "2b91808ce092cf1bcf4b4849e5ac8d87c489dc5352e71cfa5067d1a2b98c0238",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "5.1连接关系和结构图；第三ADC删除及求和/过采节点；U04",
+      "previous_candidate_order": 9
+    },
+    {
+      "order": 10,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_bG98ufwLis.png",
+      "bytes": 1557829,
+      "blob_sha": "314eb5f3b97cd2b6b5d6293157913ed0f5c31401",
+      "sha256": "68e4e8cc894258dbeb93ae238624e5d96a58c2eb58d44df51468e06984c35d01",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "模块说明跨页续接、ovs_ctrl/queue_manage/flag及sum；U05提示框遮挡",
+      "previous_candidate_order": 10
+    },
+    {
+      "order": 11,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_3VjshoX5So.png",
+      "bytes": 1436185,
+      "blob_sha": "2a7dd8f0990c911bb32b9542cc271d2fdfba785b",
+      "sha256": "6ec9cab48a2ed91b9e4051ab73e6f49a6ce1ab335f315faf2008090ba51728c5",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "blanking说明、图5-3数据路径、4组格式及时钟；U06",
+      "previous_candidate_order": 11
+    },
+    {
+      "order": 12,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_UUhaiE4moy.png",
+      "bytes": 1117302,
+      "blob_sha": "a313dbefafac2e033dc20bc8edd6450b31694494",
+      "sha256": "0276aa88c63a138878c4b7d3aaaa1fa96d1c6f86900d22b5543ea62c915ec686",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "ADCCLK、图5-4、4个校正公式、单端9步和差分第1步；U07",
+      "previous_candidate_order": 12
+    },
+    {
+      "order": 13,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_QZWwXnmnv1.png",
+      "bytes": 1143647,
+      "blob_sha": "b0d889c2e271724563ecf6fe9c1e4b893ee11381",
+      "sha256": "1ef296b35d81857ab14043749af19f5b261ff7dfe1f0bcea89eaf4fc75fe5ed8",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "差分第2～9步、两阶段补偿与4条数字要求、校准软件5步；adc_pwdn删除线",
+      "previous_candidate_order": 13
+    },
+    {
+      "order": 14,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_O2LOSI5xZO.png",
+      "bytes": 828887,
+      "blob_sha": "3f8a38b893c4034c6a606cde8851c17284a13c55",
+      "sha256": "dc71af592c1d25a65e054974624cd264bafe4a687526420207f9f245c181426c",
+      "status": "first_pass_reviewed_with_source_gaps",
+      "notes": "图5-5全部可辨交互、图5-6四状态五条件、作者DAC待补说明",
+      "previous_candidate_order": 14
+    },
+    {
+      "order": 15,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_CCQu4ftpmA.png",
+      "bytes": 1305700,
+      "blob_sha": "44e54a849ba1d77109e27547fdeec073507f69d4",
+      "sha256": "85e69819e98508c5ce3420b594cd201a7cd007d209135487f6ba40ab2131080b",
+      "status": "first_pass_reviewed",
+      "notes": "5.4外部触发；图5-7；5.5单次触发完整正文/两行模式表",
+      "previous_candidate_order": 15
+    },
+    {
+      "order": 16,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_NaOtfAzWwn.png",
+      "bytes": 1061709,
+      "blob_sha": "54f0ecffb5b1746a0f2f6ca768b4e3a90c224f36",
+      "sha256": "b51118f6cb303d256cd45ea1cc0f70d013cc6e3b3b217a00f755267b78f601b3",
+      "status": "first_pass_reviewed",
+      "notes": "图5-8/5-9；连续触发和blanking开篇",
+      "previous_candidate_order": 16
+    },
+    {
+      "order": 17,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_a0rP8s7Oan.png",
+      "bytes": 966724,
+      "blob_sha": "11af4d6b3c3a994db7643b967b47b9b4a0180684",
+      "sha256": "ca2edc37f6a42f7df747763a6e29abc8324d44780573d12c3895ec15a37d7673",
+      "status": "first_pass_reviewed",
+      "notes": "blanking告警与图5-10～5-12，三状态三有字转移",
+      "previous_candidate_order": 17
+    },
+    {
+      "order": 18,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_40i6eF4ZKV.png",
+      "bytes": 1334152,
+      "blob_sha": "b944fb5707aabc4d49241047b079839d3b1727c6",
+      "sha256": "099336c9dbd8ea82ae0f615367a551b2ce6ad15424cf586c075bc5a19f630f02",
+      "status": "first_pass_reviewed",
+      "notes": "优先级队列全部输入输出，抢占模式蓝字和图5-13；5.8",
+      "previous_candidate_order": 18
+    },
+    {
+      "order": 19,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_NwJydpcqGX.png",
+      "bytes": 763313,
+      "blob_sha": "24490af56ea714bfe2bf73cf8bcdf363471f16e6",
+      "sha256": "f3cd3dc41c9428c3bceb07ca2e70a8486f7eabdf6d6a6185a1b42f0b6fea8847",
+      "status": "first_pass_reviewed",
+      "notes": "同步/冗余两图全部可辨标签及正文",
+      "previous_candidate_order": 19
+    },
+    {
+      "order": 20,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_Pv1TFSu3Dw.png",
+      "bytes": 1356639,
+      "blob_sha": "600cbce4280f90063fccfd273c474817b60e1fb2",
+      "sha256": "39056781f5e6b8f8c4f35c4301d4eb7eb90ac5bcf65665b7b0fa2fd2a37a01da",
+      "status": "first_pass_reviewed",
+      "notes": "软件强制置位完整说明/跨页示例；另一软件触发蓝字；5.10",
+      "previous_candidate_order": 20
+    },
+    {
+      "order": 21,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_sKXvcDs2Yn.png",
+      "bytes": 687154,
+      "blob_sha": "a726524b50e50450de10e07b573c9934042d50a0",
+      "sha256": "34bad37ec4568a49417bfe8986215f50209e62e100ad9b6639ca1cf687a6cb8f",
+      "status": "first_pass_reviewed",
+      "notes": "图5-15四状态及九条箭头；图5-16时序标签",
+      "previous_candidate_order": 21
+    },
+    {
+      "order": 22,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_ba6sdetThH.png",
+      "bytes": 736311,
+      "blob_sha": "3d894f4d5f2a909a7f00ef48e91bd1620277aaab",
+      "sha256": "488e1ac00686bf4e8d30cba980e1e4c4d0bb0d63a25a011c8167e8741c63e58d",
+      "status": "first_pass_reviewed_with_local_gaps",
+      "notes": "图5-17/5-18可辨时序；U08",
+      "previous_candidate_order": 22
+    },
+    {
+      "order": 23,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_LoWatHzLVG.png",
+      "bytes": 1408438,
+      "blob_sha": "d19ad15816857dc070519fb8d8bccebfc0d62788",
+      "sha256": "08c6b5aa76af8f70b8f3dd7d07edc75e84124128e96ee9c746bce2936fb8ce7e",
+      "status": "first_pass_reviewed_with_local_gaps",
+      "notes": "1.1.1抢占；blanking冲突删除线；ready/flag恢复；U09",
+      "previous_candidate_order": 23
+    },
+    {
+      "order": 24,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_mjeYzTB3j7.png",
+      "bytes": 1365943,
+      "blob_sha": "001b40389322ab4e7f03e882ed9fb9095f1a7d0e",
+      "sha256": "3c87d0fd0026948880dd859b5e424903e752b848a606aec15253237cdb1facaa",
+      "status": "first_pass_reviewed_with_local_gaps",
+      "notes": "5.11延时捕获新增两段；5.12及校准图；U10",
+      "previous_candidate_order": 24
+    },
+    {
+      "order": 25,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_UFTfaW6Wm8.png",
+      "bytes": 1173083,
+      "blob_sha": "5efe45e2761a3e41d123988d7279df15e8c840cb",
+      "sha256": "9d46837e3520026e302797a95ab43ccb8e5482fc23d944e106715a85684f739a",
+      "status": "first_pass_reviewed",
+      "notes": "5.13预处理补偿；5.14/FIR公式5-1/5-2",
+      "previous_candidate_order": 25
+    },
+    {
+      "order": 26,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_Ef2CwLAmR0.png",
+      "bytes": 984213,
+      "blob_sha": "a5ca1556e0efc974f4b0274d50c9f3db57dcd55e",
+      "sha256": "6f0d5fc746cdfdac85d7234830548eee6c724104fe6b9be9edbf41595300727e",
+      "status": "first_pass_reviewed",
+      "notes": "FIR/IIR结构及公式5-3/5-4；重复5.14.1照留",
+      "previous_candidate_order": 27
+    },
+    {
+      "order": 27,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_vZO2NlUXdv.png",
+      "bytes": 1217330,
+      "blob_sha": "77950c727493bcdf84767f0eaa3b23e0ebb77ccf",
+      "sha256": "30d74fb469c043b8ddd456e37ec00916a3f760481954069ebca5e5c8a958b94a",
+      "status": "first_pass_reviewed",
+      "notes": "5.14.3参数四条完整原文、影子更新、全部寄存器标签",
+      "previous_candidate_order": 28
+    },
+    {
+      "order": 28,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_PecSuT1xBB.png",
+      "bytes": 1182638,
+      "blob_sha": "25d27cb832d4ebe7aac85d40533d3ab468c18bd3",
+      "sha256": "7ca8cf0cd21f114a162f5efbc1f322df577a149e750a8bdf0f6b448c17068379",
+      "status": "first_pass_reviewed_with_local_gaps",
+      "notes": "输入增益四路拼接；缓存三条；计算数据流开篇；U11",
+      "previous_candidate_order": 30
+    },
+    {
+      "order": 29,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_SeEx4da40l.png",
+      "bytes": 890703,
+      "blob_sha": "ea1bf1aa4de62e2b0f419e707b100b7a43fa56eb",
+      "sha256": "0b56bbb889bee6ebd08c30fe1a890fc37d66af2a9e65bb7d1e522b2819d4fb0e",
+      "status": "first_pass_reviewed_with_local_gaps",
+      "notes": "16bit*16bit续句、三条计算原文、8路缩放、sat/wrap；U12",
+      "previous_candidate_order": 29
+    },
+    {
+      "order": 30,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_pVe1evLu6f.png",
+      "bytes": 1355216,
+      "blob_sha": "4542e169742208680956da36f6c3ca5647be1889",
+      "sha256": "3b356ff2b81d44620a1643704818d82793f96d38ecc35b572b6c0217a0bfd91c",
+      "status": "first_pass_reviewed",
+      "notes": "5.15全部11条蓝字及结构；5.16/6001末句",
+      "previous_candidate_order": 31
+    },
+    {
+      "order": 31,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_NaDPGTeO6W.png",
+      "bytes": 1104891,
+      "blob_sha": "ed46297af085f1b3fc0759163bf0bfa441a753b6",
+      "sha256": "49d033ed7641124bc169ac02786fe57f2ec0ddff1faff57d47c59cfa72154fa5",
+      "status": "first_pass_reviewed",
+      "notes": "承接6001→6002阈值输出；两张CBC/ONESHOT图；5.17与FIR图",
+      "previous_candidate_order": 26
+    },
+    {
+      "order": 32,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_iSOJmCn28m.png",
+      "bytes": 990577,
+      "blob_sha": "2ff16e788e116c35ca5e00df10351c4032c0da02",
+      "sha256": "ddfb90b6b94e9333a79a932c2dc56b07618413c4b84fd8757dfe63de6ae7f2f2",
+      "status": "not_reviewed",
+      "notes": "历史正文保留；不得把候选顺序和旧稿当作逐图验收",
+      "previous_candidate_order": 32
+    },
+    {
+      "order": 33,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_HFc4FYW2ed.png",
+      "bytes": 861383,
+      "blob_sha": "a611d0135657065cda53f27910bbe81d7a1977e1",
+      "sha256": "57d8a695131a32a79c638a27f3d4ba459879c454a67af13dea6aedcc658c9f15",
+      "status": "not_reviewed",
+      "notes": "历史正文保留；不得把候选顺序和旧稿当作逐图验收",
+      "previous_candidate_order": 33
+    },
+    {
+      "order": 34,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_ZwgMgCyaeL.png",
+      "bytes": 855881,
+      "blob_sha": "fd8a3e189efc6e185bbee11dff8bb66b1fc1d1d8",
+      "sha256": "4b6f6c89a4cf40940e2c9d84d32bcd8a1b80d2740c34d9d3d15f505aa6d5b455",
+      "status": "not_reviewed",
+      "notes": "历史正文保留；不得把候选顺序和旧稿当作逐图验收",
+      "previous_candidate_order": 34
+    },
+    {
+      "order": 35,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_e8XPWSdAMt.png",
+      "bytes": 1038376,
+      "blob_sha": "c4d67082d6c9deb55cbc6bfe4e9a25e605517e0e",
+      "sha256": "b8f1fc02e18971a394d694c9409c655b54190ff2a684676159a5290446af6afe",
+      "status": "not_reviewed",
+      "notes": "历史正文保留；不得把候选顺序和旧稿当作逐图验收",
+      "previous_candidate_order": 35
+    },
+    {
+      "order": 36,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_1EC7JuTBH6.png",
+      "bytes": 1302013,
+      "blob_sha": "c95ac46b55b49a0c23fcafcb1d01268b6e296bbe",
+      "sha256": "53685086b46b5fe72ab089ab9d605ea9fdd1027287ed408ff27ba1c86605575c",
+      "status": "not_reviewed",
+      "notes": "历史正文保留；不得把候选顺序和旧稿当作逐图验收",
+      "previous_candidate_order": 36
+    },
+    {
+      "order": 37,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_cTDH1vvDLo.png",
+      "bytes": 1241578,
+      "blob_sha": "18e667e5bf6c9a4c4f68a02d90cf285c159ddbca",
+      "sha256": "4c327d00f6bda1e28e2e1f1e0324e4caa497976c5ed99b6147fdcf22c74a8986",
+      "status": "not_reviewed",
+      "notes": "历史正文保留；不得把候选顺序和旧稿当作逐图验收",
+      "previous_candidate_order": 37
+    },
+    {
+      "order": 38,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_m4qMLaqKqw.png",
+      "bytes": 1174358,
+      "blob_sha": "5cf06c1e543d8dc1b546434280acf80ba695e24c",
+      "sha256": "9fa591805c51a355a9fe15ea77f4aa8ade1ba4af0cd775ec83b4e2e085447f22",
+      "status": "not_reviewed",
+      "notes": "历史正文保留；不得把候选顺序和旧稿当作逐图验收",
+      "previous_candidate_order": 38
+    },
+    {
+      "order": 39,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_u5JeUrg4ga.png",
+      "bytes": 1174840,
+      "blob_sha": "8962f2e36ee8a8cf27e92de28af9aa0bb0ee98b4",
+      "sha256": "773ed56e774387fbe6ff5a6b2609f156c25420cb79a3185c18d98f95f86675ad",
+      "status": "not_reviewed",
+      "notes": "历史正文保留；不得把候选顺序和旧稿当作逐图验收",
+      "previous_candidate_order": 39
+    },
+    {
+      "order": 40,
+      "path": "6601芯片截图/sarc/sarc_lld/images/GameViewer_YbkCdqx6qz.png",
+      "bytes": 747919,
+      "blob_sha": "749af22e66ed1f8096ca17d544f23c92e995ae1e",
+      "sha256": "1c3f3f13ba9ef99f0cf1edc4c07f6674243874210c803446ae8871a5e37b6d27",
+      "status": "not_reviewed",
+      "notes": "历史正文保留；不得把候选顺序和旧稿当作逐图验收",
+      "previous_candidate_order": 40
+    }
+  ]
+}

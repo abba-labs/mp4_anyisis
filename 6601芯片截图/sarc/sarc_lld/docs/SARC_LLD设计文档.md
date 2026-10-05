@@ -1,11 +1,10 @@
 # SARC 模块方案设计
 
 > 来源：本仓库sarc_lld目录40张原始PNG；原文封面标题《SARC模块方案设计》，保持一份原始文档。
-> 第四轮范围：新核对第32～36张，共5张；累计前36/40张首轮原图核对，覆盖5.17滤波通道至5.19 FIFO开篇。末4张保留历史转录、未首轮核对。
-> 前31张正文块保持第三轮正式稿；本批按左页后右页、公式/图注/续句衔接。第32、33张界面屏幕号跳号另记来源连续性疑点S01，不据此猜补原文。
-> 已核对区有SARC-LLD-U01～U15共15组局部细字/遮挡缺口；另有来源连续性疑点S01。整份文档未最终验收，原编号、原文参数/拼写差异照录。
-> 浅蓝色/清绿色变更按原文颜色声明；历史图配色、6001/6002/6801等历史版本记录另列。转录注和图中文字索引与原作者正文分开。
-> 来源commit：`d80a74e83e4bf942905844e61efd5d169e37c815`；本轮输入head：`11987dcacad0163512f10e22d020bfc41c42326b`，输入LLD blob：`dfe3dc2a6f70183888289d96c8768517be107c56`。逐图状态见`../../../reviews/SARC_LLD_ROUND4_IMAGE_LEDGER_20261005.json`；实际保存与回读以本轮REMOTE_SAVE为准。
+> 第五轮范围：第37～40张4张；累计40/40张已首轮核对至文末。前36张正文块按第四轮正式稿逐字节保留。
+> 首轮覆盖40张不等于来源页已完整或逐字验收通过：U01～U19共19组局部字形/遮挡缺口及S01来源连续性疑点仍未关闭。
+> 按原文顺序、双页先左后右；重复图号、删除线、原文拼写/参数和作者空白保留。浅蓝/清绿按原文声明归集，6002/6801历史说明另列。
+> 来源commit：`d80a74e83e4bf942905844e61efd5d169e37c815`；本轮输入HEAD：`d75fc901b5914d165f1a797e49a60fa6a81b4e0c`，输入LLD blob：`33bed8b0c1348ba02e616557fbbd3785661ed393`。台账见`../../../reviews/SARC_LLD_ROUND5_IMAGE_LEDGER_20261005.json`，实际保存见本轮REMOTE_SAVE。
 
 ## 第一部分：原始文档逐图还原
 
@@ -1669,230 +1668,179 @@ DATA PIPE采用单口RAM实现。RAM地址为8位，高3位选择滤波通道0-7
 
 [查看原始PNG](../images/GameViewer_cTDH1vvDLo.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-对每组结果寄存器分别增加1个对应的寄存器，该寄存器可
-通过软件配置bitmap映射为fifo模式，两组结果寄存器对应fifo
-模式的参数独立配置。
-cfg_*_fifo_vc_sel选择在vc_en有效的vc中，哪些vc对应的
-结果寄存器映射到fifo，默认vc_en有效的vc都映射到fifo。即
-有效的 bitmap=cfg_*_fifo_vc_sel & cfg_vc_en。
-注意：
-·软件在初始化或者更新bitmap相关配置后，都需要对
-cfg_*_fifo_bitmap_reload进行写 1操作。
-●软件配置vc的采样顺序必须按照bitmap配置中vc编号从
-小到大的顺序。
-硬件控制fifo映射关系的bitmap时序如下图所示：
-ETMCI TRian.
-fifo_rd_valid_out
-fifo_rd_ack_im
-fifo_rd_data_in
-判断reload条件：用
-ETNO
-One-hot取反后与原
-值与
-BTMCUhian.1i
+> 转录衔接：承接第36张5.19两组结果寄存器的说明。
 
+对每组结果寄存器分别增加1个对应的寄存器，该寄存器可通过软件配置bitmap映射为fifo模式，两组结果寄存器对应fifo模式的参数独立配置。
+
+`cfg_*_fifo_vc_sel`选择在vc_en有效的vc中，哪些vc对应的结果寄存器映射到fifo，默认vc_en有效的vc都映射到fifo。即有效的bitmap=`cfg_*_fifo_vc_sel & cfg_vc_en`。
+
+注意：
+
+- 软件在初始化或者更新bitmap相关配置后，都需要对`cfg_*_fifo_bitmap_reload`进行写1操作。
+- 软件配置vc的采样顺序必须按照bitmap中vc编号从小到大的顺序。
+
+硬件控制fifo映射关系的bitmap时序如下图所示：
+
+> 图中文字转录（原图未见独立图号或图名，不自行编号）：从上到下为`cfg_fifo_bitmap_reload`、`fifo_rd_valid_out`、`fifo_rd_ack_in`、`fifo_rd_data_in`、`fifo_bitmap`。data格依次为`0`、`1`、`2`、`3`；bitmap格依次为`0000`、`1111`、`1110`、`1100`、`1000`、`1111`。两处红字分别为`sw reload`、`hw reload`；右侧批注为“判断reload条件：用One-hot取反后与原值与”。波形沿及连线以原PNG为准。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-20EOC延时处理示意`，完整结构与时序请查看原图 `GameViewer_cTDH1vvDLo.png`。
-
-
-#### 5.20 SARADC 控制器中断
+#### 5.20 SARADC控制器中断
 
 6002功能增加点1（产生EOC标志）：
-ETMCU huian.1i
-每个ADC控制器的虚拟通道支持对应EOC（end-of-
-conversion）信号产生，用于触发中断，EOC脉冲信号可配置
-选择如下两个产生位置，每个ADC控制器的虚拟通道统配置：
-S/H窗口结束时刻，
-采样转换结束时刻，默认选择
-S/H窗口开始时刻
-支持EOC选择位置时刻到中断产生的上沿延时可配置，16bit
-SYSCLK时钟计数值；且每个ADC控制器的虚拟通道统一配
-置。如果当前EOC到来时，上一个EOC的延时处理没有完成，
-则在该时刻输出上一个EOC 的中断触发，同时当前EOC进行
-延时模块进行延时处理。
-end_p到未时，上一个end_p的delay还没
-有完成，则在该时割输出上一个end_p的
-int_trig，然后当前enc_p进行delay棋块重
-d'pua
-新开始计数延时，
-int_trig
-Hdelay_
-ETNCUV
 
-**图5-20EOC延时处理示意**
+每个ADC控制器的虚拟通道支持对应EOC（end-of-conversion）信号产生，用于触发中断，EOC脉冲信号可配置选择如下两个产生位置，每个ADC控制器的虚拟通道统一配置：
 
-233 Ⅱ
-1080F
+□S/H窗口结束时刻，
 
----
+□采样转换结束时刻，默认选择
+
+□S/H窗口开始时刻
+
+支持EOC选择位置时刻到中断产生的上沿延时可配置，16bit SYSCLK时钟计数值；且每个ADC控制器的虚拟通道统一配置。如果当前EOC到来时，上一个EOC的延时处理没有完成，则在该时刻输出上一个EOC的中断触发，同时当前EOC进行延时模块进行延时处理。
+
+**图5-20 EOC延时处理示意**
+
+> 图中文字转录：两行信号`end_p`、`int_trig`；图中两段`delay`及各脉冲框内`vc`带细小下标，见U16。框内批注：“end_p到来时，上一个end_p的delay还没有完成，则在该时刻输出上一个end_p的int_trig。然后当前enc_p进行delay模块重新开始计数延时。”
+> 转录注：原文写“两个”但下列有三个选项，分别照录；批注的`enc_p`与前文`end_p`不同，按各处保留；6002历史说明不改写为6601新增。
+
+> ⚠️ 原图待复核（SARC-LLD-U16）：图5-20各vc脉冲框下标和两段delay的细小下标尚不能逐字符确认；不能按先后顺序补成i/j/k等确定值。可辨基名及完整批注已录。
+> 原图：[GameViewer_cTDH1vvDLo.png](../images/GameViewer_cTDH1vvDLo.png)，右页下部EOC延时示意。
 
 ## 原图：`GameViewer_m4qMLaqKqw.png`
 
 [查看原始PNG](../images/GameViewer_m4qMLaqKqw.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-20EOC模块输入信号时序关系图`，完整结构与时序请查看原图 `GameViewer_m4qMLaqKqw.png`。
-
 下图指示EOC模块输入信号的时序关系：
+
 EOC的位置可以配置选择采样结束或者转换结束：
-采样结束sh_endp：adc_spltime_en为低时（无扩展采样）选
-择 adc_start_ld 的下降沿信号 adc_start_ld_neg（sysclk）；
-adc_spltime_en为高时（有扩展采样）选择adc_spltime_en_1d的
-下降沿信号adc_spltime_en_1d_neg（sysclk）;
-转换结束 cvt_end_p：选择 adc_ready_in_ld 的上升沿信号
-adc_ready_sarc (sysclk);
-ETMCI TRan. 13
 
-**图5-20EOC模块输入信号时序关系图**
+采样结束sh_end_p：adc_spltime_en为低时（无扩展采样）选择adc_start_1d的下降沿信号adc_start_1d_neg（sysclk）；
 
-6002功能修改点2（中断源）：
-每个ADC支持1路中断输出中断源包括：
-DEOC 脉冲信号（基手虚拟通道，16bit）
-ETMCU hian. Ti
+adc_spltime_en为高时（有扩展采样）选择adc_spltime_en_1d的下降沿信号adc_spltime_en_1d_neg（sysclk）；
 
+转换结束cvt_end_p：选择adc_ready_in_1d的上升沿信号adc_ready_sarc（sysclk）；
+
+**图5-20 EOC模块输入信号时序关系图**
+
+> 图中文字转录：上组可辨`adc_start`、`adc_spltime_en`、`adc_spltime_en_1d`、`adc_spltime_en_1d_neg`、`adc_start_1d`、`adc_start_1d_neg`及VC数据行；数据框`VC1`、`VC2`。下组可辨`adc_ready_in`、`adc_ready_in_1d`、`adc_ready_sarc`、`adc_ready_vc_num`；数据框`VC1`、`VC2`。完整波形沿与下标见原图，不据采样原理重画。
+> ⚠️ 原图待复核（SARC-LLD-U17）：上组VC数据行的完整信号名疑似`vc_num_sarc`，小字大小写/分隔符不能完全确认；两组细波形沿对齐关系不以文字推算替代。原图：[GameViewer_m4qMLaqKqw.png](../images/GameViewer_m4qMLaqKqw.png)，左页中部两组时序。
+
+~~6002功能修改点2（中断源）：~~
+
+~~每个ADC支持1路中断输出，中断源包括：~~
+
+~~□EOC脉冲信号（基于虚拟通道，16bit）~~
 
 ### 【右页】
 
-21:4号
-口电平超门限中断（基手虚拟通道，超门限脉冲触发中断，
-超上下门限独立中断源，共16bit*2）
-口2组结果寄存器锁存有效采样结果中断（基手虚拟通道，
-16bit*2)
-口1组求和结果寄存器锁存有效采样结果中断（基手求和通道，
-8bit)
-6601功能修改点2（中断源）：
-每个ADC支持1+4路中断输出，1个中断源包括：
-口EOC脉冲信号（基手虚拟通道，16bit）
-口电平超门限中断（基于虚拟通道，超门限脉冲触发中断，
-超上下门限独立中断源，共16bit*2）
-口2组结果寄存器锁存有效采样结果中断（基手虚拟通道，
-16bit*2)
-4套中断逻辑可以任选以下源作为中断源；
-EOC脉冲信号（基于虚拟通道，16bit）
-口2组结果寄存器锁存有效采样结果中断（基于虚拟通道，
-16bit*2)
-1080F
+> 转录衔接：以下三条仍属于左页被划去的6002中断源清单，删除线连续保留。
 
----
+~~□电平超门限中断（基于虚拟通道，超门限脉冲触发中断，超上下门限独立中断源，共16bit*2）~~
+
+~~□2组结果寄存器锁存有效采样结果中断（基于虚拟通道，16bit*2）~~
+
+~~□1组求和结果寄存器锁存有效采样结果中断（基于求和通道，8bit）~~
+
+6601功能修改点2（中断源）：
+
+每个ADC支持1+4路中断输出，1个中断源包括：
+
+~~□EOC脉冲信号（基于虚拟通道，16bit）~~
+
+□电平超门限中断（基于虚拟通道，超门限脉冲触发中断，超上下门限独立中断源，共16bit*2）
+
+~~□2组结果寄存器锁存有效采样结果中断（基于虚拟通道，16bit*2）~~
+
+4套中断逻辑可以任选以下源作为中断源；
+
+□EOC脉冲信号（基于虚拟通道，16bit）
+
+□2组结果寄存器锁存有效采样结果中断（基于虚拟通道，16bit*2）
+
+> 转录衔接：第三个选项在下一张左页首行，列表未在本页结束。
 
 ## 原图：`GameViewer_u5JeUrg4ga.png`
 
 [查看原始PNG](../images/GameViewer_u5JeUrg4ga.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-20中断处理`，完整结构与时序请查看原图 `GameViewer_u5JeUrg4ga.png`。
+> 转录衔接：以下浅蓝条目承接第38张“4套中断逻辑”清单。
 
-口1组求和结果寄存器锁存有效采样结果中断（基于求和通道
-8bit)
-当中断产生时，上一中断还未响应（中断未被清除），可此时
-产生中断溢出告警指示。
+□1组求和结果寄存器锁存有效采样结果中断（基于求和通道，8bit）
+
+> 原图标记：上条整行浅蓝色。
+
+当中断产生时，上一中断还未响应（中断未被清除），此时产生中断溢出告警指示。
+
 中断处理按下面的方式统一处理：
-激始中新高存器‘int,raw_pt
-中断状志存器 _int_status_rpt
-BTMCU Tuan.J4 202
-BINCU
-ETMCIhuan.Ji
-cfg.*jint,en
-中新使报信号
-(电子)
-中国批发信号
-中新缩出”3nt
-中新测试高门司
-ran,11 2026-10
-RTMCU.huan. 7 2026-10-02-2
-TNCI
-中新苏服信号
-ETMCI Tan. 1i
-中新处理模块
 
-**图5-20中断处理**
+**图5-20 中断处理**
 
+> 图中文字转录：左侧由上到下为“中断使能信号”“中断触发信号”“中断测试寄存器”“中断清除寄存器”“中断屏蔽信号”；使能/屏蔽旁为“电平”，测试/清除旁为“脉冲”。图中可辨`cfg_*_int_en`、`cfg_*_int_clr`、`cfg_*_int_mask`，内部“中断锁存”、`D`、“中断处理模块”；上部“原始中断寄存器：int_raw_rpt”“中断状态寄存器：int_status_rpt”。右侧输出含`int`。逻辑门、连线、反馈、输出前寄存器以及原图图号均保留在来源图中，不自行重新解释。
+> ⚠️ 原图待复核（SARC-LLD-U18）：测试寄存器信号疑似`cfg_*_int_force_ind`，上方读出端汉字及D右侧两处输出标识的完整字形/分隔符尚不够清晰。不能把候选当确定字段，也不能凭中断通用模板补写。
+> 原图：[GameViewer_u5JeUrg4ga.png](../images/GameViewer_u5JeUrg4ga.png)，左页中部“中断处理”图。
+> 转录注：本图与前两张的EOC示意均原标“图5-20”，不自动重编号。
 
-#### 5.21.DMA数据请求
+#### 5.21 DMA数据请求
 
-hian.12 0026-20-02-21:44
 6002修改点（DMA请求源）：
-BTMCU hian.1i
-
 
 ### 【右页】
 
-每个ADC支持4个DMA请求通道，每个DMA请求通道可
-从如下DMA请求源中独立配置选择（sarc只选择DMA请求源
-输出，DMA握手功能在DMAMUX模块中实现）：
-●EOC脉冲信号（基于虚拟通道，16bit）
-·2组结果寄存器锁存有效采样结果（基于虚拟通道，16*2）
-·电平超门限检测结果事件（基于虚拟通道*16bit）
-1组求和结果寄存器锁存有效采样结果（基于求和通道，
-8bit)
-在通过fifo读取采样结果模式下，通过fifo的非空信号进行
-DMA请求，两个fifo的非空信号可独立选择到4个dma请求通
-道，默认配置下不选择fifo的DMA请求。
-6801增加将16个虚拟通道的电平超门限检测结果事件或结
-果作为新增的dma请求事件。
+每个ADC支持4个DMA请求通道，每个DMA请求通道可从如下DMA请求源中独立配置选择（sarc只选择DMA请求源输出，DMA握手功能在DMA_MUX模块中实现）：
 
-#### 5.22数据同步到 CPU_WRAP
+- EOC脉冲信号（基于虚拟通道，16bit）
+- 2组结果寄存器锁存有效采样结果（基于虚拟通道，16*2）
+- 电平超门限检测结果事件（基于虚拟通道*16bit）
+- 1组求和结果寄存器锁存有效采样结果（基于求和通道，8bit）
 
-U huan: li
-为了使得cpu 能够快速获取adc采样结果，减少总线延迟，
-将adc采样结果同步到 cpu_wrap中。6601修改成两组，
+> 原图标记：以上列举的最后一项为浅蓝色；前三项黑色。原文第二项写`16*2`，不补成`16bit*2`。
 
----
+在通过fifo读取采样结果模式下，通过fifo的非空信号进行DMA请求，两个fifo的非空信号可独立选择到4个dma请求通道，默认配置下不选择fifo的DMA请求。
+
+6801增加将16个虚拟通道的电平超门限检测结果事件或结果作为新增的dma请求事件。
+
+#### 5.22 数据同步到CPU_WRAP
+
+为了使得cpu能够快速获取adc采样结果，减少总线延迟，将adc采样结果同步到cpu_wrap中。6601修改成两组，
+
+> 原图标记：“6601修改成两组，”为浅蓝色，续句位于下一张左页；不能将页尾逗号当成句子结束。
 
 ## 原图：`GameViewer_YbkCdqx6qz.png`
 
 [查看原始PNG](../images/GameViewer_YbkCdqx6qz.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-adcreg_receive 需根据时钟方案调整交互方式，所有逻辑在
-下;
-sare (20000
-.Ji
-sarel. ad:_resu2t
-8001r-2001clmn
-ssrc0. sars_result
-sarc_sdcresult_receive
-ids result reg!
-dsresult rego
-mun(3 :0)
-ETMCIIhuan.Ji
-6.约束
-KTIC参考《SARC模块LRS设计文档》中2.4节-约束说明。
-ETMCH Tman.li
-7.遗留问题
-8.参考文献
-BTMCh1an.1i 0026-20-02-21:44
-ETMCUhian.li
-文栏结尾
-第79屏(共79屏)
+> 转录衔接：承接第39张5.22“6601修改成两组，”；以下整段浅蓝色。
 
+adcreg_receive需根据时钟方案调整交互方式，所有逻辑在200M下；
+
+> 图中文字转录（本图未见独立图号/图名）：左侧堆叠标签分别为~~sarc2.adc_result~~、`sarc1.adc_result`、`sarc0.sarc_result`；左下两框“预处理运算结果”“滤波运算结果”，选择信号`cfg_outd_sel`及`0`、`1`。右侧接收框标题`sarc_adcresult_receive`；内部“SARC0通道”“SARC1通道”和浅蓝“SARC2通道”。右下寄存器块可辨`ids_result_reg0`、`ids_result_reg1`；浅蓝顶块、时钟图例、位宽/数组及右侧配置输入见U19。原文`adc_result`/`sarc_result`差异照录，不自行统一。
+> ⚠️ 原图待复核（SARC-LLD-U19）：上部sarc/cpu_wrap时钟括号、双色图例小字、总线标识及下方位宽说明、四个右侧浅蓝配置输入、浅蓝寄存器块完整名字/标线范围、结果组宽度和部分data/valid/vc_num下标不能全部逐字符确认。可辨片段为`data`、`valid`、`vc_num`及`8*16`；传输标签疑似`data[15:0]/valid/vc_num[3:0]`，仅记为候选。浅蓝SARC2通道行的横线性质/范围需保留原图回查。不得把正文“200M”“两组”反向填入图中字形或推断全部删除范围。
+> 原图：[GameViewer_YbkCdqx6qz.png](../images/GameViewer_YbkCdqx6qz.png)，左页上半部CPU_WRAP交互图。
+
+### 6. 约束
+
+参考《SARC模块LRS设计文档》中2.4节-约束说明。
+
+### 7. 遗留问题
+
+### 8. 参考文献
+
+> 转录注：原图第7、8节仅见标题，下面无作者正文，不添加本次转录疑点或外部参考文献到原文空白处。
 
 ### 【右页】
 
-ZTNCU
-KTMCIT 5
-ETNCV muan.Ji 2026-10-02-21-44
-ETNCU T22an.JI
-ETMC/ huan.Ti
-FTNCU
-12080F
+> 转录注：右侧未见文档正文，仅有水印/界面，保持原文空白；这些噪声不转录。
 
-## 第二部分：截图明确标注的ET6601修改点（累计核对前36张）
+## 第二部分：截图明确标注的ET6601修改点（40张首轮范围）
 
 ### 原文颜色依据
 
@@ -1958,6 +1906,18 @@ FTNCU
 |---|---|---|---|---|
 | C41 | 5.18 缓存通道，左页浅蓝段 | 每个SARADC控制器包含1组8*20bit结果寄存器，该结果格式同第一组格式配置选择一致，支持输出s(20,2),s(19,0)；8个寄存器与用户预处理滤波通道一一对应。 | 整段浅蓝色；按原文变更声明归集。与LRS及5.15同主题的重复位置不当成另一组实例。 | [GameViewer_1EC7JuTBH6.png](../images/GameViewer_1EC7JuTBH6.png) |
 
+### 第五轮新增来源位置C42～C46
+
+第37～40张新增5条来源归集记录，LLD累计46条；LRS32＋LLD46＝78条位置记录，不是独立功能数。跨页C43/C45各保留两张出处；C46有U19局部缺口，不计为全部图中文字准确。
+
+| 编号 | 所在章节／表格 | 原始文字或可辨标签 | 原图标记及边界 | 原始截图 |
+|---|---|---|---|---|
+| C42 | 5.20 6601中断源，第38张右页 | 6601功能修改点2（中断源）：每个ADC支持1+4路中断输出，1个中断源包括：<br>~~□EOC脉冲信号（基于虚拟通道，16bit）~~<br>□电平超门限中断（基于虚拟通道，超门限脉冲触发中断，超上下门限独立中断源，共16bit*2）<br>~~□2组结果寄存器锁存有效采样结果中断（基于虚拟通道，16bit*2）~~ | 原文明示6601；其中两条有删除线，不作为现行未删要求。 | [GameViewer_m4qMLaqKqw.png](../images/GameViewer_m4qMLaqKqw.png) |
+| C43 | 5.20 4套中断逻辑，跨第38～39张 | 4套中断逻辑可以任选以下源作为中断源；<br>□EOC脉冲信号（基于虚拟通道，16bit）<br>□2组结果寄存器锁存有效采样结果中断（基于虚拟通道，16bit*2）<br>□1组求和结果寄存器锁存有效采样结果中断（基于求和通道，8bit） | 位于6601说明下；第三选项跨页且浅蓝色。整组清单为一个归集记录，保留两张出处，不算多套新实例。 | [GameViewer_m4qMLaqKqw.png](../images/GameViewer_m4qMLaqKqw.png)；[GameViewer_u5JeUrg4ga.png](../images/GameViewer_u5JeUrg4ga.png) |
+| C44 | 5.21 DMA请求源，右页浅蓝条目 | 1组求和结果寄存器锁存有效采样结果（基于求和通道，8bit） | 浅蓝色；与黑色6002/6801历史说明分开；不把4个DMA请求通道推断成新增数量。 | [GameViewer_u5JeUrg4ga.png](../images/GameViewer_u5JeUrg4ga.png) |
+| C45 | 5.22 CPU_WRAP跨页浅蓝正文 | 6601修改成两组，adcreg_receive需根据时钟方案调整交互方式，所有逻辑在200M下； | 明确6601且浅蓝，跨页续句合为同一来源记录。 | [GameViewer_u5JeUrg4ga.png](../images/GameViewer_u5JeUrg4ga.png)；[GameViewer_YbkCdqx6qz.png](../images/GameViewer_YbkCdqx6qz.png) |
+| C46 | 5.22 CPU_WRAP图内修改位置 | ~~sarc2.adc_result~~；浅蓝“SARC2通道”；其余浅蓝配置名、时钟/寄存器细字见U19 | 图中删除线及浅蓝区域位置记录；局部未完整辨字，不能据此推断所有删除范围或图中时钟/位宽新旧值。 | [GameViewer_YbkCdqx6qz.png](../images/GameViewer_YbkCdqx6qz.png) |
+
 ### 其他原图记录（不混入明确6601修改数）
 
 | 编号 | 所在位置 | 原文／记录范围 | 边界 | 原图 |
@@ -1988,6 +1948,15 @@ FTNCU
 | B14 | 5.17 FIR | 6002修改点：阶数可任意配置，且根据配置阶数实时输出滤波结果，最大32阶。 | 明确6002历史修改，不计为6601新增；本页IIR原文“非线性”照录，不按常识改写。 | [GameViewer_iSOJmCn28m.png](../images/GameViewer_iSOJmCn28m.png) |
 | B15 | 5.18 图5-24下方 | 6002新增实现：用SARADC控制器使能cfg_sarc_en的上升沿清零result_ovf（结果被覆盖标志）、result_val（结果有效标志）、result_data（结果数据）寄存器状态。 | 明确6002新增，与同张浅蓝C41分开归类。 | [GameViewer_1EC7JuTBH6.png](../images/GameViewer_1EC7JuTBH6.png) |
 
+### 第五轮其他原图记录B16～B19
+
+| 编号 | 所在章节／表格 | 原始文字 | 原图标记及边界 | 原始截图 |
+|---|---|---|---|---|
+| B16 | 5.20 EOC | 6002功能增加点1（产生EOC标志）： | 原注明6002；完整原文、三个选项、16bit SYSCLK及延时冲突说明见第一部分；不改作6601新增。 | [GameViewer_cTDH1vvDLo.png](../images/GameViewer_cTDH1vvDLo.png) |
+| B17 | 5.20 原被删除清单 | ~~6002功能修改点2（中断源）：~~<br>~~每个ADC支持1路中断输出，中断源包括：~~ | 标题、说明及跨左右页四个源全部删除线；全文逐条恢复。不与右页未删6601标题合并。 | [GameViewer_m4qMLaqKqw.png](../images/GameViewer_m4qMLaqKqw.png) |
+| B18 | 5.21 DMA | 6002修改点（DMA请求源）： | 原文版本标题保留，跨页4个请求通道、DMA_MUX握手及FIFO选择照录；同节浅蓝求和条目另列C44。 | [GameViewer_u5JeUrg4ga.png](../images/GameViewer_u5JeUrg4ga.png) |
+| B19 | 5.21 6801段 | 6801增加将16个虚拟通道的电平超门限检测结果事件或结果作为新增的dma请求事件。 | 明确6801历史说明，不冒充6601新增。 | [GameViewer_u5JeUrg4ga.png](../images/GameViewer_u5JeUrg4ga.png) |
+
 ### 未解决来源缺口
 
 | 编号 | 图片与位置 | 尚待确认内容 |
@@ -2005,7 +1974,7 @@ FTNCU
 | SARC-LLD-U11 | 第28张，输入数据和运算结果的缓存图（GameViewer_PecSuT1xBB.png） | 清除逻辑完整布尔式、MUX选择条件及细小数组下标 |
 | SARC-LLD-U12 | 第29张，计算数据流图上部（GameViewer_SeEx4da40l.png） | 计数器周围的复合条件、比较/选择标签和下标；中央/底部已用相同局部分图核对 |
 
-已核对前36张累计15组局部来源缺口：原U01～U12未关闭，本轮增加U13～U15。每组可能含多个词或数值，不是15个字；末4张尚未核对。另有S01来源连续性疑点，不并入局部字形组数。
+40张首轮范围累计19组局部来源缺口：U01～U15保留，第五轮增加U16～U19。组数不是字符数；另有S01来源连续性疑点，不并入局部字形组数。
 
 ### 第四轮新增局部缺口及来源连续性疑点
 
@@ -2016,4 +1985,15 @@ FTNCU
 | SARC-LLD-U15 | 第36张GameViewer_1EC7JuTBH6.png，右页图5-24数据格 | 三组红色数据常量疑似16'dx/16'dy/16'dz，不能逐字符确认；9行信号和读清除/新数据标签已录。 |
 | SARC-LLD-S01 | 第32张iSOJmCn28m与第33张HFc4FYW2ed之间 | 来源界面显示屏幕61–62后为65–66；63–64尚未定位。界面屏幕号不是文档正文页码，不能仅凭跳号断言漏失内容或补出假页。需继续用原截图或同源源文件核实。 |
 
-原作者差异、重复编号和DAC待补项不自动修正。辅助图整图首轮仍0/11；只在已确认同源同版的局部用于辨字。S01与U01～U15都不因首轮图数增加而自动关闭。
+原作者差异、重复编号和DAC待补项不自动修正。辅助图整图首轮仍0/11；只在已确认同源同版的局部用于辨字。S01与U01～U19都不因首轮图数增加而自动关闭。
+
+### 第五轮新增局部缺口U16～U19
+
+| 编号 | 原图与区域 | 可辨片段与缺口 |
+|---|---|---|
+| SARC-LLD-U16 | [GameViewer_cTDH1vvDLo.png](../images/GameViewer_cTDH1vvDLo.png)，右页EOC延时图 | vc脉冲框及delay细小下标；可辨基名end_p/int_trig和框内批注已录。 |
+| SARC-LLD-U17 | [GameViewer_m4qMLaqKqw.png](../images/GameViewer_m4qMLaqKqw.png)，左页两组EOC时序 | 上组VC数据行全名/分隔符及细沿对齐；疑似vc_num_sarc，只作候选。 |
+| SARC-LLD-U18 | [GameViewer_u5JeUrg4ga.png](../images/GameViewer_u5JeUrg4ga.png)，左页中断处理图 | 测试寄存器完整信号、读出端汉字、D右输出两处标识；疑似cfg_*_int_force_ind。 |
+| SARC-LLD-U19 | [GameViewer_YbkCdqx6qz.png](../images/GameViewer_YbkCdqx6qz.png)，左页CPU_WRAP图 | 时钟括号/双色图例、总线/位宽、4个浅蓝输入、浅蓝寄存器名字/标线范围、数据下标；data/valid/vc_num、8*16等可辨片段保留。 |
+
+所有缺口仍开放。正文40张首轮已到文末，但S01未关闭，不声称来源文档完整页数已验收。

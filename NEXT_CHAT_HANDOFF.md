@@ -1,40 +1,41 @@
 # ET6601 截图还原接续入口
 
-更新：2026-10-05，SARC第四轮。仓库`abba-labs/mp4_anyisis`；唯一工作分支`docs/restore-6601-screenshots`。
+更新：2026-10-05，SARC第五轮。唯一工作分支`docs/restore-6601-screenshots`，仓库`abba-labs/mp4_anyisis`。
 
 ## 1. 当前接续摘要
 
-**方案设计已累计前36/40张首轮核对，本批新增第32～36张5张。下一张第37张`GameViewer_cTDH1vvDLo.png`，接5.19 FIFO模式读取采样结果。** 第三轮前31张正文块保持，末4张保留历史稿未核对；不从封面、第15张或第32张重做，不恢复已发布的第三轮分片。
+**方案设计40/40张已首轮核对至文末。本次从第32张推进，先32～36正式保存回读，再37～40；不要重新从第32/37张或封面开始。下一范围是11张辅助图整图及边界核对。** 一份方案正文仍为`6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md`。
 
-第四轮内容写回与完整字节回读以`6601芯片截图/reviews/SARC_LLD_ROUND4_REMOTE_SAVE_20261005.json`为准；该回执未形成时不能只凭本地VERIFY宣称已发布。
-
-| 范围 | 首轮状态 | 未关闭问题 |
+| 范围 | 首轮状态 | 未关闭 |
 |---|---|---|
-| EFC | LRS24/24、LLD36/36 | LLD5组，用户暂缓；未最终验收 |
-| SARC LRS | 13/13 | 3组局部缺口，正文未改 |
-| SARC模块方案设计 | 36/40 | U01～U15共15组局部缺口；另有来源连续性疑点S01；末4张未核对 |
-| SARC辅助图 | 0/11整图 | 四张仅有历史局部对照；边界/版本需核实 |
-| 独立XBAR | 0/27 | 不混入SARC正文或修改点 |
+| EFC | LRS24/24、LLD36/36 | LLD5组，用户暂缓 |
+| SARC LRS | 13/13 | 3组图内缺口 |
+| SARC方案设计 | 40/40 | U01～U19共19组局部缺口；S01来源连续性疑点单列 |
+| SARC辅助图 | 0/11整图 | 边界/版本及完整文字待核；原四张只作定点局部对照 |
+| 独立XBAR | 0/27 | 不混入SARC |
 | CPLD／HAC_WRAP | 0/48、0/1 | CPLD_INTERFACE已合并，不重复拆合 |
 
-全仓首轮109/200，余91＝LLD4＋辅助11＋XBAR27＋CPLD48＋HAC_WRAP1；SARC相关49/64。来源位置LRS32＋LLD41＝73条，LLD其他记录B01～B15另列。上述数值都不是准确率、独立功能数或硬件通过率。
+全仓113/200首轮，余87＝辅助11＋XBAR27＋CPLD48＋HAC_WRAP1；SARC相关53/64。LRS32＋LLD46＝78条来源归集记录，LLD其他B01～B19另列；C11和C46局部尚未完整辨字。图数、来源位置数不是准确率、独立功能数或最终验收率。
 
-## 2. 新对话阅读顺序
+## 2. 必读入口及已保存检查点
 
-1. 根`AGENTS.md`、本文件，再读`6601芯片截图/AGENTS.md`和`RESTORE_PROGRESS.md`。子AGENTS第7节仅为历史优先级。
-2. 最新`reviews/SARC_LLD_ROUND4_REMOTE_SAVE_20261005.json`、`SARC_LLD_ROUND4_REVIEW_20261005.md`、`SARC_LLD_ROUND4_IMAGE_LEDGER_20261005.json`及`SARC_LLD_ROUND4_VERIFY_20261005.json`（均在`6601芯片截图/`下）。
-3. `6601芯片截图/sarc/SARC_提取与验收报告.md`、`SARC_6601修改点总览.md`和唯一完整正文`6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md`的续接位置。
-4. 历史全会话地图为`6601芯片截图/reviews/CHAT_SESSION_HANDOFF_20261005.md`；U01～U07查ROUND2_REVIEW，U08～U12及前31张顺序查ROUND3_REVIEW/IMAGE_LEDGER。历史“下一张”不覆盖本入口。
+先根`AGENTS.md`、本文件、`6601芯片截图/AGENTS.md`、`RESTORE_PROGRESS.md`；再读最新ROUND5_REMOTE_SAVE、ROUND5_REVIEW、ROUND5_IMAGE_LEDGER和ROUND5_VERIFY（位于`6601芯片截图/reviews/`），SARC总览/报告及对应正文。保存状态以真实回执和最新分支为准，不能只依赖本地VERIFY。
+
+第四轮已正式发布：内容提交`987ab71db39fb49882c475bb8924155349bf7592`，回执提交`d75fc901b5914d165f1a797e49a60fa6a81b4e0c`；8个文件下载回读一致，原图/前31张/末4张保留。发布run37281519829的上传失败不否定其已成功提交；另以run37281664554、artifact11332118878完成下载回读。临时分片与工作流全部已删除，不重新恢复。第一次无效内联载荷失败也发生在正式正文写入前，细节见ROUND4_REMOTE_SAVE。
+
+第五轮本批输入HEAD为`d75fc901b5914d165f1a797e49a60fa6a81b4e0c`；最新内容提交及回读见`6601芯片截图/reviews/SARC_LLD_ROUND5_REMOTE_SAVE_20261005.json`。前36张正文块保持；本批恢复FIFO/EOC/中断/DMA/CPU_WRAP，新增C42～C46、B16～B19和U16～U19。
+
+历史地图`CHAT_SESSION_HANDOFF_20261005.md`不覆盖本入口；U01～U07看ROUND2_REVIEW，U08～U12看ROUND3，U13～U15与S01看ROUND4，U16～U19看ROUND5。所有旧“下一张”只代表历史断点。
 
 ## 3. 下一步直接做
 
-`6601芯片截图/sarc/sarc_lld/images/GameViewer_cTDH1vvDLo.png`。
+辅助资料入口：`6601芯片截图/sarc/sarc_diagrams/images/GameViewer_323Uh2DKeH.png`。
 
-Git blob：`18e667e5bf6c9a4c4f68a02d90cf285c159ddbca`；SHA-256：`4c327d00f6bda1e28e2e1f1e0324e4caa497976c5ed99b6147fdcf22c74a8986`；1241578字节。
+Git blob：`7bb858dbabb03267fb993b38674d76ef466f8d02`；SHA-256：`6ccf180878ae3f25b6bf4ed0558bb0cca417594b1231bbcf9957e0c8bfad4043`；942837字节。现有辅助Markdown：`6601芯片截图/sarc/sarc_diagrams/docs/SARC功能框图说明.md`，本批仅定位入口，未改辅助正文；读取到blob`b9555e82c85bfe9a5b9375ba64e89edc984f9e23`，写前仍需重读最新blob。
 
-候选37～40为`cTDH1vvDLo → m4qMLaqKqw → u5JeUrg4ga → YbkCdqx6qz`（均为GameViewer_*.png），逐图核实顺序。本批保存回读后继续此4张，完成一个正式检查点；复杂图可更小批。随后核对11张辅助图，再用确认同源同版的局部回查SARC疑点。XBAR独立，EFC保持暂缓。
+先核对该图全部可辨文字、原图标记和资料边界，不把以前第29张的局部对照当作本图整图已完成。然后按内容确认其它辅助图的关系；入口选择不意味着认可文件名字母顺序为原始页序。每4～6张完成正式正文/台账/缺口/下一入口的提交和回读；再用确认同源同版的局部定点回查方案/LRS疑点，不能跨版本填字。XBAR27张始终独立。
 
-S01来源连续性疑点：第32张iSOJmCn28m界面为61–62，第33张HFc4FYW2ed为65–66，63–64未定位；界面屏幕号不是正文页码，不能仅由跳号断言漏失内容，也不能补出假页。它独立于15组局部字形缺口，后续继续核实。
+S01保持开放：第32张界面屏幕61–62，第33张65–66，63–64未定位。40张全部首轮不自动证明文档来源页完整；不得仅按界面号宣称确缺两页，也不能补出假页。
 
 ## 4. 固定规则
 

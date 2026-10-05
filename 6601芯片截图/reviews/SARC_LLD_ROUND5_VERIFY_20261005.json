@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-05",
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "d75fc901b5914d165f1a797e49a60fa6a81b4e0c",
+  "new_review_range": [
+    37,
+    40
+  ],
+  "original_images_checked": 40,
+  "source_blocks": 40,
+  "first36_body_blocks_byte_preserved": true,
+  "last4_body_blocks_replaced": true,
+  "source_block_order_unchanged": true,
+  "image_links_checked": 135,
+  "change_locations": 46,
+  "other_marks": 19,
+  "local_gap_groups": 19,
+  "source_continuity_question": "SARC-LLD-S01 remains open",
+  "lld_first_pass": 40,
+  "repository_first_pass": 113,
+  "sarc_first_pass": 53,
+  "auxiliary_first_pass": 0,
+  "final_text_acceptance": false,
+  "hardware_test_performed": false,
+  "publication_status": "prepublication_local_checks; actual commit and downloaded readback in ROUND5_REMOTE_SAVE"
+}

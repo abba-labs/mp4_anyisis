@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-05",
+  "branch": "docs/restore-6601-screenshots",
+  "publication_status": "remote_saved_and_git_fetch_byte_verified",
+  "input_head": "13d34f81b54cb26e3f89933dcb811b8cd8e2b34b",
+  "content_commit": "817fae5db0e783779962fb98faacce4eacb3418d",
+  "remote_head_at_readback": "817fae5db0e783779962fb98faacce4eacb3418d",
+  "publication_run_id": 37295395216,
+  "all_8_remote_files_byte_equal_reviewed_output": true,
+  "target_blobs_checked_before_any_write": true,
+  "all11_source_png_hashes_checked": true,
+  "temporary_files_removed": true,
+  "transport_normalization": "Three identified copy defects normalized as data, then each original part hash and complete payload hash verified before any document write.",
+  "counts": {
+    "repository_first_pass": 118,
+    "sarc_first_pass": 58,
+    "aux_first_pass": 5,
+    "lld_local_gaps": 19,
+    "lrs_local_gaps": 3,
+    "source_questions": [
+      "S01"
+    ],
+    "final_acceptance": false
+  },
+  "next_image": "6601芯片截图/sarc/sarc_diagrams/images/GameViewer_9akceoHcVF.png",
+  "files": [
+    {
+      "path": "6601芯片截图/RESTORE_PROGRESS.md",
+      "bytes": 10832,
+      "new_blob": "38c5a439b22a8cd4ac8ae9eb5248dd0987f66c8e",
+      "new_sha256": "3c380fd670a15157c3c07a67dd1ccf1065c519575acd0da0463995595f38a5b8"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_AUX_ROUND6_IMAGE_LEDGER_20261005.json",
+      "bytes": 5122,
+      "new_blob": "27ab0e271a973b94af1115f37c6b0417a32c53e0",
+      "new_sha256": "0ef8f060e09d33795b3b67241994c9967b606ab5c61101a5bc320e84e4098823"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_AUX_ROUND6_REVIEW_20261005.md",
+      "bytes": 1683,
+      "new_blob": "2dd5d8a1ae5208baa450d04b1a2e0527b419af29",
+      "new_sha256": "9fd1fbc3b9b767ad862a6a80613eefd38460e19e84a630042886432028fe4769"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_AUX_ROUND6_VERIFY_20261005.json",
+      "bytes": 548,
+      "new_blob": "8c7854c1a2ccb77a912a1ed3fdc96123de63100e",
+      "new_sha256": "7246de36e5ba31171d1c2508a93042a2164a0440b7c14f12a0a542260bd406d1"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_6601修改点总览.md",
+      "bytes": 25116,
+      "new_blob": "2c7902de8bce8d35abd942ee23a4cb270e10797e",
+      "new_sha256": "7984fdb98c239cf90fc34f62610c48f0e4c3078dd88ce6b6b41c7d82854b8405"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_提取与验收报告.md",
+      "bytes": 15609,
+      "new_blob": "cda25dfe6e2eb7a67b929aecd5714f7932aa9958",
+      "new_sha256": "8e6d5a0e5c8e569a32d7eebb127570a1a14ae88b7914aa2b5db3c37380d46345"
+    },
+    {
+      "path": "6601芯片截图/sarc/sarc_diagrams/docs/SARC功能框图说明.md",
+      "bytes": 12259,
+      "new_blob": "259903f028e083dc3ab73a4886a7bcdaf34fc386",
+      "new_sha256": "92009f5b3f91c7ceb080f5b361c833e29dcece07b9e1762ec4d82c0c822d0a6c"
+    },
+    {
+      "path": "NEXT_CHAT_HANDOFF.md",
+      "bytes": 4331,
+      "new_blob": "d5ff1c08dc88597f468e8a21e4fbfca8ab595d6f",
+      "new_sha256": "0a2c275189ad57728afcb9e803b781c87639f45dc3154451354a64168a895d7e"
+    }
+  ],
+  "final_text_acceptance": false,
+  "hardware_test_performed": false
+}

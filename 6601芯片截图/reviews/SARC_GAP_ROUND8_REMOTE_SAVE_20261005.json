@@ -1,0 +1,66 @@
+{
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "463dc1b54d736fa31812f5b7fd0c900ee8267349",
+  "content_commit": "8fde596548627e03f5b3fff7d7f95dcabcef38d5",
+  "remote_head_at_readback": "8fde596548627e03f5b3fff7d7f95dcabcef38d5",
+  "run_id": 37316094336,
+  "publication_status": "remote_saved_and_git_fetch_byte_verified",
+  "all_target_bytes_match": true,
+  "temporary_files_removed": true,
+  "closed_gap_groups": [],
+  "gaps_rechecked": [
+    "U01",
+    "U02",
+    "U03",
+    "U04",
+    "U05",
+    "U06"
+  ],
+  "next_image": "6601芯片截图/sarc/sarc_lld/images/GameViewer_UUhaiE4moy.png",
+  "next_gap": "U07",
+  "lld_remaining_gap_groups": 19,
+  "lrs_remaining_gap_groups": 3,
+  "aux_remaining_gap_groups": 2,
+  "source_questions": [
+    "S01"
+  ],
+  "final_acceptance": false,
+  "files": [
+    {
+      "path": "6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md",
+      "bytes": 120975,
+      "git_blob": "7608f38116b9141091dcf0a937ab88d0257d06d5",
+      "sha256": "558669ef2862817c053d71c4e06fbd4b7e315ea707170b734816426d6d4a79f3"
+    },
+    {
+      "path": "6601芯片截图/RESTORE_PROGRESS.md",
+      "bytes": 10978,
+      "git_blob": "d0a5cd4b3d615e0e466ea78522c0bff9b4918bf0",
+      "sha256": "77169de7766173c8c520d42c638cf9731c5962d6202a56221a40abe98f0ad867"
+    },
+    {
+      "path": "6601芯片截图/sarc/SARC_提取与验收报告.md",
+      "bytes": 17560,
+      "git_blob": "64e543f31fb08a89696435b901b381eab408c766",
+      "sha256": "00ebfc1dad629536f1720ae328cb5da0cd167e776232eea0d5f0e68a5d7397d5"
+    },
+    {
+      "path": "NEXT_CHAT_HANDOFF.md",
+      "bytes": 4890,
+      "git_blob": "a0c604bcacf2201c5236f17fbcfa94fccd8ea4ed",
+      "sha256": "14d264538f8892b7bcf242def194dce6653d4a330bbc6e2cb05371f69811b116"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_GAP_ROUND8_REVIEW_20261005.md",
+      "bytes": 2086,
+      "git_blob": "253c4a774c11d3e79f6c0aea0ad7ee841f5517ff",
+      "sha256": "19bd6a52f13d5661195131a5f8c20a6105732eb0d18a22d8d037ec54ce2e2435"
+    },
+    {
+      "path": "6601芯片截图/reviews/SARC_GAP_ROUND8_IMAGE_LEDGER_20261005.json",
+      "bytes": 2271,
+      "git_blob": "8513f82b0d6735f8e6a198ca46a08ea4a1d8e165",
+      "sha256": "c811000a740d95b9b34aacb9fa119423b19e9898e96a331b1e8872354643b2bc"
+    }
+  ]
+}

@@ -1,6 +1,12 @@
 # SARC 原图提取与验收报告
 
-## 第九轮最新断点
+## 第十轮最新断点
+
+第十轮回查LLD-U13～U18六张原PNG，补入PIPE RAM末行1111/0000/0001及中断图cfg_*_int_force_ind、寄存器读、intr。小字未清的部分全部保留，无整组关闭。U01～U18已定点回查；SARC64/64、全仓124/200和78条来源位置不变。下一批：LLD-U19（GameViewer_YbkCdqx6qz.png），再LRS三组和辅助两组；S01单列来源连续性回查。
+
+详细记录和实际提交/回读：`6601芯片截图/reviews/SARC_GAP_ROUND10_REVIEW_20261005.md`及同轮REMOTE_SAVE。下方旧断点是历史快照。
+
+## 第九轮历史断点
 
 第九轮已回查LLD-U07～U12六张原PNG，补入sample/conversion、signed下方两行说明、缓存j-1/j+1索引和计数输入拼接。全部仍有局部缺口，无整组关闭；已完成U01～U12定点回查，不重复首轮。SARC64/64、全仓124/200不变，LLD19＋S01、LRS3、辅助2继续开放；78条来源位置不变。下一项LLD-U13：GameViewer_ZwgMgCyaeL.png左右时序图。
 

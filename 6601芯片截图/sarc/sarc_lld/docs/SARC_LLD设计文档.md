@@ -1,7 +1,7 @@
 # SARC 模块方案设计
 
 > 来源：本仓库sarc_lld目录40张原始PNG；原文封面标题《SARC模块方案设计》，保持一份原始文档。
-> 第八轮定点回查：U01～U06的6张原PNG已再次查看；补入表1第002行项目、图1分区标题及图5-3两处等式和小框标签。6组均仅局部补录，未达到整组关闭；本轮不是全文第二遍验收。
+> 第八～十轮定点回查：U01～U18已按原PNG再次查看，并补入确认字形。U01～U19均尚有局部缺口；U19及LRS/辅助缺口是下一批。本轮不是全文第二遍验收。
 > 首轮覆盖40张不等于来源页已完整或逐字验收通过：U01～U19共19组局部字形/遮挡缺口及S01来源连续性疑点仍未关闭。
 > 按原文顺序、双页先左后右；重复图号、删除线、原文拼写/参数和作者空白保留。浅蓝/清绿按原文声明归集，6002/6801历史说明另列。
 > 来源commit：`d80a74e83e4bf942905844e61efd5d169e37c815`；本轮输入HEAD：`d75fc901b5914d165f1a797e49a60fa6a81b4e0c`，输入LLD blob：`33bed8b0c1348ba02e616557fbbd3785661ed393`。台账见`../../../reviews/SARC_LLD_ROUND5_IMAGE_LEDGER_20261005.json`，实际保存见本轮REMOTE_SAVE。
@@ -1564,7 +1564,7 @@ n取值范围为4bit可配置，即最大滤波次数为2¹⁵。
 | PIPE RAM波形 | `pipe_ram_rd`、`pipe_ram_rd_1d`、`pipe_ram_rd_2d`、`pipe_ram_rd_1d_neg_pulse`、`pipe_ram_addr`、`pipe_ram_rdata`、`pipe_ram_rdata_1d`、`pipe_ram_wr` |
 | PIPE RAM最后一行及底部两行 | `pipe_ram_rd_…`、`…clr_flag`、`…clr_done`可辨；全名与底部两处红色条件见U13 |
 
-> ⚠️ 原图待复核（SARC-LLD-U13，续）：上部五行有名波形疑似依次为`Iir_data_val`、`Iir_data_val_d`、`fir_out_en`、`Fir_data_val`、`fir_data_val_d`；另有两条相邻无名数据波形。完整大小写须回查原图，不能以此候选建立信号表。底部疑似`pipe_ram_rd_lst`、`Fir_clr_flag`、`fir_clr_done`，亦不作为已确认全名。各counter小格、末行位串及底部红色计数条件仍缺逐字符确认。
+> ⚠️ 原图待复核（SARC-LLD-U13，续）：上部五行有名波形疑似依次为`Iir_data_val`、`Iir_data_val_d`、`fir_out_en`、`Fir_data_val`、`fir_data_val_d`；另有两条相邻无名数据波形。完整大小写须回查原图，不能以此候选建立信号表。底部疑似`pipe_ram_rd_lst`、`Fir_clr_flag`、`fir_clr_done`，亦不作为已确认全名。第十轮按原图补录PIPE RAM末行三个数据格依次为`1111`、`0000`、`0001`；各counter小格及底部红色计数条件仍缺逐字符确认。
 > 原图：[images/GameViewer_ZwgMgCyaeL.png](../images/GameViewer_ZwgMgCyaeL.png)，右页上部输出波形、最下方三行及细刻度。已保留可辨波形标签，不以旧稿错识别或设计常识填满。
 
 ---
@@ -1787,7 +1787,7 @@ adc_spltime_en为高时（有扩展采样）选择adc_spltime_en_1d的下降沿�
 **图5-20 中断处理**
 
 > 图中文字转录：左侧由上到下为“中断使能信号”“中断触发信号”“中断测试寄存器”“中断清除寄存器”“中断屏蔽信号”；使能/屏蔽旁为“电平”，测试/清除旁为“脉冲”。图中可辨`cfg_*_int_en`、`cfg_*_int_clr`、`cfg_*_int_mask`，内部“中断锁存”、`D`、“中断处理模块”；上部“原始中断寄存器：int_raw_rpt”“中断状态寄存器：int_status_rpt”。右侧输出含`int`。逻辑门、连线、反馈、输出前寄存器以及原图图号均保留在来源图中，不自行重新解释。
-> ⚠️ 原图待复核（SARC-LLD-U18）：测试寄存器信号疑似`cfg_*_int_force_ind`，上方读出端汉字及D右侧两处输出标识的完整字形/分隔符尚不够清晰。不能把候选当确定字段，也不能凭中断通用模板补写。
+> ⚠️ 原图待复核（SARC-LLD-U18）：第十轮已确认测试寄存器信号为`cfg_*_int_force_ind`，上方读出端为“寄存器读”，D右侧紧邻标签为`intr`，均按字形补录。更右侧“中断输出”后的完整标识/分隔符仍不够清晰，U18保留此残余，不凭中断通用模板补写。
 > 原图：[GameViewer_u5JeUrg4ga.png](../images/GameViewer_u5JeUrg4ga.png)，左页中部“中断处理”图。
 > 转录注：本图与前两张的EOC示意均原标“图5-20”，不自动重编号。
 

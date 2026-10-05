@@ -1,11 +1,11 @@
 # SARC 模块方案设计
 
 > 来源：本仓库sarc_lld目录40张原始PNG；原文封面标题《SARC模块方案设计》，保持一份原始文档。
-> 第三轮范围：新核对第15～31张，共17张；累计前31/40张首轮原图核对，覆盖至5.17滤波通道开篇。末9张保留历史转录、未首轮核对。
-> 前31张按原文页序、左页后右页保存；已纠正旧候选顺序中超门限续页与FIR、输入缓存与计算数据流的错接。末9张顺序仍是待核实候选。
-> 已核对区有SARC-LLD-U01～U12共12组局部细字/遮挡缺口；整份文档未最终验收。删除线、原编号和原文参数/拼写差异照录，不用其它芯片规格填字。
-> 浅蓝色/清绿色变更按原文颜色声明；红色强调、6001/6002等历史版本记录另列。转录注和图中文字转录与原作者正文分开。
-> 来源commit：`d80a74e83e4bf942905844e61efd5d169e37c815`；本轮输入head：`3d8da927cc13d4f8b6edd4d48001f2769f8365b7`，输入LLD blob：`064e09e52bfdb767785d2be156619fec1463628a`。逐图状态见`../../../reviews/SARC_LLD_ROUND3_IMAGE_LEDGER_20261005.json`。
+> 第四轮范围：新核对第32～36张，共5张；累计前36/40张首轮原图核对，覆盖5.17滤波通道至5.19 FIFO开篇。末4张保留历史转录、未首轮核对。
+> 前31张正文块保持第三轮正式稿；本批按左页后右页、公式/图注/续句衔接。第32、33张界面屏幕号跳号另记来源连续性疑点S01，不据此猜补原文。
+> 已核对区有SARC-LLD-U01～U15共15组局部细字/遮挡缺口；另有来源连续性疑点S01。整份文档未最终验收，原编号、原文参数/拼写差异照录。
+> 浅蓝色/清绿色变更按原文颜色声明；历史图配色、6001/6002/6801等历史版本记录另列。转录注和图中文字索引与原作者正文分开。
+> 来源commit：`d80a74e83e4bf942905844e61efd5d169e37c815`；本轮输入head：`11987dcacad0163512f10e22d020bfc41c42326b`，输入LLD blob：`dfe3dc2a6f70183888289d96c8768517be107c56`。逐图状态见`../../../reviews/SARC_LLD_ROUND4_IMAGE_LEDGER_20261005.json`；实际保存与回读以本轮REMOTE_SAVE为准。
 
 ## 第一部分：原始文档逐图还原
 
@@ -1444,51 +1444,55 @@ FIR滤波阶数要任意可配置，最高32阶。并且根据配置阶数对滤
 
 [查看原始PNG](../images/GameViewer_iSOJmCn28m.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-FIR
-6002修改点：阶数可任意配置，且根据配置阶数实时输出滤
-波结果，最大32阶。
-有限脉冲响应(Finite ImpulseResponse,FIR)。线性，不带反馈。
-y(k) = Z a(n)x(k-n)
-ETNOI han 14 2026-10-02
-BTHCU haan. J3
-x(k)：输入时间序列;
-a(n)：滤波器参数，N为滤波器的阶数;
-y(k)：输出时间序列;
-ETMCI
-FIR滤波器图解形式：
-a(1)
-a(3)×
-4(0)e
-a(4)-
-a(N-1)
-RTMCy haan i2026
-KTMOI
+#### FIR
 
+6002修改点：阶数可任意配置，且根据配置阶数实时输出滤波结果，最大32阶。
+
+有限脉冲响应(Finite Impulse Response, FIR)。线性，不带反馈。
+
+$$
+y(k)=\sum_{n=0}^{N-1}a(n)x(k-n)
+$$
+
+x(k)：输入时间序列；  
+a(n)：滤波器参数，N为滤波器的阶数；  
+y(k)：输出时间序列；
+
+FIR滤波器图解形式：
+
+图中文字转录：输入`x(n)`，输出`y(n)`；抽头参数依次标为`a(0)`、`a(1)`、`a(2)`、`a(3)`、`a(4)`、`a(N-1)`；延迟方框均标`Z⁻¹`，中间以省略号连接；乘法节点为`×`，下方为逐级加法节点。图中使用n，正文公式使用k，分别照录。连线与抽头位置保留原图，不重画或补出省略号中的节点。
 
 ### 【右页】
 
-无限脉冲响应(Infinite Impulse Response，IR)。非线性，带反
-馈。
-y(n) =
-ar3(n -k) +ba(n - k)
-k=1
-k=0
-x(n)：输入时间序列;
-buan. 11
-a(k)、b(k)：滤波器参数，N、M为滤波器的阶数;
-y(n)：输出时间序列;
-SARC模块通过一阶低通滤波器来实现一阶IR滤波。一阶低
-通滤波算法原理如下：
-1.一阶低通滤波算法原理
-BTMCl
-阶减波，又叫一价惯性滤波，或一阶低通减波，款件实现RC低通滤波圈的功能。
-Y(n) =aαX(n) + (1 -α)Y(n - 1)
-式中：α为滤波系数，X(n)为本次采样值，Y(n-1)为上次滤波输出值，Y(n)为本次滤波输出值
-2080F
+#### IIR
+
+无限脉冲响应(Infinite Impulse Response, IIR)。非线性，带反馈。
+
+$$
+y(n)=\sum_{k=1}^{N}a_k y(n-k)+\sum_{k=0}^{M}b_k x(n-k)
+$$
+
+x(n)：输入时间序列；  
+a(k)、b(k)：滤波器参数，N、M为滤波器的阶数；  
+y(n)：输出时间序列；
+
+SARC模块通过一阶低通滤波器来实现一阶IIR滤波。一阶低通滤波算法原理如下：
+
+> 原文嵌入说明图文字：
+>
+> **1. 一阶低通滤波算法原理**
+>
+> 一阶滤波，又叫一阶惯性滤波，或一阶低通滤波，软件实现RC低通滤波器的功能。
+>
+> $Y(n)=\alpha X(n)+(1-\alpha)Y(n-1)$
+>
+> 式中：α为滤波系数，X(n)为本次采样值，Y(n-1)为上次滤波输出值，Y(n)为本次滤波输出值
+
+其中，滤波系数的取值范围为：0 ≤ alpha ≤ 1。
+
+> 转录注：原文“IIR……非线性”照录，不按技术常识改写；公式中下标a_k/b_k与说明段a(k)/b(k)分别保留。嵌入说明的链接配色不是本文件的6601变更声明；左页明确“6002修改点”另列B14，不冒充6601新增。
 
 ---
 
@@ -1496,47 +1500,25 @@ Y(n) =aαX(n) + (1 -α)Y(n - 1)
 
 [查看原始PNG](../images/GameViewer_HFc4FYW2ed.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-滑动平均
-“滑动平均功能通过FIR滤波器实现，可以归入FIR滤波类
-型，通过用户参数配置实现。
-“滑动平均”就是按我们事先设定的信号个数将输入信号加以
-平均。譬如，按每4个信号做一次平均，如下图所示：
-x(n)
-x(n1)
-x(n-2)
-(eu)x
-z-1
-ETMCU haan. J3
-h(2)(
-h(0)
-y(n)
-ran.T1 2026-70-02-2
-非滑动平均
-ETMCI
-“非滑动平均”滤波，根据用户配置的滤波次数，将2n个转
-换结果进行累加，然后通过将累加和右移n位，得到非滑动平
-均的滤波结果。其原理示意图如下：
-KTMO)I
+#### 滑动平均
 
+“滑动平均”功能通过FIR滤波器实现，可以归入FIR滤波类型，通过用户参数配置实现。
+
+“滑动平均”就是按我们事先设定的信号个数将输入信号加以平均。譬如，按每4个信号做一次平均，如下图所示：
+
+图中文字转录：四个抽头标注`x(n)`、`x(n-1)`、`x(n-2)`、`x(n-3)`；三处延迟方框标`Z⁻¹`；四路乘法系数分别为`h(0)=1/4`、`h(1)=1/4`、`h(2)=1/4`、`h(3)=1/4`，汇入`Σ`，输出`y(n)`。图未显示独立图号，保留本原图链接。
+
+#### 非滑动平均
+
+“非滑动平均”滤波，根据用户配置的滤波次数，将2ⁿ个转换结果进行累加，然后通过将累加和右移n位，得到非滑动平均的滤波结果。其原理示意图如下：
 
 ### 【右页】
 
-x[0)
-.Ti
-2"个
-u<<
->filter_data_out
-n取值范围为4bit可配置，良
-即最大滤波次数为215
-BTMC(/ buan. 11
-ETMOII hoan.11
-ETMCIF hian. 1
-ETNC(l
-12080F
+图中文字转录：左端`x(2ⁿ-1)`，右端`x(0)`；各延迟方框为`Z⁻¹`，中间以省略号连接；抽头汇入`+`节点，旁注`2ⁿ个`，经`>>n`方框输出`filter_data_out`。图接左页“非滑动平均”段，不另造图号。
+
+n取值范围为4bit可配置，即最大滤波次数为2¹⁵。
 
 ---
 
@@ -1544,79 +1526,43 @@ ETNC(l
 
 [查看原始PNG](../images/GameViewer_ZwgMgCyaeL.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-22预处理和滤波处`，完整结构与时序请查看原图 `GameViewer_ZwgMgCyaeL.png`。
+#### 滤波器实现时序
 
-滤波器实现时序
-ready
-data
-datao
-data1
-ve1
-ve0
-手：18-80-01
-dotao
-datal
-veo
-ve1
-Core1data会
-ne ae
-率到适时构
-. Ji
-pre_vs
-fromcom 1
-pre_val
-ADC1
-交织
-ETHCv1
-ETMCI
+**图5-22 预处理和滤波处理时序示意**
 
-**图5-22预处理和滤波处**
+图中文字转录（依图中区域自上而下；本表列名为转录索引，不是原图表头）：
 
-理时序示意
-8TMCI/ han 1i
-RTMCI
+| 区域 | 可确认的标签／文字 |
+|---|---|
+| 主输入波形 | `clk`、`ready`、`data`、`vc_num`、`se/df`、`counter` |
+| 输入数据／通道标记 | `data0`、`data1`、`data2`；`vc0`、`vc1`、`vc2` |
+| 预处理输出波形 | `pre_val`、`pre_data`、`vc_num`；数据仍标`data0`、`data1`、`data2`，通道仍标`vc0`、`vc1`、`vc2` |
+| 滤波输出指示 | `iir`、`fir`、`no-aver` |
+| 中部小图 | `cal_val`、`pre_val`；其左侧来源标签及上方中文批注未能完整确认，见U13 |
+| 下部小图 | `To core 0`；`ready`、`cal_val`、`pre_val`、`ADC 1`、`交织`；下方两路`iir`、`fir` |
 
+> ⚠️ 原图待复核（SARC-LLD-U13）：本页“Core 1 data…”后的中文批注、中部来源标签（只确认末尾1）、时钟上沿细刻度及counter各格完整数值不能从当前截图100%确认。以上没有据常识补成时序说明。
+> 原图：[images/GameViewer_ZwgMgCyaeL.png](../images/GameViewer_ZwgMgCyaeL.png)，左页时序图中上部及中部小图。时序边沿、空白波形格、两行counter的对应关系保留原图。
 
 ### 【右页】
 
-Ir data vel
-_ date val, d
-.Ti
-Rr_out_en
-Fir_data wal
-y cata,val.d
-pre
-pre_data
-data1
-动：17-20-0T-97
-pre_vai_4d
-pre data _Id
-daa0
-datl
-dsso
-dats1
-BTMC/ buan. 11
-Coeft_am_rd .
-Coeff_m_rd
-Coeft ram addr
-Coe_ram ydu
-coeft ram dan_d
-pipe_ sm nd id
-pipe. ram_rd 2
-pige_ram_rd_id_neg_pule
-pipe_em_add:
-pipe_sm_rdan
-BTNCI/
-ppe ram rdata_ 1d
-pipe_gm_wr
-piae_sm_rd_t
-TMCFman.21
-ETCI)
-12080F
+本页为滤波器实现时序图；其图名“图5-23 FIR和IIR滤波器实现时序示意”显示在下一张左页开头，按跨页图注衔接。
+
+图中文字转录（以下分组仅用于定位原图）：
+
+| 区域 | 可确认的标签／可辨片段 |
+|---|---|
+| 顶部时钟／计数 | `clk`、`counter` |
+| 上部IIR/FIR输出波形 | 五行有名波形中的`data_val`、`data_val_d`、`out_en`可辨；完整前缀及大小写列入U13候选，不当作已确认接口名 |
+| 预处理波形 | `pre_val`、`pre_data`、`pre_val_1d`、`pre_data_1d`、`pre_val_2d`、`pre_data_2d`；数据格标`data0`、`data1` |
+| 系数RAM波形 | `Coeff_ram_rd_r`、`Coeff_ram_rd`、`Coeff_ram_addr`、`Coeff_ram_rdata`、`Coeff_ram_rdata_1d` |
+| PIPE RAM波形 | `pipe_ram_rd`、`pipe_ram_rd_1d`、`pipe_ram_rd_2d`、`pipe_ram_rd_1d_neg_pulse`、`pipe_ram_addr`、`pipe_ram_rdata`、`pipe_ram_rdata_1d`、`pipe_ram_wr` |
+| PIPE RAM最后一行及底部两行 | `pipe_ram_rd_…`、`…clr_flag`、`…clr_done`可辨；全名与底部两处红色条件见U13 |
+
+> ⚠️ 原图待复核（SARC-LLD-U13，续）：上部五行有名波形疑似依次为`Iir_data_val`、`Iir_data_val_d`、`fir_out_en`、`Fir_data_val`、`fir_data_val_d`；另有两条相邻无名数据波形。完整大小写须回查原图，不能以此候选建立信号表。底部疑似`pipe_ram_rd_lst`、`Fir_clr_flag`、`fir_clr_done`，亦不作为已确认全名。各counter小格、末行位串及底部红色计数条件仍缺逐字符确认。
+> 原图：[images/GameViewer_ZwgMgCyaeL.png](../images/GameViewer_ZwgMgCyaeL.png)，右页上部输出波形、最下方三行及细刻度。已保留可辨波形标签，不以旧稿错识别或设计常识填满。
 
 ---
 
@@ -1624,67 +1570,54 @@ ETCI)
 
 [查看原始PNG](../images/GameViewer_e8XPWSdAMt.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-23FIR和IIR滤波器实现时序示意`，完整结构与时序请查看原图 `GameViewer_e8XPWSdAMt.png`。
+**图5-23 FIR和IIR滤波器实现时序示意**
 
+> 转录注：该图名承接上一张右页的时序图，不给下方RAM参数存储图重复套用此图号。
 
-**图5-23FIR和IIR滤波器实现时序示意**
+#### FIR滤波器参数存储
 
-FIR滤波器参数存储
-EIMCU
-ETWCU huan.Ji
-Ram_slice_O(fir_cho data)
-Ram_slice_1(fir_ch1 data)
-ITTTT-OTO: 00000-OTO
-Ram_slice_2(fin ch2 data)
-Ram_slice_3(fir_ch3 data)
-ETNC hua7 11 202F-70-02-21
-Ram_slice_4(fir_ch4data)
-BTHCU huan. Ji
-Ram_slice_5(fir_ch5 data)
-Ram_slice_6(fir_ch6data)
-Ram_slice_7(fir ch7data)
-ETMCI
-From idserb
-From ids data
-From ids enb Id
-Ram_ce_n
-Ram_we_n
-From ids data
-Ram_rdata
-quz sp, o4
-toid data
-Ram_rdata to ids
-RTMCIhian.Ti 202
-STMCI
-RTMCI
+图中8行存储切片及左侧地址逐行转录如下；表头为转录索引：
 
+| 图中地址 | 图中存储切片标签 |
+|---|---|
+| `000-00000 : 000-11111` | `Ram_slice_0(fir_ch0 data)` |
+| `001-00000 : 001-11111` | `Ram_slice_1(fir_ch1 data)` |
+| `010-00000 : 010-11111` | `Ram_slice_2(fir_ch2 data)` |
+| `011-00000 : 011-11111` | `Ram_slice_3(fir_ch3 data)` |
+| `100-00000 : 100-11111` | `Ram_slice_4(fir_ch4 data)` |
+| `101-00000 : 101-11111` | `Ram_slice_5(fir_ch5 data)` |
+| `110-00000 : 110-11111` | `Ram_slice_6(fir_ch6 data)` |
+| `111-00000 : 111-11111` | `Ram_slice_7(fir_ch7 data)` |
+
+下方RAM访问时序图标签依次为：`clk`、`From ids enb`、`From ids data`、`From ids enb 1d`、`Ram_ce_n`、`Ram_we_n`、`From ids data`、`to ids enb`、`to ids data`。数据波形中的标签为`data`、`Ram_rdata`、`Ram_rdata to ids`。两处`From ids data`按原图重复保留，不把后者擅改成另一信号。
+
+> ⚠️ 原图待复核（SARC-LLD-U14）：RAM访问时序图clk上方的极细时间轴数字不能逐项确认，信号行名和数据标签已列出，不能据波形推算并补写整串刻度。
+> 原图：[images/GameViewer_e8XPWSdAMt.png](../images/GameViewer_e8XPWSdAMt.png)，左页下方时序图上沿。边沿及读写间隔仍以原图为准。
 
 ### 【右页】
 
-FIR的滤波参数由AHB总线配置，在SARC内部由1个简单
-双口RAM存储。该RAM与IDS之间采用间接寻址访问，写操
-作只能总线访问，读操作可由总线和内部逻辑二者共同访问，
-但内部逻辑的访问优先级高。
-RAM地址为8位，高3位选择滤波通道0-7，低5位表示每
-个滤波通道的32个参数地址。
-FIR滤波器输入采样结果PIPELINE
-BTMCl/ buan. 1 2026-
-Ram_slice_x(fir_chxdata)
-Data_pipe[0]
-Data_pipe[1]
-Data pipe[2]
-ETNC!!
-Data_pipe[3]
-Data_pipe[29]
-Data_pipe[30]
-Data_pipe[31]
-ETNCIT huan: 11 2026-10-02-21 44
-12 fp
-2080F
+FIR的滤波参数由AHB总线配置，在SARC内部由1个简单双口RAM存储。该RAM与IDS之间采用间接寻址访问，写操作只能总线访问，读操作可由总线和内部逻辑二者共同访问，但内部逻辑的访问优先级高。
+
+RAM地址为8位，高3位选择滤波通道0-7，低5位表示每个滤波通道的32个参数地址。
+
+#### FIR滤波器输入采样结果PIPELINE
+
+图中标题：`Ram_slice_x(fir_chx data)`。
+
+| 图中地址 | 图中数据标签 |
+|---|---|
+| `x-00000` | `Data_pipe[0]` |
+| `x-00001` | `Data_pipe[1]` |
+| `x-00010` | `Data_pipe[2]` |
+| `x-00011` | `Data_pipe[3]` |
+|  | `……` |
+| `x-11101` | `Data_pipe[29]` |
+| `x-11110` | `Data_pipe[30]` |
+| `x-11111` | `Data_pipe[31]` |
+
+> 转录注：省略号为原图自身内容，未擅自展开Data_pipe[4]～[28]。下一张左页DATA PIPE说明承接本图。
 
 ---
 
@@ -1692,58 +1625,43 @@ ETNCIT huan: 11 2026-10-02-21 44
 
 [查看原始PNG](../images/GameViewer_1EC7JuTBH6.png)
 
-> 历史转录待复核：本图正文尚未完成本轮原图核对，可能仍含识别错误、播放器噪声及遗漏；以下原有正文原样保留，不能当作已验收内容。
-
 ### 【左页】
 
-DATAPIPE采用单口RAM实现。RAM地址为8位，高3位
-选择滤波通道0-7，低5位表示每个滤波通道的32个PIPEDATA。
-缓存通道
-每个SARADC控制器包含2组16*16bit结果寄存器。每组的
-16个寄存器与虚拟通道一一对应。
-第一组：存储上报用户偏置和增益计算处理后的采样结果，
-支持s(16,2)和s(16,0）（寄存器实际只有s(15,0)有效，最高两位
-均为符号位）两种结果上报格式可配置选择；
-第二组：存储上报滤波计算处理后的采样结果，支持s(16,2)
-和u(12,0)两种结果上报格式可配置选择;
-每个SARADC控制器包含1组8*20bit结果寄存器，该结果
-格式同第一组格式配置选择一致，支持输出 s(20,2),s(19,0)；8
-个寄存器与用户预处理滤波通道一一对应。
-采样结果上报支持result_ovf（结果被覆盖标志）、resultval
-（结果有效标志）、result data（结果数据）。
+DATA PIPE采用单口RAM实现。RAM地址为8位，高3位选择滤波通道0-7，低5位表示每个滤波通道的32个PIPEDATA。
 
+#### 5.18 缓存通道
+
+每个SARADC控制器包含2组16*16bit结果寄存器。每组的16个寄存器与虚拟通道一一对应。
+
+第一组：存储上报用户偏置和增益计算处理后的采样结果，支持s(16,2)和s(16,0)（寄存器实际只有s(15,0)有效，最高两位均为符号位）两种结果上报格式可配置选择；
+
+第二组：存储上报滤波计算处理后的采样结果，支持s(16,2)和u(12,0)两种结果上报格式可配置选择；
+
+> 【原文浅蓝色】每个SARADC控制器包含1组8*20bit结果寄存器，该结果格式同第一组格式配置选择一致，支持输出s(20,2),s(19,0)；8个寄存器与用户预处理滤波通道一一对应。
+
+采样结果上报支持result_ovf（结果被覆盖标志）、result_val（结果有效标志）、result_data（结果数据）。
 
 ### 【右页】
 
-> 📌 **【图表提示】**: 此处包含图表 `图5-24结果寄存器读写`，完整结构与时序请查看原图 `GameViewer_1EC7JuTBH6.png`。
+**图5-24 结果寄存器读写时序示意**
 
-Result_in_enb
-Result _in
-Ids_Result_reg
-Result_val_in_enb
-Result_val_in
-Ids_Result_val_reg
-Result_ovf_in_enb
-Result_ovf_in
-an. 11 2026-10-02-21-44
-Re ad ciear
-Result_ovf_reg
+图中信号标签自上而下为：`Result_in_enb`、`Result_in`、`Ids_Result_reg`、`Result_val_in_enb`、`Result_val_in`、`Ids_Result_val_reg`、`Result_ovf_in_enb`、`Result_ovf_in`、`Result_ovf_reg`。
 
-**图5-24结果寄存器读写**
+图中顶部三处`New data`，两处总线读标记`Ahb read x`、`Ahb read z`；`Ids_Result_val_reg`和`Result_ovf_reg`左侧各有`Read clear`标注。数据格的细小常量见U15；波形边沿、寄存器底纹及总线读虚线保留原图。
 
-时序示意
-6002新增实现：用SARADC控制器使能cfg_sarcen的上升
-沿清零resultovf（结果被覆盖标志）、resultval（结果有效标
-志）、result_data（结果数据）寄存器状态。
-ETNCIbhuar
+> ⚠️ 原图待复核（SARC-LLD-U15）：Result_in和Ids_Result_reg中的三组红色数据常量不能逐字符确认；疑似`16'dx`、`16'dy`、`16'dz`，仅作定位候选，不作为确定值写入正文。
+> 原图：[images/GameViewer_1EC7JuTBH6.png](../images/GameViewer_1EC7JuTBH6.png)，右页图5-24上部两条数据波形。
 
-#### 5.19通过fifo模式读取采样结果
+6002新增实现：用SARADC控制器使能cfg_sarc_en的上升沿清零result_ovf（结果被覆盖标志）、result_val（结果有效标志）、result_data（结果数据）寄存器状态。
 
-每个ADC控制器有如下2组结果存储寄存器，每组包含16
-个寄存器，分别对应16个vc，
-·用户偏置和增益计算处理后的采样结果寄存器组
-·滤波计算处理后的采样结果寄存器组
-1080F
+#### 5.19 通过fifo模式读取采样结果
+
+每个ADC控制器有如下2组结果存储寄存器，每组包含16个寄存器，分别对应16个vc，
+
+- 用户偏置和增益计算处理后的采样结果寄存器组
+- 滤波计算处理后的采样结果寄存器组
+
+> 转录注：5.19后续文字接下一张左页，不把本页两条项目写成完整FIFO规格。浅蓝色8*20bit段列C41；6002清零实现另列B15。s(16,0)与括号内s(15,0)按原文分别保留，不统一格式。
 
 ---
 
@@ -1974,7 +1892,7 @@ ETMC/ huan.Ti
 FTNCU
 12080F
 
-## 第二部分：截图明确标注的ET6601修改点（累计核对前31张）
+## 第二部分：截图明确标注的ET6601修改点（累计核对前36张）
 
 ### 原文颜色依据
 
@@ -2032,6 +1950,14 @@ FTNCU
 | C39 | 5.15其它第2条 | 过采求和结果完成后可输出中断/dma请求； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
 | C40 | 5.15其它第3条 | 该功能需有使能控制； | 浅蓝色原文；按本文件颜色声明归集，不推断旧值。 | [GameViewer_pVe1evLu6f.png](../images/GameViewer_pVe1evLu6f.png) |
 
+### 第四轮新增来源位置C41
+
+第32～36张新增1条明确来源位置，LLD累计41条；LRS32＋LLD41＝73条来源位置，不是独立功能数。
+
+| 编号 | 所在章节／表格 | 原始文字 | 原图标记及边界 | 原始截图 |
+|---|---|---|---|---|
+| C41 | 5.18 缓存通道，左页浅蓝段 | 每个SARADC控制器包含1组8*20bit结果寄存器，该结果格式同第一组格式配置选择一致，支持输出s(20,2),s(19,0)；8个寄存器与用户预处理滤波通道一一对应。 | 整段浅蓝色；按原文变更声明归集。与LRS及5.15同主题的重复位置不当成另一组实例。 | [GameViewer_1EC7JuTBH6.png](../images/GameViewer_1EC7JuTBH6.png) |
+
 ### 其他原图记录（不混入明确6601修改数）
 
 | 编号 | 所在位置 | 原文／记录范围 | 边界 | 原图 |
@@ -2055,6 +1981,13 @@ FTNCU
 | B12 | 5.16跨页续段 | 6002：上下门限检测输出使用CBC或者ONESHOT两种模式（软件配置选择）。CBC模式下，根据每个新的采样结果是否超门限控制是否输出告警；ONESHOT模式下，一旦产生了超门限告警，需要软件进行清除。每个超门限检测通道输出1bit事件，上下门限告警通过mux-or的方式输出。同时单独上报超上下门限的实时状态。 | 明确6002的CBC/ONESHOT输出形式；红色hw clear/soft clear为对应时序标识。 | [GameViewer_NaDPGTeO6W.png](../images/GameViewer_NaDPGTeO6W.png) |
 | B13 | 5.17输入来源 | 此处区别：6001是用户预处理补偿后结果，6002是校准补偿后结果。 | 原文6001/6002输入位置差异，不改成6601新增。 | [GameViewer_NaDPGTeO6W.png](../images/GameViewer_NaDPGTeO6W.png) |
 
+### 第四轮其他原图记录B14～B15
+
+| 编号 | 所在章节／表格 | 原始文字 | 原图标记及边界 | 原始截图 |
+|---|---|---|---|---|
+| B14 | 5.17 FIR | 6002修改点：阶数可任意配置，且根据配置阶数实时输出滤波结果，最大32阶。 | 明确6002历史修改，不计为6601新增；本页IIR原文“非线性”照录，不按常识改写。 | [GameViewer_iSOJmCn28m.png](../images/GameViewer_iSOJmCn28m.png) |
+| B15 | 5.18 图5-24下方 | 6002新增实现：用SARADC控制器使能cfg_sarc_en的上升沿清零result_ovf（结果被覆盖标志）、result_val（结果有效标志）、result_data（结果数据）寄存器状态。 | 明确6002新增，与同张浅蓝C41分开归类。 | [GameViewer_1EC7JuTBH6.png](../images/GameViewer_1EC7JuTBH6.png) |
+
 ### 未解决来源缺口
 
 | 编号 | 图片与位置 | 尚待确认内容 |
@@ -2066,12 +1999,21 @@ FTNCU
 | SARC-LLD-U05 | 第10张，右页首行 | queue_manage浅蓝色抢占句被远程提示框遮住的中段；C11不完整 |
 | SARC-LLD-U06 | 第11张，图5-3 | 系数全名、signed等式、位宽/定标及小框文字 |
 | SARC-LLD-U07 | 第12张，图5-4 | 控制输入全名、数字域小框、位宽与输出下标 |
-
 | SARC-LLD-U08 | 第22张，图5-17（GameViewer_ba6sdetThH.png） | spltime_en上方两处注释、部分时序小框名称和间隔小数值 |
 | SARC-LLD-U09 | 第23张，图5-18三处嵌入时序表（GameViewer_LoWatHzLVG.png） | 完整行名、细小注释、周期列数及波形色块起止；源表格链接未作为已取得文件 |
 | SARC-LLD-U10 | 第24张，图5-19采样校准（GameViewer_mjeYzTB3j7.png） | signed下方细字及顶部范围；辅助图offset为15bit而本页5bit，不互相覆盖 |
 | SARC-LLD-U11 | 第28张，输入数据和运算结果的缓存图（GameViewer_PecSuT1xBB.png） | 清除逻辑完整布尔式、MUX选择条件及细小数组下标 |
 | SARC-LLD-U12 | 第29张，计算数据流图上部（GameViewer_SeEx4da40l.png） | 计数器周围的复合条件、比较/选择标签和下标；中央/底部已用相同局部分图核对 |
 
-已核对前31张累计12组来源缺口：U01～U07原样保留，本轮增加U08～U12。每组可能含多个词或数值，不是仅剩12个字；末9张尚未本轮核对，不能称整份LLD只有这些缺口。原作者差异、重复编号和DAC待补项不自动修正。辅助图只在经过局部同源核实的范围用于辨字，没有把11张辅助图计作已完整审核。
+已核对前36张累计15组局部来源缺口：原U01～U12未关闭，本轮增加U13～U15。每组可能含多个词或数值，不是15个字；末4张尚未核对。另有S01来源连续性疑点，不并入局部字形组数。
 
+### 第四轮新增局部缺口及来源连续性疑点
+
+| 编号 | 原图与区域 | 可辨内容及未解决部分 |
+|---|---|---|
+| SARC-LLD-U13 | 第34张GameViewer_ZwgMgCyaeL.png，左右两幅时序图 | 左图Core 1 data批注与中部来源标签、细刻度/counter；右图IIR/FIR部分全名和大小写、PIPE末行、clr两行及红色条件。可辨标签已逐组列出，候选不当作确定原字。 |
+| SARC-LLD-U14 | 第35张GameViewer_e8XPWSdAMt.png，左页RAM访问时序图上沿 | 全部信号/数据标签已录；clk上方极细时间轴数字尚未逐项确认。 |
+| SARC-LLD-U15 | 第36张GameViewer_1EC7JuTBH6.png，右页图5-24数据格 | 三组红色数据常量疑似16'dx/16'dy/16'dz，不能逐字符确认；9行信号和读清除/新数据标签已录。 |
+| SARC-LLD-S01 | 第32张iSOJmCn28m与第33张HFc4FYW2ed之间 | 来源界面显示屏幕61–62后为65–66；63–64尚未定位。界面屏幕号不是文档正文页码，不能仅凭跳号断言漏失内容或补出假页。需继续用原截图或同源源文件核实。 |
+
+原作者差异、重复编号和DAC待补项不自动修正。辅助图整图首轮仍0/11；只在已确认同源同版的局部用于辨字。S01与U01～U15都不因首轮图数增加而自动关闭。

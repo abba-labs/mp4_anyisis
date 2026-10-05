@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-05",
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "6d1df94a0e4050f762a77ef2b5bee47efd4003c2",
+  "whole_images_new": 6,
+  "whole_images_total": 11,
+  "sarc_first_pass": 64,
+  "repository_first_pass": 124,
+  "first5_body_blocks_byte_preserved": true,
+  "previously_omitted_source_blocks_added": [
+    "GameViewer_c74Kardt0X.png",
+    "GameViewer_qNBgXqkj5C.png",
+    "GameViewer_Wb2pLAEGMa.png"
+  ],
+  "aux_local_gaps": [
+    "SARC-AUX-U01",
+    "SARC-AUX-U02"
+  ],
+  "lld_gaps_unchanged": 19,
+  "lrs_gaps_unchanged": 3,
+  "source_question": "S01 remains open",
+  "final_text_acceptance": false,
+  "status": "prepublication; real remote bytes in ROUND7_REMOTE_SAVE"
+}

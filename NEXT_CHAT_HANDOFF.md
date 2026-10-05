@@ -1,20 +1,22 @@
 # ET6601 截图还原接续入口
 
-2026-10-05，第六轮。仓库`abba-labs/mp4_anyisis`；唯一分支`docs/restore-6601-screenshots`。
+2026-10-05，第七轮。仓库`abba-labs/mp4_anyisis`；唯一分支`docs/restore-6601-screenshots`。
 
 ## 当前断点
 
-辅助图5/11整图首轮已核：323Uh2DKeH、7ULdHnhXju、lHuv0AHt75、T5Wi63Rflj、q40E10cbND。已更新同一份`6601芯片截图/sarc/sarc_diagrams/docs/SARC功能框图说明.md`，不是只改台账。实际提交/远端回读查`6601芯片截图/reviews/SARC_AUX_ROUND6_REMOTE_SAVE_20261005.json`。
+SARC辅助11/11整图首轮已完成；先第六轮5张实际保存回读，再第七轮6张。旧稿缺少的c74、qNBg、Wb2三张已补正文。不要再从辅助首图、方案32/37或封面重做。
 
-下一张`6601芯片截图/sarc/sarc_diagrams/images/GameViewer_9akceoHcVF.png`；再核c74Kardt0X、qNBgXqkj5C、Wb2pLAEGMa、抢占功能、过采求和功能。旧辅助稿缺少c74/qNBg/Wb2三张来源，不要遗漏。先完成余6张，再用确认相同局部逐一回查LRS/LLD缺口。辅助载体是逐来源索引，不能说已确认11张为同一原始文件。
+下一任务是定点缺口回查：从`6601芯片截图/sarc/sarc_lld/images/GameViewer_v6tUVs7H0k.png`右页表1（LLD-U01）开始。逐项处理LLD U01～U19、LRS U01～U03、辅助U01/U02及来源连续性S01；看不到就保留具体缺口。每4～6张完成实际正文修订/缺口记录/入口保存回读，不只写管理文件。
 
-SARC58/64首轮，全仓118/200；剩82＝辅助6＋XBAR27＋CPLD48＋HAC_WRAP1。LLD40/40与LRS13/13均已首轮，不从32/37或封面重做。LLD19组＋S01、LRS3组未关闭；EFC5组暂缓。确定来源位置78，其他标记/辅助批注另列，不等于功能修改数，未最终验收。
+当前SARC64/64首轮，全仓124/200；余76＝XBAR27＋CPLD48＋HAC_WRAP1。LLD19组＋S01、LRS3组、辅助2组未闭合；EFC5组暂缓。78条确定来源位置，辅助标记另列；不是功能数或最终验收率。
 
-## 读取顺序与保护
+## 读取入口和已保存状态
 
-根AGENTS、本交接、6601芯片截图/AGENTS、RESTORE_PROGRESS，然后ROUND6_REVIEW、IMAGE_LEDGER、REMOTE_SAVE，以及SARC报告/总览/对应正文。第五轮内容7ba8ff9b，回执13d34f81；第四轮及第三轮均已发布，不恢复旧分片。
+根AGENTS、本交接、6601芯片截图/AGENTS、RESTORE_PROGRESS；最新`SARC_AUX_ROUND7_REVIEW_20261005.md`、IMAGE_LEDGER、REMOTE_SAVE位于reviews；再读SARC报告/总览及相应完整正文。第六轮内容`817fae5db0e783779962fb98faacce4eacb3418d`、回执`6d1df94a0e4050f762a77ef2b5bee47efd4003c2`；8文件已下载字节比较通过，run37295395216/artifact11338177558。第七轮实际提交及回读见ROUND7_REMOTE_SAVE，不恢复旧传输。
 
-缺口位置：LLD U01～U07看ROUND2、U08～U12看ROUND3、U13～U15和S01看ROUND4、U16～U19看ROUND5；三个LRS缺口看报告第一轮。第六轮仅核辅助5图，未变LRS/LLD技术正文、EFC、XBAR或PNG。
+LLD缺口详细位置：U01～U07看ROUND2、U08～U12看ROUND3、U13～U15与S01看ROUND4、U16～U19看ROUND5。辅助U01：qNBg左中系数红色限定字；U02：Wb2下中“同时作为滤波…输入yBUF”中段。三组LRS缺口看报告第一轮。
+
+辅助完整载体仍`6601芯片截图/sarc/sarc_diagrams/docs/SARC功能框图说明.md`。A01～A11仅来源索引，不是原文页序。不能将四幅重叠预滤波图推定整个源文件同版；15bit/5bit、cal_os/cal_offset、抢占ready路径差异均保留。本批未动主LRS/LLD技术正文或PNG。
 
 ## 4. 固定规则
 

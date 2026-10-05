@@ -2,15 +2,15 @@
 
 更新日期：2026-10-05。工作分支：`docs/restore-6601-screenshots`。
 
-## 1. 当前状态（SARC第六轮：辅助图首批）
+## 1. 当前状态（SARC第七轮：辅助11张已首轮）
 
-辅助图新增5/11张整图首轮：323Uh2DKeH、7ULdHnhXju、lHuv0AHt75、T5Wi63Rflj、q40E10cbND。四张输入/乘加/输出取景和一张架构图已逐来源转录；不是原文连续五页。其余6张仍未整图核对。
+第六轮5张保存回读后，本批再核6张，辅助11/11已整图首轮。旧稿漏掉的c74Kardt0X、qNBgXqkj5C、Wb2pLAEGMa三图已补正文；不再有未首轮的SARC原始PNG。
 
-[辅助完整载体](sarc/sarc_diagrams/docs/SARC功能框图说明.md)、[第六轮台账](reviews/SARC_AUX_ROUND6_IMAGE_LEDGER_20261005.json)、[第六轮复核](reviews/SARC_AUX_ROUND6_REVIEW_20261005.md)、[第六轮回执](reviews/SARC_AUX_ROUND6_REMOTE_SAVE_20261005.json)。不能把旧稿8块当成已覆盖11张；本批发现c74Kardt0X、qNBgXqkj5C、Wb2pLAEGMa三张在旧辅助稿中没有来源块，保持待转录。
+[辅助正文](sarc/sarc_diagrams/docs/SARC功能框图说明.md)、[本批记录](reviews/SARC_AUX_ROUND7_REVIEW_20261005.md)、[11张台账](reviews/SARC_AUX_ROUND7_IMAGE_LEDGER_20261005.json)、[远端回执](reviews/SARC_AUX_ROUND7_REMOTE_SAVE_20261005.json)。辅助图不是已证实连续同版的原始文档，A编号仅为来源索引。
 
-全仓118/200首轮＝EFC60＋LRS13＋LLD40＋辅助5；剩82＝辅助6＋XBAR27＋CPLD48＋HAC_WRAP1。SARC58/64。LRS3组、LLD19组与S01未关闭，EFC5组暂缓。确定修改位置仍LRS32＋LLD46＝78；辅助颜色/红批注另列，不凭未明版本增加确定项。未最终验收。
+全仓124/200首轮＝EFC60＋SARC64；剩76＝独立XBAR27＋CPLD48＋HAC_WRAP1。SARC64/64是已存64张PNG覆盖，不证明原文来源页完整或最终准确。未关闭：LLD19组＋S01，LRS3组，辅助AUX-U01/U02两组。EFC5组暂缓。修改位置78条保持；辅助颜色/批注另列。
 
-下一张辅助`GameViewer_9akceoHcVF.png`，再核c74、qNBg、Wb2、抢占功能、过采求和功能，随后逐项回查SARC缺口。本批不改LRS/LLD技术正文、EFC、XBAR或任何PNG。
+下一步从LLD-U01的v6tUVs7H0k开始逐项缺口回查；每4～6张定点原图完成正文、缺口、当前入口的实际保存和回读。不得把15bit辅助图覆盖5bit正文，不重复恢复任何旧分片。
 
 ## 2. 原始截图清点
 
@@ -23,7 +23,7 @@
 | CPLD PPI说明文档 | 7 | 本轮待复核 | 保持原始独立文档 |
 | EFC LRS | 24 | 全部首轮核对，U01已核实；原文差异保留 | 不重复处理已解决的图1-6小字 |
 | EFC LLD | 36 | 全部首轮核对；仅5组源图细字待确认 | 只按第四轮报告定位回查，不再留未处理整页 |
-| SARC辅助框图资料组 | 11 | 5张整图首轮，余6张待核；不是已证实连续文档 | 完成余6张和同源边界，再逐项回查 |
+| SARC辅助框图资料组 | 11 | 11张整图首轮；2组局部字形待确认；保留独立来源边界 | 定点回查，不跨版本填字 |
 | SARC方案设计（旧sarc_lld） | 40 | 40张首轮至文末；19组局部缺口及S01未关闭 | 先核辅助图边界，再以确认同源同版区域定点回查 |
 | SARC LRS | 13 | 首轮逐图核对；3组图内小字待确认 | 保持一份完整文档，后续定点复核 |
 | 独立XBAR文档（旧sarc_xbar） | 27 | 封面已确认，正文未首轮核对 | 独立处理，不混入SARC修改点 |

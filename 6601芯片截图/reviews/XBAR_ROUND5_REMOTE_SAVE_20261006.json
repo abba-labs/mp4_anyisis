@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-06",
+  "branch": "docs/restore-6601-screenshots",
+  "round": 5,
+  "input_head": "6ed13a3ed1cebdcff20160a758f3cb5ca4b9ae93",
+  "content_commit": "34edbb3a269d7456490182d54fc4dd7e4c227f0c",
+  "remote_head_at_readback": "34edbb3a269d7456490182d54fc4dd7e4c227f0c",
+  "publication_status": "remote_saved_and_git_fetch_byte_verified",
+  "all_target_bytes_match": true,
+  "new_range": [
+    23,
+    27
+  ],
+  "xbar_first_pass": 27,
+  "repository_first_pass": 151,
+  "changes": 43,
+  "gaps": 6,
+  "files": {
+    "6601芯片截图/sarc/sarc_xbar/docs/SARC_XBAR设计文档.md": {
+      "blob": "81c4e28250e87ccf9732dae6e40b885eaf001277",
+      "sha256": "421b0b8815b1bee66d42825c1684704b9f13856c244e0b4c645814f9e5ba5846",
+      "bytes": 83311
+    },
+    "6601芯片截图/sarc/sarc_xbar/XBAR_6601修改点总览.md": {
+      "blob": "71cf0181011467d7d98da260d596e50b24d54945",
+      "sha256": "4c843957b40532cddb0bca5c02610d0df27f379cf861a9738ddf23463e55216d",
+      "bytes": 10333
+    },
+    "6601芯片截图/sarc/sarc_xbar/XBAR_提取与验收报告.md": {
+      "blob": "cd9cdd7c4a1744ad32bc5843883e5b2ef1693a8e",
+      "sha256": "84a610697b8e2eb231a2e4a66560f76b2bf0d3a35d9cb72ad8446902b8cb7499",
+      "bytes": 5572
+    },
+    "6601芯片截图/reviews/XBAR_IMAGE_LEDGER_20261006.json": {
+      "blob": "d46342b636032cb09c23466fed858b71c186832c",
+      "sha256": "146f308d6811ca2c52975ed951bb78fda3f6f9cf7d7a0c24a605517b9f08bf9b",
+      "bytes": 28559
+    },
+    "6601芯片截图/RESTORE_PROGRESS.md": {
+      "blob": "6bc4cfcb2824d3249885988c20e3724646d08af8",
+      "sha256": "8b3362a70da7fb28573f09f909085bebdb5ea71e512b62ed9d40e4c5df70ce54",
+      "bytes": 15527
+    },
+    "NEXT_CHAT_HANDOFF.md": {
+      "blob": "d7e1bc81360d778cee0a46d6f3e7b04080cbec52",
+      "sha256": "7846a75e76f878ef618d30599230014db088b55fa8414b7432e80b887b146a8e",
+      "bytes": 3096
+    },
+    "6601芯片截图/reviews/XBAR_ROUND5_REVIEW_20261006.md": {
+      "blob": "5a796a522e859c3254e67506d74c814aebc51787",
+      "sha256": "d990c08d76cc759cb951e84d55e4d430655287402eefe4e8c14c4c02b4f216f8",
+      "bytes": 1346
+    },
+    "6601芯片截图/sarc/sarc_xbar/XBAR_阅读入口与6601修改导读.md": {
+      "blob": "76757546f948f3201b436c877b13b530dfd91ea7",
+      "sha256": "b5f69739003ed9e36e5db53b24c34f42871af372a4d01d5af6d0bdf460f37c60",
+      "bytes": 5557
+    },
+    "6601芯片截图/reviews/XBAR_CLOSEOUT_VERIFY_20261006.json": {
+      "blob": "449d5c6763527196f2bf8ef4f628c18a03e16489",
+      "sha256": "d6a02b501bf92e8e52603cd91c191260cf6b6233114c5c52a980548ad93b9e19",
+      "bytes": 865
+    }
+  },
+  "temporary_payload_removed": true,
+  "temporary_workflow_removed": true,
+  "non_force_push": true,
+  "other_ip_technical_bodies_unchanged": true,
+  "final_text_acceptance": false,
+  "hardware_test_performed": false
+}

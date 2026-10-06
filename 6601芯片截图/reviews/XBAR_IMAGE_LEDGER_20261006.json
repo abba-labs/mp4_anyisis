@@ -107,6 +107,123 @@
         "Gg0PKIieqf"
       ],
       "kind": "红色删除线"
+    },
+    {
+      "id": "XBAR-C13",
+      "section": "3.3／ET6601修改点",
+      "text": "去除SDFM通道SD*FLT*_EVT*",
+      "sources": [
+        "Z7r3yKz86a"
+      ],
+      "kind": "明确6601红字；原第5项另挂U03"
+    },
+    {
+      "id": "XBAR-C14",
+      "section": "3.3／ET6601修改点",
+      "text": "去除CLB*_OUT*和CLB_INPUTXBAR*",
+      "sources": [
+        "Z7r3yKz86a"
+      ],
+      "kind": "明确6601红字；原第5项另挂U03"
+    },
+    {
+      "id": "XBAR-C15",
+      "section": "3.3／ET6601修改点",
+      "text": "去除ADCC_EVT*",
+      "sources": [
+        "Z7r3yKz86a"
+      ],
+      "kind": "明确6601红字；原第5项另挂U03"
+    },
+    {
+      "id": "XBAR-C16",
+      "section": "3.3／ET6601修改点",
+      "text": "去除EPWM12~17_FAULTREAL",
+      "sources": [
+        "Z7r3yKz86a"
+      ],
+      "kind": "明确6601红字；原第5项另挂U03"
+    },
+    {
+      "id": "XBAR-C17",
+      "section": "3.3／ET6601修改点",
+      "text": "新增ETIMOUT12/13和ETIM12/13_FAULTREAL",
+      "sources": [
+        "Z7r3yKz86a"
+      ],
+      "kind": "明确6601红字；原第5项另挂U03"
+    },
+    {
+      "id": "XBAR-C18",
+      "section": "3.3／SPEC16源表0～16",
+      "text": "红色Reserved位于(0～14偶数行,列1)、(1～15奇数行,列2)、(16,列0/1/2)；空白列3的1/3/5/7不补值",
+      "sources": [
+        "Z7r3yKz86a"
+      ],
+      "kind": "表内红字及左修订线；坐标是转录定位，不推断旧源名"
+    },
+    {
+      "id": "XBAR-C19",
+      "section": "3.3／SPEC16源表17～63",
+      "text": "红色Reserved逐格保留；ETIMOUT10/11/12/13及ETIM12/13_FAULTREAL红字",
+      "sources": [
+        "CqeT5pUL1x"
+      ],
+      "kind": "红字来源位置；完整坐标与文字在正文续表，旧值未明不补"
+    },
+    {
+      "id": "XBAR-C20",
+      "section": "3.3／SPEC20",
+      "text": "支持PWM XBAR输出16bit，顶层选择后分别连接到12个PWM通道",
+      "sources": [
+        "CqeT5pUL1x"
+      ],
+      "kind": "12红字；原16bit黑字保留"
+    },
+    {
+      "id": "XBAR-C21",
+      "section": "3.4／ET6601修改点1",
+      "text": "去除SDFM通道SD*FLT*_EVT*和SD*FLT*_EVT0_OR_EVT1",
+      "sources": [
+        "x1UNjKA5fU"
+      ],
+      "kind": "明确6601红字"
+    },
+    {
+      "id": "XBAR-C22",
+      "section": "3.4／ET6601修改点2",
+      "text": "去除EPWM12~17_FAULTREAL",
+      "sources": [
+        "x1UNjKA5fU"
+      ],
+      "kind": "明确6601红字"
+    },
+    {
+      "id": "XBAR-C23",
+      "section": "3.4／SPEC21源表",
+      "text": "列3的0～31全为红色Reserved；列1及列2的红色Reserved逐格见正文",
+      "sources": [
+        "x1UNjKA5fU"
+      ],
+      "kind": "表内红字及修订线；ADC C等黑字项不随PWM表删除"
+    },
+    {
+      "id": "XBAR-C24",
+      "section": "3.4／SPEC25",
+      "text": "支持ETIM XBAR输出14bit，分别连接到14个ETIMER通道",
+      "sources": [
+        "x1UNjKA5fU"
+      ],
+      "kind": "14bit/14红字"
+    },
+    {
+      "id": "XBAR-C25",
+      "section": "3.4／SPEC26",
+      "text": "支持软件可配置14bit CFG_ETXB_SWx寄存器，分别对应14个ETIMER通道XBAR选择",
+      "sources": [
+        "x1UNjKA5fU"
+      ],
+      "kind": "两处14红字"
     }
   ],
   "gaps": [
@@ -116,6 +233,20 @@
         "SMcbqY9aCU"
       ],
       "detail": "图1源／目标底部位宽、GPIO完整编号、两条中断输出完整标识及局部红线范围尚不清；已保留可辨源、模块、目的标签和删除位置。需同版原图清晰局部；不以正文数值反填。"
+    },
+    {
+      "id": "XBAR-U02",
+      "sources": [
+        "CpOsnywQhu"
+      ],
+      "detail": "INPUT XBAR连接图的INT支路与直接到SARC支路细标记尚未逐字符确认；其余可辨连线和16/12/14/4等各自保存，不以正文数量补图字。"
+    },
+    {
+      "id": "XBAR-U03",
+      "sources": [
+        "Z7r3yKz86a"
+      ],
+      "detail": "PWM ET6601清单第5项位置可见5）及Delete / 6 (0#~5#)，未见可确定功能语句；原文内容与修订浮层边界待同版原件确认。其余五项按原编号保存。"
     }
   ],
   "history": [
@@ -126,6 +257,14 @@
         6
       ],
       "notes": "已按封面、修订表、目录、概述、功能描述、需求01～04确认前6张顺序，双页先左后右。修订表13条记录及6个空行恢复；去除大量水印噪声，纠正旧稿误称SARC XBAR总线互联。概述四项ET6601红字及黑色原批注完整保留；历史ET3101/ET6801说明另保留。故障表22～1先恢复，末行续下一张；不猜接尚未核对内容。目录K9w与Fil图界面屏幕号有重复，顺序以目录续项和概述跨页内容确认，不据UI号臆造缺页。"
+    },
+    {
+      "round": 2,
+      "range": [
+        7,
+        11
+      ],
+      "notes": "新增核对第7～11张，恢复故障表末行temp_warn/1/0；SPEC05～26完整文字。PWM源表64行、ETIM源表32行逐格保留，红色Reserved和红字新增源逐格标记；PWM行1/3/5/7的列3原为空白，未填Reserved。两张跨页PWM表按0～16→17～57→58～63衔接；ETIM表0～20→21～31衔接。历史ET6801条目编号16～18及新增/去除用词差异保留；绿色被删SPEC08与红80未冒充新的确定6601功能修改。"
     }
   ],
   "images": [
@@ -197,8 +336,8 @@
       "git_blob": "c977ecb6be7dcfdc0cc5baa1d59e158ff51a4a89",
       "sha256": "426102d48e35bbe025b9e6262d0a9bfb474766b919916d5add1374b97b71b416",
       "bytes": 1276670,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -207,9 +346,11 @@
       "git_blob": "97e89a6fdb919ad96716f5cd8e27f51f31313240",
       "sha256": "184e122070f9c0221d41307500fba4b169daf80184bfcfc3894a8c3dc7208362",
       "bytes": 806536,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
-      "gaps": []
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": [
+        "XBAR-U02"
+      ]
     },
     {
       "order": 9,
@@ -217,9 +358,11 @@
       "git_blob": "c0a37724f7e9a0e60caf1124a06aa1c91fb4473c",
       "sha256": "dbf60b4aa682e5c7302138215ef420d38698e06cd05404419c211f7aeec5ba9c",
       "bytes": 1148036,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
-      "gaps": []
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": [
+        "XBAR-U03"
+      ]
     },
     {
       "order": 10,
@@ -227,8 +370,8 @@
       "git_blob": "d4bb6caf88b51872580dfc8e5a1029ce40306b56",
       "sha256": "50512863b8bc884f8031b70ae2f566d0590c021043f55005d0d980fa80ffe944",
       "bytes": 1234796,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -237,8 +380,8 @@
       "git_blob": "8628bdd1ee7ab07acdba4b3ce1c9b75d60c270f7",
       "sha256": "1b73ae0df9acf4459b1ed1e1f026b4c12245fbaf696e673e6a3a4dea74115a8a",
       "bytes": 1284963,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -403,12 +546,12 @@
     }
   ],
   "date": "2026-10-06",
-  "round": 1,
+  "round": 2,
   "branch": "docs/restore-6601-screenshots",
-  "input_head": "3e8a48de67290bcc02cd66c0e64714e33be40c92",
+  "input_head": "3fcc07c6801cda47897eb40b667f93e366230fe3",
   "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
-  "first_pass": 6,
+  "first_pass": 11,
   "total": 27,
-  "repository_first_pass": 130,
+  "repository_first_pass": 135,
   "final_text_acceptance": false
 }

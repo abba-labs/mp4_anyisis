@@ -1,10 +1,10 @@
 # ET6601 XBAR模块需求规格与设计方案
 
 > 独立XBAR原文；旧目录和文件名中的SARC仅为历史路径，不属于SARC正文，也不是总线矩阵规格。
-> 2026-10-06，第1批。XBAR前6/27张已完成首轮原图核对；全仓130/200。12条修改来源位置记录，1组局部缺口；数量不是独立功能数或准确率。
+> 2026-10-06，第2批。XBAR前11/27张已完成首轮原图核对；全仓135/200。25条修改来源位置记录，3组局部缺口；数量不是独立功能数或准确率。
 > 一份原文一份Markdown。先左后右，按章节、跨页句与续表衔接；原文矛盾、拼写、空白和删除线保留。未核对区仅保留历史转录，不作为准确原文使用。
 > 仅核对本目录原PNG；ET60157/ET6801手册、驱动、BootROM不用于补字。红色修改结合本原文明确ET6601段落判断；目录蓝色超链接和历史图配色不直接判为6601修改。
-> 最新逐图台账：../../../reviews/XBAR_IMAGE_LEDGER_20261006.json；正式保存与回读见XBAR_ROUND1_REMOTE_SAVE_20261006.json。
+> 最新逐图台账：../../../reviews/XBAR_IMAGE_LEDGER_20261006.json；正式保存与回读见XBAR_ROUND2_REMOTE_SAVE_20261006.json。
 
 ## 第一部分：原始文档逐图还原
 
@@ -274,68 +274,44 @@ XBAR主要由以下几个模块组成：
 
 [查看原始PNG](../images/GameViewer_m38yfM9SyS.png)
 
-> 来源顺序7；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序7；已首轮核对。
 
 <!-- xbar-block:start m38yfM9SyS -->
-
 ### 【左页】
 
-temp_wam
-XBAR.SPEC【05】
-支持 XCSA、XCET和 XCOX 三个 CLU
-可配置逻辑组合功能
-XBAR.SPEC【06】支持XBAR中断上报，INPUTXBAR支
-持5个中断独立输出，CLU模块支持中断合并输出，对每
-个中断源，可配置中断使能、中断屏蔽、中断清除、强制
-中断．可查询原始中断和中断状态
-XBAR.SPEC【07】支持XBAR配置锁定，通过配置一个
-16bitKEY实现寄存器写保护，支持写保护的寄存器包括：
-Fault使能配置、Stimer紧急触发源配置、CLU相关配置、
-滤波窗口、滤波使能配置、输入输出极性配置、MUX-OR
-配置、输入输出使能配置、输出选择配置、软件信号源配
-置、输出脉宽扩展配置、输出模式选择
-XBAR.SPEC【08】支持触发源状态上报（待定？
-暂不
-实现）
-BTMCUh
-ETMCU hian li
-EIMQU tauan
+XBAR.SPEC【04】表尾续行：
 
+| signal name of input | bit width | bit order |  |
+|---|---|---|---|
+| temp_warn | 1 | 0 |  |
+
+> 转录注：列名沿用上一张表头以标明续表；末列接上一页PT_ERR合并区，本页没有重复文字。
+
+**XBAR.SPEC【05】**　支持XCSA、XCET和XCOX三个CLU可配置逻辑组合功能
+
+**XBAR.SPEC【06】**　支持XBAR中断上报。INPUTXBAR支持5个中断独立输出，CLU模块支持中断合并输出，对每个中断源，可配置中断使能、中断屏蔽、中断清除、强制中断．可查询原始中断和中断状态
+
+**XBAR.SPEC【07】**　支持XBAR配置锁定，通过配置一个16bit KEY实现寄存器写保护，支持写保护的寄存器包括：Fault使能配置、Stimer紧急触发源配置、CLU相关配置、滤波窗口、滤波使能配置、输入输出极性配置、MUX-OR配置、输入输出使能配置、输出选择配置、软件信号源配置、输出脉宽扩展配置、输出模式选择
+
+~~XBAR.SPEC【08】　支持触发源状态上报（待定？——暂不实现）~~
+
+> 转录注：08整条带删除线，内容为绿色，编号黑色；没有明确归属6601的文字，保留为原文被删事项而非确定新增。
 
 ### 【右页】
 
+### 3.2 INPUT XBAR
 
-#### 3.2INPUT XBAR
+**XBAR.SPEC【09】**　INPUT XBAR支持输入信号源来自芯片IO cell C端经过处理后的信号(bypass/sync/3sample/6sample)，覆盖80个GPIO输入
 
-XBAR.SPEC【09】mINPUTXBAR支持输入信号源来自芯片
-IOcellC端经过处理后的信号(bypass/sync/3sample/6sample),
-覆盖80个GPIO输入
-J12026-10-02-2158
-Epi_in_modl
-spi,i_mody
-IOMUX
-CMos
-PAD
-opou'jno"gd?
-IOCTRL
-pomno'gds
-OEN
-DST
-XBAR.SPEC 【10】
-INPUTXBAR支持对信号进行4bit分组
-并进行mux-or选通
-XBAR.SPEC【11】
-INPUTXBAR支持对选通信号进行高电
-平锁存操作，或上下沿检测操作，锁存信号可配置清零
-XBAR.SPEC【12】
-INPUTXBAR支持输出使能和输出极性
-配置
-1080F
+> 转录注：80为红字；概述历史ET3101也写84→80，本处没有独立版本说明，不另推断一次6601数量变更。
 
+图中文字转录（原图没有图号/图名）：`gpio_xbar_*`（红字）、`gpio_in_mod0`、`gpio_in_mod1`、省略点、`gpio_in_modN`；`gpio_out_mod0`、`gpio_out_mod1`、省略点、`gpio_out_modN`；`IOMUX & IOCTRL`；选择支路`同步`、`3 sample`、`6 sample`及直通支路；`IE`、`ST`、`C`、`I`、`OEN`、`DS0`、`DS1`、`PU`、`PD`；`CMOS`、`PAD`。C端接选择输入，gpio_xbar_*支路由该输入节点引出；下方PU/PD支路及反相点保持原图。
 
+**XBAR.SPEC【10】**　INPUT XBAR支持对信号进行4bit分组并进行mux-or选通
 
----
+**XBAR.SPEC【11】**　INPUT XBAR支持对选通信号进行高电平锁存操作，或上下沿检测操作，锁存信号可配置清零
 
+**XBAR.SPEC【12】**　INPUT XBAR支持输出使能和输出极性配置
 <!-- xbar-block:end m38yfM9SyS -->
 
 ---
@@ -344,60 +320,44 @@ INPUTXBAR支持输出使能和输出极性
 
 [查看原始PNG](../images/GameViewer_CpOsnywQhu.png)
 
-> 来源顺序8；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序8；已首轮核对。
 
 <!-- xbar-block:start CpOsnywQhu -->
-
 ### 【左页】
 
-XBAR.SPEC【13】
-INPUTXBAR支持送出5个中断源
-XBAR.SPEC【14】
-INPUTXBAR支持异步路径，以减小封
-ETNO
-波延迟及其它用应用场景，输出端通过WARP_MUX2配置
-选择；
-XBAR.SPEC【15】INPUT XBAR 输出连接到中断模块、
-SRPWM、ETIMER、SARC、PWM XBAR、ETIM XBAR、
-OUTPUTXBAR，及 ETIM & SARC& OUTPUTCLU
-BTMCU huan 71
-ETMCU mian.11
-EIMCU hian.li
-ETMCV han.1i 2026-70-02-71:58
-ETMCUhian218026-10-02-21:58
-BTMQU Tzuan. li
+**XBAR.SPEC【13】**　INPUT XBAR支持送出5个中断源
 
+**XBAR.SPEC【14】**　INPUT XBAR支持异步路径，以减小封波延迟及其它用应用场景，输出端通过WARP_MUX2配置选择；
+
+**XBAR.SPEC【15】**　INPUT XBAR输出连接到中断模块、SRPWM、ETIMER、SARC、PWM XBAR、ETIM XBAR、OUTPUT XBAR，及ETIM & SARC & OUTPUT CLU
+
+> 转录注：“其它用应用场景”及WARP_MUX2按原文，不改成推测的术语。
 
 ### 【右页】
 
-GPI00-
-GPIOX
-INPUT XBAR
-TMCU han.11
-INT
-SRPWM
-PWM XBAR
-E TIM XBAR
-HCV huan.Ji 2026-10-02-21-58
-16 oupluL
-EIIMER
-ETIM CLU
-SARCCLU
-SARC
-TNCV
-OUTPUT CLU
-XBAR
+图中文字及连接索引（原图无图号/图名）：
 
-#### 3.3PWMXBAR
+| 起点 | 中间模块 | 目标 | 原图可辨标记 |
+|---|---|---|---|
+| GPIO0 … GPION | INPUT XBAR | 公共输出干线 |  |
+| 公共干线 |  | INT | 细字待复核 |
+| 公共干线 |  | SRPWM | 6 |
+| 公共干线 | PWM XBAR | SRPWM | 16；12 |
+| 公共干线 | ETIM XBAR | ETIMER | 16；14 |
+| 公共干线 |  | ETIMER | 16 capture |
+| 公共干线 | ETIM CLU | ETIMER | 16；4 capture |
+| 公共干线 | SARCCLU | SARC | 16；4 |
+| 公共干线 |  | SARC | 细字待复核 |
+| 公共干线 | OUTPUT CLU | OUTPUT XBAR | 16；4 |
+| 公共干线 |  | OUTPUT XBAR | 16 |
 
-ETCV
+> ⚠️ 原图待复核：XBAR-U02。INT支路文字及直接到SARC支路标记未能逐字符确认；SARC支路可辨似有“1(16)”，仅为候选。原图：GameViewer_CpOsnywQhu.png右页。不能将正文5个中断源反填为图内标记。
+
+### 3.3 PWM XBAR
+
 ET6801修改点：
-12080F
 
-
-
----
-
+> 转录注：下面15项历史说明在下一张左页。
 <!-- xbar-block:end CpOsnywQhu -->
 
 ---
@@ -406,129 +366,88 @@ ET6801修改点：
 
 [查看原始PNG](../images/GameViewer_Z7r3yKz86a.png)
 
-> 来源顺序9；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序9；已首轮核对。
 
 <!-- xbar-block:start Z7r3yKz86a -->
-
 ### 【左页】
 
-1)
-新增CMPC通道CMP EVT7>21；去除CMP_EVT*_OR_EVT*（TI
-无)
-2)
-新增SDFM通道SD2/3FLT*EVT*；去除SD*FLT*_EVTO_OR_EVT1
-(TI 无)
-3)
-新增CLB4/5 OUT*
-4)
-新增EPWM TRIPOUT/DE TRIP/DE ACTIVE
-新增 CPU*_ADCCHECK EVT
-6)
-新增ETIM TRIPOUT
-gTMcuhuan.
-7)
-对比 TI，无MACN FEVT
-8)
-对比 TI，无FSI
-9)
-对比TI，无ECATSYNC
-10)
-ECAP 1-7(TI) >ETIM0-11
-TMCU mian.1i
-EIMCU hian.li
-11)
-INPUTXBAR1-14(TI) > INXB0-15
-12)
-CLB INPUTXBAR7-14>CBXB0-15
-13）新增CPU1HALT
-14）TI无SYS ERR/PT ERR/FLASHERR
-15）PIEVECTERR（中断扩展模块错误）/UNCERR(内存访问错误）
+1）新增CMPC通道CMP_EVT7 >21；去除CMP_EVT*_OR_EVT*（TI无）
 
+2）新增SDFM通道SD2/3FLT*_EVT*；去除SD*FLT*_EVT0_OR_EVT1（TI无）
+
+3）新增CLB4/5_OUT*
+
+4）新增EPWM_TRIPOUT/~~DE_TRIP/DE_ACTIVE~~
+
+~~5）新增CPU*_ADCCHECK_EVT~~
+
+6）新增ETIM_TRIPOUT
+
+7）对比TI，无MACN_FEVT
+
+8）对比TI，无FSI
+
+9）对比TI，无ECAT_SYNC
+
+10）ECAP 1-7(TI) > ETIM0-11
+
+11）INPUTXBAR1-14(TI) > INXB0-15
+
+12）CLB_INPUTXBAR7-14 > CBXB0-15
+
+13）新增CPU1_HALT
+
+14）TI无SYS_ERR/PT_ERR/FLASH_ERR
+
+15）PIEVECTERR（中断扩展模块错误）/UNCERR(内存访问错误)
+
+> 转录注：本页接ET6801标题，非6601新增清单；删除线分别保留。
 
 ### 【右页】
 
-ET6601修改点：
-去除SDFM通道SD*FLT*EVT*
-2)
-去除 CLB* OUT*和 CLB INPUTXBAR*
-3)
-去除ADCC EVT*
-4)
-去除EPWM12~17FAULTREAL
-Delete / 6 (0#~5#)
-6)
-新增ETIMOUT12/13和ETIM12/13FAULTREAL
-huan. Ji 2026-10-02-21-58
-XBAR.SPEC【16】
-PWMXBAR支持对输入信号源进行4bit
-分组并进行mux-or选通，信号源选择如下表所示：
-CMP_EVTO
-ADCA_EVTO
-Reserved
-ETIMOUTO
-CMP_ EVT1
-INPUTXBARO
-Reserved
-Reserved
-CMP_EVT2
-ADCA_EVT1
-ETIMOUT1
-CMP EVT3
-INPUTXBARi
-Reserved
-CMP EVT4
-ADCA EVT2
-Reserved
-ETIMOUT2
-CMP_EVT5
-INPUTXBAR2
-Reserved
-CMP_EVT6
-Reserved
-ADCA_EVT3
-ETIMOUT3
-CMP_EVT7
-INPUTXBAR3
-Reserved
-CMP_EVTS
-Reserved
-ADCB_EVTO
-ETIMOUT4
-CMP_EVT9
-INPUTXBAR4
-Reserved
-Reserved
-CMP_EVT10
-Reserved
-ADCB_EVT1
-ETIMOUT5
-Reserved
-INPUTXBAR5
-CMP_EVT11
-Reserved
-CMP_EVT12
-Reserved
-ADCB_EVT2
-ETIMOUT6
-Reserved
-ADCSOCAO
-SYS_ERR
-CMP _EVT13
-Reserved
-ADCB_EVT3
-CMP_EVT14
-EXTSYNCOUT
-CMP_EVT15
-ADCSOCBO
-Reserved
-PT_ERR
-Reserved
-Reserved
-Reserved
-ERRORSTS
-11080F
+**ET6601修改点：**
 
+1）去除SDFM通道SD*FLT*_EVT*
 
+2）去除CLB*_OUT*和CLB_INPUTXBAR*
+
+3）去除ADCC_EVT*
+
+4）去除EPWM12~17_FAULTREAL
+
+5）
+
+> 原屏局部另显示：`Delete / 6 (0#~5#)`，其中Delete为红色。XBAR-U03：此处未出现可确定的第5项功能语句，尚不能确定显示文字与原文修订浮层的边界；不猜补第5项、不将Delete解释成某个功能删除。
+
+6）新增ETIMOUT12/13和ETIM12/13_FAULTREAL
+
+> 转录注：标题及1～4、6项为红字；编号5的特殊显示按上注保留。
+
+**XBAR.SPEC【16】**　PWM XBAR支持对输入信号源进行4bit分组并进行mux-or选通，信号源选择如下表所示：
+
+> 表内**加粗**表示原图红字，仅为转录颜色标记；空格是真实空白，不补Reserved。绿色表头不计修改。
+
+| MUX | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | CMP_EVT0 | **Reserved** | ADCA_EVT0 | ETIMOUT0 |
+| 1 | CMP_EVT1 | INPUTXBAR0 | **Reserved** |  |
+| 2 | CMP_EVT2 | **Reserved** | ADCA_EVT1 | ETIMOUT1 |
+| 3 | CMP_EVT3 | INPUTXBAR1 | **Reserved** |  |
+| 4 | CMP_EVT4 | **Reserved** | ADCA_EVT2 | ETIMOUT2 |
+| 5 | CMP_EVT5 | INPUTXBAR2 | **Reserved** |  |
+| 6 | CMP_EVT6 | **Reserved** | ADCA_EVT3 | ETIMOUT3 |
+| 7 | CMP_EVT7 | INPUTXBAR3 | **Reserved** |  |
+| 8 | CMP_EVT8 | **Reserved** | ADCB_EVT0 | ETIMOUT4 |
+| 9 | CMP_EVT9 | INPUTXBAR4 | **Reserved** | Reserved |
+| 10 | CMP_EVT10 | **Reserved** | ADCB_EVT1 | ETIMOUT5 |
+| 11 | CMP_EVT11 | INPUTXBAR5 | **Reserved** | Reserved |
+| 12 | CMP_EVT12 | **Reserved** | ADCB_EVT2 | ETIMOUT6 |
+| 13 | CMP_EVT13 | ADCSOCA0 | **Reserved** | SYS_ERR |
+| 14 | CMP_EVT14 | **Reserved** | ADCB_EVT3 | EXTSYNCOUT |
+| 15 | CMP_EVT15 | ADCSOCB0 | **Reserved** | PT_ERR |
+| 16 | **Reserved** | **Reserved** | **Reserved** | ERRORSTS |
+
+> 转录注：表跨下一张左右页继续，本处仅0～16。
 <!-- xbar-block:end Z7r3yKz86a -->
 
 ---
@@ -537,231 +456,91 @@ ERRORSTS
 
 [查看原始PNG](../images/GameViewer_CqeT5pUL1x.png)
 
-> 来源顺序10；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序10；已首轮核对。
 
 <!-- xbar-block:start CqeT5pUL1x -->
-
 ### 【左页】
 
-Reserved
-INPUTXBAR6
-Reserved
-CPUO_HALT
-Reserved
-Reserved
-Reserved
-FLASH_ ERR
-INPUTXBAR7
-Reserved
-Reserved
-ETIMOUT7
-Reserved
-Reserved
-Reserved
-CPUI HALT
-INPUTXBARS
-Reserved
-Reserved
-ETIMOUTS
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-INPUTXBAR9
-Reserved
-ETIMOUT9
-Reserved
-Reserved
-Reserved
-ETIMOUT10
-INPUTXBAR10
-Reserved
-Reserved
-ETIMOUT11
-Reserved
-Reserved
-Reserved
-ETIMOUT12
-INPUTXBAR11
-Reserved
-Reserved
-ETIMOUT13
-Reserved
-Reserved
-Reserved
-SRPWM_XBAR_SYNCO
-Reserved
-INPUTXBAR12
-Reserved
-SRPWM_XBAR_SYNC1
-Reserved
-Reserved
-Reserved
-SRPWM_XBAR_SYNC2
-Reserved
-INPUTXBAR13
-ERRORSTS
-SRPWM_XBAR_SYNC3
-EPWMO_FAULTREAL
-Reserved
-Reserved
-ETIMO_FAULTREAL
-EPWM1_FAULTREAL
-INPUTXBAR14
-Reserved
-ETIM1_FAULTREAL
-EPWM2_FAULTREAL
-Reserved
-Reserved
-ETIM2_FAULTREAL
-EPWM3_FAULTREAL
-Reserved
-INPUTXBAR15
-ETIM3_FAULTREAL
-EPWM4_FAULTREAL
-Reserved
-Reserved
-ETM4_FAULTREAL
-Reserved
-EPWM5_FAULTREAL
-Reserved
-ETIM5_FAULTREAL
-Reserved
-EPWM6_FAULTREAL
-Reserved
-ETIM6_FAULTREAL
-EPWM7_FAULTREAL
-Reserved
-Reserved
-ETIM7_FAULTREAL
-Reserved
-EPWM8_FAULTREAL
-Reserved
-ETIM8_FAULTREAL
-EPWM9_FAULTREAL
-Reserved
-Reserved
-ETIM9_FAULTREAL
-EPWM10_FAULTREAL
-Reserved
-Reserved
-ETIM10_FAULTREAL
-EPWM11_FAULTREAL
-Reserved
-Reserved
-ETIM11_FAULTREAL
-Reserved
-Reserved
-Reserved
-ETIM12_FAULTREAL
-Reserved
-Reserved
-Reserved
-ETIM13_FAULTREAL
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-STCU
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
-Reserved
+XBAR.SPEC【16】PWM XBAR信号源选择续表，原图本页17～57；为方便衔接沿用上一张表头。表内**加粗**表示红字。
 
+| MUX | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 17 | **Reserved** | INPUTXBAR6 | **Reserved** | CPU0_HALT |
+| 18 | **Reserved** | **Reserved** | **Reserved** | FLASH_ERR |
+| 19 | **Reserved** | INPUTXBAR7 | **Reserved** | ETIMOUT7 |
+| 20 | **Reserved** | **Reserved** | **Reserved** | CPU1_HALT |
+| 21 | **Reserved** | INPUTXBAR8 | **Reserved** | ETIMOUT8 |
+| 22 | **Reserved** | **Reserved** | **Reserved** | Reserved |
+| 23 | **Reserved** | INPUTXBAR9 | **Reserved** | ETIMOUT9 |
+| 24 | **Reserved** | **Reserved** | **Reserved** | **ETIMOUT10** |
+| 25 | **Reserved** | INPUTXBAR10 | Reserved | **ETIMOUT11** |
+| 26 | **Reserved** | **Reserved** | **Reserved** | **ETIMOUT12** |
+| 27 | **Reserved** | INPUTXBAR11 | Reserved | **ETIMOUT13** |
+| 28 | **Reserved** | **Reserved** | **Reserved** | SRPWM_XBAR_SYNC0 |
+| 29 | **Reserved** | INPUTXBAR12 | Reserved | SRPWM_XBAR_SYNC1 |
+| 30 | **Reserved** | **Reserved** | **Reserved** | SRPWM_XBAR_SYNC2 |
+| 31 | **Reserved** | INPUTXBAR13 | ERRORSTS | SRPWM_XBAR_SYNC3 |
+| 32 | EPWM0_FAULTREAL | Reserved | **Reserved** | ETIM0_FAULTREAL |
+| 33 | EPWM1_FAULTREAL | INPUTXBAR14 | Reserved | ETIM1_FAULTREAL |
+| 34 | EPWM2_FAULTREAL | Reserved | **Reserved** | ETIM2_FAULTREAL |
+| 35 | EPWM3_FAULTREAL | INPUTXBAR15 | Reserved | ETIM3_FAULTREAL |
+| 36 | EPWM4_FAULTREAL | Reserved | **Reserved** | ETIM4_FAULTREAL |
+| 37 | EPWM5_FAULTREAL | Reserved | Reserved | ETIM5_FAULTREAL |
+| 38 | EPWM6_FAULTREAL | Reserved | **Reserved** | ETIM6_FAULTREAL |
+| 39 | EPWM7_FAULTREAL | Reserved | Reserved | ETIM7_FAULTREAL |
+| 40 | EPWM8_FAULTREAL | Reserved | **Reserved** | ETIM8_FAULTREAL |
+| 41 | EPWM9_FAULTREAL | Reserved | Reserved | ETIM9_FAULTREAL |
+| 42 | EPWM10_FAULTREAL | Reserved | **Reserved** | ETIM10_FAULTREAL |
+| 43 | EPWM11_FAULTREAL | Reserved | Reserved | ETIM11_FAULTREAL |
+| 44 | **Reserved** | Reserved | **Reserved** | **ETIM12_FAULTREAL** |
+| 45 | **Reserved** | Reserved | Reserved | **ETIM13_FAULTREAL** |
+| 46 | **Reserved** | Reserved | **Reserved** | Reserved |
+| 47 | **Reserved** | Reserved | Reserved | Reserved |
+| 48 | **Reserved** | Reserved | **Reserved** | Reserved |
+| 49 | **Reserved** | Reserved | Reserved | Reserved |
+| 50 | Reserved | Reserved | Reserved | Reserved |
+| 51 | Reserved | Reserved | Reserved | Reserved |
+| 52 | Reserved | Reserved | Reserved | Reserved |
+| 53 | Reserved | Reserved | Reserved | Reserved |
+| 54 | Reserved | Reserved | Reserved | Reserved |
+| 55 | Reserved | Reserved | Reserved | Reserved |
+| 56 | Reserved | Reserved | Reserved | Reserved |
+| 57 | Reserved | Reserved | Reserved | Reserved |
 
 ### 【右页】
 
-Reserved
-Reserved
-CMP_EVT16
-Reserved
-Reserved
-Reserved
-CMP_EVT17
-Reserved
-Reserved
-Reserved
-CMP_EVT18
-Reserved
-Reserved
-Reserved
-CMP_EVT19
-Reserved
-Reserved
-Reserved
-CMP_EVT20
-Reserved
-Reserved
-Reserved
-CMP_EVT21
-Reserved
-XBAR.SPEC【17】
-PWMXBAR支持对选通信号进行高电
-平锁存操作，锁存信号可配置清零
-XBAR.SPEC【18】
-IPWMXBAR支持输出使能和输出极性
-配置
-XBAR.SPEC【19】
-PWMXBAR支持异步路径，以减小封
-波延迟，输出端通过WARPMUX2配置选择
-XBAR.SPEC【20】
-支持PWMXBAR输出16bit，顶层选择
-后分别连接到12个PWM通道
+同一表58～63：
 
-#### 3.4ETIM XBAR
+| MUX | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 58 | CMP_EVT16 | Reserved | Reserved | Reserved |
+| 59 | CMP_EVT17 | Reserved | Reserved | Reserved |
+| 60 | CMP_EVT18 | Reserved | Reserved | Reserved |
+| 61 | CMP_EVT19 | Reserved | Reserved | Reserved |
+| 62 | CMP_EVT20 | Reserved | Reserved | Reserved |
+| 63 | CMP_EVT21 | Reserved | Reserved | Reserved |
+
+**XBAR.SPEC【17】**　PWM XBAR支持对选通信号进行高电平锁存操作，锁存信号可配置清零
+
+**XBAR.SPEC【18】**　PWM XBAR支持输出使能和输出极性配置
+
+**XBAR.SPEC【19】**　PWM XBAR支持异步路径，以减小封波延迟，输出端通过WARP_MUX2配置选择
+
+**XBAR.SPEC【20】**　支持PWM XBAR输出16bit，顶层选择后分别连接到12个PWM通道
+
+> 转录注：12为红字；原文16bit输出不改成12bit。
+
+### 3.4 ETIM XBAR
 
 ET6801修改点：
-16）新增CMPC通道 CMP_EVT7>21；新增CMP_EVT*_OR_EVT*
-17）新增SDFM通道SD2/3FLT*EVT*；新增SD*FLT*_EVT0_OR_EVT1
-18）新增 CPU1_HALT
-269 n
-1080F
 
+16）新增CMPC通道CMP_EVT7 >21；新增CMP_EVT*_OR_EVT*
 
+17）新增SDFM通道SD2/3FLT*_EVT*；新增SD*FLT*_EVT0_OR_EVT1
 
----
+18）新增CPU1_HALT
 
+> 转录注：16～18为原编号，且这里写“新增”合并事件；不据PWM历史列表的“去除”改写。
 <!-- xbar-block:end CqeT5pUL1x -->
 
 ---
@@ -770,171 +549,74 @@ ET6801修改点：
 
 [查看原始PNG](../images/GameViewer_x1UNjKA5fU.png)
 
-> 来源顺序11；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序11；已首轮核对。
 
 <!-- xbar-block:start x1UNjKA5fU -->
-
 ### 【左页】
 
-ET6601修改点：
-去除SDFM通道SD*FLT*EVT*和SD*FLT*_EVTO_OREVT1
-2)
-去除EPWM12~17FAULTREAL
-2-21:5P
-XBAR.SPEC【21】
-ETIMXBAR支持对输入信号源进行4bit
-分组并进行mux-or选通，c信号源选择如下表所示：
-Reserved
-CMP_EVT0
-ADCA_EVTO
-Reserved
-CMP_EVT1
-INPUTXBARO
-ADCA_EVTI
-Reserved
-CMP_EVT2
-Reserved
-ADCA_EVT2
-Reserved
-CMP EVT3
-INPUTXBARI
-ADCA EVT3
-Reserved
-CMP_EVT4
-Reserved
-ADCB_EVT0
-Reserved
-CMP EVT5
-INPUTXBAR2
-ADCB EVT1
-Reserved
-CMP EVT6
-Reserved
-ADCB_EVT2
-Reserved
-CMP_EVT7
-INPUTXBAR3
-ADCB_EVT3
-Reserved
-CMP_EVT8
-ERRORSTS
-ADCC_EVTO
-Reserved
-CMP_EVT9
-INPUTXBAR4
-ADCC_EVT1
-Reserved
-CMP_EVT10
-EXTSYNCOUT
-ADCC_EVT2
-Reserved
-CMP EVT11
-INPUTXBAR5
-ADCCEVT3
-Reserved
-CMP_EVTO_OR_EVT1
-EPWMO_FAULTREAL
-CMP_EVT12
-Reserved
-CMP_EVT13
-INPUTXBAR6
-EPWM1_FAULTREAL
-Reserved
-EPWM2_FAULTREAL
-CMP_EVT14
-CFG_ETXB_SWx
-Reserved
-CMP_EVT15
-INPUTXBAR7
-EPWM3_FAULTREAL
-Reserved
-CMP_EVT16
-Reserved
-EPWM4_FAULTREAL
-Reserved
-CMP_EVT17
-INPUTXBARS
-EPWM5_FAULTREAL
-Reserved
-CMP_EVT18
-Reserved
-EPWM6_FAULTREAL
-Reserved
-INPUTXBAR9
-EPWM7FAULTREAL
-CMP_EVT19
-Reserved
-CMP_EVT20
-Reserved
-EPWM8_ FAULTREAL
-Reserved
+**ET6601修改点：**
 
+1）去除SDFM通道SD*FLT*_EVT*和SD*FLT*_EVT0_OR_EVT1
+
+2）去除EPWM12~17_FAULTREAL
+
+**XBAR.SPEC【21】**　ETIM XBAR支持对输入信号源进行4bit分组并进行mux-or选通，信号源选择如下表所示：
+
+> 表内**加粗**表示原图红字；左页0～20，右页21～31，同一张截图的同一张表先左后右。
+
+| MUX | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | CMP_EVT0 | **Reserved** | ADCA_EVT0 | **Reserved** |
+| 1 | CMP_EVT1 | INPUTXBAR0 | ADCA_EVT1 | **Reserved** |
+| 2 | CMP_EVT2 | **Reserved** | ADCA_EVT2 | **Reserved** |
+| 3 | CMP_EVT3 | INPUTXBAR1 | ADCA_EVT3 | **Reserved** |
+| 4 | CMP_EVT4 | **Reserved** | ADCB_EVT0 | **Reserved** |
+| 5 | CMP_EVT5 | INPUTXBAR2 | ADCB_EVT1 | **Reserved** |
+| 6 | CMP_EVT6 | **Reserved** | ADCB_EVT2 | **Reserved** |
+| 7 | CMP_EVT7 | INPUTXBAR3 | ADCB_EVT3 | **Reserved** |
+| 8 | CMP_EVT8 | ERRORSTS | ADCC_EVT0 | **Reserved** |
+| 9 | CMP_EVT9 | INPUTXBAR4 | ADCC_EVT1 | **Reserved** |
+| 10 | CMP_EVT10 | EXTSYNCOUT | ADCC_EVT2 | **Reserved** |
+| 11 | CMP_EVT11 | INPUTXBAR5 | ADCC_EVT3 | **Reserved** |
+| 12 | CMP_EVT12 | CMP_EVT0_OR_EVT1 | EPWM0_FAULTREAL | **Reserved** |
+| 13 | CMP_EVT13 | INPUTXBAR6 | EPWM1_FAULTREAL | **Reserved** |
+| 14 | CMP_EVT14 | CFG_ETXB_SWx | EPWM2_FAULTREAL | **Reserved** |
+| 15 | CMP_EVT15 | INPUTXBAR7 | EPWM3_FAULTREAL | **Reserved** |
+| 16 | CMP_EVT16 | **Reserved** | EPWM4_FAULTREAL | **Reserved** |
+| 17 | CMP_EVT17 | INPUTXBAR8 | EPWM5_FAULTREAL | **Reserved** |
+| 18 | CMP_EVT18 | **Reserved** | EPWM6_FAULTREAL | **Reserved** |
+| 19 | CMP_EVT19 | INPUTXBAR9 | EPWM7_FAULTREAL | **Reserved** |
+| 20 | CMP_EVT20 | **Reserved** | EPWM8_FAULTREAL | **Reserved** |
 
 ### 【右页】
 
-EPWM9_FAULTREAL
-CMP_EVT21
-INPUTXBAR10
-Reserved
-CMP_EVT2_OR_EVT3
-Reserved
-EPWM10 FAULTREAL
-Reserved
-INPUTXBAR11
-CMP_EVT4_OR_EVT5
-EPWM11_FAULTREAL
-Reserved
-Reserved
-CMP_EVT6_OR_EVT7
-Reserved
-Reserved
-CMP_EVT8_OR_EVT9
-INPUTXBAR12
-Reserved
-Reserved
-CMP_EVT10_OR_EVT11
-Reserved
-Reserved
-Reserved
-CMP_EVT12_OR_EVT13
-INPUTXBAR13
-Reserved
-Reserved
-CMP_EVT14_OR_EVT15
-Reserved
-Reserved
-Reserved
-INPUTXBAR14
-CMP_EVT16_OR_EVT17
-Reserved
-Reserved
-CMP_EVT18_OR_EVT19
-Reserved
-CFG_ETXB_SWx
-Reserved
-INPUTXBAR15
-CMP_EVT20_OR_EVT21
-ERRORSTS
-Reserved
-XBAR.SPEC【22】ETIMXBAR支持对选通信号进行高电
-平锁存操作，锁存信号可配置清零
-XBAR.SPEC【23】
-ETIMXBAR支持输出使能和输出极性
-配置
-XBAR.SPEC【24】
-ETIMXBAR支持异步路径，输出端通
-过WARPMUX2配置选择
-XBAR.SPEC【25】
-支持ETIMXBAR输出14bit，分别连接
-到14个ETIMER通道
-XBAR.SPEC【26】
-支持软件可配置14bitCFGETXBSWx
-寄存器，分别对应14个ETIMER通道XBAR选择
-11080F
+XBAR.SPEC【21】续表：
 
+| MUX | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 21 | CMP_EVT21 | INPUTXBAR10 | EPWM9_FAULTREAL | **Reserved** |
+| 22 | CMP_EVT2_OR_EVT3 | **Reserved** | EPWM10_FAULTREAL | **Reserved** |
+| 23 | CMP_EVT4_OR_EVT5 | INPUTXBAR11 | EPWM11_FAULTREAL | **Reserved** |
+| 24 | CMP_EVT6_OR_EVT7 | **Reserved** | **Reserved** | **Reserved** |
+| 25 | CMP_EVT8_OR_EVT9 | INPUTXBAR12 | **Reserved** | **Reserved** |
+| 26 | CMP_EVT10_OR_EVT11 | **Reserved** | **Reserved** | **Reserved** |
+| 27 | CMP_EVT12_OR_EVT13 | INPUTXBAR13 | **Reserved** | **Reserved** |
+| 28 | CMP_EVT14_OR_EVT15 | **Reserved** | **Reserved** | **Reserved** |
+| 29 | CMP_EVT16_OR_EVT17 | INPUTXBAR14 | **Reserved** | **Reserved** |
+| 30 | CMP_EVT18_OR_EVT19 | **Reserved** | CFG_ETXB_SWx | **Reserved** |
+| 31 | CMP_EVT20_OR_EVT21 | INPUTXBAR15 | ERRORSTS | **Reserved** |
 
+**XBAR.SPEC【22】**　ETIM XBAR支持对选通信号进行高电平锁存操作，锁存信号可配置清零
 
----
+**XBAR.SPEC【23】**　ETIM XBAR支持输出使能和输出极性配置
+
+**XBAR.SPEC【24】**　ETIM XBAR支持异步路径，输出端通过WARP_MUX2配置选择
+
+**XBAR.SPEC【25】**　支持ETIM XBAR输出14bit，分别连接到14个ETIMER通道
+
+**XBAR.SPEC【26】**　支持软件可配置14bit CFG_ETXB_SWx寄存器，分别对应14个ETIMER通道XBAR选择
+
+> 转录注：25的14bit及14、26的14及14为红字；其他值仍照原文。
 
 <!-- xbar-block:end x1UNjKA5fU -->
 
@@ -3048,6 +2730,19 @@ fps
 | XBAR-C10 | 2.功能描述／模块列表 | ~~COXB(CLB OUTPUTXBAR)，输出送往IOMUX~~ | [GameViewer_Gg0PKIieqf.png](../images/GameViewer_Gg0PKIieqf.png) | 红色删除线 |
 | XBAR-C11 | 3.1／XBAR.SPEC【01】 | XBAR模块支持AMBA3 APB总线接口协议 | [GameViewer_Gg0PKIieqf.png](../images/GameViewer_Gg0PKIieqf.png) | APB红字及修订线；不统一概述两层接口表述 |
 | XBAR-C12 | 3.1／XBAR.SPEC【02】 | ~~，支持CLB INPUT XBAR、CLB_XBAR、CLB_OUTPUT XBAR~~ | [GameViewer_Gg0PKIieqf.png](../images/GameViewer_Gg0PKIieqf.png) | 红色删除线 |
+| XBAR-C13 | 3.3／ET6601修改点 | 去除SDFM通道SD*FLT*_EVT* | [GameViewer_Z7r3yKz86a.png](../images/GameViewer_Z7r3yKz86a.png) | 明确6601红字；原第5项另挂U03 |
+| XBAR-C14 | 3.3／ET6601修改点 | 去除CLB*_OUT*和CLB_INPUTXBAR* | [GameViewer_Z7r3yKz86a.png](../images/GameViewer_Z7r3yKz86a.png) | 明确6601红字；原第5项另挂U03 |
+| XBAR-C15 | 3.3／ET6601修改点 | 去除ADCC_EVT* | [GameViewer_Z7r3yKz86a.png](../images/GameViewer_Z7r3yKz86a.png) | 明确6601红字；原第5项另挂U03 |
+| XBAR-C16 | 3.3／ET6601修改点 | 去除EPWM12~17_FAULTREAL | [GameViewer_Z7r3yKz86a.png](../images/GameViewer_Z7r3yKz86a.png) | 明确6601红字；原第5项另挂U03 |
+| XBAR-C17 | 3.3／ET6601修改点 | 新增ETIMOUT12/13和ETIM12/13_FAULTREAL | [GameViewer_Z7r3yKz86a.png](../images/GameViewer_Z7r3yKz86a.png) | 明确6601红字；原第5项另挂U03 |
+| XBAR-C18 | 3.3／SPEC16源表0～16 | 红色Reserved位于(0～14偶数行,列1)、(1～15奇数行,列2)、(16,列0/1/2)；空白列3的1/3/5/7不补值 | [GameViewer_Z7r3yKz86a.png](../images/GameViewer_Z7r3yKz86a.png) | 表内红字及左修订线；坐标是转录定位，不推断旧源名 |
+| XBAR-C19 | 3.3／SPEC16源表17～63 | 红色Reserved逐格保留；ETIMOUT10/11/12/13及ETIM12/13_FAULTREAL红字 | [GameViewer_CqeT5pUL1x.png](../images/GameViewer_CqeT5pUL1x.png) | 红字来源位置；完整坐标与文字在正文续表，旧值未明不补 |
+| XBAR-C20 | 3.3／SPEC20 | 支持PWM XBAR输出16bit，顶层选择后分别连接到12个PWM通道 | [GameViewer_CqeT5pUL1x.png](../images/GameViewer_CqeT5pUL1x.png) | 12红字；原16bit黑字保留 |
+| XBAR-C21 | 3.4／ET6601修改点1 | 去除SDFM通道SD*FLT*_EVT*和SD*FLT*_EVT0_OR_EVT1 | [GameViewer_x1UNjKA5fU.png](../images/GameViewer_x1UNjKA5fU.png) | 明确6601红字 |
+| XBAR-C22 | 3.4／ET6601修改点2 | 去除EPWM12~17_FAULTREAL | [GameViewer_x1UNjKA5fU.png](../images/GameViewer_x1UNjKA5fU.png) | 明确6601红字 |
+| XBAR-C23 | 3.4／SPEC21源表 | 列3的0～31全为红色Reserved；列1及列2的红色Reserved逐格见正文 | [GameViewer_x1UNjKA5fU.png](../images/GameViewer_x1UNjKA5fU.png) | 表内红字及修订线；ADC C等黑字项不随PWM表删除 |
+| XBAR-C24 | 3.4／SPEC25 | 支持ETIM XBAR输出14bit，分别连接到14个ETIMER通道 | [GameViewer_x1UNjKA5fU.png](../images/GameViewer_x1UNjKA5fU.png) | 14bit/14红字 |
+| XBAR-C25 | 3.4／SPEC26 | 支持软件可配置14bit CFG_ETXB_SWx寄存器，分别对应14个ETIMER通道XBAR选择 | [GameViewer_x1UNjKA5fU.png](../images/GameViewer_x1UNjKA5fU.png) | 两处14红字 |
 
 ## 第三部分：局部缺口与原文差异
 
@@ -3056,5 +2751,17 @@ fps
 图1源／目标底部位宽、GPIO完整编号、两条中断输出完整标识及局部红线范围尚不清；已保留可辨源、模块、目的标签和删除位置。需同版原图清晰局部；不以正文数值反填。
 
 原图：[GameViewer_SMcbqY9aCU.png](../images/GameViewer_SMcbqY9aCU.png)。状态：开放。
+
+### XBAR-U02
+
+INPUT XBAR连接图的INT支路与直接到SARC支路细标记尚未逐字符确认；其余可辨连线和16/12/14/4等各自保存，不以正文数量补图字。
+
+原图：[GameViewer_CpOsnywQhu.png](../images/GameViewer_CpOsnywQhu.png)。状态：开放。
+
+### XBAR-U03
+
+PWM ET6601清单第5项位置可见5）及Delete / 6 (0#~5#)，未见可确定功能语句；原文内容与修订浮层边界待同版原件确认。其余五项按原编号保存。
+
+原图：[GameViewer_Z7r3yKz86a.png](../images/GameViewer_Z7r3yKz86a.png)。状态：开放。
 
 原文所述AMBA3 AHB Lite→AHB、nManager APB与XBAR.SPEC【01】的APB分别保留；历史8→14位和6601的12→14位不统一。历史版本事项不转为6601新增。

@@ -1,40 +1,32 @@
-# ET6601 截图还原接续入口
+# ET6601截图还原接续入口
 
-2026-10-06，第十三轮。仓库abba-labs/mp4_anyisis；唯一分支`docs/restore-6601-screenshots`。
+2026-10-06，独立XBAR第1批。仓库abba-labs/mp4_anyisis；唯一工作分支`docs/restore-6601-screenshots`。
 
-## 1. 当前任务状态与用户最新方向
+## 当前任务
 
-SARC现有64张PNG全部首轮处理，原24组局部缺口与S01已定点回查；第十二轮关闭AUX-U02后，仍有LLD19＋LRS3＋辅助1＝23组及S01。78条来源位置不变，C11/C46不完整；全仓124/200。没有未发布分片，不恢复旧传输，不重新从第32张、辅助首图或U01开始。
+用户已确认SARC主体交付收尾，并明确要求处理XBAR。XBAR前6/27张已完成首轮原图核对；全仓130/200。12条修改来源位置记录，1组局部缺口；数量不是独立功能数或准确率。
 
-用户已指出局部图内小字不应阻塞理解整个IP，并要求继续SARC。因此本轮交付**已有来源的工作链路导读＋LRS/LLD联合修改主题索引**，用于阅读主体功能；保持原文缺口、矛盾及颜色标记，不将理解可用冒充逐字验收完成。不是IP推理补全、驱动开发或规格重设计。
+XBAR原文封面为《ET6601 XBAR模块需求规格与设计方案》，不是“SARC XBAR总线互联”。保留历史路径`6601芯片截图/sarc/sarc_xbar/docs/SARC_XBAR设计文档.md`作为唯一完整正文；不混入SARC，不拿总线矩阵或其他芯片手册补写。
 
-新增`6601芯片截图/sarc/SARC_工作链路与6601修改导读.md`：按LLD第5章顺序，串联VC调度、两种软件触发、p0抢占、延迟捕获、PFC与FC两条路径、过采求和、FIFO/EOC/中断/DMA/CPU_WRAP。每部分指向原文章节和PNG，未给出原文不支持的精确值。
+下一入口：第7张GameViewer_m38yfM9SyS.png。已核6张不重复从封面重做。末段衔接和本批内容见XBAR报告；尚未核实的候选图序需看原图确认。
 
-## 2. 当前阅读地图及下一动作
+## 阅读地图
 
-先读根AGENTS、本交接、子AGENTS、RESTORE_PROGRESS的第十三轮结论，再读：
+根AGENTS→本交接→6601芯片截图/AGENTS→RESTORE_PROGRESS顶部XBAR当前检查点→XBAR报告/修改总览/逐图台账→完整正文接续位置。
 
-| 文件 | 用途 |
-|---|---|
-| 6601芯片截图/sarc/SARC_工作链路与6601修改导读.md | 主体工作链路及用途边界；辅助导读，不是第四份最终还原稿 |
-| 6601芯片截图/sarc/SARC_6601修改点总览.md | 新增联合主题入口，覆盖原有LRS32＋LLD46，原有逐条原文索引保持 |
-| 6601芯片截图/sarc/SARC_待补原始资料清单.md | 23组局部缺口及S01；不是主体阅读的全局停止清单 |
-| 6601芯片截图/sarc/SARC_提取与验收报告.md | 主体可阅读与最终逐字验收未完成分别列示 |
-| 6601芯片截图/reviews/SARC_DELIVERY_ROUND13_REVIEW_20261006.md | 本轮实质内容、未改动范围及检查结果 |
-| 6601芯片截图/reviews/SARC_DELIVERY_ROUND13_REMOTE_SAVE_20261006.json | 实际提交和远端回读；先核此文件是否存在，不把导读初次提交当全部保存完成 |
+- 6601芯片截图/sarc/sarc_xbar/XBAR_提取与验收报告.md
+- 6601芯片截图/sarc/sarc_xbar/XBAR_6601修改点总览.md
+- 6601芯片截图/reviews/XBAR_IMAGE_LEDGER_20261006.json
+- 6601芯片截图/reviews/XBAR_ROUND1_REMOTE_SAVE_20261006.json
 
-三份原始还原正文仍为`sarc_lld/docs/SARC_LLD设计文档.md`、`sarc_lrs/docs/SARC_LRS设计文档.md`、`sarc_diagrams/docs/SARC功能框图说明.md`，均在`6601芯片截图/sarc/`内。本轮未改这三份技术正文和PNG；不新增首轮图数、逐字验收数或缺口关闭数。
+## 保存与来源
 
-**下一动作按问题定位，而不是再开一轮相同模糊图回查。** 阅读SARC及整理已确认修改可从导读继续；有清晰同版原件时按待补清单只补相应区域。涉及未确认公式/时序/配置时显式指出对应U编号。S01需同版5.17连续原文；没有新来源不宣称完整连续，也不因S01而停止阅读已有章节。EFC保持暂缓，XBAR保持独立；用户本轮仍指定SARC，不擅自转入其他IP。
+每4～6张或更小批实际补正文、修改位置、缺口及下一入口，正式写回并回读再继续。写前读最新blob，串行写此分支，冲突重读，不force、不写main。不恢复已发布旧分片；输入head只是来源基线，不据此回退后续修改。
 
-原图还原最近正文提交为`2062ef9b1f6bb4be264b5b004ef567efc0efed86`；其回执为`SARC_GAP_ROUND12_REMOTE_SAVE_20261005.json`。本轮输入HEAD为`7259a2de92ccb3782705e17c238ab04c6bfc69c6`；导读初次提交`6136718e1f721c29ca86b1ffcb91550894676b99`，正文blob`6a00769100268c94e8e223a2ca2c41128d118f69`。本轮其余交付文件及回读见ROUND13_REMOTE_SAVE，勿回退以上基线覆盖后来修改。
+原PNG源包mp4_sarc_originals_d80a74e.zip内sources.zip含独立XBAR27张；源commit d80a74e83e4bf942905844e61efd5d169e37c815。先检查实际挂载，旧ZIP Markdown不得覆盖最新正文。XBAR原图目录Git树91682624c59903a7c29145d22acdd62e20b0bd8e已与源包PNG重建值对齐。无原图走私有Actions导出，不反复UTF-8读PNG，不用OCR替代原图。
 
-## 3. 来源和规则
+一份原文一份Markdown；双页先左后右；保留正文、全表、空白、图标签、删除线及原批注。原文矛盾与拼写照留。不根据常识、ET60157/ET6801手册、驱动或BootROM补字。XBAR红色标记按本原文语境，不机械套用SARC配色。
 
-先检查实际挂载。原PNG源包`mp4_sarc_originals_d80a74e.zip`固定commit `d80a74e83e4bf942905844e61efd5d169e37c815`，原run37255121805/artifact11321169896；使用前检查可用性，旧Markdown不能覆盖当前正文。没有可用原图时，走已验证私有Actions原图导出，不UTF-8反复读PNG，不公开源资料。
+## 已交付保护范围
 
-一份原文一份Markdown；双页先左后右，保持原文页序、跨页句/表、空白、删除线、图标签及批注；清除UI/水印。原文拼写、错误和版本差异照录。不用ET60157/ET6801手册、驱动、BootROM、常识或异版辅助图补字。SARC浅蓝/清绿按原文声明；历史图配色另列。CPLD新IP无旧版变更总结，已合并CPLD_INTERFACE不重复拆合。
-
-写前读最新blob，仅本分支串行更新，冲突重读，不force、不写main。每4～6张或更小批都实际补正文、更新缺口/入口并正式保存回读；暂存不是发布。新来源核实关闭必须附原图区域与确认原文，不因图数/哈希/workflow通过宣称逐字准确或硬件通过。
-
-第十一轮LRS已改，旧保护blob 8be5907f不再是当前正文；当前LRS blob为c497dc3be8154b9e8dece6f467b7ee015acc4189。EFC两份正文继续不动，EFC缺口用户暂缓。辅助15bit与主文5bit、cal_os/cal_offset、不同ready路径仍保留各自来源。
+SARC三份原始正文、工作链路导读及78条修改来源位置保持；23组局部缺口＋S01仍开放，AUX-U02关闭；主体阅读已交付不等于逐字最终验收。最新回执SARC_DELIVERY_ROUND13_REMOTE_SAVE_20261006.json，交付head 3e8a48de67290bcc02cd66c0e64714e33be40c92。EFC60张首轮、5组缺口暂缓。CPLD48、HAC_WRAP1尚未本任务首轮，CPLD_INTERFACE已合并不重复拆合；CPLD是新IP不编造旧版修改总结。

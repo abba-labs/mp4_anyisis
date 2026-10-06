@@ -1,0 +1,414 @@
+{
+  "changes": [
+    {
+      "id": "XBAR-C01",
+      "section": "修订记录V4.0",
+      "text": "更新ET6601 XBAR修改点；2026.09.23；牛婷婷",
+      "sources": [
+        "DjSL3rXWx4"
+      ],
+      "kind": "明确ET6601版本记录；非独立功能项"
+    },
+    {
+      "id": "XBAR-C02",
+      "section": "1.概述／ET6601修改点1",
+      "text": "去除CLB INPUT_XBAR、CLB OUTPUT_XBAR和CLB_XBAR；",
+      "sources": [
+        "SMcbqY9aCU"
+      ],
+      "kind": "红字明确删除"
+    },
+    {
+      "id": "XBAR-C03",
+      "section": "1.概述／ET6601修改点2",
+      "text": "OUTPUT_XBAR输出从12位修改为14位；（up to final IOlist）",
+      "sources": [
+        "SMcbqY9aCU"
+      ],
+      "kind": "红字修改；黑色原批注保留"
+    },
+    {
+      "id": "XBAR-C04",
+      "section": "1.概述／ET6601修改点3",
+      "text": "寄存器配置接口从AMBA3 AHB Lite改为AMBA3 AHB，nManager改为APB接口生成ids文件。（xbar_cfg写pclk脉冲用hclk取沿，xbar_cfg读hclk脉冲需要展宽，有哪些信号？）",
+      "sources": [
+        "SMcbqY9aCU"
+      ],
+      "kind": "红字接口修改；黑字原问题未擅自回答"
+    },
+    {
+      "id": "XBAR-C05",
+      "section": "1.概述／ET6601修改点4",
+      "text": "复位可配置不受WDG和系统软复位影响。",
+      "sources": [
+        "SMcbqY9aCU"
+      ],
+      "kind": "红字明确修改"
+    },
+    {
+      "id": "XBAR-C06",
+      "section": "2.功能描述／图1",
+      "text": "SDFM、CLB输入；CIXB/CBXB/COXB及CLB目标的红色删除标记",
+      "sources": [
+        "SMcbqY9aCU"
+      ],
+      "kind": "图内删除位置；精细标线和部分小字挂XBAR-U01"
+    },
+    {
+      "id": "XBAR-C07",
+      "section": "2.功能描述／正文",
+      "text": "送往SRPWM、ADC、ETIMER、STIMER、~~CLB~~和IO",
+      "sources": [
+        "SMcbqY9aCU"
+      ],
+      "kind": "CLB红色删除线"
+    },
+    {
+      "id": "XBAR-C08",
+      "section": "2.功能描述／模块列表",
+      "text": "~~CIXB(CLB INPUTXBAR)，输出送往CLB；~~",
+      "sources": [
+        "Gg0PKIieqf"
+      ],
+      "kind": "红色删除线"
+    },
+    {
+      "id": "XBAR-C09",
+      "section": "2.功能描述／模块列表",
+      "text": "~~CBXB(CLB XBAR)，输出送往CLB~~",
+      "sources": [
+        "Gg0PKIieqf"
+      ],
+      "kind": "红色删除线"
+    },
+    {
+      "id": "XBAR-C10",
+      "section": "2.功能描述／模块列表",
+      "text": "~~COXB(CLB OUTPUTXBAR)，输出送往IOMUX~~",
+      "sources": [
+        "Gg0PKIieqf"
+      ],
+      "kind": "红色删除线"
+    },
+    {
+      "id": "XBAR-C11",
+      "section": "3.1／XBAR.SPEC【01】",
+      "text": "XBAR模块支持AMBA3 APB总线接口协议",
+      "sources": [
+        "Gg0PKIieqf"
+      ],
+      "kind": "APB红字及修订线；不统一概述两层接口表述"
+    },
+    {
+      "id": "XBAR-C12",
+      "section": "3.1／XBAR.SPEC【02】",
+      "text": "~~，支持CLB INPUT XBAR、CLB_XBAR、CLB_OUTPUT XBAR~~",
+      "sources": [
+        "Gg0PKIieqf"
+      ],
+      "kind": "红色删除线"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "XBAR-U01",
+      "sources": [
+        "SMcbqY9aCU"
+      ],
+      "detail": "图1源／目标底部位宽、GPIO完整编号、两条中断输出完整标识及局部红线范围尚不清；已保留可辨源、模块、目的标签和删除位置。需同版原图清晰局部；不以正文数值反填。"
+    }
+  ],
+  "history": [
+    {
+      "round": 1,
+      "range": [
+        1,
+        6
+      ],
+      "notes": "已按封面、修订表、目录、概述、功能描述、需求01～04确认前6张顺序，双页先左后右。修订表13条记录及6个空行恢复；去除大量水印噪声，纠正旧稿误称SARC XBAR总线互联。概述四项ET6601红字及黑色原批注完整保留；历史ET3101/ET6801说明另保留。故障表22～1先恢复，末行续下一张；不猜接尚未核对内容。目录K9w与Fil图界面屏幕号有重复，顺序以目录续项和概述跨页内容确认，不据UI号臆造缺页。"
+    }
+  ],
+  "images": [
+    {
+      "order": 1,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_yUpAyoEWMN.png",
+      "git_blob": "138ad5eb08a6785e18c94aae682d9be34d1ffe3f",
+      "sha256": "b6e0794d3c8a26c779b11e1f45631fa53006961f02cc217f84a7b859fb7e3011",
+      "bytes": 636291,
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": []
+    },
+    {
+      "order": 2,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_DjSL3rXWx4.png",
+      "git_blob": "a40f90b34df2dc5e041b1d3b0ee5e18dfe3d79a6",
+      "sha256": "d7090f5646a7775d590c5bc9d4853c1f21c11dd54bee01c1aa985bd1705060e0",
+      "bytes": 713607,
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": []
+    },
+    {
+      "order": 3,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_K9wJHSnqdx.png",
+      "git_blob": "c55c4dfec2a38cb1510263bb14de400914989227",
+      "sha256": "86684bd6eff442a5183ad49c8c0880ffaed81d9bf3eeb5ab2f2d77949e26c244",
+      "bytes": 685927,
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": []
+    },
+    {
+      "order": 4,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_FilEyIUnoO.png",
+      "git_blob": "da28cf08b410dd8d635c836c32865bbc5978e584",
+      "sha256": "7079032eefdb0f029b0b6630083ccb50d8b1eca66cb4e345f2d7c33c2b625161",
+      "bytes": 1090051,
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": []
+    },
+    {
+      "order": 5,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_SMcbqY9aCU.png",
+      "git_blob": "d3cf9e4cfeafc715e3df49f19ff042e661a72ec1",
+      "sha256": "2bfbaa29a321029543d0aafe625ca3766098a548b8dc91a6710663dcd41f2144",
+      "bytes": 1264293,
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": [
+        "XBAR-U01"
+      ]
+    },
+    {
+      "order": 6,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_Gg0PKIieqf.png",
+      "git_blob": "2b3da61bb4b912eb1accd3baa49bd9c1bb74f048",
+      "sha256": "7fac8f219010a7edb7adeb1254b191055fb6ac20410346c7aecfc8776ae1020d",
+      "bytes": 1235953,
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": []
+    },
+    {
+      "order": 7,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_m38yfM9SyS.png",
+      "git_blob": "c977ecb6be7dcfdc0cc5baa1d59e158ff51a4a89",
+      "sha256": "426102d48e35bbe025b9e6262d0a9bfb474766b919916d5add1374b97b71b416",
+      "bytes": 1276670,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 8,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_CpOsnywQhu.png",
+      "git_blob": "97e89a6fdb919ad96716f5cd8e27f51f31313240",
+      "sha256": "184e122070f9c0221d41307500fba4b169daf80184bfcfc3894a8c3dc7208362",
+      "bytes": 806536,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 9,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_Z7r3yKz86a.png",
+      "git_blob": "c0a37724f7e9a0e60caf1124a06aa1c91fb4473c",
+      "sha256": "dbf60b4aa682e5c7302138215ef420d38698e06cd05404419c211f7aeec5ba9c",
+      "bytes": 1148036,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 10,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_CqeT5pUL1x.png",
+      "git_blob": "d4bb6caf88b51872580dfc8e5a1029ce40306b56",
+      "sha256": "50512863b8bc884f8031b70ae2f566d0590c021043f55005d0d980fa80ffe944",
+      "bytes": 1234796,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 11,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_x1UNjKA5fU.png",
+      "git_blob": "8628bdd1ee7ab07acdba4b3ce1c9b75d60c270f7",
+      "sha256": "1b73ae0df9acf4459b1ed1e1f026b4c12245fbaf696e673e6a3a4dea74115a8a",
+      "bytes": 1284963,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 12,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_qZ6VVLkkSM.png",
+      "git_blob": "552e71ad1d93a5d002b9009e36aafe74e0258959",
+      "sha256": "1baefc57983d60750bffb8e069fbb9c83fddbfbcef21861e14f47f3eb28e0323",
+      "bytes": 1193464,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 13,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_064VlD8fJy.png",
+      "git_blob": "35114f3e39b4c73145ed739827bdafb1ac649d72",
+      "sha256": "5db02c7a061b5946ee6cec269fde921eb16ce825720455d5818b6af99a43803e",
+      "bytes": 1292834,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 14,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_yl5bEptpgs.png",
+      "git_blob": "32ece83af86c180ee337e0a2020eee12c95123f9",
+      "sha256": "b0a57a98b5dabeb9dd7c1764674c37e9e29d20e899e74508b551750b722b9a26",
+      "bytes": 1292309,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 15,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_7vrsONkjgD.png",
+      "git_blob": "2f77f9fc6099da87ccb6f8a8aef0e64f57d0a966",
+      "sha256": "a2a19a74044972d1a84bb0dce0c5fcdf3f65eb814eb8dbbb79e4da8e53023e53",
+      "bytes": 1160005,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 16,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_BJDG1Zjxti.png",
+      "git_blob": "94cd292ceddbf9b8690696760c97c7bb76555555",
+      "sha256": "22c7d287eda9f0b2d61f385314d019f80ce05d07972564d71533d36308d808f1",
+      "bytes": 1163104,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 17,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_NY8OuaK0XB.png",
+      "git_blob": "2eebf6929fd36eca83ba1ca5a1ca0bbde9a6d25e",
+      "sha256": "7a6efe13d9a9e17c62b9eba7e46f6f436f6ba1bf551c865f0892467afb4cdc58",
+      "bytes": 1162120,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 18,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_XqmNqCU6Lw.png",
+      "git_blob": "2a982f04420742fe19a999b2d3a43b341286c6c1",
+      "sha256": "bc1daa37241fb5bbb7f6c47c92cf404303f8f0c0f4d2ec42dee0bc5cc877b89b",
+      "bytes": 1055693,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 19,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_LS0PAMbqAJ.png",
+      "git_blob": "c562a21fc29c62db3717821e47bbb13e9015f842",
+      "sha256": "9473d9efc1ec85cfaf986630244bda0672df101822b9a1df117cbd98f0f08a37",
+      "bytes": 1133661,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 20,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_nneQMiNCGh.png",
+      "git_blob": "687ab84d9e02799049852f58c91a5949488d4561",
+      "sha256": "a225c6e4107122f7b80883ede9bc26ff2f4a2c9b419e06f38b591dd88527429e",
+      "bytes": 1158382,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 21,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_b4H5jcq6ED.png",
+      "git_blob": "a435289c03a306f6cb78ccd4c0ef3656e53db32b",
+      "sha256": "0cf0302daac7ce5cfecf37960204ad2528c2a0f5d6963a2d08c20c03ac4f8712",
+      "bytes": 999818,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 22,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_V3t3Z6WQYi.png",
+      "git_blob": "00bf098512b55c5f9696febdc61b1f2cb876af35",
+      "sha256": "62771057a6a5a16d0736d5a961bd2ee2a1b2fdf8b27d4b7fc2f87cd13592a208",
+      "bytes": 866664,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 23,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_qPba5rmgGl.png",
+      "git_blob": "c20ffe85efb5f30796fe61c837549e6bd157c6a0",
+      "sha256": "96cc01ac4b2abc95b3f33f159e820f27bd4764cd97fa14444ac181a7a54a6bd1",
+      "bytes": 982827,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 24,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_nYxX2xZgHL.png",
+      "git_blob": "de22b13d5e5047973d52ed26fdd99014e6810ba0",
+      "sha256": "c25e1d688867a1c2e75707036d79a029c752a625b76e3253af00218457302bc1",
+      "bytes": 895185,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 25,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_7jsvVSVHdw.png",
+      "git_blob": "ebf14defa99bb2172d62490f8b878c409fcf9e94",
+      "sha256": "3d436fe959f3b13807bec9200382e1b4a1ff4636ef86b8505981d01e09243967",
+      "bytes": 751096,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 26,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_tikzmykACG.png",
+      "git_blob": "55a0d89891842ecf4017918e7e34bbdddd61a91f",
+      "sha256": "ee61d89f84edf69bf230338c3570c1faba3b89b7736d439e50211f22c64bd272",
+      "bytes": 823703,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    },
+    {
+      "order": 27,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_3njiF8SofL.png",
+      "git_blob": "eb18ef4017621149be61cd4c222f4d06bd986929",
+      "sha256": "1f1e8061dee2fe93675c016549fab1fa3d72705ecd7988db6338d934502bdfe7",
+      "bytes": 625173,
+      "status": "legacy_not_visually_reviewed",
+      "order_status": "candidate",
+      "gaps": []
+    }
+  ],
+  "date": "2026-10-06",
+  "round": 1,
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "3e8a48de67290bcc02cd66c0e64714e33be40c92",
+  "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
+  "first_pass": 6,
+  "total": 27,
+  "repository_first_pass": 130,
+  "final_text_acceptance": false
+}

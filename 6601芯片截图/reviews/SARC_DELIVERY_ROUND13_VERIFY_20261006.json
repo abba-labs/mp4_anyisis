@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-06",
+  "branch": "docs/restore-6601-screenshots",
+  "input_head": "7259a2de92ccb3782705e17c238ab04c6bfc69c6",
+  "new_image_first_pass": 0,
+  "new_full_visual_acceptance": 0,
+  "closed_gaps": [],
+  "sarc_first_pass": 64,
+  "sarc_total": 64,
+  "repository_first_pass": 124,
+  "repository_total": 200,
+  "remaining_gaps": {
+    "lld": 19,
+    "lrs": 3,
+    "aux": 1,
+    "source": [
+      "S01"
+    ]
+  },
+  "guide_table_count": 8,
+  "guide_relative_links_checked": 44,
+  "joint_topics": 13,
+  "unique_lrs_change_locations": 32,
+  "unique_lld_change_locations": 46,
+  "previous_overview_records_byte_preserved": true,
+  "protected_blobs": {
+    "6601芯片截图/sarc/sarc_lld/docs/SARC_LLD设计文档.md": "1513685a7eb638e71f49f14d919839b429b794cd",
+    "6601芯片截图/sarc/sarc_lrs/docs/SARC_LRS设计文档.md": "c497dc3be8154b9e8dece6f467b7ee015acc4189",
+    "6601芯片截图/sarc/sarc_diagrams/docs/SARC功能框图说明.md": "ed91db985603c24d773cf604d6ba56cac2bac447",
+    "6601芯片截图/sarc/SARC_工作链路与6601修改导读.md": "6a00769100268c94e8e223a2ca2c41128d118f69"
+  },
+  "final_text_acceptance": false,
+  "hardware_test_performed": false,
+  "note": "机械检查验证索引、链接、保留区及保存；未增加图像验收或关闭原文缺口。"
+}

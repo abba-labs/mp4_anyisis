@@ -1,14 +1,14 @@
 # ET6601截图还原接续入口
 
-2026-10-06，独立XBAR第4批。仓库abba-labs/mp4_anyisis；唯一工作分支`docs/restore-6601-screenshots`。
+2026-10-06，独立XBAR第5批。仓库abba-labs/mp4_anyisis；唯一工作分支`docs/restore-6601-screenshots`。
 
 ## 当前任务
 
-用户已确认SARC主体交付收尾，并明确要求处理XBAR。XBAR前22/27张已完成首轮原图核对；全仓146/200。43条修改来源位置记录，4组局部缺口；数量不是独立功能数或准确率。
+用户已确认SARC主体交付收尾，并明确要求处理XBAR。XBAR前27/27张已完成首轮原图核对；全仓151/200。43条修改来源位置记录，6组局部缺口；数量不是独立功能数或准确率。
 
 XBAR原文封面为《ET6601 XBAR模块需求规格与设计方案》，不是“SARC XBAR总线互联”。保留历史路径`6601芯片截图/sarc/sarc_xbar/docs/SARC_XBAR设计文档.md`作为唯一完整正文；不混入SARC，不拿总线矩阵或其他芯片手册补写。
 
-下一入口：第23张GameViewer_qPba5rmgGl.png。已核22张不重复从封面重做。末段衔接和本批内容见XBAR报告；尚未核实的候选图序需看原图确认。
+下一入口：XBAR主体已至文末；按开放缺口定点验收。已核27张不重复从封面重做。末段衔接和本批内容见XBAR报告；尚未核实的候选图序需看原图确认。
 
 ## 阅读地图
 
@@ -17,7 +17,7 @@ XBAR原文封面为《ET6601 XBAR模块需求规格与设计方案》，不是�
 - 6601芯片截图/sarc/sarc_xbar/XBAR_提取与验收报告.md
 - 6601芯片截图/sarc/sarc_xbar/XBAR_6601修改点总览.md
 - 6601芯片截图/reviews/XBAR_IMAGE_LEDGER_20261006.json
-- 6601芯片截图/reviews/XBAR_ROUND4_REMOTE_SAVE_20261006.json
+- 6601芯片截图/reviews/XBAR_ROUND5_REMOTE_SAVE_20261006.json
 
 ## 保存与来源
 
@@ -30,3 +30,7 @@ XBAR原文封面为《ET6601 XBAR模块需求规格与设计方案》，不是�
 ## 已交付保护范围
 
 SARC三份原始正文、工作链路导读及78条修改来源位置保持；23组局部缺口＋S01仍开放，AUX-U02关闭；主体阅读已交付不等于逐字最终验收。最新回执SARC_DELIVERY_ROUND13_REMOTE_SAVE_20261006.json，交付head 3e8a48de67290bcc02cd66c0e64714e33be40c92。EFC60张首轮、5组缺口暂缓。CPLD48、HAC_WRAP1尚未本任务首轮，CPLD_INTERFACE已合并不重复拆合；CPLD是新IP不编造旧版修改总结。
+
+## XBAR主体阅读交付
+
+现有27张已首轮至文末，先读`6601芯片截图/sarc/sarc_xbar/XBAR_阅读入口与6601修改导读.md`。6组局部缺口留档，不作为主体阅读的统一阻塞；不再从封面或旧候选顺序重做。全仓151/200，剩CPLD48及HAC_WRAP1。用户本轮只要求XBAR，不自动开展下一IP。

@@ -1,10 +1,10 @@
 # ET6601 XBAR模块需求规格与设计方案
 
 > 独立XBAR原文；旧目录和文件名中的SARC仅为历史路径，不属于SARC正文，也不是总线矩阵规格。
-> 2026-10-06，第4批。XBAR前22/27张已完成首轮原图核对；全仓146/200。43条修改来源位置记录，4组局部缺口；数量不是独立功能数或准确率。
-> 一份原文一份Markdown。先左后右，按章节、跨页句与续表衔接；原文矛盾、拼写、空白和删除线保留。未核对区仅保留历史转录，不作为准确原文使用。
+> 2026-10-06，第5批。XBAR前27/27张已完成首轮原图核对；全仓151/200。43条修改来源位置记录，6组局部缺口；数量不是独立功能数或准确率。
+> 一份原文一份Markdown。先左后右，按章节、跨页句与续表衔接；原文矛盾、拼写、空白和删除线保留。现有27张已首轮至文末，不再保留未核对的旧稿块；局部缺口仍开放。
 > 仅核对本目录原PNG；ET60157/ET6801手册、驱动、BootROM不用于补字。红色修改结合本原文明确ET6601段落判断；目录蓝色超链接和历史图配色不直接判为6601修改。
-> 最新逐图台账：../../../reviews/XBAR_IMAGE_LEDGER_20261006.json；正式保存与回读见XBAR_ROUND4_REMOTE_SAVE_20261006.json。
+> 最新逐图台账：../../../reviews/XBAR_IMAGE_LEDGER_20261006.json；正式保存与回读见XBAR_ROUND5_REMOTE_SAVE_20261006.json。
 
 ## 第一部分：原始文档逐图还原
 
@@ -1372,72 +1372,48 @@ ETIM XBAR实现结构如下图所示。
 
 [查看原始PNG](../images/GameViewer_qPba5rmgGl.png)
 
-> 来源顺序23；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序23；已首轮核对。
 
 <!-- xbar-block:start qPba5rmgGl -->
-
 ### 【左页】
 
-clear/set
--SOURCE[X)-
-6002ETIMPUT_XBAR处理
-OR
-EF)B_OUT[X]
-pol sd
-BIMCU muan
--SOURCE[X)
-3101&6003ETIM_XBAR处理
-OR
-ETIMXBAR支持异步路径；
-BTMCU huan. JS
+**ETIM XBAR对比图中文字转录（未单列图号）：**
 
-#### 5.4 OUTPUT XBAR 模块
+上图红字“6002 ETIMPUT_XBAR处理”；下图红字“3101&6003 ETIM_XBAR处理”。两图标签SOURCE[x]、MUX OR、锁存1、clear/set、oe、pol_sel、D、EFXB_OUT[x]；上图D直接连输出，下图增加D输出与旁路线到末级1/0选择器。两图之间有向下实心箭头。
 
-OUTPUTXBAR实现结构如下图所示。
-BTMCU fuan. li
-SOURCE)x)
-6002IOUTPLT_XBAR处理
-3101460030LPUT_XBAR修改后处理
-50 URCE)x)
-OR
-OPXB_OUT(X-
-EIMCU
+ETIM XBAR支持异步路径；
 
+## 5.4 OUTPUT XBAR模块
+
+OUTPUT XBAR实现结构如下图所示。
+
+**OUTPUT XBAR对比图可辨文字：** SOURCE[x]、MUX OR、clear/set、oe、pol_sel、D、OPXB_OUT[x]；“异步处理”“锁存1”“上升沿”“下降沿”“展宽”；红色历史标题上图“6002 IOUTPUT_XBAR处理”，下图“3101&6003OUTPUT_XBAR修改后处理”。上图为MUX OR之后的锁存/选择、使能、极性及展宽选择；下图保留直通支路，另一路经过异步处理，再分锁存、取沿及展宽支路，通过选择器到使能及极性门。图内可辨的0/1选择标签照保留，不补未辨字段名。
+
+> ⚠️ 原图待复核：XBAR-U05。本页OUTPUT对比图的选择配置细字、上报箭头短标签和个别小框内字仍不能逐字符确认；红色标题的连写方式及“IOUTPUT”按可辨片段照留。完整原图及下页输出使能图一起定位，不能用正文cfg_oemod等字段反填模糊图字。
 
 ### 【右页】
 
-1.OUPUTXBAR支持异步路径；
-2.原来 cfg_opxb_exp_en ==1"bo 时，不扩展但打拍输出;
-现改为不扩展直接输出；
-3.参考LRS.spec[36]，输出 etim_oen 信号(#O＇)在图中表示，
-ids文档中包含相关描述：包含配置信号cfg_oemod，为0
-或3时输出低有效，,为1时输出 etim_oen；为2时输出高
-电平 (无效)
+1.OUPUT XBAR支持异步路径；
 
-#### 4.2024102185RTL后修改：由于加入了异步路径，dout_oe_n
+2.原来cfg_opxb_exp_en == 1’b0时，不扩展但打一拍输出；现改为不扩展直接输出；
 
-信号为了保持和pwm同相位，去除了dout_oe_n的寄存输
+3.参考LRS.spec[36]，输出etim_oen信号（#’O’）在图中表示，ids文档中包含相关描述：包含配置信号cfg_oemod，为0或3时输出低有效，为1时输出etim_oen；为2时输出高电平（无效）
 
-#### 5.2024102185RTL后修改：相较之前加入了异步处理，信号
+4.20241021 85RTL后修改：由于加入了异步路径，dout_oe_n信号为了保持和pwm同相位，去除了dout_oe_n的寄存输出
 
-若寄存上报以及取沿必须经过异步处理；
-cfg_dsel
-cfg_expen
-结果
-异步输出
-经过异步处理后输出
-锁存值
-异步输出
-异步输出
-经过异步处理后展宽
-ETHC/
-输出锁存值
-经过异步处理后上升
-1080F
+5.20241021 85RTL后修改：相较之前加入了异步处理，信号若寄存上报以及取沿必须经过异步处理；
 
+| cfg_dsel | cfg_expen | 结果 |
+|---|---|---|
+| 00 | 0 | 异步输出 |
+| 01 | 0 | 经过异步处理后输出锁存值 |
+| 10 | 0 | 异步输出 |
+| 11 | 0 | 异步输出 |
+| 00 | 1 | 经过异步处理后展宽输出 |
+| 01 | 1 | 输出锁存值 |
+| 10 | 1 | 经过异步处理后上升 |
 
-
----
+> 转录注：末行结果跨图，下一张左页首格从“沿展宽”继续。此处明确20241021/85RTL的历史记录，不计作6601新增；LRS.spec[36]编号与当前原文SPEC34/36不一致，仍照录。
 
 <!-- xbar-block:end qPba5rmgGl -->
 
@@ -1447,79 +1423,39 @@ ETHC/
 
 [查看原始PNG](../images/GameViewer_nYxX2xZgHL.png)
 
-> 来源顺序24；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序24；已首轮核对。
 
 <!-- xbar-block:start nYxX2xZgHL -->
-
 ### 【左页】
 
-沿展宽
-经过异步处理后下降
-沿展宽
-BIMCU Tuan 1i
-etim的输入
-OR
-cfg_oemod[1:0]
-dout_oe_n
-1 'b1
-1 'b0
-TNCYhhan J12026
-BTMCU huan. S
+5.4结果表续表：
 
-#### 5.5 XCSA/XCET/XCOX 模块
+| cfg_dsel | cfg_expen | 结果 |
+|---|---|---|
+|  |  | 沿展宽 |
+| 11 | 1 | 经过异步处理后下降沿展宽 |
 
-XBAR中包含三组CLU处理模块，根据连接关系不同，分
-为XCSA、XCET和XCOX，C三个模块独立配置，实现完全一
-致。主要完成简单逻辑组合实现和选择，以及中断上报。具体
-实现结构如下图所示。
-BIMCU
+> 转录注：第一行仅“结果”单元格接上页10/1，前两格空白；完整结果为“经过异步处理后上升沿展宽”，不把续页空格补成重复行。
 
+**输出使能图中文字转录：** etim的输入、MUX OR；“如果选中了etim的信号”；etim_oen、1’b0；第一级选择器1/0；cfg_oemod[1:0]；末级选择器1、2、default；常量1’b1、1’b0；输出dout_oe_n。第一级结果接末级1，1’b1接2，1’b0接default。本图未单列图号。
+
+## 5.5 XCSA/XCET/XCOX模块
+
+XBAR中包含三组CLU处理模块，根据连接关系不同，分为XCSA、XCET和XCOX，三个模块独立配置，实现完全一致。主要完成简单逻辑组合实现和选择，以及中断上报。具体实现结构如下图所示。
 
 ### 【右页】
 
-沿中断检测
-遥标0
-LNXBAR_CLU2SARCI
-&TMCU muan. J1
-DNXEAR OLT
-DNXBAROUT
-INXBAR
-OLT
-INXBAR,CLL2SARC[9-
-U_XCSA
-da_outs
-DXBAR_OUT
-NXBAKOUT
-沿中断检
-DXBAR_OLT
-适标0
-DNXBAR_OUT3
--DNX BAR,CLUETIMP)
-FTNCU 59
-IXBAKOUTIL!
-U3_CLU
-DNXBAR_CLU2ETD43}
-DXBAR_OUT|IS
-U_XCET
-de_onta
-che_pol
-DXBAR_OLTIO
-中心
-DXBAROUTU
-LIX BAK OUTI
-DXBAR_OUT[3]
-DNXBAR_CLU2OUTP)-
-INXBAR_CLU2OUT[3]
-U_XCox
-ETMChuan.Ji
-图4XCSA、
-XCET和XCOX模块框图
-223 Ⅱ
-12080F
+**图4　XCSA、XCET和XCOX模块框图**
 
+每个模块原图分别画出INXBAR_OUT[0]、INXBAR_OUT[1]、INXBAR_OUT[2]、INXBAR_OUT[3]和INXBAR_OUT[12]、INXBAR_OUT[13]、INXBAR_OUT[14]、INXBAR_OUT[15]；中间通道以省略点表示。图内为“逻辑0”“逻辑7”、选择器、旁路选择、与门、异或门、“沿中断检测”；标签clu_bps、clu_outen、clu_pol、U0_CLU、U3_CLU。
 
+| 原图模块 | 上路输出 | 下路输出 |
+|---|---|---|
+| U_XCSA | INXBAR_CLU2SARC[0] | INXBAR_CLU2SARC[3] |
+| U_XCET | INXBAR_CLU2ETIM[0] | INXBAR_CLU2ETIM[3] |
+| U_XCOX | INXBAR_CLU2OUT[0] | INXBAR_CLU2OUT[3] |
 
----
+> 转录注：三图的端口、配置名使用红色绘图字体，但本页没有明确写成ET6601新增；保留颜色性质，不机械新增修改事实。选择器中未标出的档位及省略通道不补画。
 
 <!-- xbar-block:end nYxX2xZgHL -->
 
@@ -1529,77 +1465,33 @@ XCET和XCOX模块框图
 
 [查看原始PNG](../images/GameViewer_7jsvVSVHdw.png)
 
-> 来源顺序25；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序25；已首轮核对。
 
 <!-- xbar-block:start 7jsvVSVHdw -->
-
 ### 【左页】
 
+## 5.6 CLU逻辑处理模块
 
-#### 5.6CLU逻辑处理模块
-
-逻辑处理模块支持以下8种逻辑处理组合，通过可配置逻辑
-单元模式选择寄存器进行选择。其中，D触发器、J-K触发器和
-锁存器的相关逻辑采用基于工作时钟的寄存器时序逻辑进行实
-现。
-ETMCIVhan J1 2026-
-ETMCUua.11 2026-10-02-7159
-BTNCU P026-10-02-81:59
-BIMCU
-
+逻辑处理模块支持以下8种逻辑处理组合，通过可配置逻辑单元模式选择寄存器进行选择。其中，D触发器、J-K触发器和锁存器的相关逻辑采用基于工作时钟的寄存器时序逻辑进行实现。
 
 ### 【右页】
 
-AND -OR
-OR-XOR
-门1
-逻辑输出
-逻辑输出
-门3
-门4
-MODE<2:0> = 000
-MODE<2:0> = 001
-4输入AND
-S-R锁存器
-门1
-门2
-逻辑输出
-逆辑输出
-门3
-门3
-门14
-ETNCU hu
-MODE<2:0> = 010
-MODE<2:0> = 011
-带置1和复位功能的1输入D触发器
-带复位功能的2输入D触发器
-门4
-门2
-逻辑输出
-门1
-h.13 2026-10-02-215
-门3
-门3
-MODE<2:0>= 100
-MODE<2:0> = 101
-带复位功能的J-K触发器
-带置1和复位功能的1输入透明锁存器
-门4
-门2
-速辑输出
-门2
-逻辑输出
-门4
-门1
-门3
-ETHCIUhu
-MODE<2:0> = 110
-MODE<2:0> = 111
-12080F
+**图5的八格图（图名在下一张左页）：**
 
+以下按原图每行先左后右转录标题、MODE值、输入端标签和可見连接；“门1”至“门4”为图内原标签，“逻辑输出”为每格输出文字。
 
+| 图内标题 | MODE<2:0> | 原图输入端及连接 |
+|---|---|---|
+| AND－OR | 000 | 门1、门2进入一个与门，门3、门4进入另一个与门，两路再或合；输出“逻辑输出”。 |
+| OR－XOR | 001 | 门1、门2进入一个或门，门3、门4进入另一个或门，两路再异或；输出“逻辑输出”。 |
+| 4输入AND | 010 | 门1、门2、门3、门4共同进入与门；输出“逻辑输出”。 |
+| S-R锁存器 | 011 | 门1、门2或合到S；门3、门4或合到R；Q到逻辑输出。 |
+| 带置1和复位功能的1输入D触发器 | 100 | 门4→S，门2→D，门1→三角沿标识输入，门3→R，Q→逻辑输出。 |
+| 带复位功能的2输入D触发器 | 101 | 门4、门2经或门→D；门1→三角沿标识输入，门3→R，Q→逻辑输出。 |
+| 带复位功能的J-K触发器 | 110 | 门2→J，门1→三角沿标识输入，门4→K，门3→R，Q→逻辑输出。 |
+| 带置1和复位功能的1输入透明锁存器 | 111 | 门4→S，门2→D，门1→LE，门3→R，Q→逻辑输出。 |
 
----
+> 转录注：表中“→”仅索引本图可见连线，不补充优先级、复位极性或时序真值表；原图没有明确给出的行为不从逻辑器件常识推导。
 
 <!-- xbar-block:end 7jsvVSVHdw -->
 
@@ -1609,70 +1501,59 @@ MODE<2:0> = 111
 
 [查看原始PNG](../images/GameViewer_tikzmykACG.png)
 
-> 来源顺序26；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序26；已首轮核对。
 
 <!-- xbar-block:start tikzmykACG -->
-
 ### 【左页】
 
-图5CLU模块逻辑处理模式
-T5.7 CLU中断事件触发
-hian
-BIMCU huain
-CLU模块支持对输出信号进行信号沿检测，并产生中断事件
-脉冲信号。可通过cfg_xc*_intedg_sel[1:0]配置，检测信号上升
-沿，下降沿，或同时检测上升沿和下降沿。
-ETMCI
-imedg,se[0]
-BTMOU5
-中断源检测
-Th_dou
-中断源脉冲
-fg_xrt_intedg_sel[1]
-中断源检测
-ETMCU han.11 2026-10-02-071
-图6CLU模块中断源产生
-6.寄存器设计
-. Ti 2026-10-0
-参见文档：xbarids.docx
+**图5　CLU模块逻辑处理模式**
 
+> 转录注：图5图像位于上一张右页，图名跨图保留在此，不另计一幅图。
+
+## 5.7 CLU中断事件触发
+
+CLU模块支持对输出信号进行信号沿检测，并产生中断事件脉冲信号。可通过cfg_xc*_intedg_sel[1:0]配置，检测信号上升沿，下降沿，或同时检测上升沿和下降沿。
+
+**图6　CLU模块中断源产生**
+
+原图标签：clu_dout、两个“中断源检测”框；上框为上升箭头、下框为下降箭头；cfg_xc*_intedg_sel[0]、cfg_xc*_intedg_sel[1]；两个与门分别接上述配置控制，再或合输出“中断源脉冲”。红色信号标签照留，不据图配色认定全为6601新增。
+
+# 6. 寄存器设计
+
+参见文档：xbar_ids.docx
+
+> 转录注：原图本节仅指向该文件，没有给出寄存器表，不能从ET60157寄存器手册补入。
 
 ### 【右页】
 
-7.中断说明
-xcox3
-&TNCU Tmuan. J1
-xcox2
-xcoxl
-xcox0
-xcet3
-clu_i nt_sre_pul se[11:d]
-xcet2
-cbb_int_genl
-xcetl
-xcet0
-xcsa3
-[]qx
-ETCU man.11 2026-10-02-21 59
-xcsa2
-xcsal
-xbar_intrl5: 0]
-xcsa0
-xbar_ihtr[4: 0]
-inxb_dout [15:11]
-cbb_int_gen0
-input_xbar
-xint_dmg_req[4: 0]
-xint_dmg_single[4: 0]
-图70xbar中断结构
-xbar例化了两个cbb_int_gen，分别处理来自INPUTXBAR和
-CLU的中断;
-INPUTXABR的输出【15：11】作为中断触发源，同时该触
-1080F
+# 7. 中断说明
 
+**图7　xbar中断结构**
 
+| 输入端 | 图示汇集位号 |
+|---|---|
+| xcox3 | 11 |
+| xcox2 | 10 |
+| xcox1 | 〔0/9字形待确认〕 |
+| xcox0 | 8 |
+| xcet3 | 7 |
+| xcet2 | 6 |
+| xcet1 | 5 |
+| xcet0 | 4 |
+| xcsa3 | 3 |
+| xcsa2 | 2 |
+| xcsa1 | 1 |
+| xcsa0 | 0 |
 
----
+其他可辨原标签和连线：上述12路汇为clu_int_src_pulse[11:0]，进入cbb_int_gen1；其输出线原图标xbar_intr[1]。input_xbar的inxb_dout[15:11]进入cbb_int_gen0；输出标xbar_intr[4:0]。两路合并的输出箭头标xbar_intr[5:0]。input_xbar输出另有两条分支标xint_dma_req[4:0]、xint_dma_single[4:0]。
+
+> ⚠️ 原图待复核：XBAR-U06。图7的xcox1旁一位编号在本PNG不足以可靠区分0/9，不因上下编号11、10、8而补成9。cbb_int_gen1输出xbar_intr[1]为图中可辨原文，即使与下路[4:0]及总线[5:0]不一致，也不擅自改成[5]。
+
+xbar例化了两个cbb_int_gen，分别处理来自INPUTXBAR和CLU的中断；
+
+INPUTXBAR的输出【15：11】作为中断触发源，同时该触
+
+> 转录注：末句跨图，下一张从“发脉冲……”继续。
 
 <!-- xbar-block:end tikzmykACG -->
 
@@ -1682,44 +1563,23 @@ INPUTXABR的输出【15：11】作为中断触发源，同时该触
 
 [查看原始PNG](../images/GameViewer_3njiF8SofL.png)
 
-> 来源顺序27；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序27；已首轮核对。
 
 <!-- xbar-block:start 3njiF8SofL -->
+### 【左页／文末】
 
-### 【左页】
+发脉冲会被复用为dma的触发源；使用该脉冲作为DMA触发源时需要在DMA_MUX进行配置
 
-发脉冲会被复用为dma的触发源；使用该脉冲作为DMA触发
-源时需要在DMAMUX进行配置
-BIMCU huan
-8.遗留问题
-9.参考文献
-[1]
-Microchip CLC.pdf
-BTNCU huan. T1
-BTMCU huan.JS
-[2]
-ET3101 OR DR.xlsx
-文档结尾
-BTMCU huan
-RTMCU huan.7i
-BIMCU
+# 8. 遗留问题
 
+> 转录注：原文第8节为空，没有列出遗留问题，不用整理者的XBAR-U项填入原作者章节。
 
-### 【右页】
+# 9. 参考文献
 
-&TMCU muan.11
-BTCU muan.13
-ETNCU mar 11 2026-10-02-21 59
-ZTMOU
-ETMCV hian.11
-fps
-297 I
-331 I
-12080F
+[1]　Microchip CLC.pdf  
+[2]　ET3101 OR_DR.xlsx
 
-
-
----
+> 转录注：本页下方为文档结束，右侧无正文；只转录截图列出的文献名，未访问这些文献补写XBAR内容。
 
 <!-- xbar-block:end 3njiF8SofL -->
 
@@ -1798,5 +1658,17 @@ PWM ET6601清单第5项位置可见5）及Delete / 6 (0#~5#)，未见可确定�
 5.1左侧6002/3101&6003对比图的同步/滤波框内字、两个锁存框完整细字；图2下组GPIO端点完整索引与各mux编号/配置细下标未逐字符确认。可辨GPIO[0..3]/GPIO[N]、极性/同步/滤波、锁存1/2、clear/edg_sel/oe/pol_sel及U0/U1/U15等标签已录。只影响这些图内细节，不能用80输入正文反填。
 
 原图：[GameViewer_b4H5jcq6ED.png](../images/GameViewer_b4H5jcq6ED.png)。状态：开放。
+
+### XBAR-U05
+
+5.4 OUTPUT XBAR历史对比图中选择配置细字、上报箭头短标签及个别小框内文字不全清晰。SOURCE、MUX OR、异步处理、锁存1、取沿/展宽、D、oe/pol_sel及OPXB_OUT可辨片段已录，右页全部文字和跨图8项配置组合表已完整恢复；不将20241021/85RTL历史修改混作6601新增。
+
+原图：[GameViewer_qPba5rmgGl.png](../images/GameViewer_qPba5rmgGl.png)。状态：开放。
+
+### XBAR-U06
+
+图7 xcox1旁汇集位号0/9字形仍待清晰原件确认；12路名、其余位号、clu_int_src_pulse[11:0]、两cbb_int_gen和DMA分支已录。图中上路xbar_intr[1]与总线[5:0]分别照录，不按技术常识改为[5]。
+
+原图：[GameViewer_tikzmykACG.png](../images/GameViewer_tikzmykACG.png)。状态：开放。
 
 原文所述AMBA3 AHB Lite→AHB、nManager APB与XBAR.SPEC【01】的APB分别保留；历史8→14位和6601的12→14位不统一。历史版本事项不转为6601新增。

@@ -416,6 +416,20 @@
         "b4H5jcq6ED"
       ],
       "detail": "5.1左侧6002/3101&6003对比图的同步/滤波框内字、两个锁存框完整细字；图2下组GPIO端点完整索引与各mux编号/配置细下标未逐字符确认。可辨GPIO[0..3]/GPIO[N]、极性/同步/滤波、锁存1/2、clear/edg_sel/oe/pol_sel及U0/U1/U15等标签已录。只影响这些图内细节，不能用80输入正文反填。"
+    },
+    {
+      "id": "XBAR-U05",
+      "sources": [
+        "qPba5rmgGl"
+      ],
+      "detail": "5.4 OUTPUT XBAR历史对比图中选择配置细字、上报箭头短标签及个别小框内文字不全清晰。SOURCE、MUX OR、异步处理、锁存1、取沿/展宽、D、oe/pol_sel及OPXB_OUT可辨片段已录，右页全部文字和跨图8项配置组合表已完整恢复；不将20241021/85RTL历史修改混作6601新增。"
+    },
+    {
+      "id": "XBAR-U06",
+      "sources": [
+        "tikzmykACG"
+      ],
+      "detail": "图7 xcox1旁汇集位号0/9字形仍待清晰原件确认；12路名、其余位号、clu_int_src_pulse[11:0]、两cbb_int_gen和DMA分支已录。图中上路xbar_intr[1]与总线[5:0]分别照录，不按技术常识改为[5]。"
     }
   ],
   "history": [
@@ -450,6 +464,14 @@
         22
       ],
       "notes": "补完表2尾部与电平/脉冲两条注释，完整恢复4.3信号对应表的CMP、ADC、ETIM、INPUT、SRPWM_SYNC、错误、STM、CLU、OUTPUT、fault及XCLK所有可辨行；没有按规律替换原文差异。原表CPU1/CPU2、CMP_OUT之后写CMP_EVT16～21、ADCSOCAO/ADCSOCBO等照录。恢复5.1异步静态配置与GPIO MUXOR混用约束，以及5.2两组12bit合并为2组18bit；保留图2/3和6002/3101/6003历史对比图。新增XBAR-U04只定位图2及历史对比图细字，不阻塞可辨正文；前17张块和后5张历史块保持，NY/BJ纠正顺序继续保留。"
+    },
+    {
+      "round": 5,
+      "range": [
+        23,
+        27
+      ],
+      "notes": "末5张至文末已核：ETIM/OUTPUT历史路径、5.4五项说明及8种cfg_dsel/cfg_expen结果（10/1跨页）、输出使能选择图、三组CLU框图、8种逻辑模式全部MODE和门1～4连接、沿检测、寄存器引用、两cbb_int_gen和DMA分支、文末空白第8节及两项参考文献。原图OUPUT、ETIMPUT、LRS.spec[36]、图7上路xbar_intr[1]等分别保留；20241021/85RTL不归6601新增。新增U05历史OUTPUT图细字及U06图7单编号，原4组不假关闭；全部27张已有原PNG完成首轮，43个修改来源位置不变，主体资料可阅读，6组局部缺口不等于6个功能未知。没有新增其他芯片规格、驱动或硬件测试。本批发布时删除临时工作流和传输文件。"
     }
   ],
   "images": [
@@ -687,9 +709,11 @@
       "git_blob": "c20ffe85efb5f30796fe61c837549e6bd157c6a0",
       "sha256": "96cc01ac4b2abc95b3f33f159e820f27bd4764cd97fa14444ac181a7a54a6bd1",
       "bytes": 982827,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
-      "gaps": []
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": [
+        "XBAR-U05"
+      ]
     },
     {
       "order": 24,
@@ -697,8 +721,8 @@
       "git_blob": "de22b13d5e5047973d52ed26fdd99014e6810ba0",
       "sha256": "c25e1d688867a1c2e75707036d79a029c752a625b76e3253af00218457302bc1",
       "bytes": 895185,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -707,8 +731,8 @@
       "git_blob": "ebf14defa99bb2172d62490f8b878c409fcf9e94",
       "sha256": "3d436fe959f3b13807bec9200382e1b4a1ff4636ef86b8505981d01e09243967",
       "bytes": 751096,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -717,9 +741,11 @@
       "git_blob": "55a0d89891842ecf4017918e7e34bbdddd61a91f",
       "sha256": "ee61d89f84edf69bf230338c3570c1faba3b89b7736d439e50211f22c64bd272",
       "bytes": 823703,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
-      "gaps": []
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": [
+        "XBAR-U06"
+      ]
     },
     {
       "order": 27,
@@ -727,18 +753,18 @@
       "git_blob": "eb18ef4017621149be61cd4c222f4d06bd986929",
       "sha256": "1f1e8061dee2fe93675c016549fab1fa3d72705ecd7988db6338d934502bdfe7",
       "bytes": 625173,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     }
   ],
   "date": "2026-10-06",
-  "round": 4,
+  "round": 5,
   "branch": "docs/restore-6601-screenshots",
-  "input_head": "b112c1275e93c76d5bd6c1dfcce5e088b21bbc5c",
+  "input_head": "6ed13a3ed1cebdcff20160a758f3cb5ca4b9ae93",
   "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
-  "first_pass": 22,
+  "first_pass": 27,
   "total": 27,
-  "repository_first_pass": 146,
+  "repository_first_pass": 151,
   "final_text_acceptance": false
 }

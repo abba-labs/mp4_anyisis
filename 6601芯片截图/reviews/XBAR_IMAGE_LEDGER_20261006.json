@@ -224,6 +224,123 @@
         "x1UNjKA5fU"
       ],
       "kind": "两处14红字"
+    },
+    {
+      "id": "XBAR-C26",
+      "section": "3.5 OUTPUT XBAR：ET6601修改点",
+      "text": "去除SDFM通道SD*FLT*_EVT*",
+      "sources": [
+        "qZ6VVLkkSM"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C27",
+      "section": "3.5 OUTPUT XBAR：ET6601修改点",
+      "text": "去除CLB*_OUT*",
+      "sources": [
+        "qZ6VVLkkSM"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C28",
+      "section": "3.5 OUTPUT XBAR：ET6601修改点",
+      "text": "去除ADCC_EVT*",
+      "sources": [
+        "qZ6VVLkkSM"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C29",
+      "section": "3.5 OUTPUT XBAR：ET6601修改点",
+      "text": "去除EPWM12~17_FAULTREAL",
+      "sources": [
+        "qZ6VVLkkSM"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C30",
+      "section": "3.5 OUTPUT XBAR：ET6601修改点",
+      "text": "新增ETIMOUT12/13和ETIM12/13_FAULTREAL",
+      "sources": [
+        "qZ6VVLkkSM"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C31",
+      "section": "XBAR.SPEC【27】表0～22",
+      "text": "CMP_OUT16～22所在列改Reserved；第1列偶数0～22及第2列奇数1～21为红色Reserved；第3列1/3/5/7为红色Reserved。",
+      "sources": [
+        "qZ6VVLkkSM"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C32",
+      "section": "XBAR.SPEC【27】表23～63",
+      "text": "第0列23～31/44～49和第1列24/26/28/30为红色Reserved；第2列44～47为红色ETIM12_FAULTREAL、ETIM13_FAULTREAL、ETIMOUT12、ETIMOUT13。",
+      "sources": [
+        "064VlD8fJy"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C33",
+      "section": "XBAR.SPEC【32】",
+      "text": "输出14bit，连接到IOMUX。",
+      "sources": [
+        "064VlD8fJy"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C34",
+      "section": "XBAR.SPEC【33】",
+      "text": "14bit CFG_OPXB_SWx，分别对应14个OUTPUT XBAR输出。",
+      "sources": [
+        "064VlD8fJy"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C35",
+      "section": "表1接口列表：总线及输入",
+      "text": "APB总线；gpio_xbar_data[80-1:0]；sarc2xbar_evt[9-1:0]；etim_pwm_out[14-1:0]、etim_pwm_out_oe_n[14-1:0]。",
+      "sources": [
+        "7vrsONkjgD"
+      ],
+      "kind": "APB及80/9/14原字为红色；不把现有80据颜色重复推断为新扩容"
+    },
+    {
+      "id": "XBAR-C36",
+      "section": "表1接口列表：输出／fault",
+      "text": "xbar2etim_fault[14-1:0]；outputxbar_data[14-1:0]、outputxbar_data_oe_n[14-1:0]；epwm2xbar_fault_real[11:0]、etim2xbar_fault_real[13:0]。",
+      "sources": [
+        "NY8OuaK0XB"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C37",
+      "section": "表2接口信号特征：输入",
+      "text": "gpio_xbar_data[80-1:0]、sarc2xbar_evt[9-1:0]。",
+      "sources": [
+        "NY8OuaK0XB"
+      ],
+      "kind": "原80/9为红字；表2出现位置，与表1分别记录"
+    },
+    {
+      "id": "XBAR-C38",
+      "section": "表2接口信号特征：ETIM／输出",
+      "text": "etim_pwm_out[14-1:0]、etim_pwm_out_oe_n[14-1:0]、xbar2etim_fault[14-1:0]、outputxbar_data[14-1:0]、outputxbar_data_oe_n[14-1:0]。",
+      "sources": [
+        "BJDG1Zjxti"
+      ],
+      "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
     }
   ],
   "gaps": [
@@ -265,6 +382,14 @@
         11
       ],
       "notes": "新增核对第7～11张，恢复故障表末行temp_warn/1/0；SPEC05～26完整文字。PWM源表64行、ETIM源表32行逐格保留，红色Reserved和红字新增源逐格标记；PWM行1/3/5/7的列3原为空白，未填Reserved。两张跨页PWM表按0～16→17～57→58～63衔接；ETIM表0～20→21～31衔接。历史ET6801条目编号16～18及新增/去除用词差异保留；绿色被删SPEC08与红80未冒充新的确定6601功能修改。"
+    },
+    {
+      "round": 3,
+      "range": [
+        12,
+        17
+      ],
+      "notes": "核对OUTPUT XBAR的ET6801历史13项与6601红字5项，完整恢复SPEC27的64行×4选项表及28～42、两条约束。表1与表2接口列表分别保留全行、空格、合并单元格关系和跨图续句。已纠正候选NY/BJ颠倒：7vrs→NY(表1尾/4.2开篇)→BJ(表2续)；正文顺序不依赖文件名。INPUT80、CMPC0~10/0~3、STM0~6/0~5/0~1、仍存在的CLB5_OUT13等原文差异照留。所有前11张正文块逐字节保留；页边修订线与正文红字区分，不猜修订前值。本批六张全部可辨主体已录，无新增整组字形缺口，旧U01～U03仍开放。"
     }
   ],
   "images": [
@@ -390,8 +515,8 @@
       "git_blob": "552e71ad1d93a5d002b9009e36aafe74e0258959",
       "sha256": "1baefc57983d60750bffb8e069fbb9c83fddbfbcef21861e14f47f3eb28e0323",
       "bytes": 1193464,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -400,8 +525,8 @@
       "git_blob": "35114f3e39b4c73145ed739827bdafb1ac649d72",
       "sha256": "5db02c7a061b5946ee6cec269fde921eb16ce825720455d5818b6af99a43803e",
       "bytes": 1292834,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -410,8 +535,8 @@
       "git_blob": "32ece83af86c180ee337e0a2020eee12c95123f9",
       "sha256": "b0a57a98b5dabeb9dd7c1764674c37e9e29d20e899e74508b551750b722b9a26",
       "bytes": 1292309,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -420,28 +545,28 @@
       "git_blob": "2f77f9fc6099da87ccb6f8a8aef0e64f57d0a966",
       "sha256": "a2a19a74044972d1a84bb0dce0c5fcdf3f65eb814eb8dbbb79e4da8e53023e53",
       "bytes": 1160005,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
       "order": 16,
-      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_BJDG1Zjxti.png",
-      "git_blob": "94cd292ceddbf9b8690696760c97c7bb76555555",
-      "sha256": "22c7d287eda9f0b2d61f385314d019f80ce05d07972564d71533d36308d808f1",
-      "bytes": 1163104,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
-      "gaps": []
-    },
-    {
-      "order": 17,
       "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_NY8OuaK0XB.png",
       "git_blob": "2eebf6929fd36eca83ba1ca5a1ca0bbde9a6d25e",
       "sha256": "7a6efe13d9a9e17c62b9eba7e46f6f436f6ba1bf551c865f0892467afb4cdc58",
       "bytes": 1162120,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": []
+    },
+    {
+      "order": 17,
+      "path": "6601芯片截图/sarc/sarc_xbar/images/GameViewer_BJDG1Zjxti.png",
+      "git_blob": "94cd292ceddbf9b8690696760c97c7bb76555555",
+      "sha256": "22c7d287eda9f0b2d61f385314d019f80ce05d07972564d71533d36308d808f1",
+      "bytes": 1163104,
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -546,12 +671,12 @@
     }
   ],
   "date": "2026-10-06",
-  "round": 2,
+  "round": 3,
   "branch": "docs/restore-6601-screenshots",
-  "input_head": "3fcc07c6801cda47897eb40b667f93e366230fe3",
+  "input_head": "32b34937fbf402f4f7da318e3cab4582bf79e5b7",
   "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
-  "first_pass": 11,
+  "first_pass": 17,
   "total": 27,
-  "repository_first_pass": 135,
+  "repository_first_pass": 141,
   "final_text_acceptance": false
 }

@@ -1,10 +1,10 @@
 # ET6601 XBAR模块需求规格与设计方案
 
 > 独立XBAR原文；旧目录和文件名中的SARC仅为历史路径，不属于SARC正文，也不是总线矩阵规格。
-> 2026-10-06，第2批。XBAR前11/27张已完成首轮原图核对；全仓135/200。25条修改来源位置记录，3组局部缺口；数量不是独立功能数或准确率。
+> 2026-10-06，第3批。XBAR前17/27张已完成首轮原图核对；全仓141/200。38条修改来源位置记录，3组局部缺口；数量不是独立功能数或准确率。
 > 一份原文一份Markdown。先左后右，按章节、跨页句与续表衔接；原文矛盾、拼写、空白和删除线保留。未核对区仅保留历史转录，不作为准确原文使用。
 > 仅核对本目录原PNG；ET60157/ET6801手册、驱动、BootROM不用于补字。红色修改结合本原文明确ET6601段落判断；目录蓝色超链接和历史图配色不直接判为6601修改。
-> 最新逐图台账：../../../reviews/XBAR_IMAGE_LEDGER_20261006.json；正式保存与回读见XBAR_ROUND2_REMOTE_SAVE_20261006.json。
+> 最新逐图台账：../../../reviews/XBAR_IMAGE_LEDGER_20261006.json；正式保存与回读见XBAR_ROUND3_REMOTE_SAVE_20261006.json。
 
 ## 第一部分：原始文档逐图还原
 
@@ -626,160 +626,69 @@ XBAR.SPEC【21】续表：
 
 [查看原始PNG](../images/GameViewer_qZ6VVLkkSM.png)
 
-> 来源顺序12；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序12；已首轮核对。
 
 <!-- xbar-block:start qZ6VVLkkSM -->
-
 ### 【左页】
 
+## 3.5 OUTPUT XBAR
 
-#### 3.5OUTPUT XBAR
+ET6801 修改点：
 
-ET6801修改点：
-CMP OUT* 0-7>0-21；去除 CMP OUT*OR OUR*
-1)
-BTMCU huan.
-2)
-新增SDFM通道SD2/3FLT*EVT*；去除SD*FLT*EVTO_OREVT1
-(TI无)
-3)
-新增 CLB4/5_OUT*
-4)
-新增 ADCA EXTMUX_SEL4
-BTHC/ huan.T1 2026-10-02-
-RTMCU huan.JS
-5)
-无 CPUO_ADCCHECKEVTO
-6)
-CFG OPXB SWx(TI 无)
-7)
-SPWM XBAR_SYNCx(TI 无)
-8)
-INPUTXBAR CLU OUT(TI 无)
-9)
-STM_OC 3>6(TI 无)
-10)
-无 FSI
-无 EPG*OUT*
-12)
-新增 CPU1 HALT
-13）新增XCLK OUT
-BTMO
-BIMCU
-ET6601修改点：
-去除SDFM通道SD*FLT*EVT*
+1）CMP_OUT* 0-7 > 0-21；去除 CMP_OUT*OR_OUR*  
+2）新增 SDFM 通道 SD2/3FLT*_EVT*；去除 SD*FLT*_EVT0_OR_EVT1（TI 无）  
+3）新增 CLB4/5_OUT*  
+~~4）新增 ADCA_EXTMUX_SEL4~~  
+5）无 CPU0_ADCCHECKEVT0  
+6）CFG_OPXB_SWx（TI 无）  
+7）SPWM_XBAR_SYNCx（TI 无）  
+8）INPUTXBAR_CLU_OUT（TI 无）  
+9）STM_OC 3>6（TI 无）  
+10）无 FSI  
+11）无 EPG*OUT*  
+12）新增 CPU1_HALT  
+13）新增 XCLK_OUT
 
+**ET6601 修改点：**
+
+**1）去除 SDFM 通道 SD*FLT*_EVT***
 
 ### 【右页】
 
-2)
-去除CLB* OUT*
-3)
-去除 ADCC EVT*
-4)
-去除EPWM12~17FAULTREAL
-ETMCVhuan,1i
-5)
-新增ETIMOUT12/13和ETIM12/13FAULTREAL
-XBAR.SPEC【27】
-OUTPUTXBAR支持对输入信号源进行
-4bit分组并进行mux-or选通，信号源选择如下表所示：
-Reserved
-CMP_OUTO
-ADCA_EVTO
-ETIMOUTO
-CMP_OUT1
-INPUTXBARO
-Reserved
-Reserved
-Reserved
-ADCA_EVT1
-CMP_OUT2
-ETIMOUT1
-Reserved
-CMP_OUT3
-INPUTXBAR1
-Reserved
-CMP_OUT4
-Reserved
-ADCA_EVT2
-ETIMOUT2
-CMP_OUT5
-INPUTXBAR2
-Reserved
-Reserved
-CMP_OUT6
-Reserved
-ADCA_EVT3
-ETIMOUT3
-CMP_OUT7
-INPUTXBAR3
-Reserved
-Reserved
-CMP_OUT8
-Reserved
-ADCB_EVTO
-ETIMOUT4
-CMP_OUT9
-Reserved
-INPUTXBAR4
-STMO_OCO
-CMP_OUT10
-ADCB_EVT1
-Reserved
-ETIMOUT3
-CMP_OUT11
-Reserved
-INPUTXBAR5
-STM0_OC1
-CMP_OUT12
-Reserved
-ADCB_ EVT2
-ETIMOUT6
-CMP_OUT13
-ADCSOCAO
-Reserved
-STMO_0C2
-Reserved
-ADCB_EVT3
-EXTSYNCOUT
-CMP_OUT15
-ADCSOCBO
-Reserved
-STM0_OC3
-Reserved
-FLASH ERR
-Reserved
-ERRORSTS
-Reserved
-INPUTXBAR6
-Reserved
-STM1_0CO
-Reserved
-Reserved
-CPUO_HALT
-Reserved
-Reserved
-INPUTXBAR7
-Reserved
-ETIMOUT7
-STM1_0C1
-Reserved
-Reserved
-CPU1_HALT
-Reserved
-INPUTXBARS
-Reserved
-ETMOUT8
-Reserved
-Reserved
-SYS_ERR
-STM1_0C2
-11080F
+**2）去除 CLB*_OUT***  
+**3）去除 ADCC_EVT***  
+**4）去除 EPWM12~17_FAULTREAL**  
+**5）新增 ETIMOUT12/13 和 ETIM12/13_FAULTREAL**
 
+**XBAR.SPEC【27】** OUTPUT XBAR 支持对输入信号源进行4bit分组并进行mux-or选通，信号源选择如下表所示：
 
+> 转录注：表头为绿色；下表加粗单元格对应原图红字。原拼写OUR、SPWM与后文SRPWM分别照录。
 
----
+| MUX | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | CMP_OUT0 | **Reserved** | ADCA_EVT0 | ETIMOUT0 |
+| 1 | CMP_OUT1 | INPUTXBAR0 | **Reserved** | **Reserved** |
+| 2 | CMP_OUT2 | **Reserved** | ADCA_EVT1 | ETIMOUT1 |
+| 3 | CMP_OUT3 | INPUTXBAR1 | **Reserved** | **Reserved** |
+| 4 | CMP_OUT4 | **Reserved** | ADCA_EVT2 | ETIMOUT2 |
+| 5 | CMP_OUT5 | INPUTXBAR2 | **Reserved** | **Reserved** |
+| 6 | CMP_OUT6 | **Reserved** | ADCA_EVT3 | ETIMOUT3 |
+| 7 | CMP_OUT7 | INPUTXBAR3 | **Reserved** | **Reserved** |
+| 8 | CMP_OUT8 | **Reserved** | ADCB_EVT0 | ETIMOUT4 |
+| 9 | CMP_OUT9 | INPUTXBAR4 | **Reserved** | STM0_OC0 |
+| 10 | CMP_OUT10 | **Reserved** | ADCB_EVT1 | ETIMOUT5 |
+| 11 | CMP_OUT11 | INPUTXBAR5 | **Reserved** | STM0_OC1 |
+| 12 | CMP_OUT12 | **Reserved** | ADCB_EVT2 | ETIMOUT6 |
+| 13 | CMP_OUT13 | ADCSOCA0 | **Reserved** | STM0_OC2 |
+| 14 | CMP_OUT14 | **Reserved** | ADCB_EVT3 | EXTSYNCOUT |
+| 15 | CMP_OUT15 | ADCSOCB0 | **Reserved** | STM0_OC3 |
+| 16 | **Reserved** | **Reserved** | FLASH_ERR | ERRORSTS |
+| 17 | **Reserved** | INPUTXBAR6 | **Reserved** | STM1_OC0 |
+| 18 | **Reserved** | **Reserved** | CPU0_HALT | Reserved |
+| 19 | **Reserved** | INPUTXBAR7 | **Reserved** | ETIMOUT7 |
+| 20 | **Reserved** | **Reserved** | CPU1_HALT | STM1_OC1 |
+| 21 | **Reserved** | INPUTXBAR8 | **Reserved** | ETIMOUT8 |
+| 22 | **Reserved** | **Reserved** | SYS_ERR | STM1_OC2 |
 
 <!-- xbar-block:end qZ6VVLkkSM -->
 
@@ -789,205 +698,75 @@ STM1_0C2
 
 [查看原始PNG](../images/GameViewer_064VlD8fJy.png)
 
-> 来源顺序13；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序13；已首轮核对。
 
 <!-- xbar-block:start 064VlD8fJy -->
-
 ### 【左页】
 
-Reserved
-INPUTXBAR9
-CLB5_OUT13
-ETIMOUT9
-Reserved
-Reserved
-SRPWM_XBAR_SYNCO
-INPUTXBAR_CLU2OUT[0]
-Reserved
-INPUTXBAR10
-PT_ERR
-ETIMOUT10
-Reserved
-Reserved
-SRPWM_XBAR_SYNC1
-INPUTXBAR_CLU2OUT[1]
-INPUTXBAR11
-Reserved
-ERRORSTS
-ETIMOUT11
-XCLK OUT
-Reserved
-Reserved
-INPUTXBAR_CLU2OUT[2]
-TMCUhuanz
-INPUTXBAR12
-SRPWM_XBAR_SYNC2
-Reserved
-STM1_0C3
-Reserved
-Reserved
-SRPWM_XBAR_SYNC3
-INPUTXBAR_CLU2OUT[3]
-INPUTXBAR13
-ERRORSTS
-Reserved
-Reserved
-EPWMO_FAULTREAL
-Reserved
-Reserved
-ETIMO_FAULTREAL
-EPWMI _FAULTREAL
-Reserved
-INPUTXBAR14
-ETIMI FAULTREAL
-EPWM2_FAULTREAL
-Reserved
-Reserved
-ETIM2_FAULTREAL
-EPWM3_ FAULTREAL
-Reserved
-INPUTXBAR15
-ETIM3 FAULTREAL
-EPWM4_FAULTREAL
-Reserved
-CFG_OPXB_SWx
-ETIM4_FAULTREAL
-EPWMS FAULTREAL
-Reserved
-CFG_OPXB_SWx
-ETIMS FAULTREAL
-EPWM6_ FAULTREAL
-Reserved
-Reserved
-ETIM6_FAULTREAL
-EPWM7_FAULTREAL
-Reserved
-Reserved
-ETIM7 FAULTREAL
-EPWMS_FAULTREAL
-Reserved
-Reserved
-ETIM8 _FAULTREAL
-EPWM9_ FAULTREAL
-Reserved
-Reserved
-ETIM9 FAULTREAL
-EPWM10_FAULTREAL
-Reserved
-Reserved
-ETIM10 FAULTREAL
-EPWM11FAULTREAL
-Reserved
-Reserved
-ETIM11 FAULTREAL
-Reserved
-Reserved
-ETIM12_FAULTREAL
-STM2_0CO
-Reserved
-Reserved
-ETIM13_FAULTREAL
-STM2_0C1
-Reserved
-Reserved
-ETIMOUT12
-STM2_0C2
-Reserved
-Reserved
-ETIMOUT13
-STM2_0C3
-Reserved
-Reserved
-Reserved
-STM3_0CO
-Reserved
-Reserved
-Reserved
-STM3_0CT
-Reserved
-Reserved
-Reserved
-STM3_0C2
-Reserved
-Reserved
-Reserved
-STM3_0C3
-Reserved
-Reserved
-Reserved
-STM4_OC0
-Reserved
-Reserved
-Reserved
-STM4_0C1
-Reserved
-Reserved
-Reserved
-STM4_0C2
-Reserved
-Reserved
-Reserved
-STM4_0C3
-h7137
-Reserved
-Reserved
-Reserved
-STMS_OCO
-Reserved
-Reserved
-Reserved
-ETHO
-Reserved
-Reserved
-CMP_OUT16
-STM5_OC2
-Reserved
-Reserved
-CMP_OUT17
-STMB_0C3
-Reserved
-Reserved
-CMP_OUT18
-Reserved
-Reserved
-Reserved
-CMP_OUT19
-Reserved
+XBAR.SPEC【27】信号源选择表续表：
 
+| MUX | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 23 | **Reserved** | INPUTXBAR9 | CLB5_OUT13 | ETIMOUT9 |
+| 24 | **Reserved** | **Reserved** | SRPWM_XBAR_SYNC0 | INPUTXBAR_CLU2OUT[0] |
+| 25 | **Reserved** | INPUTXBAR10 | PT_ERR | ETIMOUT10 |
+| 26 | **Reserved** | **Reserved** | SRPWM_XBAR_SYNC1 | INPUTXBAR_CLU2OUT[1] |
+| 27 | **Reserved** | INPUTXBAR11 | ERRORSTS | ETIMOUT11 |
+| 28 | **Reserved** | **Reserved** | XCLK_OUT | INPUTXBAR_CLU2OUT[2] |
+| 29 | **Reserved** | INPUTXBAR12 | SRPWM_XBAR_SYNC2 | STM1_OC3 |
+| 30 | **Reserved** | **Reserved** | SRPWM_XBAR_SYNC3 | INPUTXBAR_CLU2OUT[3] |
+| 31 | **Reserved** | INPUTXBAR13 | ERRORSTS | Reserved |
+| 32 | EPWM0_FAULTREAL | Reserved | Reserved | ETIM0_FAULTREAL |
+| 33 | EPWM1_FAULTREAL | INPUTXBAR14 | Reserved | ETIM1_FAULTREAL |
+| 34 | EPWM2_FAULTREAL | Reserved | Reserved | ETIM2_FAULTREAL |
+| 35 | EPWM3_FAULTREAL | INPUTXBAR15 | Reserved | ETIM3_FAULTREAL |
+| 36 | EPWM4_FAULTREAL | CFG_OPXB_SWx | Reserved | ETIM4_FAULTREAL |
+| 37 | EPWM5_FAULTREAL | CFG_OPXB_SWx | Reserved | ETIM5_FAULTREAL |
+| 38 | EPWM6_FAULTREAL | Reserved | Reserved | ETIM6_FAULTREAL |
+| 39 | EPWM7_FAULTREAL | Reserved | Reserved | ETIM7_FAULTREAL |
+| 40 | EPWM8_FAULTREAL | Reserved | Reserved | ETIM8_FAULTREAL |
+| 41 | EPWM9_FAULTREAL | Reserved | Reserved | ETIM9_FAULTREAL |
+| 42 | EPWM10_FAULTREAL | Reserved | Reserved | ETIM10_FAULTREAL |
+| 43 | EPWM11_FAULTREAL | Reserved | Reserved | ETIM11_FAULTREAL |
+| 44 | **Reserved** | Reserved | **ETIM12_FAULTREAL** | STM2_OC0 |
+| 45 | **Reserved** | Reserved | **ETIM13_FAULTREAL** | STM2_OC1 |
+| 46 | **Reserved** | Reserved | **ETIMOUT12** | STM2_OC2 |
+| 47 | **Reserved** | Reserved | **ETIMOUT13** | STM2_OC3 |
+| 48 | **Reserved** | Reserved | Reserved | STM3_OC0 |
+| 49 | **Reserved** | Reserved | Reserved | STM3_OC1 |
+| 50 | Reserved | Reserved | Reserved | STM3_OC2 |
+| 51 | Reserved | Reserved | Reserved | STM3_OC3 |
+| 52 | Reserved | Reserved | Reserved | STM4_OC0 |
+| 53 | Reserved | Reserved | Reserved | STM4_OC1 |
+| 54 | Reserved | Reserved | Reserved | STM4_OC2 |
+| 55 | Reserved | Reserved | Reserved | STM4_OC3 |
+| 56 | Reserved | Reserved | Reserved | STM5_OC0 |
+| 57 | Reserved | Reserved | Reserved | STM5_OC1 |
+| 58 | CMP_OUT16 | Reserved | Reserved | STM5_OC2 |
+| 59 | CMP_OUT17 | Reserved | Reserved | STM5_OC3 |
+| 60 | CMP_OUT18 | Reserved | Reserved | Reserved |
+| 61 | CMP_OUT19 | Reserved | Reserved | Reserved |
 
 ### 【右页】
 
-Reserved
-Reserved
-CMP_OUT20
-Reserved
-Reserved
-Reserved
-CMP_OUT21
-Reserved
-XBAR.SPEC【28】
-OUTPUTXBAR支持对选通信号进行高
-电平锁存操作，锁存信号可配置清零
-XBAR.SPEC【29】
-OUTPUT-XBAR支持输出使能和输出极
-性配置
-XBAR.SPEC【30】OUTPUTXBAR支持同步路径，CMPC
-分一路同步后的事件信号给OUTPUTXBAR→OUTPUT
-XBAR支持异步路径，通过WARPMUX2配置选择；非异
-步路径同步处理后再取沿及展宽
-XBAR.SPEC【31】OUTPUTXBAR支持输出信号展宽，固
-定展宽16拍，是否展宽可配置
-XBAR.SPEC【32】
-支持OUTPUTXBAR输出14bit，连接
-到 IOMUX
-XBAR.SPEC33】
-支持软件可配置14bitCFGOPXBSWx
-寄存器，分别对应14个OUTPUTXBAR输出
-1080F
+| MUX | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 62 | CMP_OUT20 | Reserved | Reserved | Reserved |
+| 63 | CMP_OUT21 | Reserved | Reserved | Reserved |
 
+> 转录注：MUX23的第2列仍写CLB5_OUT13，与上页“去除CLB*_OUT*”不同，按各处原文保留；不主动改成Reserved。32～43行第3列ETIM0～11_FAULTREAL原有划线痕迹照留于原图；当前文字可辨，未将线与单元格横线混判为整项删除。
 
+**XBAR.SPEC【28】** OUTPUT XBAR 支持对选通信号进行高电平锁存操作，锁存信号可配置清零
 
----
+**XBAR.SPEC【29】** OUTPUT XBAR 支持输出使能和输出极性配置
+
+**XBAR.SPEC【30】** OUTPUT XBAR 支持同步路径，CMPC分一路同步后的事件信号给 OUTPUT XBAR → OUTPUT XBAR支持异步路径，通过 WARP_MUX2 配置选择；非异步路径同步处理后再取沿及展宽
+
+**XBAR.SPEC【31】** OUTPUT XBAR 支持输出信号展宽，固定展宽16拍，是否展宽可配置
+
+**XBAR.SPEC【32】** 支持 OUTPUT XBAR 输出 **14**bit，连接到 IOMUX
+
+**XBAR.SPEC【33】** 支持软件可配置 **14**bit CFG_OPXB_SWx 寄存器，分别对应 **14** 个 OUTPUT XBAR 输出
 
 <!-- xbar-block:end 064VlD8fJy -->
 
@@ -997,61 +776,38 @@ XBAR.SPEC33】
 
 [查看原始PNG](../images/GameViewer_yl5bEptpgs.png)
 
-> 来源顺序14；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序14；已首轮核对。
 
 <!-- xbar-block:start yl5bEptpgs -->
-
 ### 【左页】
 
-XBAR.SPEC【34】支持输出模式选择配置，选择到
-ETIMOUTx信号时，输出对应的OEN信号，也可配置固
-定输出模式，和固定输出三态模式
-ETMO
+**XBAR.SPEC【34】** 支持输出模式选择配置，选择到 ETIMOUTx 信号时，输出对应的 OEN 信号，也可配置固定输出模式，和固定输出三态模式
 
-#### 3.6 CLU
+## 3.6 CLU
 
-6-10-02-21:5F
-XBAR.SPEC【35】XBAR 包含 XCSA、XCET 和 XCOX 模
-块，实现对INXB信号的逻辑组合，其输入为 INXB 模块
-16bit输出，输出分别为4bit信号逻辑组合信号，通过各自
-内置 4个 4输入 1输出的 CLU模块实现。XCSA、XCET
-和XCOX模块输出分别送往SARC、ETIM和OPXB模块
-作为后者输入
-XBAR.SPEC【36】单个CLU模块支持8种逻辑功能可选
-择，包括：1AND-OR、OR-XOR、4输入AND、S-R 锁存
-器、带置1和复位功能的D触发器、带复位功能的D触发
-器、带复位功能的J-K触发器、带置1和复位功能的透明
-锁存器，其中，锁存器通过寄存器时序逻辑模拟
+**XBAR.SPEC【35】** XBAR 包含 XCSA、XCET 和 XCOX 模块，实现对 INXB 信号的逻辑组合，其输入为 INXB 模块16bit输出，输出分别为4bit信号逻辑组合信号，通过各自内置4个4输入1输出的CLU模块实现。XCSA、XCET和XCOX模块输出分别送往 SARC、ETIM 和 OPXB 模块作为后者输入
 
+**XBAR.SPEC【36】** 单个CLU模块支持8种逻辑功能可选择，包括：AND-OR、OR-XOR、4输入AND、S-R锁存器、带置1和复位功能的D触发器、带复位功能的D触发器、带复位功能的J-K触发器、带置1和复位功能的透明锁存器，其中，锁存器通过寄存器时序逻辑模拟
 
 ### 【右页】
 
-XBAR.SPEC【37】
-CLU模块支持输出旁路可配置，旁路模
-式下，CLU固定选择输入4bit中的最低位输出
-XBAR.SPEC【38】CLU模块支持输出使能可配置
-XBAR.SPEC【39】CLU模块支持输出极性可配置，可结合
-CLU输出使能实现输出电平软件可配置
-XBAR.SPEC【4O】CLU模块支持中断上报，中断触发事件
-可配置为：CLU输出上升沿中断事件和CLU输出下降沿中
-断事件，可分别通过控制位使能
-XBAR.SPEC【41】
-支持将 XBAR 中断脉冲作为DMA触发
-源，共5bit;
-huan, Ji 2026-10-0
-XBAR.SPEC【42】
-支持XBARTESTPIN输出
+**XBAR.SPEC【37】** CLU模块支持输出旁路可配置，旁路模式下，CLU固定选择输入4bit中的最低位输出
 
-#### 3.7XBAR约束
+**XBAR.SPEC【38】** CLU模块支持输出使能可配置
 
-XBAR.LIMIT.SPEC【O1】：INPUTXBAR的输出会作为中断触发源，
-该中断触发源在被选用为dma触发源时最好为脉冲信号，a否则会在
-DMAMUX处产生相应的错误告警
-1080F
+**XBAR.SPEC【39】** CLU模块支持输出极性可配置，可结合CLU输出使能实现输出电平软件可配置
 
+**XBAR.SPEC【40】** CLU模块支持中断上报，中断触发事件可配置为：CLU输出上升沿中断事件和CLU输出下降沿中断事件，可分别通过控制位使能
 
+**XBAR.SPEC【41】** 支持将XBAR中断脉冲作为DMA触发源，共5bit;
 
----
+**XBAR.SPEC【42】** 支持XBAR TESTPIN输出
+
+## 3.7 XBAR约束
+
+**XBAR.LIMIT.SPEC【01】：** INPUTXBAR的输出会作为中断触发源，该中断触发源在被选用为dma触发源时最好为脉冲信号，否则会在DMAMUX处产生相应的错误告警
+
+> 转录注：SPEC42与约束01旁有红色页边修订线，正文为黑色，当前原图未给出这两处的修改前内容。
 
 <!-- xbar-block:end yl5bEptpgs -->
 
@@ -1061,346 +817,75 @@ DMAMUX处产生相应的错误告警
 
 [查看原始PNG](../images/GameViewer_7vrsONkjgD.png)
 
-> 来源顺序15；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序15；已首轮核对。
 
 <!-- xbar-block:start 7vrsONkjgD -->
-
 ### 【左页】
 
-XBAR.LIMIT.SPEC【02】：当前虽然对各个xbar加入了异步
-路径，但由于其它模块目前大多只支持同步信号输入，所以从
-inputxbar输入的信号还是要求做同步处理（该部分在IO做），
-另外xbar输出也要选择打一拍（ouptxbar可以选择不打拍直接
-发送到 GPIO)。
-4.接口说明
-BTNCI muian.1/2026-10-02-21:
-BIMCU 5
+**XBAR.LIMIT.SPEC【02】：** 当前虽然对各个xbar加入了异步路径，但由于其它模块目前大多只支持同步信号输入，所以从inputxbar输入的信号还是要求做同步处理（该部分在IO做），另外xbar输出也要选择打一拍（ouptxbar可以选择不打拍直接发送到GPIO）。
 
-#### 4.1接口列表
+> 转录注：本条旁有红色页边修订线；ouptxbar为原文拼写。
 
-表1
-XBAR模块接口信号说明
-信号
-输入
-说明
-输出
-xbar hclk
-输入
-R7MCI hua. 1 2026-10-02-
-总线时钟
-BIMCU
-输入
-xbar_hresetn
-总线复位信号，低有效
-中断
-输出
-xbar_intr[6-1:0]
-XBAR产生的中断信号，高电平有
-APB总线
-xbar pclk
-功能接口
-gpio_xbardata[80-1:0]
-输入
-IO到XBAR的输入信号
-ETHOU ?
-pflash_ecc_err
-EIMCU
-pflash_bus_err
-输入
-dflash_ecc_err
-EFC到XBAR的ECC和BUSerror信号
-dflash bus err
-输入
-sarc2xbar_ev[9-1:0]
-SARCO/1到XBAR的看门狗超门限事
-件信号
+# 4. 接口说明
 
+## 4.1 接口列表
+
+**表1　XBAR模块接口信号说明**
+
+| 信号 | 输入／输出 | 说明 |
+|---|---|---|
+| xbar_hclk | 输入 | 总线时钟 |
+| xbar_hresetn | 输入 | 总线复位信号，低有效 |
+| 中断 |  |  |
+| xbar_intr[6-1:0] | 输出 | XBAR产生的中断信号，高电平有效 |
+| **APB总线** |  |  |
+| xbar_pclk |  |  |
+|  |  |  |
+| 功能接口 |  |  |
+| gpio_xbar_data[**80**-1:0] | 输入 | IO到XBAR的输入信号 |
+| pflash_ecc_err<br>pflash_bus_err<br>dflash_ecc_err<br>dflash_bus_err | 输入 | EFC到XBAR的ECC和BUS error信号 |
+| sarc2xbar_evt[**9**-1:0] | 输入 | SARC0/1到XBAR的看门狗超门限事件信号 |
+
+> 转录注：原表“中断”“APB总线”“功能接口”为跨列分区行；xbar_pclk的方向和说明为空，下方还有一行空白。加粗数字／文字对应可辨红字。
 
 ### 【右页】
 
-cmpc_ctriph[22*1-1:0]
-cmpc_ctrip[22*1-1:0]
-输入
-cmpc_ctripouth[22*1-1:0]
-CMPC0~10到XBAR的比较结果信号
-cmpc_ctripout[22*1-1:0]
-wdto_req_rec
-输入
-wdt1 reg rec
-看门狗请求事件输入
-输入
-cpuo_rst_rec
-CPU复位请求事件输入
-输入
-cpu0 lockup
-CPU死锁事件输入
-输入
-cpuo halted
-CPUhalted事件输入
-cpuo_ecc_err
-输入
-CPUECC错误事件输入
-输入
-CPU复位请求事件输入
-cpul_rst_rec
-同步电平信号，高有效
-cpu1_lockup
-输入
-CPU死锁事件输入
-同步电平信号，高有效
-输入
-cpu1_halted
-CPUhalted事件输入
-异步电平信号，高有效
-输入
-cpul_ecc_err
-CPUECC错误事件输入
-输入
-sram_ecc_err
-SRAMECC错误事件输入
-输入
-can_ecc_err
-CANECC告警输入
-输入
-bus timeout
-总线超时事件输入
-输入
-cpuobus err
-CPU总线错误事件输入
-CPU总线错误事件输入
-cpul_bus_err
-输入
-同步电平信号，高有效
-时钟异常事件输入
-clock fault
-输入
-输入
-por uv_warn
-欠压告警输入
-输入
-por_ov_warn
-过压告警输入
-输入
-pwr_ocp_wam
-过流告警输入
-输入
-power_err
-供电异常告警输入
-输入
-temp_warn
-过温告警输入
-输入
-stm_oc0_exp[6-1:0]
-STM0~6比较器0事件
-输入
-stm_oc1_exp[6-1:0]
-STM0-6比较器1事件
-stm_oc2_exp[6-1:0]
-输入
-STM0-6比较器2事件
-输入
-stm_oc3_exp[6-1:0]
-STM0~6比较器3事件
-输入
-epwm_xbar_sync[4-1:0]
-SPWM到XBAR的SYNC输入
-spwm_adcsoca
-输入
-SPWM到XBAR的ADC触发信号
-spwm_adcsocb
-输入
-etim_pwm_out[14-1:0]
-ETIM的PWM输出信号
-输入
-ETIM的PWM输出使能信号
-etim pwm out oe n[14-1:0]
-输入
-ETIM输出的同步信号
-etim sync_out evt
-fps
-172 Ⅱ
-12080F
+表1续表：
 
-
-
----
+| 信号 | 输入／输出 | 说明 |
+|---|---|---|
+| cmpc_ctriph[22*1-1:0]<br>cmpc_ctripl[22*1-1:0]<br>cmpc_ctripouth[22*1-1:0]<br>cmpc_ctripoutl[22*1-1:0] | 输入 | CMPC0~10到XBAR的比较结果信号 |
+| wdt0_req_rec<br>wdt1_req_rec | 输入 | 看门狗请求事件输入 |
+| cpu0_rst_rec | 输入 | CPU复位请求事件输入 |
+| cpu0_lockup | 输入 | CPU死锁事件输入 |
+| cpu0_halted | 输入 | CPU halted事件输入 |
+| cpu0_ecc_err | 输入 | CPU ECC错误事件输入 |
+| cpu1_rst_rec | 输入 | CPU复位请求事件输入<br>同步电平信号，高有效 |
+| cpu1_lockup | 输入 | CPU死锁事件输入<br>同步电平信号，高有效 |
+| cpu1_halted | 输入 | CPU halted事件输入<br>异步电平信号，高有效 |
+| cpu1_ecc_err | 输入 | CPU ECC错误事件输入 |
+| sram_ecc_err | 输入 | SRAM ECC错误事件输入 |
+| can_ecc_err | 输入 | CAN ECC告警输入 |
+| bus_timeout | 输入 | 总线超时事件输入 |
+| cpu0_bus_err | 输入 | CPU总线错误事件输入 |
+| cpu1_bus_err | 输入 | CPU总线错误事件输入<br>同步电平信号，高有效 |
+| clock_fault | 输入 | 时钟异常事件输入 |
+| por_uv_warn | 输入 | 欠压告警输入 |
+| por_ov_warn | 输入 | 过压告警输入 |
+| pwr_ocp_warn | 输入 | 过流告警输入 |
+| power_err | 输入 | 供电异常告警输入 |
+| temp_warn | 输入 | 过温告警输入 |
+| stm_oc0_exp[6-1:0] | 输入 | STM0~6比较器0事件 |
+| stm_oc1_exp[6-1:0] | 输入 | STM0~6比较器1事件 |
+| stm_oc2_exp[6-1:0] | 输入 | STM0~6比较器2事件 |
+| stm_oc3_exp[6-1:0] | 输入 | STM0~6比较器3事件 |
+| epwm_xbar_sync[4-1:0] | 输入 | SPWM到XBAR的SYNC输入 |
+| spwm_adcsoca<br>spwm_adcsocb | 输入 | SPWM到XBAR的ADC触发信号 |
+| etim_pwm_out[**14**-1:0] | 输入 | ETIM的PWM输出信号 |
+| etim_pwm_out_oe_n[**14**-1:0] | 输入 | ETIM的PWM输出使能信号 |
+| etim_sync_out_evt | 输入 | ETIM输出的同步信号 |
 
 <!-- xbar-block:end 7vrsONkjgD -->
-
----
-
-## 原图：`GameViewer_BJDG1Zjxti.png`
-
-[查看原始PNG](../images/GameViewer_BJDG1Zjxti.png)
-
-> 来源顺序16；候选顺序，以下为历史转录，尚未首轮原图核对。
-
-<!-- xbar-block:start BJDG1Zjxti -->
-
-### 【左页】
-
-输入
-SRAMECC错误事件输入
-sram_ecc_err
-同步电平信号，高有效
-输入
-CANECC告警输入
-can_ecc_err
-同步电平信号，高有效
-输入
-总线超时事件输入
-bus_timeout
-同步电平信号，高有效
-BIMCU huan2
-输入
-cpuo_bus_err
-CPU总线错误事件输入
-同步电平信号，高有效
-输入
-CPU总线错误事件输入
-cpul_bus_err
-同步电平信号，高有效
-clock_fault
-输入
-时钟异常事件输入
-同步电平信号，高有效
-a2d_pmu_borhl
-输入
-por_uv_warn
-a2d_pmu_borll
-同步电平信号，高有效
-a2d_pmu_ovrhl
-ETNCUhian11200
-BINCU 5
-输入
-por_ov_warn
-a2d_pmu_ovrl
-同步电平信号，高有效
-输入
-过流告警输入
-pwr_ocp_warn
-同步电平信号，高有效
-输入
-供电异常告警输入
-power_err
-同步电平信号，高有效
-输入
-temp_warm
-过温告警输入
-同步电平信号，高有效
-STM0-1比较器0事件
-同步脉冲信号，高有效，脉冲宽度软
-RTMCUhia.112025
-输入
-stm_oc0_exp[6-1:0]
-BIMCU
-件可配，认宽度为16个STM工作时
-钟周期
-STM0~1比较器1事件
-同步脉冲信号，高有效，脉冲宽度软
-stm_oc1_exp[6-1:0]
-输入
-件可配，默认宽度为16个STM工作时
-钟周期
-STM0~1比较器2事件
-stm_oc2_exp[6-1:0]
-输入
-同步脉冲信号，高有效，脉冲宽度软
-件可配，认宽度为16个STM工作时
-钟周期
-BIMCU
-STM0~1比较器3事件
-输入
-同步脉冲信号，高有效，脉冲宽度软
-stm_oc3_exp[6-1:0]
-件可配，认宽度为16个STM工作时
-钟,周期
-
-
-### 【右页】
-
-SPWM到XBAR的SYNC输入
-输入
-epwm_xbar_sync[4-1:0]
-单周期同步脉冲信号，高有效
-spwm_adcsoca
-输入
-SPWM到XBAR的ADC触发信号
-单周期同步脉冲信号，高有效，
-spwm_adcsocb
-输入
-ETIM的PWM输出信号
-etim_pwm_out[14-1:0]
-电平或脉冲信号，高有效
-输入
-ETIM的PWM输出使能信号
-etim_pwm_out_oe_n[14-1:0]
-电平或脉冲信号，低有效
-ETIM输出的同步信号
-输入
-etim_sync_out_evt
-脉冲信号，脉冲宽度为16个eTimer时
-10~02-21.56
-钟周期，高有效
-输出
-inputxbar_data[16-1:0]
-INPUTXBAR到SRPWM的输出信号
-电平或脉冲信号，有效电平可配置
-输出
-xbar2sarc_cludata[4-1:0]
-XBAR到SARC的CLU信号
-电平或脉冲信号，有效电平可配置
-输出
-xbar2etim_cludata[4-1:0]
-XBAR到ETIM的CLU信号
-电平或脉冲信号，有效电平可配置
-输出
-xbar2etim_fault[14-1:0]
-XBAR到ETIM的fault信号
-电平或脉冲信号，有效电平可配置
-输出
-XBAR到SPWM的fault信号
-xbar2spwm_fault[16-1:0]
-电平或脉冲信号，有效电平可配置
-xbar2stm0_erg_trig_Osrc
-输出
-xbar2stm0_erg_trig_1src
-xbar2stm1_erg_trig_Osrc
-xbar2stml_erg_trig_1src
-xbar2stm2_erg_trig_Osrc
-xbar2stm2_erg_trig_1src
-xbar2stm3_erg_trig_Osrc
-XBAR到STM0~1的紧急触发源信号
-xbar2stm3_erg_trig_1src
-电平或脉冲信号，高有效
-xbar2stm4_erg_trig_Osrc
-xbar2stm4_erg_trig_1src
-xbar2stm5_erg_trig_Osrc
-xbar2stm5_erg_trig_1src
-输出
-OUTPUTXBAR到IOMUX的输出信号
-outputxbar_data[14-1:0]
-电平或脉冲信号，有效电平可配置
-输出
-OUTPUTXBAR到IOMUX的输出信号
-outputxbar_data_oe_n[14-1:0]
-使能
-电平或脉冲信号，低有效
-输出
-XBAR到HAC的CPUhalted信号
-cpuo_halted_sync
-dan
-同步电平信号，高有效
-cpul halted sync
-输出
-XBAR到HAC的CPUhalted信号
-11080F
-
-
-
----
-
-<!-- xbar-block:end BJDG1Zjxti -->
 
 ---
 
@@ -1408,181 +893,119 @@ XBAR到HAC的CPUhalted信号
 
 [查看原始PNG](../images/GameViewer_NY8OuaK0XB.png)
 
-> 来源顺序17；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序16；已首轮核对。
 
 <!-- xbar-block:start NY8OuaK0XB -->
-
 ### 【左页】
 
-输出
-inputxbar_data[16-1:0]
-INPUTXBAR到其他模块的输出信
-xbar2sarc_cludata[4-1:0]
-输出
-XBAR到SARC的CLU信号
-xbar2etim cludata[4-1:0]
-输出
-XBAR到ETIM的CLU信号
-输出
-xbar2etim_fault[14-1:0]
-XBAR到ETIM的fault信号
-输出
-XBAR到SPWM的fault信号
-xbar2spwm_fault[16-1:0]
-BIMCU huan
-xbar2stm0_erg_trig_Osrc
-输出
-xbar2stm0_erg_trig_1src
-xbar2stm1_erg_trig_Osrc
-xbar2stml_erg_trig_1src
-xbar2stm2_erg_trig_Osrc
-xbar2stm2_erg_trig_1src
-xbar2stm3_erg_trig_Osrc
-XBAR到STM0~5的紧急触发源信号
-xbar2stm3_erg_trig_1src
-xbar2stm4_erg_trig_Osrc
-xbar2stm4_erg_trig_1src
-xbar2stm5_erg_trig_0src
-ETMCUman11202
-BIMCU huan. 5
-xbar2stm5_erg_trig_1src
-输出
-outputxbar_data[14-1:0]
-OUTPUTXBAR到IOMUX的输出信
-输出
-outputxbar_data_oe_n[14-1:0]
-OUTPUTXBAR到IOMUX的输出信
-号使能
-输出
-cpuo_halted_sync
-XBAR到HAC的CPUhalted信号
-cpu1 halted sync
-输出
-XBAR到HAC的CPUhalted信号
-输入
-sysc testpin0_sel[7:0]
-TESTPINO选择信号
-sysc_testpin1_ sel[7:0]
-输入
-TESTPIN1选择信号
-输入
-BIMCU
-sysc testpin2_sel[7:0]
-TESTPIN2选择信号
-sysc testpin3 sel[7:0]
-输入
-TESTPIN3选择信号
-输出
-xbar testpin[4-1:0]
-XBAR到SYSC的TESTPIN信号
-输出
-xint_dma_req[4:0]
-xbar的中断脉冲被发送到DMAMUX
-作为触发源
-输出
-xint_dma_single[4:0]
-xbar的中断脉冲被发送到DMAMUX
-作为触发源
-输出
-errorsts
-flash err|sys _errIpt err
-muanli
-epwm2xbar_faultreal[11:0]
-输入
-srpwm fault real
-etim2xbar_fault_real [13:0]
-输入
-etim fault_real
-EIMCU
-xclkout
-输入
-crg_xclk
+表1续表：
 
+| 信号 | 输入／输出 | 说明 |
+|---|---|---|
+| inputxbar_data[16-1:0] | 输出 | INPUTXBAR到其他模块的输出信号 |
+| xbar2sarc_cludata[4-1:0] | 输出 | XBAR到SARC的CLU信号 |
+| xbar2etim_cludata[4-1:0] | 输出 | XBAR到ETIM的CLU信号 |
+| xbar2etim_fault[**14**-1:0] | 输出 | XBAR到ETIM的fault信号 |
+| xbar2spwm_fault[16-1:0] | 输出 | XBAR到SPWM的fault信号 |
+| xbar2stm0_erg_trig_0src<br>xbar2stm0_erg_trig_1src<br>xbar2stm1_erg_trig_0src<br>xbar2stm1_erg_trig_1src<br>xbar2stm2_erg_trig_0src<br>xbar2stm2_erg_trig_1src<br>xbar2stm3_erg_trig_0src<br>xbar2stm3_erg_trig_1src<br>xbar2stm4_erg_trig_0src<br>xbar2stm4_erg_trig_1src<br>xbar2stm5_erg_trig_0src<br>xbar2stm5_erg_trig_1src | 输出 | XBAR到STM0~5的紧急触发源信号 |
+| outputxbar_data[**14**-1:0] | 输出 | OUTPUT XBAR到IOMUX的输出信号 |
+| outputxbar_data_oe_n[**14**-1:0] | 输出 | OUTPUT XBAR到IOMUX的输出信号使能 |
+| cpu0_halted_sync | 输出 | XBAR到HAC的CPU halted信号 |
+| cpu1_halted_sync | 输出 | XBAR到HAC的CPU halted信号 |
+| sysc_testpin0_sel[7:0] | 输入 | TESTPIN0选择信号 |
+| sysc_testpin1_sel[7:0] | 输入 | TESTPIN1选择信号 |
+| sysc_testpin2_sel[7:0] | 输入 | TESTPIN2选择信号 |
+| sysc_testpin3_sel[7:0] | 输入 | TESTPIN3选择信号 |
+| xbar_testpin[4-1:0] | 输出 | XBAR到SYSC的TESTPIN信号 |
+| xint_dma_req[4:0] | 输出 | xbar的中断脉冲被发送到DMAMUX作为触发源 |
+| xint_dma_single[4:0] | 输出 | xbar的中断脉冲被发送到DMAMUX作为触发源 |
+| errorsts | 输出 | flash_err \| sys_err \| pt_err |
+| epwm2xbar_fault_real[**11**:0] | 输入 | srpwm fault_real |
+| etim2xbar_fault_real[**13**:0] | 输入 | etim fault_real |
+| xclkout | 输入 | crg_xclk |
 
 ### 【右页】
 
+## 4.2 接口信号特征
 
-#### 4.2接口信号特征
+**表2　XBAR接口信号特征**
 
-表2
-XBAR接口信号特征
-ETHCU huan, Ji
-信号
-输入输
-说明
-输入
-gpio_xbar_data[80-1:0]
-IO到XBAR的输入信号
-异步信号，电平或脉冲
-pflash_ecc_err
-pflash_bus_err
-EFC到XBAR的ECC和BUSerror信号
-输入
-dflash_ecc_err
-同步电平信号，高电平表示error有
-效，EFC软件清0
-dflash bus err
-SARCO/1到XBAR的看门狗超门限事
-件信号
-输入
-sarc2xbar_evt[9-1:0]
-同步脉冲信号，高有效，脉冲宽度取
-决于输入电压、参考比较值和对应
-ADC虚拟通道采样频率
-cmpc_ctriph[22*1-1:0]
-CMPC0~3到XBAR的比较结果信号，
-cmpc_ctripl[22*1-1:0]
-输入
-同步脉冲信号，高有效，最小脉冲宽
-cmpc_ctripouth[22*1-1:0]
-cmpc ctripoutl[22*1-1:0]
-度为1个CMPC时钟周期
-wdto_req_rec
-看门狗请求事件输入
-输入
-wdt1_req_rec
-同步电平信号，高有效
-输入
-CPU复位请求事件输入
-同步电平信号，高有效
-输入
-CPU死锁事件输入
-cpuo_lockup
-同步电平信号，高有效
-输入
-CPUhalted事件输入
-cpuo_halted
-异步电平信号，高有效
-输入
-cpuo_ecc_err
-CPUECC错误事件输入
-同步电平信号，高有效
-CPU复位请求事件输入
-输入
-cpul_rst_rec
-huan
-同步电平信号，高有效
-输入
-cpul_lockup
-CPU死锁事件输入
-同步电平信号，高有效
-CPUhalted事件输入
-cpul_halted
-输入
-异步电平信号，高有效
-dan
-CPUECC错误事件输入
-cpul_ecc_err
-输入
-同步电平信号，高有效
-167 Ⅱ
-11080F
+| 信号 | 输入／输出 | 说明 |
+|---|---|---|
+| gpio_xbar_data[**80**-1:0] | 输入 | IO到XBAR的输入信号<br>异步信号，电平或脉冲 |
+| pflash_ecc_err<br>pflash_bus_err<br>dflash_ecc_err<br>dflash_bus_err | 输入 | EFC到XBAR的ECC和BUS error信号<br>同步电平信号，高电平表示error有效，EFC软件清0 |
+| sarc2xbar_evt[**9**-1:0] | 输入 | SARC0/1到XBAR的看门狗超门限事件信号<br>同步脉冲信号，高有效，脉冲宽度取决于输入电压、参考比较值和对应ADC虚拟通道采样频率 |
+| cmpc_ctriph[22*1-1:0]<br>cmpc_ctripl[22*1-1:0]<br>cmpc_ctripouth[22*1-1:0]<br>cmpc_ctripoutl[22*1-1:0] | 输入 | CMPC0~3到XBAR的比较结果信号，同步脉冲信号，高有效，最小脉冲宽度为1个CMPC时钟周期 |
+| wdt0_req_rec<br>wdt1_req_rec | 输入 | 看门狗请求事件输入<br>同步电平信号，高有效 |
+| cpu0_rst_rec | 输入 | CPU复位请求事件输入<br>同步电平信号，高有效 |
+| cpu0_lockup | 输入 | CPU死锁事件输入<br>同步电平信号，高有效 |
+| cpu0_halted | 输入 | CPU halted事件输入<br>异步电平信号，高有效 |
+| cpu0_ecc_err | 输入 | CPU ECC错误事件输入<br>同步电平信号，高有效 |
+| cpu1_rst_rec | 输入 | CPU复位请求事件输入<br>同步电平信号，高有效 |
+| cpu1_lockup | 输入 | CPU死锁事件输入<br>同步电平信号，高有效 |
+| cpu1_halted | 输入 | CPU halted事件输入<br>异步电平信号，高有效 |
+| cpu1_ecc_err | 输入 | CPU ECC错误事件输入<br>同步电平信号，高有效 |
 
+> 转录注：表1 CMPC0~10、表2 CMPC0~3各自照录；sarc2xbar_evt红色9、SARC0/1说明及CMP22*1位宽不据此统一。表1信号errorsts的竖线表示式保留。
 
+<!-- xbar-block:end NY8OuaK0XB -->
 
 ---
 
-<!-- xbar-block:end NY8OuaK0XB -->
+## 原图：`GameViewer_BJDG1Zjxti.png`
+
+[查看原始PNG](../images/GameViewer_BJDG1Zjxti.png)
+
+> 来源顺序17；已首轮核对。
+
+<!-- xbar-block:start BJDG1Zjxti -->
+### 【左页】
+
+表2续表：
+
+| 信号 | 输入／输出 | 说明 |
+|---|---|---|
+| sram_ecc_err | 输入 | SRAM ECC错误事件输入<br>同步电平信号，高有效 |
+| can_ecc_err | 输入 | CAN ECC告警输入<br>同步电平信号，高有效 |
+| bus_timeout | 输入 | 总线超时事件输入<br>同步电平信号，高有效 |
+| cpu0_bus_err | 输入 | CPU总线错误事件输入<br>同步电平信号，高有效 |
+| cpu1_bus_err | 输入 | CPU总线错误事件输入<br>同步电平信号，高有效 |
+| clock_fault | 输入 | 时钟异常事件输入<br>同步电平信号，高有效 |
+| por_uv_warn | 输入 | a2d_pmu_borh<br>a2d_pmu_borl<br>同步电平信号，高有效 |
+| por_ov_warn | 输入 | a2d_pmu_ovrh<br>a2d_pmu_ovrl<br>同步电平信号，高有效 |
+| pwr_ocp_warn | 输入 | 过流告警输入<br>同步电平信号，高有效 |
+| power_err | 输入 | 供电异常告警输入<br>同步电平信号，高有效 |
+| temp_warn | 输入 | 过温告警输入<br>同步电平信号，高有效 |
+| stm_oc0_exp[6-1:0] | 输入 | STM0~1比较器0事件<br>同步脉冲信号，高有效，脉冲宽度软件可配，默认宽度为16个STM工作时钟周期 |
+| stm_oc1_exp[6-1:0] | 输入 | STM0~1比较器1事件<br>同步脉冲信号，高有效，脉冲宽度软件可配，默认宽度为16个STM工作时钟周期 |
+| stm_oc2_exp[6-1:0] | 输入 | STM0~1比较器2事件<br>同步脉冲信号，高有效，脉冲宽度软件可配，默认宽度为16个STM工作时钟周期 |
+| stm_oc3_exp[6-1:0] | 输入 | STM0~1比较器3事件<br>同步脉冲信号，高有效，脉冲宽度软件可配，默认宽度为16个STM工作时钟周期 |
+
+### 【右页】
+
+表2续表：
+
+| 信号 | 输入／输出 | 说明 |
+|---|---|---|
+| epwm_xbar_sync[4-1:0] | 输入 | SPWM到XBAR的SYNC输入<br>单周期同步脉冲信号，高有效 |
+| spwm_adcsoca<br>spwm_adcsocb | 输入 | SPWM到XBAR的ADC触发信号<br>单周期同步脉冲信号，高有效， |
+| etim_pwm_out[**14**-1:0] | 输入 | ETIM的PWM输出信号<br>电平或脉冲信号，高有效 |
+| etim_pwm_out_oe_n[**14**-1:0] | 输入 | ETIM的PWM输出使能信号<br>电平或脉冲信号，低有效 |
+| etim_sync_out_evt | 输入 | ETIM输出的同步信号<br>脉冲信号，脉冲宽度为16个eTimer时钟周期，高有效 |
+| inputxbar_data[16-1:0] | 输出 | INPUTXBAR到SRPWM的输出信号<br>电平或脉冲信号，有效电平可配置 |
+| xbar2sarc_cludata[4-1:0] | 输出 | XBAR到SARC的CLU信号<br>电平或脉冲信号，有效电平可配置 |
+| xbar2etim_cludata[4-1:0] | 输出 | XBAR到ETIM的CLU信号<br>电平或脉冲信号，有效电平可配置 |
+| xbar2etim_fault[**14**-1:0] | 输出 | XBAR到ETIM的fault信号<br>电平或脉冲信号，有效电平可配置 |
+| xbar2spwm_fault[16-1:0] | 输出 | XBAR到SPWM的fault信号<br>电平或脉冲信号，有效电平可配置 |
+| xbar2stm0_erg_trig_0src<br>xbar2stm0_erg_trig_1src<br>xbar2stm1_erg_trig_0src<br>xbar2stm1_erg_trig_1src<br>xbar2stm2_erg_trig_0src<br>xbar2stm2_erg_trig_1src<br>xbar2stm3_erg_trig_0src<br>xbar2stm3_erg_trig_1src<br>xbar2stm4_erg_trig_0src<br>xbar2stm4_erg_trig_1src<br>xbar2stm5_erg_trig_0src<br>xbar2stm5_erg_trig_1src | 输出 | XBAR到STM0~1的紧急触发源信号<br>电平或脉冲信号，高有效 |
+| outputxbar_data[**14**-1:0] | 输出 | OUTPUT XBAR到IOMUX的输出信号<br>电平或脉冲信号，有效电平可配置 |
+| outputxbar_data_oe_n[**14**-1:0] | 输出 | OUTPUT XBAR到IOMUX的输出信号使能<br>电平或脉冲信号，低有效 |
+| cpu0_halted_sync | 输出 | XBAR到HAC的CPU halted信号<br>同步电平信号，高有效 |
+| cpu1_halted_sync | 输出 | XBAR到HAC的CPU halted信号 |
+
+> 转录注：右下cpu1_halted_sync的特征说明续到下一张左页；STM说明在表1写0~6/0~5、此处写0~1，原信号仍列6组，分别照录，不替作者修订。
+
+<!-- xbar-block:end BJDG1Zjxti -->
 
 ---
 
@@ -2743,6 +2166,19 @@ fps
 | XBAR-C23 | 3.4／SPEC21源表 | 列3的0～31全为红色Reserved；列1及列2的红色Reserved逐格见正文 | [GameViewer_x1UNjKA5fU.png](../images/GameViewer_x1UNjKA5fU.png) | 表内红字及修订线；ADC C等黑字项不随PWM表删除 |
 | XBAR-C24 | 3.4／SPEC25 | 支持ETIM XBAR输出14bit，分别连接到14个ETIMER通道 | [GameViewer_x1UNjKA5fU.png](../images/GameViewer_x1UNjKA5fU.png) | 14bit/14红字 |
 | XBAR-C25 | 3.4／SPEC26 | 支持软件可配置14bit CFG_ETXB_SWx寄存器，分别对应14个ETIMER通道XBAR选择 | [GameViewer_x1UNjKA5fU.png](../images/GameViewer_x1UNjKA5fU.png) | 两处14红字 |
+| XBAR-C26 | 3.5 OUTPUT XBAR：ET6601修改点 | 去除SDFM通道SD*FLT*_EVT* | [GameViewer_qZ6VVLkkSM.png](../images/GameViewer_qZ6VVLkkSM.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C27 | 3.5 OUTPUT XBAR：ET6601修改点 | 去除CLB*_OUT* | [GameViewer_qZ6VVLkkSM.png](../images/GameViewer_qZ6VVLkkSM.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C28 | 3.5 OUTPUT XBAR：ET6601修改点 | 去除ADCC_EVT* | [GameViewer_qZ6VVLkkSM.png](../images/GameViewer_qZ6VVLkkSM.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C29 | 3.5 OUTPUT XBAR：ET6601修改点 | 去除EPWM12~17_FAULTREAL | [GameViewer_qZ6VVLkkSM.png](../images/GameViewer_qZ6VVLkkSM.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C30 | 3.5 OUTPUT XBAR：ET6601修改点 | 新增ETIMOUT12/13和ETIM12/13_FAULTREAL | [GameViewer_qZ6VVLkkSM.png](../images/GameViewer_qZ6VVLkkSM.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C31 | XBAR.SPEC【27】表0～22 | CMP_OUT16～22所在列改Reserved；第1列偶数0～22及第2列奇数1～21为红色Reserved；第3列1/3/5/7为红色Reserved。 | [GameViewer_qZ6VVLkkSM.png](../images/GameViewer_qZ6VVLkkSM.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C32 | XBAR.SPEC【27】表23～63 | 第0列23～31/44～49和第1列24/26/28/30为红色Reserved；第2列44～47为红色ETIM12_FAULTREAL、ETIM13_FAULTREAL、ETIMOUT12、ETIMOUT13。 | [GameViewer_064VlD8fJy.png](../images/GameViewer_064VlD8fJy.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C33 | XBAR.SPEC【32】 | 输出14bit，连接到IOMUX。 | [GameViewer_064VlD8fJy.png](../images/GameViewer_064VlD8fJy.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C34 | XBAR.SPEC【33】 | 14bit CFG_OPXB_SWx，分别对应14个OUTPUT XBAR输出。 | [GameViewer_064VlD8fJy.png](../images/GameViewer_064VlD8fJy.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C35 | 表1接口列表：总线及输入 | APB总线；gpio_xbar_data[80-1:0]；sarc2xbar_evt[9-1:0]；etim_pwm_out[14-1:0]、etim_pwm_out_oe_n[14-1:0]。 | [GameViewer_7vrsONkjgD.png](../images/GameViewer_7vrsONkjgD.png) | APB及80/9/14原字为红色；不把现有80据颜色重复推断为新扩容 |
+| XBAR-C36 | 表1接口列表：输出／fault | xbar2etim_fault[14-1:0]；outputxbar_data[14-1:0]、outputxbar_data_oe_n[14-1:0]；epwm2xbar_fault_real[11:0]、etim2xbar_fault_real[13:0]。 | [GameViewer_NY8OuaK0XB.png](../images/GameViewer_NY8OuaK0XB.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C37 | 表2接口信号特征：输入 | gpio_xbar_data[80-1:0]、sarc2xbar_evt[9-1:0]。 | [GameViewer_NY8OuaK0XB.png](../images/GameViewer_NY8OuaK0XB.png) | 原80/9为红字；表2出现位置，与表1分别记录 |
+| XBAR-C38 | 表2接口信号特征：ETIM／输出 | etim_pwm_out[14-1:0]、etim_pwm_out_oe_n[14-1:0]、xbar2etim_fault[14-1:0]、outputxbar_data[14-1:0]、outputxbar_data_oe_n[14-1:0]。 | [GameViewer_BJDG1Zjxti.png](../images/GameViewer_BJDG1Zjxti.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
 
 ## 第三部分：局部缺口与原文差异
 

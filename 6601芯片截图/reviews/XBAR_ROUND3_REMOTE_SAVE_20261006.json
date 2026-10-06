@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-06",
+  "branch": "docs/restore-6601-screenshots",
+  "round": 3,
+  "input_head": "32b34937fbf402f4f7da318e3cab4582bf79e5b7",
+  "content_commit": "8cf93e9b1a32262fb46bfbd87621d11b41c9aca2",
+  "remote_head_at_readback": "8cf93e9b1a32262fb46bfbd87621d11b41c9aca2",
+  "publication_status": "remote_saved_and_git_fetch_byte_verified",
+  "all_target_bytes_match": true,
+  "new_range": [
+    12,
+    17
+  ],
+  "xbar_first_pass": 17,
+  "repository_first_pass": 141,
+  "changes": 38,
+  "gaps": 3,
+  "files": {
+    "6601芯片截图/sarc/sarc_xbar/docs/SARC_XBAR设计文档.md": {
+      "blob": "bceadca36f23901e614615c5fb393a409790c256",
+      "sha256": "2b44635e6f4180b1fa70d79a36c12d062fbcc296ea1f53b47a680607ea831474",
+      "bytes": 72338
+    },
+    "6601芯片截图/sarc/sarc_xbar/XBAR_6601修改点总览.md": {
+      "blob": "2a13b8e74adb81ee357c3448ea2c7418a9149c28",
+      "sha256": "a1110d3716553a67f46c1209edf5e5511d75ac4932eecaf55c7355b740b8577e",
+      "bytes": 8991
+    },
+    "6601芯片截图/sarc/sarc_xbar/XBAR_提取与验收报告.md": {
+      "blob": "2c676b999098add504ae13ae48cc99bbf9e3f395",
+      "sha256": "7722885a909cfb8f1c4e32e60be40cb47a6df0c3e73a9a4bd66a54110be5de2d",
+      "bytes": 3042
+    },
+    "6601芯片截图/reviews/XBAR_IMAGE_LEDGER_20261006.json": {
+      "blob": "68e3b28e6d89174505908822ffbe7eed3bcd65ff",
+      "sha256": "423c1c2f7d162045a0af9f4da6a4c0ab3d973e83133be1bb007df0ec0da18981",
+      "bytes": 24082
+    },
+    "6601芯片截图/RESTORE_PROGRESS.md": {
+      "blob": "69a87f37c1c7c775c2360bba851f33f062836238",
+      "sha256": "53e1dea5aa92227b2c88f10adc0240665d607cd5d7a366cf0b42c22434d4b3b1",
+      "bytes": 15515
+    },
+    "NEXT_CHAT_HANDOFF.md": {
+      "blob": "967715ca90dfc160e1273a0d0cd345913ccb9cc8",
+      "sha256": "be67838a3100cc80d37d578b59de2087bf0e1b2a9d633173a26bdce833112425",
+      "bytes": 2734
+    },
+    "6601芯片截图/reviews/XBAR_ROUND3_REVIEW_20261006.md": {
+      "blob": "92af2586c3793eb1d5d6aa12bf91d6f3cefbc89f",
+      "sha256": "e1a82480fb7be8dbdc1a8c0548d1a9f96010d828c775a0310448202cad5909d2",
+      "bytes": 1236
+    }
+  },
+  "temporary_payload_removed": true,
+  "temporary_workflow_removed": false,
+  "non_force_push": true,
+  "other_ip_technical_bodies_unchanged": true,
+  "final_text_acceptance": false,
+  "hardware_test_performed": false
+}

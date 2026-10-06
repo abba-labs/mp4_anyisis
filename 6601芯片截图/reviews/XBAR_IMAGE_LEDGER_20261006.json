@@ -341,6 +341,51 @@
         "BJDG1Zjxti"
       ],
       "kind": "原文ET6601段红字／对应红色修改标记；只归集本位置"
+    },
+    {
+      "id": "XBAR-C39",
+      "section": "表2末尾",
+      "text": "epwm2xbar_fault_real[11:0]、etim2xbar_fault_real[13:0]为红色整行信号名。",
+      "sources": [
+        "XqmNqCU6Lw"
+      ],
+      "kind": "原图红字修改位置；不按重复出现位置重复计算硬件实例"
+    },
+    {
+      "id": "XBAR-C40",
+      "section": "4.3信号对应关系",
+      "text": "ETIMOUT12→etim_pwm_out[12]；ETIMOUT13→etim_pwm_out[13]；两行输入信号。",
+      "sources": [
+        "LS0PAMbqAJ"
+      ],
+      "kind": "原图红字修改位置；不按重复出现位置重复计算硬件实例"
+    },
+    {
+      "id": "XBAR-C41",
+      "section": "4.3信号对应关系",
+      "text": "OUTPUT_XBR12→outputxbar_data[12]；OUTPUT_XBR13→outputxbar_data[13]；output_xbar的输出信号。",
+      "sources": [
+        "nneQMiNCGh"
+      ],
+      "kind": "原图红字修改位置；不按重复出现位置重复计算硬件实例"
+    },
+    {
+      "id": "XBAR-C42",
+      "section": "4.3信号对应关系",
+      "text": "ETIM12_FAULTREAL→etim2xbar_fault_real[12]；ETIM13_FAULTREAL→etim2xbar_fault_real[13]。",
+      "sources": [
+        "nneQMiNCGh"
+      ],
+      "kind": "原图红字修改位置；不按重复出现位置重复计算硬件实例"
+    },
+    {
+      "id": "XBAR-C43",
+      "section": "5.2 PWM XBAR",
+      "text": "一组12bit同步信号，一组12bit异步信号；与INPUT XBAR合并为2组18bit信号。",
+      "sources": [
+        "V3t3Z6WQYi"
+      ],
+      "kind": "原图红字修改位置；不按重复出现位置重复计算硬件实例"
     }
   ],
   "gaps": [
@@ -364,6 +409,13 @@
         "Z7r3yKz86a"
       ],
       "detail": "PWM ET6601清单第5项位置可见5）及Delete / 6 (0#~5#)，未见可确定功能语句；原文内容与修订浮层边界待同版原件确认。其余五项按原编号保存。"
+    },
+    {
+      "id": "XBAR-U04",
+      "sources": [
+        "b4H5jcq6ED"
+      ],
+      "detail": "5.1左侧6002/3101&6003对比图的同步/滤波框内字、两个锁存框完整细字；图2下组GPIO端点完整索引与各mux编号/配置细下标未逐字符确认。可辨GPIO[0..3]/GPIO[N]、极性/同步/滤波、锁存1/2、clear/edg_sel/oe/pol_sel及U0/U1/U15等标签已录。只影响这些图内细节，不能用80输入正文反填。"
     }
   ],
   "history": [
@@ -390,6 +442,14 @@
         17
       ],
       "notes": "核对OUTPUT XBAR的ET6801历史13项与6601红字5项，完整恢复SPEC27的64行×4选项表及28～42、两条约束。表1与表2接口列表分别保留全行、空格、合并单元格关系和跨图续句。已纠正候选NY/BJ颠倒：7vrs→NY(表1尾/4.2开篇)→BJ(表2续)；正文顺序不依赖文件名。INPUT80、CMPC0~10/0~3、STM0~6/0~5/0~1、仍存在的CLB5_OUT13等原文差异照留。所有前11张正文块逐字节保留；页边修订线与正文红字区分，不猜修订前值。本批六张全部可辨主体已录，无新增整组字形缺口，旧U01～U03仍开放。"
+    },
+    {
+      "round": 4,
+      "range": [
+        18,
+        22
+      ],
+      "notes": "补完表2尾部与电平/脉冲两条注释，完整恢复4.3信号对应表的CMP、ADC、ETIM、INPUT、SRPWM_SYNC、错误、STM、CLU、OUTPUT、fault及XCLK所有可辨行；没有按规律替换原文差异。原表CPU1/CPU2、CMP_OUT之后写CMP_EVT16～21、ADCSOCAO/ADCSOCBO等照录。恢复5.1异步静态配置与GPIO MUXOR混用约束，以及5.2两组12bit合并为2组18bit；保留图2/3和6002/3101/6003历史对比图。新增XBAR-U04只定位图2及历史对比图细字，不阻塞可辨正文；前17张块和后5张历史块保持，NY/BJ纠正顺序继续保留。"
     }
   ],
   "images": [
@@ -575,8 +635,8 @@
       "git_blob": "2a982f04420742fe19a999b2d3a43b341286c6c1",
       "sha256": "bc1daa37241fb5bbb7f6c47c92cf404303f8f0c0f4d2ec42dee0bc5cc877b89b",
       "bytes": 1055693,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -585,8 +645,8 @@
       "git_blob": "c562a21fc29c62db3717821e47bbb13e9015f842",
       "sha256": "9473d9efc1ec85cfaf986630244bda0672df101822b9a1df117cbd98f0f08a37",
       "bytes": 1133661,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -595,8 +655,8 @@
       "git_blob": "687ab84d9e02799049852f58c91a5949488d4561",
       "sha256": "a225c6e4107122f7b80883ede9bc26ff2f4a2c9b419e06f38b591dd88527429e",
       "bytes": 1158382,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -605,9 +665,11 @@
       "git_blob": "a435289c03a306f6cb78ccd4c0ef3656e53db32b",
       "sha256": "0cf0302daac7ce5cfecf37960204ad2528c2a0f5d6963a2d08c20c03ac4f8712",
       "bytes": 999818,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
-      "gaps": []
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
+      "gaps": [
+        "XBAR-U04"
+      ]
     },
     {
       "order": 22,
@@ -615,8 +677,8 @@
       "git_blob": "00bf098512b55c5f9696febdc61b1f2cb876af35",
       "sha256": "62771057a6a5a16d0736d5a961bd2ee2a1b2fdf8b27d4b7fc2f87cd13592a208",
       "bytes": 866664,
-      "status": "legacy_not_visually_reviewed",
-      "order_status": "candidate",
+      "status": "first_pass",
+      "order_status": "confirmed_from_source_content",
       "gaps": []
     },
     {
@@ -671,12 +733,12 @@
     }
   ],
   "date": "2026-10-06",
-  "round": 3,
+  "round": 4,
   "branch": "docs/restore-6601-screenshots",
-  "input_head": "32b34937fbf402f4f7da318e3cab4582bf79e5b7",
+  "input_head": "b112c1275e93c76d5bd6c1dfcce5e088b21bbc5c",
   "source_commit": "d80a74e83e4bf942905844e61efd5d169e37c815",
-  "first_pass": 17,
+  "first_pass": 22,
   "total": 27,
-  "repository_first_pass": 141,
+  "repository_first_pass": 146,
   "final_text_acceptance": false
 }

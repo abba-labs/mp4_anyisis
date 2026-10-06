@@ -1,10 +1,10 @@
 # ET6601 XBAR模块需求规格与设计方案
 
 > 独立XBAR原文；旧目录和文件名中的SARC仅为历史路径，不属于SARC正文，也不是总线矩阵规格。
-> 2026-10-06，第3批。XBAR前17/27张已完成首轮原图核对；全仓141/200。38条修改来源位置记录，3组局部缺口；数量不是独立功能数或准确率。
+> 2026-10-06，第4批。XBAR前22/27张已完成首轮原图核对；全仓146/200。43条修改来源位置记录，4组局部缺口；数量不是独立功能数或准确率。
 > 一份原文一份Markdown。先左后右，按章节、跨页句与续表衔接；原文矛盾、拼写、空白和删除线保留。未核对区仅保留历史转录，不作为准确原文使用。
 > 仅核对本目录原PNG；ET60157/ET6801手册、驱动、BootROM不用于补字。红色修改结合本原文明确ET6601段落判断；目录蓝色超链接和历史图配色不直接判为6601修改。
-> 最新逐图台账：../../../reviews/XBAR_IMAGE_LEDGER_20261006.json；正式保存与回读见XBAR_ROUND3_REMOTE_SAVE_20261006.json。
+> 最新逐图台账：../../../reviews/XBAR_IMAGE_LEDGER_20261006.json；正式保存与回读见XBAR_ROUND4_REMOTE_SAVE_20261006.json。
 
 ## 第一部分：原始文档逐图还原
 
@@ -1013,193 +1013,88 @@ XBAR.SPEC【27】信号源选择表续表：
 
 [查看原始PNG](../images/GameViewer_XqmNqCU6Lw.png)
 
-> 来源顺序18；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序18；已首轮核对。
 
 <!-- xbar-block:start XqmNqCU6Lw -->
-
 ### 【左页】
 
-同步电平信号，高有效
-输出
-errorsts
-flash err sys err pt err
-epwm2xbar_fault_real[11:0]
-输入
-srpwm
-输入
-etim2xbar_fault_real [13:0]
-etim
-xclk_out
-crg_ xclk
-BIMCU huan
-注:
-1、
-电平信号为常高或常低信号，或为从0到1或从1到0翻转一次信
-号，或为软件配置控制信号
-2、脉冲信号为硬件控制0-1-0信号（高脉冲信号）或1-0-1信号（低
-脉冲信号），脉冲宽度固定或软件可配置，或依赖其他输入
+表2续表（首行说明接上一张cpu1_halted_sync）：
 
-#### 4.3信号对应关系
+| 信号 | 输入／输出 | 说明 |
+|---|---|---|
+|  |  | 同步电平信号，高有效 |
+| errorsts | 输出 | flash_err \| sys_err \| pt_err |
+| **epwm2xbar_fault_real[11:0]** | 输入 | srpwm |
+| **etim2xbar_fault_real[13:0]** | 输入 | etim |
+| xclk_out | 输入 | crg_xclk |
 
-BTNCI Tua, 11 902F-10-02-31:59
-BIMCU
-信号标识
-信号名
-信号来源说明
-cmpe_ctriph[0]
-CMP_EVTO
-输入信号
-CMP_EVT1
-cmpc_ctripl[0]
-输入信号
-CMP_EVT2
-cmpc_ctriph[1]
-输入信号
-CMP_EVT3
-cmpc_ctripl[]
-输入信号
-CMP_EVT4
-cmpc_ctriph[2]
-输入信号
-CMP_EVT5
-cmpc_ctripl[2]
-输入信号
-输入信号
-CMP EVT6
-cmpc_ctriph[3]
-CMP_EVT7
-cmpc_ctrip[3]
-输入信号
-cmpc_ctriph[4]
-CMP_EVT8
-输入信号
-CMP_EVT9
-cmpc_ctripl[4]
-输入信号
-CMP_EVT10
-cmpc_ctriph[5]
-输入信号
+注：
 
+1、电平信号为常高或常低信号，或为从0到1或从1到0翻转一次信号，或为软件配置控制信号
+
+2、脉冲信号为硬件控制0-1-0信号（高脉冲信号）或1-0-1信号（低脉冲信号），脉冲宽度固定或软件可配置，或依赖其他输入
+
+## 4.3 信号对应关系
+
+| 信号标识 | 信号名 | 信号来源说明 |
+|---|---|---|
+| CMP_EVT0 | cmpc_ctriph[0] | 输入信号 |
+| CMP_EVT1 | cmpc_ctripl[0] | 输入信号 |
+| CMP_EVT2 | cmpc_ctriph[1] | 输入信号 |
+| CMP_EVT3 | cmpc_ctripl[1] | 输入信号 |
+| CMP_EVT4 | cmpc_ctriph[2] | 输入信号 |
+| CMP_EVT5 | cmpc_ctripl[2] | 输入信号 |
+| CMP_EVT6 | cmpc_ctriph[3] | 输入信号 |
+| CMP_EVT7 | cmpc_ctripl[3] | 输入信号 |
+| CMP_EVT8 | cmpc_ctriph[4] | 输入信号 |
+| CMP_EVT9 | cmpc_ctripl[4] | 输入信号 |
+| CMP_EVT10 | cmpc_ctriph[5] | 输入信号 |
 
 ### 【右页】
 
-CMP_EVT11
-cmpc_ctripl[5]
-输入信号
-CMP_EVT12
-cmpc_ctriph[6]
-输入信号
-cmpc_ctripl[6]
-CMP_EVT13
-输入信号
-CMP_EVT14
-cmpc_ctriph[7]
-输入信号
-CMP EVT15
-cmpc ctripl[7]
-输入信号
-cmpc_ctriph[8]
-CMP_EVT16
-输入信号
-CMP_EVT17
-cmpc_ctripl[8]
-输入信号
-CMP_EVT18
-cmpc_ctriph[9]
-输入信号
-cmpc_ctripl[9]
-CMP_EVT19
-输入信号
-CMP_EVT20
-cmpc_ctriph[10]
-输入信号
-CMP_EVT21
-cmpc_ctripl[10]
-输入信号
-CMP_EVT0_OR_EVT1
-cmpe_ctriph_or_1[0]
-cmpc_ctriph[0] | cmpc_ctripl[0]
-CMP_EVT2_OR_EVT3
-cmpc_ctriph_or_[1]
-cmpc_ctriph[1] cmpc_ctripl[1]
-CMP EVT4_OR_EVT5
-cmpc_ctriph or [2]
-cmpc_ctriph[2] cmpc_ctripl[2]
-CMP_EVT6_OR_EVT7
-cmpc_ctriph_or_l[3]
-cmpc_ctriph[3] cmpc_ctripl[3]
-CMP_EVT8_OR_EVT9
-cmpc_ctriph_or_[4]
-cmpc_ctriph[4] cmpc_ctripl[4]
-cmpc_ctriph_or_I[5]
-CMP_EVT10_OR_EVT11
-cmpc_ctriph[5] I cmpc_ctripl[5]
-cmpc_ctriph_or_[6]
-CMP_EVT12_OR_EVT13
-cmpc_ctriph[6] | cmpc_ctripl[6]
-cmpc_ctriph_or_I[7]
-CMP_EVT14_OR_EVT15
-cmpc_ctriph[7] | cmpc_ctripl[7]
-cmpc_ctriph_or_I[8]
-cmpc_ctriph[8]]
-CMP EVT16 OR EVT17
-cmpc_ctripl[8]
-cmpc_ctriph_or_[9]
-cmpc_ctriph[9]] cmpc_ctripl[9]
-CMP_EVT18_OR_EVT19
-cmpc_ctriph_or_I[10]
-CMP_EVT20_OR_EVT21
-sarc2xbar_evt[0]
-ADCA_EVTO
-输入信号
-sarc2xbar_evt[1]
-ADCA_EVT1
-输入信号
-sarc2xbar_evt[2]
-ADCA_EVT2
-输入信号
-sarc2xbar_evt[3]
-ADCA_EVT3
-输入信号
-sarc2xbar_ev[4]
-ADCB_EVTO
-输入信号
-sarc2xbar_evt[5]
-ADCB_EVT1
-输入信号
-ADCB_EVT2
-sarc2xbar_evt[6]
-输入信号
-ADCB_EVT3
-sarc2xbar_evt[7]
-输入信号
-etim_pwm_out[0]
-ETIMOUTO
-输入信号
-ETIMOUT1
-etim_pwm_out[1]
-输入信号
-ETIMOUT2
-etim pwm_out[2]
-输入信号
-etim_pwm_out[3]
-ETIMOUT3
-输入信号
-ETIMOUT4
-输入信号
-etim pwm out[4]
-输入信号
-etim_pwm_out[5]
-ETIMOUT5
-输入信号
-etim pwm out[6]
-ETIMOUT6
-fps
-12080F
+4.3续表：
 
+| 信号标识 | 信号名 | 信号来源说明 |
+|---|---|---|
+| CMP_EVT11 | cmpc_ctripl[5] | 输入信号 |
+| CMP_EVT12 | cmpc_ctriph[6] | 输入信号 |
+| CMP_EVT13 | cmpc_ctripl[6] | 输入信号 |
+| CMP_EVT14 | cmpc_ctriph[7] | 输入信号 |
+| CMP_EVT15 | cmpc_ctripl[7] | 输入信号 |
+| CMP_EVT16 | cmpc_ctriph[8] | 输入信号 |
+| CMP_EVT17 | cmpc_ctripl[8] | 输入信号 |
+| CMP_EVT18 | cmpc_ctriph[9] | 输入信号 |
+| CMP_EVT19 | cmpc_ctripl[9] | 输入信号 |
+| CMP_EVT20 | cmpc_ctriph[10] | 输入信号 |
+| CMP_EVT21 | cmpc_ctripl[10] | 输入信号 |
+| CMP_EVT0_OR_EVT1 | cmpc_ctriph_or_l[0] | cmpc_ctriph[0] \| cmpc_ctripl[0] |
+| CMP_EVT2_OR_EVT3 | cmpc_ctriph_or_l[1] | cmpc_ctriph[1] \| cmpc_ctripl[1] |
+| CMP_EVT4_OR_EVT5 | cmpc_ctriph_or_l[2] | cmpc_ctriph[2] \| cmpc_ctripl[2] |
+| CMP_EVT6_OR_EVT7 | cmpc_ctriph_or_l[3] | cmpc_ctriph[3] \| cmpc_ctripl[3] |
+| CMP_EVT8_OR_EVT9 | cmpc_ctriph_or_l[4] | cmpc_ctriph[4] \| cmpc_ctripl[4] |
+| CMP_EVT10_OR_EVT11 | cmpc_ctriph_or_l[5] | cmpc_ctriph[5] \| cmpc_ctripl[5] |
+| CMP_EVT12_OR_EVT13 | cmpc_ctriph_or_l[6] | cmpc_ctriph[6] \| cmpc_ctripl[6] |
+| CMP_EVT14_OR_EVT15 | cmpc_ctriph_or_l[7] | cmpc_ctriph[7] \| cmpc_ctripl[7] |
+| CMP_EVT16_OR_EVT17 | cmpc_ctriph_or_l[8] | cmpc_ctriph[8] \| cmpc_ctripl[8] |
+| CMP_EVT18_OR_EVT19 | cmpc_ctriph_or_l[9] | cmpc_ctriph[9] \| cmpc_ctripl[9] |
+| CMP_EVT20_OR_EVT21 | cmpc_ctriph_or_l[10] | cmpc_ctriph[10] \| cmpc_ctripl[10] |
+| ADCA_EVT0 | sarc2xbar_evt[0] | 输入信号 |
+| ADCA_EVT1 | sarc2xbar_evt[1] | 输入信号 |
+| ADCA_EVT2 | sarc2xbar_evt[2] | 输入信号 |
+| ADCA_EVT3 | sarc2xbar_evt[3] | 输入信号 |
+| ADCB_EVT0 | sarc2xbar_evt[4] | 输入信号 |
+| ADCB_EVT1 | sarc2xbar_evt[5] | 输入信号 |
+| ADCB_EVT2 | sarc2xbar_evt[6] | 输入信号 |
+| ADCB_EVT3 | sarc2xbar_evt[7] | 输入信号 |
+| ETIMOUT0 | etim_pwm_out[0] | 输入信号 |
+| ETIMOUT1 | etim_pwm_out[1] | 输入信号 |
+| ETIMOUT2 | etim_pwm_out[2] | 输入信号 |
+| ETIMOUT3 | etim_pwm_out[3] | 输入信号 |
+| ETIMOUT4 | etim_pwm_out[4] | 输入信号 |
+| ETIMOUT5 | etim_pwm_out[5] | 输入信号 |
+| ETIMOUT6 | etim_pwm_out[6] | 输入信号 |
 
-
----
+> 转录注：表2的xclk_out与表1的xclkout按各处原文保留；逻辑或表达式中的竖线不是新表格列。
 
 <!-- xbar-block:end XqmNqCU6Lw -->
 
@@ -1209,248 +1104,96 @@ fps
 
 [查看原始PNG](../images/GameViewer_LS0PAMbqAJ.png)
 
-> 来源顺序19；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序19；已首轮核对。
 
 <!-- xbar-block:start LS0PAMbqAJ -->
-
 ### 【左页】
 
-ETIMOUT7
-etim pwm_out[7]
-输入信号
-ETIMOUT8
-etim_pwm_out[8]
-输入信号
-ETIMOUT9
-etim_pwm_out[9]
-输入信号
-ETIMOUT10
-etim_pwm_out[10]
-输入信号
-ETIMOUT11
-etim pwm _out[11]
-输入信号
-etim_pwm_out[12]
-输入信号
-ETIMOUT12
-BIMCU huan
-ETIMOUT13
-etim_pwn_out[13]
-输入信号
-inxb _ dout[0]
-INPUTXBAR0
-INPUTXBAR 输出
-inxb_ dout[1]
-INPUTXBAR1
-INPUTXBAR输出
-INPUTXBAR2
-inxb_ dout[2]
-INPUTXBAR 输出
-INPUTXBAR3
-inxb dout[3]
-INPUTXBAR输出
-INPUTXBAR4
-inxb_ dout[4]
-INPUTXBAR输出
-inxb_ dout[5]
-INPUTXBAR5
-INPUTXBAR 输出
-INPUTXBAR6
-inxb dout[6]
-INPUTXBAR输出
-INPUTXBAR 输出
-inxb_dout[7]
-INPUTXBAR7
-BTMCU S
-inxb_ dout[8]
-INPUTXBAR8
-INPUTXBAR输出
-inxb_ dout[9]
-INPUTXBAR9
-INPUTXBAR输出
-inxb_dout[10]
-INPUTXBAR10
-INPUTXBAR输出
-INPUTXBAR11
-inxb_ dout[11]
-INPUTXBAR输出
-inxb dout[12]
-INPUTXBAR12
-INPUTXBAR 输出
-inxb_dout[13]
-INPUTXBAR13
-INPUTXBAR 输出
-inxb_ dout[14]
-INPUTXBAR14
-INPUTXBAR输出
-inxb_ dout[15]
-INPUTXBAR15
-INPUTXBAR 输出
-SRPWM_XBAR_SYNCO
-epwm_xbar_sync[0]
-输入信号
-BIMCU
-SRPWM_XBAR_SYNC1
-epwm_xbar_sync[1]
-输入信号
-epwm_xbar_sync[2]
-SRPWM XBAR_SYNC2
-输入信号
-epwm_xbar_sync[3]
-SRPWM_XBAR_SYNC3
-输入信号
-ADCSOCAO
-spwm_adcsoca
-输入信号
-ADCSOCBO
-spwm_adcsocb
-输入信号
-EXTSYNCOUT
-etim_sync_out_evt
-输入信号
-cpul _halt
-CPU1_HALT
-输入同步后信号
-CPU2_HALT
-cpu2_ halt
-输入同步后信号
-FLASH_ERR
-flash err
-内部产生，参见错误列表
-EIMCU
-SYS_ERR
-sys_err
-内部产生，参见错误列表
-PT ERR
-pt err
-内部产生，参见错误列表
-ERRORSTS
-errorsts
-flash_err sys_err |pt_err
-CFG ETXB SWx
-cfg etxb sw[*]
-配置信号，*对应每个输出bit
+4.3信号对应关系续表（加粗单元格对应原图红字）：
 
+| 信号标识 | 信号名 | 信号来源说明 |
+|---|---|---|
+| ETIMOUT7 | etim_pwm_out[7] | 输入信号 |
+| ETIMOUT8 | etim_pwm_out[8] | 输入信号 |
+| ETIMOUT9 | etim_pwm_out[9] | 输入信号 |
+| ETIMOUT10 | etim_pwm_out[10] | 输入信号 |
+| ETIMOUT11 | etim_pwm_out[11] | 输入信号 |
+| **ETIMOUT12** | **etim_pwm_out[12]** | **输入信号** |
+| **ETIMOUT13** | **etim_pwm_out[13]** | **输入信号** |
+| INPUTXBAR0 | inxb_dout[0] | INPUTXBAR 输出 |
+| INPUTXBAR1 | inxb_dout[1] | INPUTXBAR 输出 |
+| INPUTXBAR2 | inxb_dout[2] | INPUTXBAR 输出 |
+| INPUTXBAR3 | inxb_dout[3] | INPUTXBAR 输出 |
+| INPUTXBAR4 | inxb_dout[4] | INPUTXBAR 输出 |
+| INPUTXBAR5 | inxb_dout[5] | INPUTXBAR 输出 |
+| INPUTXBAR6 | inxb_dout[6] | INPUTXBAR 输出 |
+| INPUTXBAR7 | inxb_dout[7] | INPUTXBAR 输出 |
+| INPUTXBAR8 | inxb_dout[8] | INPUTXBAR 输出 |
+| INPUTXBAR9 | inxb_dout[9] | INPUTXBAR 输出 |
+| INPUTXBAR10 | inxb_dout[10] | INPUTXBAR 输出 |
+| INPUTXBAR11 | inxb_dout[11] | INPUTXBAR 输出 |
+| INPUTXBAR12 | inxb_dout[12] | INPUTXBAR 输出 |
+| INPUTXBAR13 | inxb_dout[13] | INPUTXBAR 输出 |
+| INPUTXBAR14 | inxb_dout[14] | INPUTXBAR 输出 |
+| INPUTXBAR15 | inxb_dout[15] | INPUTXBAR 输出 |
+| SRPWM_XBAR_SYNC0 | epwm_xbar_sync[0] | 输入信号 |
+| SRPWM_XBAR_SYNC1 | epwm_xbar_sync[1] | 输入信号 |
+| SRPWM_XBAR_SYNC2 | epwm_xbar_sync[2] | 输入信号 |
+| SRPWM_XBAR_SYNC3 | epwm_xbar_sync[3] | 输入信号 |
+| ADCSOCAO | spwm_adcsoca | 输入信号 |
+| ADCSOCBO | spwm_adcsocb | 输入信号 |
+| EXTSYNCOUT | etim_sync_out_evt | 输入信号 |
+| CPU1_HALT | cpu1_halt | 输入同步后信号 |
+| CPU2_HALT | cpu2_halt | 输入同步后信号 |
+| FLASH_ERR | flash_err | 内部产生，参见错误列表 |
+| SYS_ERR | sys_err | 内部产生，参见错误列表 |
+| PT_ERR | pt_err | 内部产生，参见错误列表 |
+| ERRORSTS | errorsts | flash_err \| sys_err \| pt_err |
+| CFG_ETXB_SWx | cfg_etxb_sw[*] | 配置信号，*对应每个输出bit |
 
 ### 【右页】
 
-CMP_OUTO
-cmpc_ctripouth[0]
-输入信号
-CMP_OUT1
-cmpc_ctripout[0]
-输入信号
-CMP_OUT2
-cmpc_ctripouth[1]
-输入信号
-CMP_OUT3
-cmpc_ctripout[1]
-输入信号
-CMP OUT4
-cmpc_ctripouth[2]
-输入信号
-CMP_OUT5
-cmpe_ctripoutl[2]
-输入信号
-CMP_OUT6
-cmpc_ctripouth[3]
-输入信号
-CMP_OUT7
-cmpc_ctripout[3]
-输入信号
-CMP_OUT8
-cmpc_ctripouth[4]
-输入信号
-CMP_OUT9
-cmpc_ctripout[4]
-输入信号
-CMP_OUT10
-cmpc_ctripouth[5]
-输入信号
-CMP_OUT11
-cmpc_ctripout[5]
-输入信号
-CMP_OUT12
-cmpc_ctripouth[6]
-输入信号
-CMP_OUT13
-cmpc_ctripout[6]
-输入信号
-CMP_OUT14
-cmpc_ctripouth[7]
-输入信号
-CMP_OUT15
-cmpc_ctripout[7]
-输入信号
-cmpc_ctripouth[8]
-CMP_EVT16
-输入信号
-cmpc_ctripout[8]
-CMP_EVT17
-输入信号
-CMP_EVT18
-cmpc_ctripouth[9]
-输入信号
-CMP EVT19
-cmpc_ctripoutl[9]
-输入信号
-输入信号
-CMP_EVT20
-cmpc_ctripouth[10]
-CMP_EVT21
-cmpc_ctripoutl[10]
-输入信号
-CMP_OUT0_OR_OUT1
-cmpc_ctripouth_or [0]
-cmpc_ctripouth[0] cmpc_ctripout[0]
-CMP_OUT2_OR_OUT3
-cmpc_ctripouth_or_ []
-cmpc_ctripouth[1] cmpc_ctripoutl[]
-CMP_OUT4_OR_OUT5
-cmpc_ctripouth_or_1[2]
-cmpc_ctripouth[2] cmpc_ctripoutl[2]
-CMP_OUT6_OR_OUT7
-cmpc_ctripouth _or 1[3]
-cmpc_ctripouth[3] cmpc_ctripout[3]
-CFG_OPXB_SWx
-cfg_opxb_sw[]
-配置信号，*对应每个输出bit
-STMO_OCO
-stm_oc0_exp[0]
-输入信号
-STM0_OC1
-stm_oc1_exp[0]
-输入信号
-STM0_0C2
-stm_oc2_exp[0]
-输入信号
-STM0_OC3
-stm_oc3_exp[0]
-输入信号
-STM1_0CO
-stm_oc0_exp[1]
-输入信号
-stm_oc1_exp[1]
-STM1_0C1
-输入信号
-stm_oc2_exp[1]
-STM1_0C2
-输入信号
-STM1_0C3
-输入信号
-stm oc3 exp[1]
-输入信号
-stm_oc0_exp[2]
-STM2_OC0
-输入信号
-stm oc1 exp[2]
-STM2 0C1
-fps
-12080F
+| 信号标识 | 信号名 | 信号来源说明 |
+|---|---|---|
+| CMP_OUT0 | cmpc_ctripouth[0] | 输入信号 |
+| CMP_OUT1 | cmpc_ctripoutl[0] | 输入信号 |
+| CMP_OUT2 | cmpc_ctripouth[1] | 输入信号 |
+| CMP_OUT3 | cmpc_ctripoutl[1] | 输入信号 |
+| CMP_OUT4 | cmpc_ctripouth[2] | 输入信号 |
+| CMP_OUT5 | cmpc_ctripoutl[2] | 输入信号 |
+| CMP_OUT6 | cmpc_ctripouth[3] | 输入信号 |
+| CMP_OUT7 | cmpc_ctripoutl[3] | 输入信号 |
+| CMP_OUT8 | cmpc_ctripouth[4] | 输入信号 |
+| CMP_OUT9 | cmpc_ctripoutl[4] | 输入信号 |
+| CMP_OUT10 | cmpc_ctripouth[5] | 输入信号 |
+| CMP_OUT11 | cmpc_ctripoutl[5] | 输入信号 |
+| CMP_OUT12 | cmpc_ctripouth[6] | 输入信号 |
+| CMP_OUT13 | cmpc_ctripoutl[6] | 输入信号 |
+| CMP_OUT14 | cmpc_ctripouth[7] | 输入信号 |
+| CMP_OUT15 | cmpc_ctripoutl[7] | 输入信号 |
+| CMP_EVT16 | cmpc_ctripouth[8] | 输入信号 |
+| CMP_EVT17 | cmpc_ctripoutl[8] | 输入信号 |
+| CMP_EVT18 | cmpc_ctripouth[9] | 输入信号 |
+| CMP_EVT19 | cmpc_ctripoutl[9] | 输入信号 |
+| CMP_EVT20 | cmpc_ctripouth[10] | 输入信号 |
+| CMP_EVT21 | cmpc_ctripoutl[10] | 输入信号 |
+| CMP_OUT0_OR_OUT1 | cmpc_ctripouth_or_l[0] | cmpc_ctripouth[0] \| cmpc_ctripoutl[0] |
+| CMP_OUT2_OR_OUT3 | cmpc_ctripouth_or_l[1] | cmpc_ctripouth[1] \| cmpc_ctripoutl[1] |
+| CMP_OUT4_OR_OUT5 | cmpc_ctripouth_or_l[2] | cmpc_ctripouth[2] \| cmpc_ctripoutl[2] |
+| CMP_OUT6_OR_OUT7 | cmpc_ctripouth_or_l[3] | cmpc_ctripouth[3] \| cmpc_ctripoutl[3] |
+| CFG_OPXB_SWx | cfg_opxb_sw[*] | 配置信号，*对应每个输出bit |
+| STM0_OC0 | stm_oc0_exp[0] | 输入信号 |
+| STM0_OC1 | stm_oc1_exp[0] | 输入信号 |
+| STM0_OC2 | stm_oc2_exp[0] | 输入信号 |
+| STM0_OC3 | stm_oc3_exp[0] | 输入信号 |
+| STM1_OC0 | stm_oc0_exp[1] | 输入信号 |
+| STM1_OC1 | stm_oc1_exp[1] | 输入信号 |
+| STM1_OC2 | stm_oc2_exp[1] | 输入信号 |
+| STM1_OC3 | stm_oc3_exp[1] | 输入信号 |
+| STM2_OC0 | stm_oc0_exp[2] | 输入信号 |
+| STM2_OC1 | stm_oc1_exp[2] | 输入信号 |
 
-
-
----
+> 转录注：CPU1_HALT/CPU2_HALT及cpu1_halt/cpu2_halt为本表原文，和前面的CPU0/CPU1不一致；CMP_OUT0～15之后实际写CMP_EVT16～21，但对应cmpc_ctripouth/ctripoutl；均不统一。ADCSOCAO/ADCSOCBO末字按本页字形为大写O，前面的选源表ADCSOCA0/ADCSOCB0分别保留。
 
 <!-- xbar-block:end LS0PAMbqAJ -->
 
@@ -1460,214 +1203,88 @@ fps
 
 [查看原始PNG](../images/GameViewer_nneQMiNCGh.png)
 
-> 来源顺序20；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序20；已首轮核对。
 
 <!-- xbar-block:start nneQMiNCGh -->
-
 ### 【左页】
 
-STM2_0C2
-stm_oc2_exp[2]
-输入信号
-STM2_0C3
-stm_oc3_exp[2]
-输入信号
-stm_oco_exp[3]
-STM3_0C0
-输入信号
-STM3_0C1
-stm_oc1_exp[3]
-输入信号
-STM3 0C2
-stm_oc2 exp[3]
-输入信号
-输入信号
-stm_oc3_exp[3]
-STM3_0C3
-BIMCU huan?
-STM4_0C0
-stm_oco_exp[4]
-输入信号
-STM4_0C1
-stm_oc1_exp[4]
-输入信号
-stm_oc2_exp[4]
-STM4_OC2
-输入信号
-stm_oc3_exp[4]
-STM4_0C3
-输入信号
-STM5_0C0
-stm_oc0_exp[5]
-输入信号
-STM5_0C1
-stm_oc1_exp[5]
-输入信号
-STM5_0C2
-stm_oc2_exp[5]
-输入信号
-STM5_OC3
-stm_oc3_exp[5]
-输入信号
-xcox_dout[0]
-OUTPUTXBARCLU输出信号
-INPUTXBAR_CLU2OUT[0]
-BTMCU S
-xcox_ dout[1]
-INPUTXBAR_CLU2OUT[1]
-OUTPUTXBARCLU输出信号
-xcox_dout[2]
-INPUTXBAR_CLU2OUT[2]
-OUTPUTXBARCLU输出信号
-INPUTXBAR_CLU2OUT[3]
-xcox_dout[3]
-OUTPUTXBARCLU输出信号
-Reserved
-1b0
-保留位
-OUTPUT_XBRO
-outputxbar_data[0]
-output_xbar的输出信号
-OUTPUT_XBR1
-outputxbar _data[1]
-output_xbar的输出信号
-OUTPUT_XBR2
-outputxbar _data[2]
-output_xbar的输出信号
-OUTPUT_XBR3
-outputxbar_data[3]
-output_xbar的输出信号
-OUTPUT_XBR4
-outputxbar _data[4]
-output_xbar的输出信号
-BIMCU
-OUTPUT_XBR5
-outputxbar
-_data[5]
-output_xbar的输出信号
-OUTPUT_XBR6
-outputxbar
-data[6]
-output_xbar的输出信号
-outputxbar_data[7]
-OUTPUT_XBR7
-output_xbar的输出信号
-OUTPUT_XBR8
-outputxbar _data[8]
-output_xbar的输出信号
-OUTPUT_XBR9
-outputxbar _data[9]
-output_xbar的输出信号
-outputxbar _data[10]
-OUTPUT_XBR10
-output_xbar的输出信号
-OUTPUT_XBR11
-[1tjexep reqxndino
-output_xbar的输出信号
-OUTPUT_XBR12
-outputxbar_data[12]
-output_xbar的输出信号
-OUTPUT_XBR13
-outputxbar _data[13]
-output_xbar的输出信号
-EIMCU
-epwm2xbar_fault_real[0]
-EPWMO_FAULTREAL
-输入信号
-EPWM1_FAULTREAL
-epwm2xbar_fault_real[1]
-输入信号
-EPWM2_FAULTREAL
-epwm2xbar_fault_real[2]
-输入信号
-EPWM3_FAULTREAL
-epwm2xbar_fault_real[3]
-输入信号
+4.3信号对应关系续表：
 
+| 信号标识 | 信号名 | 信号来源说明 |
+|---|---|---|
+| STM2_OC2 | stm_oc2_exp[2] | 输入信号 |
+| STM2_OC3 | stm_oc3_exp[2] | 输入信号 |
+| STM3_OC0 | stm_oc0_exp[3] | 输入信号 |
+| STM3_OC1 | stm_oc1_exp[3] | 输入信号 |
+| STM3_OC2 | stm_oc2_exp[3] | 输入信号 |
+| STM3_OC3 | stm_oc3_exp[3] | 输入信号 |
+| STM4_OC0 | stm_oc0_exp[4] | 输入信号 |
+| STM4_OC1 | stm_oc1_exp[4] | 输入信号 |
+| STM4_OC2 | stm_oc2_exp[4] | 输入信号 |
+| STM4_OC3 | stm_oc3_exp[4] | 输入信号 |
+| STM5_OC0 | stm_oc0_exp[5] | 输入信号 |
+| STM5_OC1 | stm_oc1_exp[5] | 输入信号 |
+| STM5_OC2 | stm_oc2_exp[5] | 输入信号 |
+| STM5_OC3 | stm_oc3_exp[5] | 输入信号 |
+| INPUTXBAR_CLU2OUT[0] | xcox_dout[0] | OUTPUTXBAR_CLU 输出信号 |
+| INPUTXBAR_CLU2OUT[1] | xcox_dout[1] | OUTPUTXBAR_CLU 输出信号 |
+| INPUTXBAR_CLU2OUT[2] | xcox_dout[2] | OUTPUTXBAR_CLU 输出信号 |
+| INPUTXBAR_CLU2OUT[3] | xcox_dout[3] | OUTPUTXBAR_CLU 输出信号 |
+| Reserved | 1'b0 | 保留位 |
+| OUTPUT_XBR0 | outputxbar_data[0] | output_xbar 的输出信号 |
+| OUTPUT_XBR1 | outputxbar_data[1] | output_xbar 的输出信号 |
+| OUTPUT_XBR2 | outputxbar_data[2] | output_xbar 的输出信号 |
+| OUTPUT_XBR3 | outputxbar_data[3] | output_xbar 的输出信号 |
+| OUTPUT_XBR4 | outputxbar_data[4] | output_xbar 的输出信号 |
+| OUTPUT_XBR5 | outputxbar_data[5] | output_xbar 的输出信号 |
+| OUTPUT_XBR6 | outputxbar_data[6] | output_xbar 的输出信号 |
+| OUTPUT_XBR7 | outputxbar_data[7] | output_xbar 的输出信号 |
+| OUTPUT_XBR8 | outputxbar_data[8] | output_xbar 的输出信号 |
+| OUTPUT_XBR9 | outputxbar_data[9] | output_xbar 的输出信号 |
+| OUTPUT_XBR10 | outputxbar_data[10] | output_xbar 的输出信号 |
+| OUTPUT_XBR11 | outputxbar_data[11] | output_xbar 的输出信号 |
+| **OUTPUT_XBR12** | **outputxbar_data[12]** | **output_xbar 的输出信号** |
+| **OUTPUT_XBR13** | **outputxbar_data[13]** | **output_xbar 的输出信号** |
+| EPWM0_FAULTREAL | epwm2xbar_fault_real[0] | 输入信号 |
+| EPWM1_FAULTREAL | epwm2xbar_fault_real[1] | 输入信号 |
+| EPWM2_FAULTREAL | epwm2xbar_fault_real[2] | 输入信号 |
+| EPWM3_FAULTREAL | epwm2xbar_fault_real[3] | 输入信号 |
 
 ### 【右页】
 
-EPWM4 _FAULTREAL
-epwm2xbar_fault_real[4]
-输入信号
-EPWM5_FAULTREAL
-epwm2xbar_fault_real[5]
-输入信号
-EPWM6_ FAULTREAL
-epwm2xbar_fault_real[6]
-输入信号
-EPWM7_FAULTREAL
-epwm2xbar_fault_real[7]
-输入信号
-EPWM8_FAULTREAL
-epwm2xbar_fault_real[8]
-输入信号
-EPWM9_ FAULTREAL
-epwm2xbar_fault_real[9]
-输入信号
-EPWM10_FAULTREAL
-epwm2xbar_fault_real[10]
-输入信号
-EPWM11_ FAULTREAL
-epwm2xbar_fault_real[11]
-输入信号
-etim2xbar_fault_real[0]
-ETIMO_FAULTREAL
-输入信号
-ETIMI_FAULTREAL
-etim2xbar_fault_real[1]
-输入信号
-ETIM2 FAULTREAL
-etim2xbar_fault_real[2]
-输入信号
-ETIM3_ FAULTREAL
-etim2xbar_fault_real[3]
-输入信号
-ETIM4 FAULTREAL
-etim2xbar_fault_real[4]
-输入信号
-ETIM5 FAULTREAL
-etim2xbar_fault_real[5]
-输入信号
-ETIM6 FAULTREAL
-etim2xbar_fault_real[6]
-输入信号
-ETIM7 FAULTREAL
-etim2xbar_fault_real[7]
-输入信号
-ETIM8_ FAULTREAL
-etim2xbar_fault_real[8]
-输入信号
-ETIM9_FAULTREAL
-etim2xbar_fault_real[9]
-输入信号
-ETIM10_FAULTREAL
-etim2xbar_fault_real[10]
-输入信号
-ETIM11_FAULTREAL
-etim2xbar_fault_real[11]
-输入信号
-ETIM12_FAULTREAL
-输入信号
-etim2xbar_fault_real[12]
-ETIMI3FAULTREAL
-etim2xbar_fault_real[13]
-输入信号
-XCLK_OUT
-xclkout
-CRG XCLK
-5.方案设计
+| 信号标识 | 信号名 | 信号来源说明 |
+|---|---|---|
+| EPWM4_FAULTREAL | epwm2xbar_fault_real[4] | 输入信号 |
+| EPWM5_FAULTREAL | epwm2xbar_fault_real[5] | 输入信号 |
+| EPWM6_FAULTREAL | epwm2xbar_fault_real[6] | 输入信号 |
+| EPWM7_FAULTREAL | epwm2xbar_fault_real[7] | 输入信号 |
+| EPWM8_FAULTREAL | epwm2xbar_fault_real[8] | 输入信号 |
+| EPWM9_FAULTREAL | epwm2xbar_fault_real[9] | 输入信号 |
+| EPWM10_FAULTREAL | epwm2xbar_fault_real[10] | 输入信号 |
+| EPWM11_FAULTREAL | epwm2xbar_fault_real[11] | 输入信号 |
+| ETIM0_FAULTREAL | etim2xbar_fault_real[0] | 输入信号 |
+| ETIM1_FAULTREAL | etim2xbar_fault_real[1] | 输入信号 |
+| ETIM2_FAULTREAL | etim2xbar_fault_real[2] | 输入信号 |
+| ETIM3_FAULTREAL | etim2xbar_fault_real[3] | 输入信号 |
+| ETIM4_FAULTREAL | etim2xbar_fault_real[4] | 输入信号 |
+| ETIM5_FAULTREAL | etim2xbar_fault_real[5] | 输入信号 |
+| ETIM6_FAULTREAL | etim2xbar_fault_real[6] | 输入信号 |
+| ETIM7_FAULTREAL | etim2xbar_fault_real[7] | 输入信号 |
+| ETIM8_FAULTREAL | etim2xbar_fault_real[8] | 输入信号 |
+| ETIM9_FAULTREAL | etim2xbar_fault_real[9] | 输入信号 |
+| ETIM10_FAULTREAL | etim2xbar_fault_real[10] | 输入信号 |
+| ETIM11_FAULTREAL | etim2xbar_fault_real[11] | 输入信号 |
+| **ETIM12_FAULTREAL** | **etim2xbar_fault_real[12]** | **输入信号** |
+| **ETIM13_FAULTREAL** | **etim2xbar_fault_real[13]** | **输入信号** |
+| XCLK_OUT | xclkout | CRG XCLK |
 
-#### 5.1 INPUT XBAR 模块
+# 5. 方案设计
+
+## 5.1 INPUT XBAR模块
 
 ET6801:去除了3101中增加的展宽的逻辑；
-fps
-ms
-12080F
 
-
-
----
+> 转录注：OUTPUT_XBR与前文OUTPUT XBAR拼写分别保留；本段ET6801历史说明不归为6601新功能。
 
 <!-- xbar-block:end nneQMiNCGh -->
 
@@ -1677,47 +1294,37 @@ ms
 
 [查看原始PNG](../images/GameViewer_b4H5jcq6ED.png)
 
-> 来源顺序21；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序21；已首轮核对。
 
 <!-- xbar-block:start b4H5jcq6ED -->
-
 ### 【左页】
 
-INPUTXBAR实现IO输入信号的XBAR处理，实现结构如
-下图所示。
-BAR,OUTy
-3101A6003INFUT_XB.R处理
-相对于6002，前处理模块放到IOMUX处理；
-支持实现异步路径输出，异步路径通过输入异步模式寄存器
-gpio_async_mod 和输出异步模式寄存器xbar_async_mod 进行配
-置选择，仅支持静态配置（在初始化程序完成，切换模式可能
-出现毛刺和功能异常），默认选择同步路径。PWMXBAR类同。
-如果不止一个GPIO通过MUXOR合并到输出，则只要其中
-一个GPIO处于输入异步模式，则整个路径均处于异步模式，
-须按照异步模式进行配置。否则，异步模式同步路径可能出现
-毛刺。
+INPUT XBAR 实现IO输入信号的XBAR处理，实现结构如下图所示。
 
+**图中文字转录（本页对比图未单列图号）：**
+
+| 区域 | 可辨标签和图形连接 |
+|---|---|
+| 上图 | GPIO[x]、MUX OR、clear、flt_en、edg_sel、oe、pol_sel、D、INXBAR_OUT[y]；输入取反/选择、同步及滤波小框、MUX OR、两个锁存小框、选择、与门、异或门、寄存器。红字“6002INPUT_XBAR处理”。 |
+| 下图 | GPIO[x]、IOMUX、MUX OR、clear、flt_en、edg_sel、oe、pol_sel、D、INXBAR_OUT[y]；虚线框圈出IOMUX前处理；寄存器与旁路线接至末级选择器。红字“3101&6003INPUT_XBAR处理”。 |
+
+相对于6002，前处理模块放到IOMUX处理；
+
+支持实现异步路径输出，异步路径通过输入异步模式寄存器gpio_async_mod和输出异步模式寄存器xbar_async_mod进行配置选择，仅支持静态配置（在初始化程序完成，切换模式可能出现毛刺和功能异常），默认选择同步路径。PWM XBAR类同。
+
+如果不止一个GPIO通过MUXOR合并到输出，则只要其中一个GPIO处于输入异步模式，则整个路径均处于异步模式，须按照异步模式进行配置。否则，异步模式同步路径可能出现毛刺。
 
 ### 【右页】
 
--10(no"vBXN
-UO_XBAR_PROC
-(uluno'svgx)
-UI_XBAR_PROC
-Ban. J1
-INXBAR_OUTTS)
-U15_XBAR_PROC
-U_NXB
-U_XBAR_POST
-图2INPUTXBAR模块处理框图
-PWMXBAR模块
-PWMXBAR实现结构如下图所示。
-ETNCUhnar. 1 2026-J0-02-21:59
-12080F
+**图2　INPUT XBAR模块处理框图**
 
+图内可辨标签：GPIO[0]、GPIO[1]、GPIO[2]、GPIO[3]及底部GPIO[N]一组；红色“IOMUX处理”；前级“极性”“同步”“滤波”小框；mux0、OR；锁存1、锁存2；clear、edg_sel、oe、pol_sel、D；INXBAR_OUT[0]、INXBAR_OUT[1]、INXBAR_OUT[15]；U0_XBAR_PROC、U1_XBAR_PROC、U15_XBAR_PROC；U_INXB、U_XBAR_POST。省略点、共享竖线和各路选择连接保留在原图中。
 
+> ⚠️ 原图待复核：XBAR-U04。本张左侧对比图中两个锁存框完整小字、同步/滤波框内细字；右图下组GPIO端点的完整索引、各mux编号及少量配置下标仍未达到逐字符确认。上列仅录可辨片段，图形完整关系以本PNG为准；不能用80输入正文反填图中索引。红色历史图标题不当成6601新增。
 
----
+## 5.2 PWM XBAR模块
+
+PWM XBAR实现结构如下图所示。
 
 <!-- xbar-block:end b4H5jcq6ED -->
 
@@ -1727,54 +1334,35 @@ ETNCUhnar. 1 2026-J0-02-21:59
 
 [查看原始PNG](../images/GameViewer_V3t3Z6WQYi.png)
 
-> 来源顺序22；候选顺序，以下为历史转录，尚未首轮原图核对。
+> 来源顺序22；已首轮核对。
 
 <!-- xbar-block:start V3t3Z6WQYi -->
-
 ### 【左页】
 
-SOURCE[X]
-6002PWMPUT_XBAR处理
-OR
-PFXB_OUT[X}
-BTMO
-pol,sd
-BIMCU Tuan 1i
-SOURCE[X]
-3101&6003PWMLXBAR处理
-锁存
-PWMXBAR支持异步模式；
-PWMXBAR送两组信号给SRPWM，一组12bit同步信号，
-一组12bit异步信号，与INPUTXBAR合并为2组18bit信号
-由SRPWM选择使用。异步模式下，同步信号和异步信号之间
-有延时差，同步模式下为相同信号。
-ETMCUhua7.13
-BIMCU
+**图中文字转录（本页对比图未单列图号）：**
 
+| 区域 | 标签及可见连接 |
+|---|---|
+| 上图 | SOURCE[x] → MUX OR；锁存1及旁路线→选择器→与门→异或门→D→PFXB_OUT[x]；配置clear/set、oe、pol_sel；红字“6002 PWMPUT_XBAR处理”。 |
+| 下图 | SOURCE[x] → MUX OR；锁存1及旁路线→选择器→与门→异或门；随后D和旁路线分别进入末级选择器1/0，输出PFXB_OUT[x]；配置clear/set、oe、pol_sel；红字“3101&6003 PWM_XBAR处理”。 |
+
+PWM XBAR支持异步模式；
+
+PWM XBAR送两组信号给SRPWM，一组 **12bit同步信号，一组12bit** 异步信号，与INPUT XBAR合并为 **2组18bit** 信号，由SRPWM选择使用。异步模式下，同步信号和异步信号之间有延时差，同步模式下为相同信号。
+
+> 转录注：加粗片段对应本段红字；上方历史图标题“PWMPUT_XBAR”按可辨字形保留，不替换成INPUT或PWM。
 
 ### 【右页】
 
-OR
-PFXBAR_OUTIO)-
-8TMCU han,Ji
-UO_XBAR_PROC
-OR
-PFXBAR_OUT[1]-
-UI_XBAR_PROC
-TMCU muan.Ji 2026-10-02-21/59
-PFXBAR_OUT[11]-
-UII_XBAR_PROC
-U_FFXB
-U_XBAR_POST
-图3PWMXBAR模块框图
-3ETIMXBAR模块
-ETIMXBAR实现结构如下图所示。
-FTNCU han.71 2026-10-
-12080F
+**图3　PWM XBAR模块框图**
 
+图内原标签：Source0、Source1、Source2、Source3；SourceX-3、SourceX-2、SourceX-1、SourceX；mux0、OR；锁存1、clear、oe、pol_sel、D；PFXBAR_OUT[0]、PFXBAR_OUT[1]、PFXBAR_OUT[11]；U0_XBAR_PROC、U1_XBAR_PROC、U11_XBAR_PROC；U_PFXB、U_XBAR_POST。每路图中D输出和旁路线进入最后的选择器，输入列与中间通道均以省略点表示。
 
+> 转录注：本页对比图PFXB_OUT与右图PFXBAR_OUT分别照录；箭头和门形保留在原PNG，不以重画替代。
 
----
+## 5.3 ETIM XBAR模块
+
+ETIM XBAR实现结构如下图所示。
 
 <!-- xbar-block:end V3t3Z6WQYi -->
 
@@ -2179,6 +1767,11 @@ fps
 | XBAR-C36 | 表1接口列表：输出／fault | xbar2etim_fault[14-1:0]；outputxbar_data[14-1:0]、outputxbar_data_oe_n[14-1:0]；epwm2xbar_fault_real[11:0]、etim2xbar_fault_real[13:0]。 | [GameViewer_NY8OuaK0XB.png](../images/GameViewer_NY8OuaK0XB.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
 | XBAR-C37 | 表2接口信号特征：输入 | gpio_xbar_data[80-1:0]、sarc2xbar_evt[9-1:0]。 | [GameViewer_NY8OuaK0XB.png](../images/GameViewer_NY8OuaK0XB.png) | 原80/9为红字；表2出现位置，与表1分别记录 |
 | XBAR-C38 | 表2接口信号特征：ETIM／输出 | etim_pwm_out[14-1:0]、etim_pwm_out_oe_n[14-1:0]、xbar2etim_fault[14-1:0]、outputxbar_data[14-1:0]、outputxbar_data_oe_n[14-1:0]。 | [GameViewer_BJDG1Zjxti.png](../images/GameViewer_BJDG1Zjxti.png) | 原文ET6601段红字／对应红色修改标记；只归集本位置 |
+| XBAR-C39 | 表2末尾 | epwm2xbar_fault_real[11:0]、etim2xbar_fault_real[13:0]为红色整行信号名。 | [GameViewer_XqmNqCU6Lw.png](../images/GameViewer_XqmNqCU6Lw.png) | 原图红字修改位置；不按重复出现位置重复计算硬件实例 |
+| XBAR-C40 | 4.3信号对应关系 | ETIMOUT12→etim_pwm_out[12]；ETIMOUT13→etim_pwm_out[13]；两行输入信号。 | [GameViewer_LS0PAMbqAJ.png](../images/GameViewer_LS0PAMbqAJ.png) | 原图红字修改位置；不按重复出现位置重复计算硬件实例 |
+| XBAR-C41 | 4.3信号对应关系 | OUTPUT_XBR12→outputxbar_data[12]；OUTPUT_XBR13→outputxbar_data[13]；output_xbar的输出信号。 | [GameViewer_nneQMiNCGh.png](../images/GameViewer_nneQMiNCGh.png) | 原图红字修改位置；不按重复出现位置重复计算硬件实例 |
+| XBAR-C42 | 4.3信号对应关系 | ETIM12_FAULTREAL→etim2xbar_fault_real[12]；ETIM13_FAULTREAL→etim2xbar_fault_real[13]。 | [GameViewer_nneQMiNCGh.png](../images/GameViewer_nneQMiNCGh.png) | 原图红字修改位置；不按重复出现位置重复计算硬件实例 |
+| XBAR-C43 | 5.2 PWM XBAR | 一组12bit同步信号，一组12bit异步信号；与INPUT XBAR合并为2组18bit信号。 | [GameViewer_V3t3Z6WQYi.png](../images/GameViewer_V3t3Z6WQYi.png) | 原图红字修改位置；不按重复出现位置重复计算硬件实例 |
 
 ## 第三部分：局部缺口与原文差异
 
@@ -2199,5 +1792,11 @@ INPUT XBAR连接图的INT支路与直接到SARC支路细标记尚未逐字符确
 PWM ET6601清单第5项位置可见5）及Delete / 6 (0#~5#)，未见可确定功能语句；原文内容与修订浮层边界待同版原件确认。其余五项按原编号保存。
 
 原图：[GameViewer_Z7r3yKz86a.png](../images/GameViewer_Z7r3yKz86a.png)。状态：开放。
+
+### XBAR-U04
+
+5.1左侧6002/3101&6003对比图的同步/滤波框内字、两个锁存框完整细字；图2下组GPIO端点完整索引与各mux编号/配置细下标未逐字符确认。可辨GPIO[0..3]/GPIO[N]、极性/同步/滤波、锁存1/2、clear/edg_sel/oe/pol_sel及U0/U1/U15等标签已录。只影响这些图内细节，不能用80输入正文反填。
+
+原图：[GameViewer_b4H5jcq6ED.png](../images/GameViewer_b4H5jcq6ED.png)。状态：开放。
 
 原文所述AMBA3 AHB Lite→AHB、nManager APB与XBAR.SPEC【01】的APB分别保留；历史8→14位和6601的12→14位不统一。历史版本事项不转为6601新增。

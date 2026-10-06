@@ -1,0 +1,133 @@
+name: SARC delivery13 bounded save
+on:
+  push:
+    branches: [docs/restore-6601-screenshots]
+    paths: [.github/workflows/sarc-delivery13-save.yml]
+permissions:
+  contents: write
+concurrency:
+  group: sarc-delivery13-save
+  cancel-in-progress: false
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: docs/restore-6601-screenshots
+          fetch-depth: 0
+      - name: Validate all bounded edits, save without force, and compare remote bytes
+        shell: python
+        run: |
+          import json, hashlib, os, re, subprocess
+          from pathlib import Path
+          def git(*args):
+              return subprocess.check_output(['git', *args])
+          def run(*args):
+              subprocess.run(['git', *args], check=True)
+          def blob(data):
+              return hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
+          def checked(data, item):
+              assert len(data)==item['bytes'], item['path']+' size mismatch'
+              assert blob(data)==item['new_blob'], item['path']+' blob mismatch'
+              assert hashlib.sha256(data).hexdigest()==item['sha256'], item['path']+' sha256 mismatch'
+          branch='docs/restore-6601-screenshots'
+          staging='6601芯片截图/reviews/.sarc_delivery13_data.json'
+          workflow='.github/workflows/sarc-delivery13-save.yml'
+          assert os.environ['GITHUB_REF_NAME']==branch
+          spec=json.loads(Path(staging).read_text(encoding='utf-8'))
+          assert spec['branch']==branch
+          run('merge-base','--is-ancestor',spec['input_head'],'HEAD')
+          run('merge-base','--is-ancestor',spec['expected_start_head'],'HEAD')
+          targets=spec['files']+spec['direct_files']
+          assert len(targets)==8 and len({f['path'] for f in targets})==8
+          allowed_prefixes=('6601芯片截图/sarc/','6601芯片截图/reviews/')
+          for f in targets:
+              p=Path(f['path'])
+              assert not p.is_absolute() and '..' not in p.parts
+              assert str(p).startswith(allowed_prefixes) or str(p) in ['NEXT_CHAT_HANDOFF.md','6601芯片截图/RESTORE_PROGRESS.md']
+          prior=set(git('diff','--name-only','-z',spec['input_head'],'HEAD').decode().strip('\0').split('\0'))
+          assert prior=={f['path'] for f in spec['direct_files']}|{staging,workflow}, 'unexpected intervening changes'
+          protected={}
+          for path, expected in spec['protected_sources'].items():
+              data=Path(path).read_bytes()
+              assert blob(data)==expected and data==git('show',spec['input_head']+':'+path), path+' protected source changed'
+              protected[path]=data
+          prepared={}
+          for f in spec['direct_files']:
+              data=Path(f['path']).read_bytes(); checked(data,f); prepared[f['path']]=data
+          for f in spec['files']:
+              old=Path(f['path']).read_bytes()
+              assert blob(old)==f['old_blob'], f['path']+' stale blob; re-read required'
+              assert old==git('show','HEAD:'+f['path'])
+              text=old.decode('utf-8')
+              for op in f['ops']:
+                  assert text.count(op['old'])==1, f['path']+' non-unique anchor'
+                  text=text.replace(op['old'],op['new'],1)
+              data=text.encode('utf-8'); checked(data,f); prepared[f['path']]=data
+          total_path='6601芯片截图/sarc/SARC_6601修改点总览.md'
+          old=Path(total_path).read_text(encoding='utf-8'); new=prepared[total_path].decode()
+          marker='2026-10-05第七轮：'
+          assert new[new.index(marker):]==old[old.index(marker):], 'old source records changed'
+          section=new.split('## 第十三轮联合主题入口：',1)[1].split('### 历轮归集记录',1)[0]
+          rows=[x.split('|') for x in section.splitlines() if x.startswith('| ') and not x.startswith('| 主题 ')]
+          assert len(rows)==13
+          def codes(text):
+              result=set()
+              for a,b in re.findall(r'C(\d+)(?:～C?(\d+))?',text):
+                  result.update(range(int(a),int(b or a)+1))
+              return result
+          assert set.union(*(codes(x[3]) for x in rows))==set(range(1,33))
+          assert set.union(*(codes(x[4]) for x in rows))==set(range(1,47))
+          guide='6601芯片截图/sarc/SARC_工作链路与6601修改导读.md'
+          links=re.findall(r'\]\(([^)]+)\)',prepared[guide].decode())
+          assert len(links)==44
+          for link in links:
+              assert (Path(guide).parent/link).is_file(), 'guide target missing'
+          for f in spec['files']:
+              Path(f['path']).write_bytes(prepared[f['path']])
+          Path(staging).unlink(); Path(workflow).unlink()
+          run('config','user.name','github-actions[bot]')
+          run('config','user.email','41898282+github-actions[bot]@users.noreply.github.com')
+          run('add','--',*[f['path'] for f in spec['files']],staging,workflow)
+          staged=set(git('diff','--cached','--name-only','-z').decode().strip('\0').split('\0'))
+          assert staged=={f['path'] for f in spec['files']}|{staging,workflow}
+          run('commit','-m','docs(sarc): publish workflow guide and joint change index')
+          commit=git('rev-parse','HEAD').decode().strip()
+          changed=set(git('diff','--name-only','-z',spec['input_head'],'HEAD').decode().strip('\0').split('\0'))
+          assert changed==set(prepared), 'unexpected scope outside delivery files'
+          run('push','origin','HEAD:refs/heads/'+branch)
+          run('fetch','origin','refs/heads/'+branch)
+          remote=git('rev-parse','FETCH_HEAD').decode().strip()
+          assert remote==commit
+          for f in targets:
+              data=git('show',remote+':'+f['path']); checked(data,f)
+              assert data==prepared[f['path']]
+          for path,data in protected.items():
+              assert git('show',remote+':'+path)==data
+          receipt_path='6601芯片截图/reviews/SARC_DELIVERY_ROUND13_REMOTE_SAVE_20261006.json'
+          assert not Path(receipt_path).exists()
+          receipt={'date':'2026-10-06','round':13,'branch':branch,'input_head':spec['input_head'],'guide_commit':spec['guide_commit'],'content_commit':commit,'remote_head_at_readback':remote,'run_id':int(os.environ['GITHUB_RUN_ID']),'publication_status':'remote_saved_and_git_fetch_byte_verified','all_8_delivery_files_byte_equal_prepared':True,'old_blobs_checked_before_bounded_updates':True,'old_overview_records_byte_preserved':True,'three_original_transcripts_byte_preserved':True,'all_original_png_and_other_ip_paths_unchanged':True,'temporary_data_and_workflow_removed':True,'non_force_push':True,'new_image_first_pass':0,'new_visual_acceptance':0,'closed_gaps':[],'sarc_first_pass':64,'repository_first_pass':124,'source_location_count':78,'reading_topic_count':13,'remaining_gaps':{'lld':19,'lrs':3,'aux':1,'source':['S01']},'final_text_acceptance':False,'hardware_test_performed':False,'protected_sources':spec['protected_sources'],'files':[{k:f[k] for k in ['path','bytes','new_blob','sha256']} for f in targets],'next_entry':guide,'note':'主体导读可阅读；用途说明不是逐字验收通过。原有缺口有清晰同版来源后再定点补录。'}
+          receipt_bytes=(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n').encode()
+          Path(receipt_path).write_bytes(receipt_bytes)
+          run('add','--',receipt_path)
+          run('commit','-m','docs(sarc): record delivery13 remote byte readback')
+          run('push','origin','HEAD:refs/heads/'+branch)
+          final_commit=git('rev-parse','HEAD').decode().strip()
+          run('fetch','origin','refs/heads/'+branch)
+          final_remote=git('rev-parse','FETCH_HEAD').decode().strip()
+          assert final_remote==final_commit
+          assert git('show',final_remote+':'+receipt_path)==receipt_bytes
+          output=Path('sarc_round13_readback'); output.mkdir(exist_ok=True)
+          for path,expected in {**prepared,**protected,receipt_path:receipt_bytes}.items():
+              data=git('show',final_remote+':'+path)
+              assert data==expected
+              dest=output/path; dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
+          (output/'EXPORT_META.json').write_text(json.dumps({'content_commit':commit,'receipt_commit':final_commit,'remote_head':final_remote,'delivery_files':8,'protected_transcripts':3,'branch':branch},indent=2)+'\n',encoding='utf-8')
+          print('Published and byte-verified',commit,'receipt',final_commit)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sarc-delivery13-full-readback
+          path: sarc_round13_readback/
+          retention-days: 3
+          if-no-files-found: error
